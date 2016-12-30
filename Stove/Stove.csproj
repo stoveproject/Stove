@@ -159,7 +159,6 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="IUserIdentifier.cs" />
     <Compile Include="JetBrains\Annotations\CodeAnnotations.cs" />
-    <Compile Include="Domain\Policies\IPolicy.cs" />
     <Compile Include="Log\ILogger.cs" />
     <Compile Include="Log\NullLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -179,8 +178,6 @@
     <Compile Include="Runtime\Session\IStoveSession.cs" />
     <Compile Include="Runtime\Session\IPrincipalAccessor.cs" />
     <Compile Include="Runtime\Session\NullStoveSession.cs" />
-    <Compile Include="Domain\Services\DomainService.cs" />
-    <Compile Include="Domain\Services\IDomainService.cs" />
     <Compile Include="StoveException.cs" />
     <Compile Include="StoveRegistrationExtensions.cs" />
     <Compile Include="StoveServiceBase.cs" />
@@ -221,7 +218,6 @@
     <Compile Include="Domain\Uow\UnitOfWorkOptions.cs" />
     <Compile Include="Domain\Uow\UnitOfWorkRegistrar.cs" />
     <Compile Include="UserIdentifier.cs" />
-    <Compile Include="Domain\Values\ValueObject.cs" />
     <Compile Include="Utils\Etc\NullDisposable.cs" />
   </ItemGroup>
   <ItemGroup>
