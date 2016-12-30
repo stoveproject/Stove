@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 using Stove.Events.Bus.Factories;
 using Stove.Events.Bus.Handlers;
+using Stove.Utils.Etc;
 
 namespace Stove.Events.Bus
 {

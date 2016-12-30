@@ -1,7 +1,7 @@
 ﻿namespace Stove.Runtime.Security
 {
     /// <summary>
-    /// Used to get ABP-specific claim type names.
+    /// Used to get Stove-specific claim type names.
     /// </summary>
     public static class StoveClaimTypes
     {

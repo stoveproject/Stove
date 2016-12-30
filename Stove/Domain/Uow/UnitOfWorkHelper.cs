@@ -6,21 +6,21 @@ using Stove.Domain.Repositories;
 namespace Stove.Domain.Uow
 {
     /// <summary>
-    /// A helper class to simplify unit of work process.
+    ///     A helper class to simplify unit of work process.
     /// </summary>
     internal static class UnitOfWorkHelper
     {
         /// <summary>
-        /// Returns true if UOW must be used for given type as convention.
+        ///     Returns true if UOW must be used for given type as convention.
         /// </summary>
         /// <param name="type">Type to check</param>
         public static bool IsConventionalUowClass(Type type)
         {
-            return typeof(IRepository).IsAssignableFrom(type) || typeof(IApplicationService).IsAssignableFrom(type);
+            return typeof(IRepository).IsAssignableFrom(type);
         }
 
         /// <summary>
-        /// Returns true if given method has UnitOfWorkAttribute attribute.
+        ///     Returns true if given method has UnitOfWorkAttribute attribute.
         /// </summary>
         /// <param name="methodInfo">Method info to check</param>
         public static bool HasUnitOfWorkAttribute(MemberInfo methodInfo)
@@ -29,18 +29,18 @@ namespace Stove.Domain.Uow
         }
 
         /// <summary>
-        /// Returns UnitOfWorkAttribute it exists.
+        ///     Returns UnitOfWorkAttribute it exists.
         /// </summary>
         /// <param name="methodInfo">Method info to check</param>
         public static UnitOfWorkAttribute GetUnitOfWorkAttributeOrNull(MemberInfo methodInfo)
         {
-            var attrs = methodInfo.GetCustomAttributes(typeof (UnitOfWorkAttribute), false);
+            object[] attrs = methodInfo.GetCustomAttributes(typeof(UnitOfWorkAttribute), false);
             if (attrs.Length <= 0)
             {
                 return null;
             }
 
-            return (UnitOfWorkAttribute) attrs[0];
+            return (UnitOfWorkAttribute)attrs[0];
         }
     }
 }

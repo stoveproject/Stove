@@ -28,7 +28,7 @@ namespace Stove.Extensions
         {
             if (str == null)
             {
-                throw new ArgumentNullException("str");
+                throw new ArgumentNullException(nameof(str));
             }
 
             if (str.EndsWith(c.ToString(CultureInfo.InvariantCulture), comparisonType))
@@ -46,7 +46,7 @@ namespace Stove.Extensions
         {
             if (str == null)
             {
-                throw new ArgumentNullException("str");
+                throw new ArgumentNullException(nameof(str));
             }
 
             if (str.EndsWith(c.ToString(culture), ignoreCase, culture))
@@ -72,7 +72,7 @@ namespace Stove.Extensions
         {
             if (str == null)
             {
-                throw new ArgumentNullException("str");
+                throw new ArgumentNullException(nameof(str));
             }
 
             if (str.StartsWith(c.ToString(CultureInfo.InvariantCulture), comparisonType))
@@ -90,7 +90,7 @@ namespace Stove.Extensions
         {
             if (str == null)
             {
-                throw new ArgumentNullException("str");
+                throw new ArgumentNullException(nameof(str));
             }
 
             if (str.StartsWith(c.ToString(culture), ignoreCase, culture))
@@ -126,7 +126,7 @@ namespace Stove.Extensions
         {
             if (str == null)
             {
-                throw new ArgumentNullException("str");
+                throw new ArgumentNullException(nameof(str));
             }
 
             if (str.Length < len)
@@ -242,7 +242,7 @@ namespace Stove.Extensions
         {
             if (str == null)
             {
-                throw new ArgumentNullException("str");
+                throw new ArgumentNullException(nameof(str));
             }
 
             if (str.Length < len)
@@ -353,7 +353,7 @@ namespace Stove.Extensions
         {
             if (value == null)
             {
-                throw new ArgumentNullException("value");
+                throw new ArgumentNullException(nameof(value));
             }
 
             return (T)Enum.Parse(typeof(T), value);
@@ -371,7 +371,7 @@ namespace Stove.Extensions
         {
             if (value == null)
             {
-                throw new ArgumentNullException("value");
+                throw new ArgumentNullException(nameof(value));
             }
 
             return (T)Enum.Parse(typeof(T), value, ignoreCase);

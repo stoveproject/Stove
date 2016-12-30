@@ -32,7 +32,7 @@
         {
             return session.UserId == null
                 ? null
-                : new UserIdentifier(session.TenantId, session.GetUserId());
+                : new UserIdentifier(session.GetUserId());
         }
     }
 }

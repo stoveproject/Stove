@@ -1,5 +1,7 @@
 ﻿using System;
 
+using Stove.Extensions;
+
 namespace Stove
 {
     /// <summary>
@@ -48,12 +50,12 @@ namespace Stove
             string[] splitted = userIdentifierString.Split('@');
             if (splitted.Length == 1)
             {
-                return new UserIdentifier(null, splitted[0].To<long>());
+                return new UserIdentifier(splitted[0].To<long>());
             }
 
             if (splitted.Length == 2)
             {
-                return new UserIdentifier(splitted[1].To<int>(), splitted[0].To<long>());
+                return new UserIdentifier(splitted[0].To<long>());
             }
 
             throw new ArgumentException("userAtTenant is not properly formatted", nameof(userIdentifierString));
@@ -69,12 +71,7 @@ namespace Stove
         /// </summary>
         public string ToUserIdentifierString()
         {
-            if (TenantId == null)
-            {
-                return UserId.ToString();
-            }
-
-            return UserId + "@" + TenantId;
+            return UserId.ToString();
         }
 
         public override bool Equals(object obj)
@@ -101,13 +98,13 @@ namespace Stove
                 return false;
             }
 
-            return TenantId == other.TenantId && UserId == other.UserId;
+            return UserId == other.UserId;
         }
 
         /// <inheritdoc />
         public override int GetHashCode()
         {
-            return TenantId == null ? (int)UserId : (int)(TenantId.Value ^ UserId);
+            return (int)UserId;
         }
 
         /// <inheritdoc />
@@ -141,7 +138,7 @@ namespace Stove
         /// <param name="userIdentifier">User identifier.</param>
         public static UserIdentifier ToUserIdentifier(this IUserIdentifier userIdentifier)
         {
-            return new UserIdentifier(userIdentifier.TenantId, userIdentifier.UserId);
+            return new UserIdentifier(userIdentifier.UserId);
         }
     }
 }

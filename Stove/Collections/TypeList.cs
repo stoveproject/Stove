@@ -135,7 +135,7 @@ namespace Stove.Collections
         {
             if (!typeof(TBaseType).IsAssignableFrom(item))
             {
-                throw new ArgumentException("Given item is not type of " + typeof(TBaseType).AssemblyQualifiedName, "item");
+                throw new ArgumentException("Given item is not type of " + typeof(TBaseType).AssemblyQualifiedName, nameof(item));
             }
         }
     }

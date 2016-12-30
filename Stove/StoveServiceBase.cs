@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 
 using Stove.Domain.Uow;
+using Stove.Log;
 
 namespace Stove
 {

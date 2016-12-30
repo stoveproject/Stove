@@ -61,7 +61,7 @@ namespace Stove.Domain.Uow
 
             uow.Disposed += (sender, args) =>
             {
-                _iocResolver.Release(uow);
+                //_iocResolver.Release(uow);
             };
 
             uow.Begin(options);

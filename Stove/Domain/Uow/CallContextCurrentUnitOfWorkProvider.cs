@@ -3,6 +3,8 @@ using System.Runtime.Remoting.Messaging;
 
 using Autofac.Extras.IocManager;
 
+using Stove.Log;
+
 namespace Stove.Domain.Uow
 {
     /// <summary>

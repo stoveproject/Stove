@@ -11,29 +11,15 @@ using Stove.Domain.Entities;
 namespace Stove.Domain.Repositories
 {
     /// <summary>
-    /// Base class to implement <see cref="IRepository{TEntity,TPrimaryKey}"/>.
-    /// It implements some methods in most simple way.
+    ///     Base class to implement <see cref="IRepository{TEntity,TPrimaryKey}" />.
+    ///     It implements some methods in most simple way.
     /// </summary>
     /// <typeparam name="TEntity">Type of the Entity for this repository</typeparam>
     /// <typeparam name="TPrimaryKey">Primary key of the entity</typeparam>
     public abstract class StoveRepositoryBase<TEntity, TPrimaryKey> : IRepository<TEntity, TPrimaryKey>
         where TEntity : class, IEntity<TPrimaryKey>
     {
-        /// <summary>
-        /// The multi tenancy side
-        /// </summary>
-        public static MultiTenancySides? MultiTenancySide { get; private set; }
-
         public IIocResolver IocResolver { get; set; }
-
-        static StoveRepositoryBase()
-        {
-            var attr = typeof (TEntity).GetSingleAttributeOfTypeOrBaseTypesOrNull<MultiTenancySideAttribute>();
-            if (attr != null)
-            {
-                MultiTenancySide = attr.Side;
-            }
-        }
 
         public abstract IQueryable<TEntity> GetAll();
 
@@ -51,7 +37,7 @@ namespace Stove.Domain.Repositories
         {
             return Task.FromResult(GetAllList());
         }
-        
+
         public virtual List<TEntity> GetAllList(Expression<Func<TEntity, bool>> predicate)
         {
             return GetAll().Where(predicate).ToList();
@@ -66,10 +52,10 @@ namespace Stove.Domain.Repositories
         {
             return queryMethod(GetAll());
         }
-        
+
         public virtual TEntity Get(TPrimaryKey id)
         {
-            var entity = FirstOrDefault(id);
+            TEntity entity = FirstOrDefault(id);
             if (entity == null)
             {
                 throw new EntityNotFoundException(typeof(TEntity), id);
@@ -80,7 +66,7 @@ namespace Stove.Domain.Repositories
 
         public virtual async Task<TEntity> GetAsync(TPrimaryKey id)
         {
-            var entity = await FirstOrDefaultAsync(id);
+            TEntity entity = await FirstOrDefaultAsync(id);
             if (entity == null)
             {
                 throw new EntityNotFoundException(typeof(TEntity), id);
@@ -88,7 +74,7 @@ namespace Stove.Domain.Repositories
 
             return entity;
         }
-        
+
         public virtual TEntity Single(Expression<Func<TEntity, bool>> predicate)
         {
             return GetAll().Single(predicate);
@@ -98,7 +84,7 @@ namespace Stove.Domain.Repositories
         {
             return Task.FromResult(Single(predicate));
         }
-        
+
         public virtual TEntity FirstOrDefault(TPrimaryKey id)
         {
             return GetAll().FirstOrDefault(CreateEqualityExpressionForId(id));
@@ -108,7 +94,7 @@ namespace Stove.Domain.Repositories
         {
             return Task.FromResult(FirstOrDefault(id));
         }
-        
+
         public virtual TEntity FirstOrDefault(Expression<Func<TEntity, bool>> predicate)
         {
             return GetAll().FirstOrDefault(predicate);
@@ -118,14 +104,14 @@ namespace Stove.Domain.Repositories
         {
             return Task.FromResult(FirstOrDefault(predicate));
         }
-        
+
         public virtual TEntity Load(TPrimaryKey id)
         {
             return Get(id);
         }
 
         public abstract TEntity Insert(TEntity entity);
-        
+
         public virtual Task<TEntity> InsertAsync(TEntity entity)
         {
             return Task.FromResult(Insert(entity));
@@ -147,7 +133,7 @@ namespace Stove.Domain.Repositories
                 ? Insert(entity)
                 : Update(entity);
         }
-        
+
         public virtual async Task<TEntity> InsertOrUpdateAsync(TEntity entity)
         {
             return entity.IsTransient()
@@ -166,7 +152,7 @@ namespace Stove.Domain.Repositories
         }
 
         public abstract TEntity Update(TEntity entity);
-        
+
         public virtual Task<TEntity> UpdateAsync(TEntity entity)
         {
             return Task.FromResult(Update(entity));
@@ -174,20 +160,20 @@ namespace Stove.Domain.Repositories
 
         public virtual TEntity Update(TPrimaryKey id, Action<TEntity> updateAction)
         {
-            var entity = Get(id);
+            TEntity entity = Get(id);
             updateAction(entity);
             return entity;
         }
 
         public virtual async Task<TEntity> UpdateAsync(TPrimaryKey id, Func<TEntity, Task> updateAction)
         {
-            var entity = await GetAsync(id);
+            TEntity entity = await GetAsync(id);
             await updateAction(entity);
             return entity;
         }
 
         public abstract void Delete(TEntity entity);
-        
+
         public virtual Task DeleteAsync(TEntity entity)
         {
             Delete(entity);
@@ -195,7 +181,7 @@ namespace Stove.Domain.Repositories
         }
 
         public abstract void Delete(TPrimaryKey id);
-        
+
         public virtual Task DeleteAsync(TPrimaryKey id)
         {
             Delete(id);
@@ -204,7 +190,7 @@ namespace Stove.Domain.Repositories
 
         public virtual void Delete(Expression<Func<TEntity, bool>> predicate)
         {
-            foreach (var entity in GetAll().Where(predicate).ToList())
+            foreach (TEntity entity in GetAll().Where(predicate).ToList())
             {
                 Delete(entity);
             }
@@ -258,12 +244,12 @@ namespace Stove.Domain.Repositories
 
         protected static Expression<Func<TEntity, bool>> CreateEqualityExpressionForId(TPrimaryKey id)
         {
-            var lambdaParam = Expression.Parameter(typeof(TEntity));
+            ParameterExpression lambdaParam = Expression.Parameter(typeof(TEntity));
 
-            var lambdaBody = Expression.Equal(
+            BinaryExpression lambdaBody = Expression.Equal(
                 Expression.PropertyOrField(lambdaParam, "Id"),
                 Expression.Constant(id, typeof(TPrimaryKey))
-                );
+            );
 
             return Expression.Lambda<Func<TEntity, bool>>(lambdaBody, lambdaParam);
         }

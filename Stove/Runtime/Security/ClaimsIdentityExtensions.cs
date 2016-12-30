@@ -3,6 +3,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 
+using Stove.Extensions;
 using Stove.JetBrains.Annotations;
 
 namespace Stove.Runtime.Security
@@ -19,7 +20,7 @@ namespace Stove.Runtime.Security
                 return null;
             }
 
-            return new UserIdentifier(identity.GetTenantId(), userId.Value);
+            return new UserIdentifier(userId.Value);
         }
 
         public static long? GetUserId([NotNull] this IIdentity identity)

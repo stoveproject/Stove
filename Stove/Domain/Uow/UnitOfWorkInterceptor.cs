@@ -1,5 +1,9 @@
 using System.Threading.Tasks;
 
+using Castle.DynamicProxy;
+
+using Stove.Threading;
+
 namespace Stove.Domain.Uow
 {
     /// <summary>

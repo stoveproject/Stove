@@ -45,7 +45,7 @@ namespace Stove.Events.Bus.Factories
         /// <param name="handler">Handler to be released</param>
         public void ReleaseHandler(IEventHandler handler)
         {
-            _iocResolver.Release(handler);
+           // _iocResolver.Release(handler);
         }
     }
 }

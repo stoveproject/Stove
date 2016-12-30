@@ -6,86 +6,43 @@ using System.Threading.Tasks;
 
 using Autofac.Extras.IocManager;
 
+using Stove.Extensions;
+using Stove.Runtime.Session;
+
 namespace Stove.Domain.Uow
 {
     /// <summary>
-    /// Base for all Unit Of Work classes.
+    ///     Base for all Unit Of Work classes.
     /// </summary>
     public abstract class UnitOfWorkBase : IUnitOfWork
     {
-        public string Id { get; private set; }
-
-        [DoNotInject]
-        public IUnitOfWork Outer { get; set; }
-
-        /// <inheritdoc/>
-        public event EventHandler Completed;
-
-        /// <inheritdoc/>
-        public event EventHandler<UnitOfWorkFailedEventArgs> Failed;
-
-        /// <inheritdoc/>
-        public event EventHandler Disposed;
-
-        /// <inheritdoc/>
-        public UnitOfWorkOptions Options { get; private set; }
-
-        /// <inheritdoc/>
-        public IReadOnlyList<DataFilterConfiguration> Filters
-        {
-            get { return _filters.ToImmutableList(); }
-        }
         private readonly List<DataFilterConfiguration> _filters;
 
         /// <summary>
-        /// Gets default UOW options.
+        ///     A reference to the exception if this unit of work failed.
         /// </summary>
-        protected IUnitOfWorkDefaultOptions DefaultOptions { get; }
+        private Exception _exception;
 
         /// <summary>
-        /// Gets the connection string resolver.
-        /// </summary>
-        protected IConnectionStringResolver ConnectionStringResolver { get; }
-
-        /// <summary>
-        /// Gets a value indicates that this unit of work is disposed or not.
-        /// </summary>
-        public bool IsDisposed { get; private set; }
-
-        /// <summary>
-        /// Reference to current ABP session.
-        /// </summary>
-        public IAbpSession AbpSession { protected get; set; }
-
-        protected IUnitOfWorkFilterExecuter FilterExecuter { get; }
-
-        /// <summary>
-        /// Is <see cref="Begin"/> method called before?
+        ///     Is <see cref="Begin" /> method called before?
         /// </summary>
         private bool _isBeginCalledBefore;
 
         /// <summary>
-        /// Is <see cref="Complete"/> method called before?
+        ///     Is <see cref="Complete" /> method called before?
         /// </summary>
         private bool _isCompleteCalledBefore;
 
         /// <summary>
-        /// Is this unit of work successfully completed.
+        ///     Is this unit of work successfully completed.
         /// </summary>
         private bool _succeed;
 
         /// <summary>
-        /// A reference to the exception if this unit of work failed.
-        /// </summary>
-        private Exception _exception;
-
-        private int? _tenantId;
-
-        /// <summary>
-        /// Constructor.
+        ///     Constructor.
         /// </summary>
         protected UnitOfWorkBase(
-            IConnectionStringResolver connectionStringResolver, 
+            IConnectionStringResolver connectionStringResolver,
             IUnitOfWorkDefaultOptions defaultOptions,
             IUnitOfWorkFilterExecuter filterExecuter)
         {
@@ -96,15 +53,60 @@ namespace Stove.Domain.Uow
             Id = Guid.NewGuid().ToString("N");
             _filters = defaultOptions.Filters.ToList();
 
-            AbpSession = NullAbpSession.Instance;
+            StoveSession = NullStoveSession.Instance;
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        ///     Gets default UOW options.
+        /// </summary>
+        protected IUnitOfWorkDefaultOptions DefaultOptions { get; }
+
+        /// <summary>
+        ///     Gets the connection string resolver.
+        /// </summary>
+        protected IConnectionStringResolver ConnectionStringResolver { get; }
+
+        /// <summary>
+        ///     Reference to current Stove session.
+        /// </summary>
+        public IStoveSession StoveSession { protected get; set; }
+
+        protected IUnitOfWorkFilterExecuter FilterExecuter { get; }
+
+        public string Id { get; }
+
+        [DoNotInject]
+        public IUnitOfWork Outer { get; set; }
+
+        /// <inheritdoc />
+        public event EventHandler Completed;
+
+        /// <inheritdoc />
+        public event EventHandler<UnitOfWorkFailedEventArgs> Failed;
+
+        /// <inheritdoc />
+        public event EventHandler Disposed;
+
+        /// <inheritdoc />
+        public UnitOfWorkOptions Options { get; private set; }
+
+        /// <inheritdoc />
+        public IReadOnlyList<DataFilterConfiguration> Filters
+        {
+            get { return _filters.ToImmutableList(); }
+        }
+
+        /// <summary>
+        ///     Gets a value indicates that this unit of work is disposed or not.
+        /// </summary>
+        public bool IsDisposed { get; private set; }
+
+        /// <inheritdoc />
         public void Begin(UnitOfWorkOptions options)
         {
             if (options == null)
             {
-                throw new ArgumentNullException("options");
+                throw new ArgumentNullException(nameof(options));
             }
 
             PreventMultipleBegin();
@@ -112,27 +114,25 @@ namespace Stove.Domain.Uow
 
             SetFilters(options.FilterOverrides);
 
-            SetTenantId(AbpSession.TenantId);
-
             BeginUow();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public abstract void SaveChanges();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public abstract Task SaveChangesAsync();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDisposable DisableFilter(params string[] filterNames)
         {
             //TODO: Check if filters exists?
 
             var disabledFilters = new List<string>();
 
-            foreach (var filterName in filterNames)
+            foreach (string filterName in filterNames)
             {
-                var filterIndex = GetFilterIndex(filterName);
+                int filterIndex = GetFilterIndex(filterName);
                 if (_filters[filterIndex].IsEnabled)
                 {
                     disabledFilters.Add(filterName);
@@ -145,16 +145,16 @@ namespace Stove.Domain.Uow
             return new DisposeAction(() => EnableFilter(disabledFilters.ToArray()));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDisposable EnableFilter(params string[] filterNames)
         {
             //TODO: Check if filters exists?
 
             var enabledFilters = new List<string>();
 
-            foreach (var filterName in filterNames)
+            foreach (string filterName in filterNames)
             {
-                var filterIndex = GetFilterIndex(filterName);
+                int filterIndex = GetFilterIndex(filterName);
                 if (!_filters[filterIndex].IsEnabled)
                 {
                     enabledFilters.Add(filterName);
@@ -167,22 +167,22 @@ namespace Stove.Domain.Uow
             return new DisposeAction(() => DisableFilter(enabledFilters.ToArray()));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsFilterEnabled(string filterName)
         {
             return GetFilter(filterName).IsEnabled;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDisposable SetFilterParameter(string filterName, string parameterName, object value)
         {
-            var filterIndex = GetFilterIndex(filterName);
+            int filterIndex = GetFilterIndex(filterName);
 
             var newfilter = new DataFilterConfiguration(_filters[filterIndex]);
 
             //Store old value
             object oldValue = null;
-            var hasOldValue = newfilter.FilterParameters.ContainsKey(parameterName);
+            bool hasOldValue = newfilter.FilterParameters.ContainsKey(parameterName);
             if (hasOldValue)
             {
                 oldValue = newfilter.FilterParameters[parameterName];
@@ -204,33 +204,7 @@ namespace Stove.Domain.Uow
             });
         }
 
-        public IDisposable SetTenantId(int? tenantId)
-        {
-            var oldTenantId = _tenantId;
-            _tenantId = tenantId;
-
-            var mustHaveTenantEnableChange = tenantId == null
-                ? DisableFilter(AbpDataFilters.MustHaveTenant)
-                : EnableFilter(AbpDataFilters.MustHaveTenant);
-
-            var mayHaveTenantChange = SetFilterParameter(AbpDataFilters.MayHaveTenant, AbpDataFilters.Parameters.TenantId, tenantId);
-            var mustHaveTenantChange = SetFilterParameter(AbpDataFilters.MustHaveTenant, AbpDataFilters.Parameters.TenantId, tenantId ?? 0);
-
-            return new DisposeAction(() =>
-            {
-                mayHaveTenantChange.Dispose();
-                mustHaveTenantChange.Dispose();
-                mustHaveTenantEnableChange.Dispose();
-                _tenantId = oldTenantId;
-            });
-        }
-
-        public int? GetTenantId()
-        {
-            return _tenantId;
-        }
-
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Complete()
         {
             PreventMultipleComplete();
@@ -247,7 +221,7 @@ namespace Stove.Domain.Uow
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public async Task CompleteAsync()
         {
             PreventMultipleComplete();
@@ -264,7 +238,7 @@ namespace Stove.Domain.Uow
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Dispose()
         {
             if (IsDisposed)
@@ -284,25 +258,24 @@ namespace Stove.Domain.Uow
         }
 
         /// <summary>
-        /// Can be implemented by derived classes to start UOW.
+        ///     Can be implemented by derived classes to start UOW.
         /// </summary>
         protected virtual void BeginUow()
         {
-            
         }
 
         /// <summary>
-        /// Should be implemented by derived classes to complete UOW.
+        ///     Should be implemented by derived classes to complete UOW.
         /// </summary>
         protected abstract void CompleteUow();
 
         /// <summary>
-        /// Should be implemented by derived classes to complete UOW.
+        ///     Should be implemented by derived classes to complete UOW.
         /// </summary>
         protected abstract Task CompleteUowAsync();
 
         /// <summary>
-        /// Should be implemented by derived classes to dispose UOW.
+        ///     Should be implemented by derived classes to dispose UOW.
         /// </summary>
         protected abstract void DisposeUow();
 
@@ -321,13 +294,13 @@ namespace Stove.Domain.Uow
             FilterExecuter.ApplyFilterParameterValue(this, filterName, parameterName, value);
         }
 
-        protected virtual string ResolveConnectionString(ConnectionStringResolveArgs args)
+        protected virtual string ResolveConnectionString()
         {
-            return ConnectionStringResolver.GetNameOrConnectionString(args);
+            return ConnectionStringResolver.GetNameOrConnectionString();
         }
 
         /// <summary>
-        /// Called to trigger <see cref="Completed"/> event.
+        ///     Called to trigger <see cref="Completed" /> event.
         /// </summary>
         protected virtual void OnCompleted()
         {
@@ -335,7 +308,7 @@ namespace Stove.Domain.Uow
         }
 
         /// <summary>
-        /// Called to trigger <see cref="Failed"/> event.
+        ///     Called to trigger <see cref="Failed" /> event.
         /// </summary>
         /// <param name="exception">Exception that cause failure</param>
         protected virtual void OnFailed(Exception exception)
@@ -344,7 +317,7 @@ namespace Stove.Domain.Uow
         }
 
         /// <summary>
-        /// Called to trigger <see cref="Disposed"/> event.
+        ///     Called to trigger <see cref="Disposed" /> event.
         /// </summary>
         protected virtual void OnDisposed()
         {
@@ -375,16 +348,11 @@ namespace Stove.Domain.Uow
         {
             for (var i = 0; i < _filters.Count; i++)
             {
-                var filterOverride = filterOverrides.FirstOrDefault(f => f.FilterName == _filters[i].FilterName);
+                DataFilterConfiguration filterOverride = filterOverrides.FirstOrDefault(f => f.FilterName == _filters[i].FilterName);
                 if (filterOverride != null)
                 {
                     _filters[i] = filterOverride;
                 }
-            }
-
-            if (AbpSession.TenantId == null)
-            {
-                ChangeFilterIsEnabledIfNotOverrided(filterOverrides, AbpDataFilters.MustHaveTenant, false);
             }
         }
 
@@ -395,7 +363,7 @@ namespace Stove.Domain.Uow
                 return;
             }
 
-            var index = _filters.FindIndex(f => f.FilterName == filterName);
+            int index = _filters.FindIndex(f => f.FilterName == filterName);
             if (index < 0)
             {
                 return;
@@ -411,7 +379,7 @@ namespace Stove.Domain.Uow
 
         private DataFilterConfiguration GetFilter(string filterName)
         {
-            var filter = _filters.FirstOrDefault(f => f.FilterName == filterName);
+            DataFilterConfiguration filter = _filters.FirstOrDefault(f => f.FilterName == filterName);
             if (filter == null)
             {
                 throw new StoveException("Unknown filter name: " + filterName + ". Be sure this filter is registered before.");
@@ -422,7 +390,7 @@ namespace Stove.Domain.Uow
 
         private int GetFilterIndex(string filterName)
         {
-            var filterIndex = _filters.FindIndex(f => f.FilterName == filterName);
+            int filterIndex = _filters.FindIndex(f => f.FilterName == filterName);
             if (filterIndex < 0)
             {
                 throw new StoveException("Unknown filter name: " + filterName + ". Be sure this filter is registered before.");

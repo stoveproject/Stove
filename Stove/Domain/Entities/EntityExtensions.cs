@@ -1,4 +1,5 @@
 ﻿using Stove.Domain.Entities.Auditing;
+using Stove.Extensions;
 
 namespace Stove.Domain.Entities
 {

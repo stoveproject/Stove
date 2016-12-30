@@ -4,29 +4,28 @@ using System.Collections.Generic;
 namespace Stove.Domain.Entities
 {
     /// <summary>
-    /// A shortcut of <see cref="Entity{TPrimaryKey}"/> for most used primary key type (<see cref="int"/>).
+    ///     A shortcut of <see cref="Entity{TPrimaryKey}" /> for most used primary key type (<see cref="int" />).
     /// </summary>
     [Serializable]
     public abstract class Entity : Entity<int>, IEntity
     {
-
     }
 
     /// <summary>
-    /// Basic implementation of IEntity interface.
-    /// An entity can inherit this class of directly implement to IEntity interface.
+    ///     Basic implementation of IEntity interface.
+    ///     An entity can inherit this class of directly implement to IEntity interface.
     /// </summary>
     /// <typeparam name="TPrimaryKey">Type of the primary key of the entity</typeparam>
     [Serializable]
     public abstract class Entity<TPrimaryKey> : IEntity<TPrimaryKey>
     {
         /// <summary>
-        /// Unique identifier for this entity.
+        ///     Unique identifier for this entity.
         /// </summary>
         public virtual TPrimaryKey Id { get; set; }
 
         /// <summary>
-        /// Checks if this entity is transient (it has not an Id).
+        ///     Checks if this entity is transient (it has not an Id).
         /// </summary>
         /// <returns>True, if this entity is transient</returns>
         public virtual bool IsTransient()
@@ -50,7 +49,7 @@ namespace Stove.Domain.Entities
             return false;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool Equals(object obj)
         {
             if (obj == null || !(obj is Entity<TPrimaryKey>))
@@ -72,21 +71,9 @@ namespace Stove.Domain.Entities
             }
 
             //Must have a IS-A relation of types or must be same type
-            var typeOfThis = GetType();
-            var typeOfOther = other.GetType();
+            Type typeOfThis = GetType();
+            Type typeOfOther = other.GetType();
             if (!typeOfThis.IsAssignableFrom(typeOfOther) && !typeOfOther.IsAssignableFrom(typeOfThis))
-            {
-                return false;
-            }
-
-            if (this is IMayHaveTenant && other is IMayHaveTenant &&
-                this.As<IMayHaveTenant>().TenantId != other.As<IMayHaveTenant>().TenantId)
-            {
-                return false;
-            }
-
-            if (this is IMustHaveTenant && other is IMustHaveTenant &&
-                this.As<IMustHaveTenant>().TenantId != other.As<IMustHaveTenant>().TenantId)
             {
                 return false;
             }
@@ -94,13 +81,13 @@ namespace Stove.Domain.Entities
             return Id.Equals(other.Id);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int GetHashCode()
         {
             return Id.GetHashCode();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public static bool operator ==(Entity<TPrimaryKey> left, Entity<TPrimaryKey> right)
         {
             if (Equals(left, null))
@@ -111,13 +98,13 @@ namespace Stove.Domain.Entities
             return left.Equals(right);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public static bool operator !=(Entity<TPrimaryKey> left, Entity<TPrimaryKey> right)
         {
             return !(left == right);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ToString()
         {
             return $"[{GetType().Name} {Id}]";

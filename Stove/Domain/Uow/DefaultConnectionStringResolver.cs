@@ -1,35 +1,31 @@
-using System;
 using System.Configuration;
 
 using Autofac.Extras.IocManager;
 
+using Stove.Configuration;
+
 namespace Stove.Domain.Uow
 {
     /// <summary>
-    /// Default implementation of <see cref="IConnectionStringResolver"/>.
-    /// Get connection string from <see cref="IStoveStartupConfiguration"/>,
-    /// or "Default" connection string in config file,
-    /// or single connection string in config file.
+    ///     Default implementation of <see cref="IConnectionStringResolver" />.
+    ///     Get connection string from <see cref="IStoveStartupConfiguration" />,
+    ///     or "Default" connection string in config file,
+    ///     or single connection string in config file.
     /// </summary>
     public class DefaultConnectionStringResolver : IConnectionStringResolver, ITransientDependency
     {
         private readonly IStoveStartupConfiguration _configuration;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultConnectionStringResolver"/> class.
+        ///     Initializes a new instance of the <see cref="DefaultConnectionStringResolver" /> class.
         /// </summary>
         public DefaultConnectionStringResolver(IStoveStartupConfiguration configuration)
         {
             _configuration = configuration;
         }
 
-        public virtual string GetNameOrConnectionString(ConnectionStringResolveArgs args)
+        public virtual string GetNameOrConnectionString()
         {
-            if (args == null)
-            {
-                throw new ArgumentNullException("args");
-            }
-
             var defaultConnectionString = _configuration.DefaultNameOrConnectionString;
             if (!string.IsNullOrWhiteSpace(defaultConnectionString))
             {
