@@ -26,7 +26,7 @@ namespace Stove.Domain.Uow
 
         public virtual string GetNameOrConnectionString()
         {
-            var defaultConnectionString = _configuration.DefaultNameOrConnectionString;
+            string defaultConnectionString = _configuration.DefaultNameOrConnectionString;
             if (!string.IsNullOrWhiteSpace(defaultConnectionString))
             {
                 return defaultConnectionString;
