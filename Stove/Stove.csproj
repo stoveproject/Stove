@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{82AD5A75-1860-427B-843F-892324D20A76}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Stove</RootNamespace>
+    <AssemblyName>Stove</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Entities\AggregateRoot.cs" />
+    <Compile Include="Entities\Auditing\AuditedAggregateRoot.cs" />
+    <Compile Include="Entities\Auditing\AuditedEntity.cs" />
+    <Compile Include="Entities\Auditing\CreationAuditedAggregateRoot.cs" />
+    <Compile Include="Entities\Auditing\CreationAuditedEntity.cs" />
+    <Compile Include="Entities\Auditing\FullAuditedAggregateRoot.cs" />
+    <Compile Include="Entities\Auditing\FullAuditedEntity.cs" />
+    <Compile Include="Entities\Auditing\IAudited.cs" />
+    <Compile Include="Entities\Auditing\ICreationAudited.cs" />
+    <Compile Include="Entities\Auditing\IDeletionAudited.cs" />
+    <Compile Include="Entities\Auditing\IFullAudited.cs" />
+    <Compile Include="Entities\Auditing\IHasCreationTime.cs" />
+    <Compile Include="Entities\Auditing\IHasDeletionTime.cs" />
+    <Compile Include="Entities\Auditing\IHasModificationTime.cs" />
+    <Compile Include="Entities\Auditing\IModificationAudited.cs" />
+    <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\EntityExtensions.cs" />
+    <Compile Include="Entities\EntityHelper.cs" />
+    <Compile Include="Entities\EntityIdentifier.cs" />
+    <Compile Include="Entities\EntityNotFoundException.cs" />
+    <Compile Include="Entities\IAggregateRoot.cs" />
+    <Compile Include="Entities\IEntity.cs" />
+    <Compile Include="Entities\IEntityOfTPrimaryKey.cs" />
+    <Compile Include="Entities\IMayHaveTenant.cs" />
+    <Compile Include="Entities\IMustHaveTenant.cs" />
+    <Compile Include="Entities\IPassivable.cs" />
+    <Compile Include="Entities\ISoftDelete.cs" />
+    <Compile Include="Events\Bus\Entities\DomainEventEntry.cs" />
+    <Compile Include="Events\Bus\Entities\EntityChangedEventData.cs" />
+    <Compile Include="Events\Bus\Entities\EntityChangeEntry.cs" />
+    <Compile Include="Events\Bus\Entities\EntityChangeEventHelper.cs" />
+    <Compile Include="Events\Bus\Entities\EntityChangeReport.cs" />
+    <Compile Include="Events\Bus\Entities\EntityChangeType.cs" />
+    <Compile Include="Events\Bus\Entities\EntityChangingEventData.cs" />
+    <Compile Include="Events\Bus\Entities\EntityCreatedEventData.cs" />
+    <Compile Include="Events\Bus\Entities\EntityCreatingEventData.cs" />
+    <Compile Include="Events\Bus\Entities\EntityDeletedEventData.cs" />
+    <Compile Include="Events\Bus\Entities\EntityDeletingEventData.cs" />
+    <Compile Include="Events\Bus\Entities\EntityEventData.cs" />
+    <Compile Include="Events\Bus\Entities\EntityUpdatedEventData.cs" />
+    <Compile Include="Events\Bus\Entities\EntityUpdatingEventData.cs" />
+    <Compile Include="Events\Bus\Entities\IEntityChangeEventHelper.cs" />
+    <Compile Include="Events\Bus\Entities\NullEntityChangeEventHelper.cs" />
+    <Compile Include="Events\Bus\EventBus.cs" />
+    <Compile Include="Events\Bus\EventBusInstaller.cs" />
+    <Compile Include="Events\Bus\EventData.cs" />
+    <Compile Include="Events\Bus\Exceptions\AbpHandledExceptionData.cs" />
+    <Compile Include="Events\Bus\Exceptions\ExceptionData.cs" />
+    <Compile Include="Events\Bus\Factories\IEventHandlerFactory.cs" />
+    <Compile Include="Events\Bus\Factories\Internals\FactoryUnregistrar.cs" />
+    <Compile Include="Events\Bus\Factories\Internals\SingleInstanceHandlerFactory.cs" />
+    <Compile Include="Events\Bus\Factories\Internals\TransientEventHandlerFactory.cs" />
+    <Compile Include="Events\Bus\Factories\IocHandlerFactory.cs" />
+    <Compile Include="Events\Bus\Handlers\IEventHandler.cs" />
+    <Compile Include="Events\Bus\Handlers\IEventHandlerOfTEventData.cs" />
+    <Compile Include="Events\Bus\Handlers\Internals\ActionEventHandler.cs" />
+    <Compile Include="Events\Bus\IEventBus.cs" />
+    <Compile Include="Events\Bus\IEventData.cs" />
+    <Compile Include="Events\Bus\IEventDataWithInheritableGenericArgument.cs" />
+    <Compile Include="Events\Bus\NullEventBus.cs" />
+    <Compile Include="Policies\IPolicy.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\AbpRepositoryBase.cs" />
+    <Compile Include="Repositories\IRepository.cs" />
+    <Compile Include="Repositories\IRepositoryOfTEntity.cs" />
+    <Compile Include="Repositories\IRepositoryOfTEntityAndTPrimaryKey.cs" />
+    <Compile Include="Services\DomainService.cs" />
+    <Compile Include="Services\IDomainService.cs" />
+    <Compile Include="StoveException.cs" />
+    <Compile Include="Timing\Clock.cs" />
+    <Compile Include="Timing\ClockProviders.cs" />
+    <Compile Include="Timing\DateTimeRange.cs" />
+    <Compile Include="Timing\IClockProvider.cs" />
+    <Compile Include="Timing\IDateTimeRange.cs" />
+    <Compile Include="Timing\LocalClockProvider.cs" />
+    <Compile Include="Timing\Timezone\ITimeZoneConverter.cs" />
+    <Compile Include="Timing\Timezone\TimeZoneConverter.cs" />
+    <Compile Include="Timing\Timezone\TimezoneHelper.cs" />
+    <Compile Include="Timing\TimingSettingNames.cs" />
+    <Compile Include="Timing\TimingSettingProvider.cs" />
+    <Compile Include="Timing\UnspecifiedClockProvider.cs" />
+    <Compile Include="Timing\UtcClockProvider.cs" />
+    <Compile Include="Uow\AbpDataFilters.cs" />
+    <Compile Include="Uow\CallContextCurrentUnitOfWorkProvider.cs" />
+    <Compile Include="Uow\ConnectionStringResolveArgs.cs" />
+    <Compile Include="Uow\DataFilterConfiguration.cs" />
+    <Compile Include="Uow\DefaultConnectionStringResolver.cs" />
+    <Compile Include="Uow\IActiveUnitOfWork.cs" />
+    <Compile Include="Uow\IConnectionStringResolver.cs" />
+    <Compile Include="Uow\ICurrentUnitOfWorkProvider.cs" />
+    <Compile Include="Uow\InnerUnitOfWorkCompleteHandle.cs" />
+    <Compile Include="Uow\IUnitOfWork.cs" />
+    <Compile Include="Uow\IUnitOfWorkCompleteHandle.cs" />
+    <Compile Include="Uow\IUnitOfWorkDefaultOptions.cs" />
+    <Compile Include="Uow\IUnitOfWorkFilterExecuter.cs" />
+    <Compile Include="Uow\IUnitOfWorkManager.cs" />
+    <Compile Include="Uow\NullUnitOfWork.cs" />
+    <Compile Include="Uow\NullUnitOfWorkFilterExecuter.cs" />
+    <Compile Include="Uow\UnitOfWorkAttribute.cs" />
+    <Compile Include="Uow\UnitOfWorkBase.cs" />
+    <Compile Include="Uow\UnitOfWorkDefaultOptions.cs" />
+    <Compile Include="Uow\UnitOfWorkFailedEventArgs.cs" />
+    <Compile Include="Uow\UnitOfWorkHelper.cs" />
+    <Compile Include="Uow\UnitOfWorkInterceptor.cs" />
+    <Compile Include="Uow\UnitOfWorkManager.cs" />
+    <Compile Include="Uow\UnitOfWorkOptions.cs" />
+    <Compile Include="Uow\UnitOfWorkRegistrar.cs" />
+    <Compile Include="Values\ValueObject.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Timing\Timezone\Mapping\WindowsZones.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
