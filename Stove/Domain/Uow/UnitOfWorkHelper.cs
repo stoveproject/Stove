@@ -1,7 +1,12 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
+using Autofac.Core;
+
 using Stove.Domain.Repositories;
+using Stove.Extensions;
 
 namespace Stove.Domain.Uow
 {
@@ -41,6 +46,13 @@ namespace Stove.Domain.Uow
             }
 
             return (UnitOfWorkAttribute)attrs[0];
+        }
+
+        internal static List<TypedService> GetOrDefaultConventionalUowClassesAsTypedService(this IEnumerable<Service> services)
+        {
+            return services.Where(x => IsConventionalUowClass(x.As<TypedService>().ServiceType))
+                           .Select(x => x.As<TypedService>())
+                           .ToList();
         }
     }
 }

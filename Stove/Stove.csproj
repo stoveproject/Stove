@@ -137,6 +137,7 @@
     <Compile Include="Domain\Entities\IEntityOfTPrimaryKey.cs" />
     <Compile Include="Domain\Entities\IPassivable.cs" />
     <Compile Include="Domain\Entities\ISoftDelete.cs" />
+    <Compile Include="EventBusRegistrar.cs" />
     <Compile Include="Events\Bus\Entities\DomainEventEntry.cs" />
     <Compile Include="Events\Bus\Entities\EntityChangedEventData.cs" />
     <Compile Include="Events\Bus\Entities\EntityChangeEntry.cs" />
