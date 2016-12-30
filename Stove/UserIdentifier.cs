@@ -20,7 +20,6 @@ namespace Stove
         /// <summary>
         ///     Initializes a new instance of the <see cref="UserIdentifier" /> class.
         /// </summary>
-        /// <param name="tenantId">Tenant Id of the user.</param>
         /// <param name="userId">Id of the user.</param>
         public UserIdentifier(long userId)
         {
@@ -37,14 +36,13 @@ namespace Stove
         /// </summary>
         /// <param name="userIdentifierString">
         ///     Should be formatted one of the followings:
-        ///     - "userId@tenantId". Ex: "42@3" (for tenant users).
         ///     - "userId". Ex: 1 (for host users)
         /// </param>
         public static UserIdentifier Parse(string userIdentifierString)
         {
             if (userIdentifierString.IsNullOrEmpty())
             {
-                throw new ArgumentNullException(nameof(userIdentifierString), "userAtTenant can not be null or empty!");
+                throw new ArgumentNullException(nameof(userIdentifierString), "user can not be null or empty!");
             }
 
             string[] splitted = userIdentifierString.Split('@');
@@ -58,13 +56,12 @@ namespace Stove
                 return new UserIdentifier(splitted[0].To<long>());
             }
 
-            throw new ArgumentException("userAtTenant is not properly formatted", nameof(userIdentifierString));
+            throw new ArgumentException("user is not properly formatted", nameof(userIdentifierString));
         }
 
         /// <summary>
         ///     Creates a string represents this <see cref="UserIdentifier" /> instance.
         ///     Formatted one of the followings:
-        ///     - "userId@tenantId". Ex: "42@3" (for tenant users).
         ///     - "userId". Ex: 1 (for host users)
         ///     Returning string can be used in <see cref="Parse" /> method to re-create identical <see cref="UserIdentifier" />
         ///     object.

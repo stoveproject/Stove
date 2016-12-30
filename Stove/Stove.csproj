@@ -176,9 +176,9 @@
     <Compile Include="Runtime\Session\StoveSessionExtensions.cs" />
     <Compile Include="Runtime\Session\ClaimsStoveSession.cs" />
     <Compile Include="Runtime\Session\DefaultPrincipalAccessor.cs" />
-    <Compile Include="Runtime\Session\IAbpSession.cs" />
+    <Compile Include="Runtime\Session\IStoveSession.cs" />
     <Compile Include="Runtime\Session\IPrincipalAccessor.cs" />
-    <Compile Include="Runtime\Session\NullAbpSession.cs" />
+    <Compile Include="Runtime\Session\NullStoveSession.cs" />
     <Compile Include="Domain\Services\DomainService.cs" />
     <Compile Include="Domain\Services\IDomainService.cs" />
     <Compile Include="StoveException.cs" />

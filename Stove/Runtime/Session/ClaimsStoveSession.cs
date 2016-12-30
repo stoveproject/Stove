@@ -22,20 +22,6 @@ namespace Stove.Runtime.Session
 
         public IPrincipalAccessor PrincipalAccessor { get; set; } //TODO: Convert to constructor-injection
 
-        public virtual int? TenantId
-        {
-            get
-            {
-                Claim tenantIdClaim = PrincipalAccessor.Principal?.Claims.FirstOrDefault(c => c.Type == StoveClaimTypes.TenantId);
-                if (string.IsNullOrEmpty(tenantIdClaim?.Value))
-                {
-                    return null;
-                }
-
-                return Convert.ToInt32(tenantIdClaim.Value);
-            }
-        }
-
         public virtual long? UserId
         {
             get
