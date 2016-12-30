@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using Stove.Uow;
+using Autofac.Extras.IocManager;
+
+using Stove.Domain.Uow;
 
 namespace Stove.Events.Bus.Entities
 {

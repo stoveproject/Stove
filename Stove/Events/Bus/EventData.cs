@@ -1,5 +1,7 @@
 using System;
 
+using Stove.Timing;
+
 namespace Stove.Events.Bus
 {
     /// <summary>

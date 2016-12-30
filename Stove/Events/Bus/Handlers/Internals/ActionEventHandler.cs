@@ -1,5 +1,7 @@
 using System;
 
+using Autofac.Extras.IocManager;
+
 namespace Stove.Events.Bus.Handlers.Internals
 {
     /// <summary>

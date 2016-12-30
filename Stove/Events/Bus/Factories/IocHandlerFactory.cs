@@ -1,5 +1,7 @@
 using System;
 
+using Autofac.Extras.IocManager;
+
 using Stove.Events.Bus.Handlers;
 
 namespace Stove.Events.Bus.Factories

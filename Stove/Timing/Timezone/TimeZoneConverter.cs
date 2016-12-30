@@ -1,5 +1,7 @@
 using System;
 
+using Autofac.Extras.IocManager;
+
 namespace Stove.Timing.Timezone
 {
     /// <summary>

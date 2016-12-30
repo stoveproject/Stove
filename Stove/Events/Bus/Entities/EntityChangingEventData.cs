@@ -1,6 +1,6 @@
 using System;
 
-using Stove.Entities;
+using Stove.Domain.Entities;
 
 namespace Stove.Events.Bus.Entities
 {

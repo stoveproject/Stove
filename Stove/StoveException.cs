@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Stove
 {
     /// <summary>
-    ///     Base exception type for those are thrown by Abp system for Abp specific exceptions.
+    ///     Base exception type for those are thrown by Stove system for Stove specific exceptions.
     /// </summary>
     [Serializable]
     public class StoveException : Exception

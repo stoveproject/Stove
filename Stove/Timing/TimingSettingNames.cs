@@ -2,6 +2,6 @@
 {
     public static class TimingSettingNames
     {
-        public const string TimeZone = "Abp.Timing.TimeZone";
+        public const string TimeZone = "Stove.Timing.TimeZone";
     }
 }
