@@ -31,11 +31,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=4.2.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.4.2.1\lib\net45\Autofac.dll</HintPath>
+      <HintPath>..\..\packages\Autofac.4.2.1\lib\net45\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Autofac.Extras.IocManager, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.Extras.IocManager.2.0.2\lib\net452\Autofac.Extras.IocManager.dll</HintPath>
+    <Reference Include="Autofac.Extras.IocManager, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Autofac.Extras.IocManager.2.0.3\lib\net452\Autofac.Extras.IocManager.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -47,7 +47,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="FluentAssemblyScanner, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentAssemblyScanner.1.0.5\lib\net452\FluentAssemblyScanner.dll</HintPath>
+      <HintPath>..\..\packages\FluentAssemblyScanner.1.0.5\lib\net452\FluentAssemblyScanner.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NSubstitute, Version=1.10.0.0, Culture=neutral, PublicKeyToken=92dd2e9066daa5ca, processorArchitecture=MSIL">
@@ -85,6 +85,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DbContextTypeMatcher_Tests.cs" />
     <Compile Include="EntityFrameworkGenericRepository_Registrar_Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

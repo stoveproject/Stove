@@ -43,7 +43,8 @@ namespace Stove.EntityFramework.Tests
             (entity1Repository is EfRepositoryBase<MyBaseDbContext, MyEntity1>).ShouldBe(true);
 
             //Entity 1 (with specified PK)
-            var entity1RepositoryWithPk = LocalResolver.Resolve<IRepository<MyEntity1, int>>();
+
+            var entity1RepositoryWithPk = LocalResolver.Resolve<IRepository<MyEntity1>>();
             entity1RepositoryWithPk.ShouldNotBe(null);
             (entity1RepositoryWithPk is EfRepositoryBase<MyBaseDbContext, MyEntity1, int>).ShouldBe(true);
 
@@ -54,7 +55,8 @@ namespace Stove.EntityFramework.Tests
             (entity1RepositoryWithModuleInterface is EfRepositoryBase<MyModuleDbContext, MyEntity1, int>).ShouldBe(true);
 
             //Entity 1 (with specified Repository forIMyModuleRepository )
-            var entity1RepositoryWithModuleInterfaceWithPk = LocalResolver.Resolve<IMyModuleRepository<MyEntity1, int>>();
+
+            var entity1RepositoryWithModuleInterfaceWithPk = LocalResolver.Resolve<IMyModuleRepository<MyEntity1>>();
             entity1RepositoryWithModuleInterfaceWithPk.ShouldNotBe(null);
             (entity1RepositoryWithModuleInterfaceWithPk is MyModuleRepositoryBase<MyEntity1, int>).ShouldBe(true);
             (entity1RepositoryWithModuleInterfaceWithPk is EfRepositoryBase<MyModuleDbContext, MyEntity1, int>).ShouldBe(true);
@@ -73,8 +75,6 @@ namespace Stove.EntityFramework.Tests
         public class MyMainDbContext : MyBaseDbContext
         {
             public virtual DbSet<MyEntity2> MyEntities2 { get; set; }
-
-            public virtual DbSet<MyNonEntity> MyNonEntities { get; set; }
         }
 
         [AutoRepositoryTypes(
@@ -102,10 +102,6 @@ namespace Stove.EntityFramework.Tests
         }
 
         public class MyEntity3 : Entity<Guid>
-        {
-        }
-
-        public class MyNonEntity
         {
         }
 
