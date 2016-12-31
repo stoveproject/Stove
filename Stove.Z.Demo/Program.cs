@@ -1,8 +1,10 @@
-﻿using System.Configuration;
+﻿using System.Data.Entity;
+using System.Reflection;
 
 using Autofac.Extras.IocManager;
 
-using Stove.Configuration;
+using Stove.Domain.Repositories;
+using Stove.Domain.Uow;
 using Stove.EntityFramework;
 
 namespace Stove.Z.Demo
@@ -17,13 +19,23 @@ namespace Stove.Z.Demo
                                                .UseEntityFramework()
                                                .UseDefaultEventBus()
                                                .UseDbContextEfTransactionStrategy()
-                                               .RegisterServices(r => r.Register(context =>
-                                               {
-                                                   var configuration = context.Resolver.Resolve<IStoveStartupConfiguration>();
-                                                   configuration.DefaultNameOrConnectionString = ConfigurationManager.ConnectionStrings["DemoDbContext"].ToString();
-                                                   return configuration;
-                                               }))
+                                               .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()))
                                                .CreateResolver();
+
+            Database.SetInitializer(new CreateDatabaseIfNotExists<DemoDbContext>());
+
+            var uowManager = resolver.Resolve<IUnitOfWorkManager>();
+
+            using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
+            {
+                var personRepository = resolver.Resolve<IRepository<Person>>();
+
+              
+
+                Person person = personRepository.Get(1);
+
+                uow.Complete();
+            }
         }
     }
 }

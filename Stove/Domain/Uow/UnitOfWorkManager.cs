@@ -9,7 +9,7 @@ namespace Stove.Domain.Uow
     /// </summary>
     internal class UnitOfWorkManager : IUnitOfWorkManager, ITransientDependency
     {
-        private readonly IIocResolver _iocResolver;
+        private readonly IScopeResolver _scopeResolver;
         private readonly ICurrentUnitOfWorkProvider _currentUnitOfWorkProvider;
         private readonly IUnitOfWorkDefaultOptions _defaultOptions;
 
@@ -19,11 +19,11 @@ namespace Stove.Domain.Uow
         }
 
         public UnitOfWorkManager(
-            IIocResolver iocResolver,
+            IScopeResolver scopedResolver,
             ICurrentUnitOfWorkProvider currentUnitOfWorkProvider,
             IUnitOfWorkDefaultOptions defaultOptions)
         {
-            _iocResolver = iocResolver;
+            _scopeResolver = scopedResolver;
             _currentUnitOfWorkProvider = currentUnitOfWorkProvider;
             _defaultOptions = defaultOptions;
         }
@@ -47,7 +47,7 @@ namespace Stove.Domain.Uow
                 return new InnerUnitOfWorkCompleteHandle();
             }
 
-            var uow = _iocResolver.Resolve<IUnitOfWork>();
+            var uow = _scopeResolver.Resolve<IUnitOfWork>();
 
             uow.Completed += (sender, args) =>
             {
@@ -61,7 +61,7 @@ namespace Stove.Domain.Uow
 
             uow.Disposed += (sender, args) =>
             {
-                //_iocResolver.Release(uow);
+               _scopeResolver.Dispose();
             };
 
             uow.Begin(options);

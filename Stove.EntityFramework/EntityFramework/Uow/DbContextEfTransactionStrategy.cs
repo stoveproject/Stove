@@ -57,20 +57,14 @@ namespace Stove.EntityFramework.EntityFramework.Uow
 
         public void Dispose(IScopeResolver scopedResolver)
         {
-            scopedResolver.Dispose();
-
             foreach (ActiveTransactionInfo activeTransaction in ActiveTransactions.Values)
             {
-                //foreach (var attendedDbContext in activeTransaction.AttendedDbContexts)
-                //{
-                //    //iocResolver.Release(attendedDbContext);
-                //}
-
                 activeTransaction.DbContextTransaction.Dispose();
                 activeTransaction.StarterDbContext.Dispose();
             }
 
             ActiveTransactions.Clear();
+            scopedResolver.Dispose();
         }
     }
 }

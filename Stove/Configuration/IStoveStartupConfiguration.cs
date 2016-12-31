@@ -6,7 +6,7 @@ namespace Stove.Configuration
 {
     public interface IStoveStartupConfiguration
     {
-        IIocManager IocManager { get; }
+        IScopeResolver ScopeResolver { get; }
 
         /// <summary>
         ///     Gets/sets default connection string used by ORM module.

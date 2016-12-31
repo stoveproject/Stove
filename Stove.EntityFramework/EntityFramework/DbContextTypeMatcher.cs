@@ -9,6 +9,14 @@ using Stove.Domain.Uow;
 
 namespace Stove.EntityFramework.EntityFramework
 {
+    public class DbContextTypeMatcher : DbContextTypeMatcher<StoveDbContext>
+    {
+        public DbContextTypeMatcher(ICurrentUnitOfWorkProvider currentUnitOfWorkProvider)
+            : base(currentUnitOfWorkProvider)
+        {
+        }
+    }
+
     public abstract class DbContextTypeMatcher<TBaseDbContext> : IDbContextTypeMatcher, ISingletonDependency
     {
         private readonly ICurrentUnitOfWorkProvider _currentUnitOfWorkProvider;

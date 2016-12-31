@@ -37,8 +37,8 @@
       <HintPath>..\packages\Autofac.4.2.1\lib\net45\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Autofac.Extras.IocManager, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.Extras.IocManager.2.0.1\lib\net452\Autofac.Extras.IocManager.dll</HintPath>
+    <Reference Include="Autofac.Extras.IocManager, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Extras.IocManager.2.0.2\lib\net452\Autofac.Extras.IocManager.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -66,6 +66,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DemoDbContext.cs" />
+    <Compile Include="Migrations\201612311942230_initial.cs" />
+    <Compile Include="Migrations\201612311942230_initial.Designer.cs">
+      <DependentUpon>201612311942230_initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -83,6 +88,11 @@
       <Project>{82ad5a75-1860-427b-843f-892324d20a76}</Project>
       <Name>Stove</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201612311942230_initial.resx">
+      <DependentUpon>201612311942230_initial.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

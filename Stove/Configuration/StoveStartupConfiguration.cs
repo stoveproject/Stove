@@ -7,9 +7,9 @@ namespace Stove.Configuration
 {
     public class StoveStartupConfiguration : DictionaryBasedConfig, IStoveStartupConfiguration, IStartable
     {
-        public StoveStartupConfiguration(IIocManager iocManager)
+        public StoveStartupConfiguration(IScopeResolver scopeResolver)
         {
-            IocManager = iocManager;
+            ScopeResolver = scopeResolver;
         }
 
         public void Start()
@@ -17,15 +17,15 @@ namespace Stove.Configuration
             UnitOfWork.RegisterFilter(StoveDataFilters.SoftDelete, true);
         }
 
-        public IIocManager IocManager { get; }
-
         public string DefaultNameOrConnectionString { get; set; }
 
         public IUnitOfWorkDefaultOptions UnitOfWork { get; set; }
 
+        public IScopeResolver ScopeResolver { get; }
+
         public T Get<T>()
         {
-            return GetOrCreate(typeof(T).FullName, () => IocManager.Resolve<T>());
+            return GetOrCreate(typeof(T).FullName, () => ScopeResolver.Resolve<T>());
         }
     }
 }

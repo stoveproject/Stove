@@ -161,8 +161,7 @@ namespace Stove.EntityFramework.EntityFramework.Uow
         protected virtual void Release(DbContext dbContext)
         {
             dbContext.Dispose();
-
-            //IocResolver.Release(dbContext);
+            IocResolver.Dispose();
         }
 
         private static void ObjectContext_ObjectMaterialized(DbContext dbContext, ObjectMaterializedEventArgs e)

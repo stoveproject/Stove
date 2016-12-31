@@ -1,8 +1,11 @@
-﻿using Stove.Domain.Entities.Auditing;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+using Stove.Domain.Entities;
 
 namespace Stove.Z.Demo
 {
-    public class Person : FullAuditedEntity
+    [Table("Person")]
+    public class Person : Entity
     {
         public virtual string Name { get; set; }
     }

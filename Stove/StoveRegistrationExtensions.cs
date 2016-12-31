@@ -11,6 +11,7 @@ using Autofac.Extras.IocManager;
 
 using Castle.DynamicProxy;
 
+using Stove.Configuration;
 using Stove.Domain.Uow;
 using Stove.Events.Bus;
 
@@ -27,6 +28,7 @@ namespace Stove
 
             builder.RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
             builder.RegisterServices(r => r.Register<IGuidGenerator>(context => SequentialGuidGenerator.Instance));
+            builder.RegisterServices(r => r.Register<IStoveStartupConfiguration, StoveStartupConfiguration>(Lifetime.Singleton));
             return builder;
         }
 
