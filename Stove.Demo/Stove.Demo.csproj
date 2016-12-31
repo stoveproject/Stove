@@ -81,11 +81,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Stove.EntityFramework\Stove.EntityFramework.csproj">
+    <ProjectReference Include="..\src\Stove.EntityFramework\Stove.EntityFramework.csproj">
       <Project>{11006b8d-f644-45fa-aeda-06abface0b79}</Project>
       <Name>Stove.EntityFramework</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Stove\Stove.csproj">
+    <ProjectReference Include="..\src\Stove\Stove.csproj">
       <Project>{82ad5a75-1860-427b-843f-892324d20a76}</Project>
       <Name>Stove</Name>
     </ProjectReference>

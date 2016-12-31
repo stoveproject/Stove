@@ -93,7 +93,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Stove.EntityFramework\Stove.EntityFramework.csproj">
+    <ProjectReference Include="..\..\src\Stove.EntityFramework\Stove.EntityFramework.csproj">
       <Project>{11006B8D-F644-45FA-AEDA-06ABFACE0B79}</Project>
       <Name>Stove.EntityFramework</Name>
     </ProjectReference>
@@ -101,7 +101,7 @@
       <Project>{97EBAAAF-EB2F-4700-84F0-E27922ADFD4C}</Project>
       <Name>Stove.Tests</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Stove\Stove.csproj">
+    <ProjectReference Include="..\..\src\Stove\Stove.csproj">
       <Project>{82AD5A75-1860-427B-843F-892324D20A76}</Project>
       <Name>Stove</Name>
     </ProjectReference>
