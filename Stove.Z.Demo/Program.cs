@@ -30,7 +30,9 @@ namespace Stove.Z.Demo
             {
                 var personRepository = resolver.Resolve<IRepository<Person>>();
 
-              
+                personRepository.Insert(new Person { Id = 3, Name = "Oğuzhan" });
+
+                uowManager.Current.SaveChanges();
 
                 Person person = personRepository.Get(1);
 
