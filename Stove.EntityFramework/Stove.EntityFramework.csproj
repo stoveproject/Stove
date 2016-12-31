@@ -70,6 +70,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DbContextPopulator.cs" />
     <Compile Include="EntityFramework\AbpDbContext.cs" />
     <Compile Include="EntityFramework\AutoRepositoryTypesAttribute.cs" />
     <Compile Include="EntityFramework\DbContextHelper.cs" />
