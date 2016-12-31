@@ -28,6 +28,10 @@ namespace Stove.EntityFramework.EntityFramework
             _dbContextTypes = new Dictionary<Type, List<Type>>();
         }
 
+        /// <summary>
+        ///     Populates the specified database context types.
+        /// </summary>
+        /// <param name="dbContextTypes">The database context types.</param>
         public void Populate(Type[] dbContextTypes)
         {
             foreach (Type dbContextType in dbContextTypes)
@@ -44,11 +48,17 @@ namespace Stove.EntityFramework.EntityFramework
         }
 
         //TODO: GetConcreteType method can be optimized by extracting/caching MultiTenancySideAttribute attributes for DbContexes.
-
+        /// <summary>
+        ///     Gets the type of the concrete.
+        /// </summary>
+        /// <param name="sourceDbContextType">Type of the source database context.</param>
+        /// <returns></returns>
+        /// <exception cref="StoveException">
+        ///     Could not find a concrete implementation of given DbContext type: " +
+        ///     sourceDbContextType.AssemblyQualifiedName
+        /// </exception>
         public virtual Type GetConcreteType(Type sourceDbContextType)
         {
-            //TODO: This can also get MultiTenancySide to filter dbcontexes
-
             if (!sourceDbContextType.IsAbstract)
             {
                 return sourceDbContextType;
