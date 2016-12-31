@@ -55,7 +55,7 @@ namespace Stove.EntityFramework.EntityFramework.Uow
             }
         }
 
-        public void Dispose(IScopeResolver scopedResolver)
+        public void Dispose(IScopeResolver scopeResolver)
         {
             foreach (ActiveTransactionInfo activeTransaction in ActiveTransactions.Values)
             {
@@ -64,7 +64,7 @@ namespace Stove.EntityFramework.EntityFramework.Uow
             }
 
             ActiveTransactions.Clear();
-            scopedResolver.Dispose();
+            scopeResolver.Dispose();
         }
     }
 }

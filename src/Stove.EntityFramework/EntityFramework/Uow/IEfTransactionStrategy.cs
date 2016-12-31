@@ -14,6 +14,6 @@ namespace Stove.EntityFramework.EntityFramework.Uow
 
         void InitDbContext(DbContext dbContext, string connectionString);
 
-        void Dispose(IScopeResolver iocResolver);
+        void Dispose(IScopeResolver scopeResolver);
     }
 }

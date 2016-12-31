@@ -17,11 +17,11 @@ namespace Stove.Events.Bus.Factories
         /// <summary>
         ///     Creates a new instance of <see cref="IocHandlerFactory" /> class.
         /// </summary>
-        /// <param name="iocResolver"></param>
+        /// <param name="scopeResolver"></param>
         /// <param name="handlerType">Type of the handler</param>
-        public IocHandlerFactory(IScopeResolver iocResolver, Type handlerType)
+        public IocHandlerFactory(IScopeResolver scopeResolver, Type handlerType)
         {
-            _scopeResolver = iocResolver;
+            _scopeResolver = scopeResolver;
             HandlerType = handlerType;
         }
 

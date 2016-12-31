@@ -155,7 +155,6 @@
     <Compile Include="Events\Bus\Entities\IEntityChangeEventHelper.cs" />
     <Compile Include="Events\Bus\Entities\NullEntityChangeEventHelper.cs" />
     <Compile Include="Events\Bus\EventBus.cs" />
-    <Compile Include="Events\Bus\EventBusInstaller.cs" />
     <Compile Include="Events\Bus\EventData.cs" />
     <Compile Include="Events\Bus\Exceptions\StoveHandledExceptionData.cs" />
     <Compile Include="Events\Bus\Exceptions\ExceptionData.cs" />

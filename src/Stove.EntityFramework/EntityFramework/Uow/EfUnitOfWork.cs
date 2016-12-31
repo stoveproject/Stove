@@ -40,7 +40,7 @@ namespace Stove.EntityFramework.EntityFramework.Uow
                 defaultOptions,
                 filterExecuter)
         {
-            IocResolver = scopedResolver;
+            ScopeResolver = scopedResolver;
             _dbContextResolver = dbContextResolver;
             _dbContextTypeMatcher = dbContextTypeMatcher;
             _transactionStrategy = transactionStrategy;
@@ -50,7 +50,7 @@ namespace Stove.EntityFramework.EntityFramework.Uow
 
         protected IDictionary<string, DbContext> ActiveDbContexts { get; }
 
-        protected IScopeResolver IocResolver { get; }
+        protected IScopeResolver ScopeResolver { get; }
 
         protected override void BeginUow()
         {
@@ -135,7 +135,7 @@ namespace Stove.EntityFramework.EntityFramework.Uow
         {
             if (Options.IsTransactional == true)
             {
-                _transactionStrategy.Dispose(IocResolver);
+                _transactionStrategy.Dispose(ScopeResolver);
             }
             else
             {
@@ -161,7 +161,7 @@ namespace Stove.EntityFramework.EntityFramework.Uow
         protected virtual void Release(DbContext dbContext)
         {
             dbContext.Dispose();
-            IocResolver.Dispose();
+            ScopeResolver.Dispose();
         }
 
         private static void ObjectContext_ObjectMaterialized(DbContext dbContext, ObjectMaterializedEventArgs e)
