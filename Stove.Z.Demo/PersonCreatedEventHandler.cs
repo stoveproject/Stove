@@ -3,7 +3,7 @@
 using Stove.Events.Bus.Entities;
 using Stove.Events.Bus.Handlers;
 
-namespace Stove.Z.Demo
+namespace Stove.Demo
 {
     public class PersonCreatedEventHandler : IEventHandler<EntityCreatedEventData<Person>>, ITransientDependency
     {

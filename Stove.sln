@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stove", "Stove\Stove.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stove.EntityFramework", "Stove.EntityFramework\Stove.EntityFramework.csproj", "{11006B8D-F644-45FA-AEDA-06ABFACE0B79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stove.Z.Demo", "Stove.Z.Demo\Stove.Z.Demo.csproj", "{53CA9367-14F4-4AA0-8745-412B8571FC8F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stove.Demo", "Stove.Z.Demo\Stove.Demo.csproj", "{53CA9367-14F4-4AA0-8745-412B8571FC8F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stove.Tests", "Stove.Tests\Stove.Tests.csproj", "{97EBAAAF-EB2F-4700-84F0-E27922ADFD4C}"
 EndProject

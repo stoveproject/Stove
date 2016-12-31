@@ -7,8 +7,8 @@
     <ProjectGuid>{53CA9367-14F4-4AA0-8745-412B8571FC8F}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Stove.Z.Demo</RootNamespace>
-    <AssemblyName>Stove.Z.Demo</AssemblyName>
+    <RootNamespace>Stove.Demo</RootNamespace>
+    <AssemblyName>Stove.Demo</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

@@ -2,7 +2,7 @@
 
 using Stove.EntityFramework.EntityFramework;
 
-namespace Stove.Z.Demo
+namespace Stove.Demo
 {
     public class DemoDbContext : StoveDbContext
     {

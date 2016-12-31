@@ -2,7 +2,7 @@
 
 using Stove.Domain.Entities;
 
-namespace Stove.Z.Demo
+namespace Stove.Demo
 {
     [Table("Person")]
     public class Person : Entity

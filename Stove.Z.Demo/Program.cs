@@ -7,7 +7,7 @@ using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
 using Stove.EntityFramework;
 
-namespace Stove.Z.Demo
+namespace Stove.Demo
 {
     internal class Program
     {

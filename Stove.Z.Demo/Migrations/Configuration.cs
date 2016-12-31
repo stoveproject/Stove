@@ -1,18 +1,15 @@
-namespace Stove.Z.Demo.Migrations
-{
-    using System;
-    using System.Data.Entity;
-    using System.Data.Entity.Migrations;
-    using System.Linq;
+using System.Data.Entity.Migrations;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Stove.Z.Demo.DemoDbContext>
+namespace Stove.Demo.Migrations
+{
+    internal sealed class Configuration : DbMigrationsConfiguration<DemoDbContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(Stove.Z.Demo.DemoDbContext context)
+        protected override void Seed(DemoDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 
