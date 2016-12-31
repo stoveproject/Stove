@@ -28,7 +28,7 @@ namespace Stove.EntityFramework.EntityFramework.Uow
         ///     Creates a new <see cref="EfUnitOfWork" />.
         /// </summary>
         public EfUnitOfWork(
-            IIocResolver iocResolver,
+            IScopeResolver scopedResolver,
             IConnectionStringResolver connectionStringResolver,
             IDbContextResolver dbContextResolver,
             IEfUnitOfWorkFilterExecuter filterExecuter,
@@ -40,7 +40,7 @@ namespace Stove.EntityFramework.EntityFramework.Uow
                 defaultOptions,
                 filterExecuter)
         {
-            IocResolver = iocResolver;
+            IocResolver = scopedResolver;
             _dbContextResolver = dbContextResolver;
             _dbContextTypeMatcher = dbContextTypeMatcher;
             _transactionStrategy = transactionStrategy;
@@ -50,7 +50,7 @@ namespace Stove.EntityFramework.EntityFramework.Uow
 
         protected IDictionary<string, DbContext> ActiveDbContexts { get; }
 
-        protected IIocResolver IocResolver { get; }
+        protected IScopeResolver IocResolver { get; }
 
         protected override void BeginUow()
         {

@@ -7,11 +7,11 @@ namespace Stove.EntityFramework.EntityFramework
     public class DefaultDbContextResolver : IDbContextResolver, ITransientDependency
     {
         private readonly IDbContextTypeMatcher _dbContextTypeMatcher;
-        private readonly IIocResolver _iocResolver;
+        private readonly IScopeResolver _scopedResolver;
 
-        public DefaultDbContextResolver(IIocResolver iocResolver, IDbContextTypeMatcher dbContextTypeMatcher)
+        public DefaultDbContextResolver(IScopeResolver iocResolver, IDbContextTypeMatcher dbContextTypeMatcher)
         {
-            _iocResolver = iocResolver;
+            _scopedResolver = iocResolver;
             _dbContextTypeMatcher = dbContextTypeMatcher;
         }
 
@@ -21,14 +21,14 @@ namespace Stove.EntityFramework.EntityFramework
 
             if (!dbContextType.IsAbstract)
             {
-                return _iocResolver.Resolve<TDbContext>(new
+                return _scopedResolver.Resolve<TDbContext>(new
                 {
                     nameOrConnectionString = connectionString
                 });
             }
 
             Type concreteType = _dbContextTypeMatcher.GetConcreteType(dbContextType);
-            return (TDbContext)_iocResolver.Resolve(concreteType, new
+            return (TDbContext)_scopedResolver.Resolve(concreteType, new
             {
                 nameOrConnectionString = connectionString
             });

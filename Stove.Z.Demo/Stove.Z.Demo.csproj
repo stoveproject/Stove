@@ -4,15 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{11006B8D-F644-45FA-AEDA-06ABFACE0B79}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{53CA9367-14F4-4AA0-8745-412B8571FC8F}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Stove.EntityFramework</RootNamespace>
-    <AssemblyName>Stove.EntityFramework</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <RootNamespace>Stove.Z.Demo</RootNamespace>
+    <AssemblyName>Stove.Z.Demo</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -42,10 +45,6 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="EntityFramework.DynamicFilters, Version=2.5.0.0, Culture=neutral, PublicKeyToken=146423a1b8d60775, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.DynamicFilters.2.5.0\lib\net40\EntityFramework.DynamicFilters.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
@@ -55,13 +54,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Collections.Immutable, Version=1.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Collections.Immutable.1.3.0\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -70,47 +65,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Startables\DbContextPopulator.cs" />
-    <Compile Include="EntityFramework\StoveDbContext.cs" />
-    <Compile Include="EntityFramework\AutoRepositoryTypesAttribute.cs" />
-    <Compile Include="EntityFramework\DbContextHelper.cs" />
-    <Compile Include="EntityFramework\DbContextTypeMatcher.cs" />
-    <Compile Include="EntityFramework\DefaultDbContextAttribute.cs" />
-    <Compile Include="EntityFramework\DefaultDbContextResolver.cs" />
-    <Compile Include="EntityFramework\EntityTypeInfo.cs" />
-    <Compile Include="EntityFramework\Extensions\QueryableExtensions.cs" />
-    <Compile Include="EntityFramework\IDbContextProvider.cs" />
-    <Compile Include="EntityFramework\IDbContextResolver.cs" />
-    <Compile Include="EntityFramework\IDbContextTypeMatcher.cs" />
-    <Compile Include="EntityFramework\Linq\EfAsyncQueryableExecuter.cs" />
-    <Compile Include="EntityFramework\Repositories\EfAutoRepositoryTypes.cs" />
-    <Compile Include="EntityFramework\Repositories\EfRepositoryBaseOfTEntity.cs" />
-    <Compile Include="EntityFramework\Repositories\EfRepositoryBaseOfTEntityAndTPrimaryKey.cs" />
-    <Compile Include="EntityFramework\Repositories\EfRepositoryExtensions.cs" />
-    <Compile Include="EntityFramework\Repositories\IRepositoryWithDbContext.cs" />
-    <Compile Include="EntityFramework\SimpleDbContextProvider.cs" />
-    <Compile Include="EntityFramework\Uow\ActiveDbContextInfo.cs" />
-    <Compile Include="EntityFramework\Uow\ActiveTransactionInfo.cs" />
-    <Compile Include="EntityFramework\Uow\DbContextEfTransactionStrategy.cs" />
-    <Compile Include="EntityFramework\Uow\EfDynamicFiltersUnitOfWorkFilterExecuter.cs" />
-    <Compile Include="EntityFramework\Uow\EfUnitOfWork.cs" />
-    <Compile Include="EntityFramework\Uow\IEfTransactionStrategy.cs" />
-    <Compile Include="EntityFramework\Uow\IEfUnitOfWorkFilterExecuter.cs" />
-    <Compile Include="EntityFramework\Uow\TransactionScopeEfTransactionStrategy.cs" />
-    <Compile Include="EntityFramework\Uow\UnitOfWorkDbContextProvider.cs" />
-    <Compile Include="EntityFramework\Uow\UnitOfWorkExtensions.cs" />
-    <Compile Include="EntityFramework\Utils\DateTimePropertyInfoHelper.cs" />
-    <Compile Include="EntityFramework\Utils\EntityDateTimePropertiesInfo.cs" />
+    <Compile Include="DemoDbContext.cs" />
+    <Compile Include="Person.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StoveEntityFrameworkRegistrationExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Stove.EntityFramework\Stove.EntityFramework.csproj">
+      <Project>{11006b8d-f644-45fa-aeda-06abface0b79}</Project>
+      <Name>Stove.EntityFramework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Stove\Stove.csproj">
-      <Project>{82AD5A75-1860-427B-843F-892324D20A76}</Project>
+      <Project>{82ad5a75-1860-427b-843f-892324d20a76}</Project>
       <Name>Stove</Name>
     </ProjectReference>
   </ItemGroup>

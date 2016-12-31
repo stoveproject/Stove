@@ -8,7 +8,7 @@ using Stove.Domain.Uow;
 
 namespace Stove.EntityFramework.EntityFramework.Uow
 {
-    public class TransactionScopeEfTransactionStrategy : IEfTransactionStrategy, ITransientDependency
+    public class TransactionScopeEfTransactionStrategy : IEfTransactionStrategy
     {
         public TransactionScopeEfTransactionStrategy()
         {
@@ -37,12 +37,13 @@ namespace Stove.EntityFramework.EntityFramework.Uow
             DbContexts.Add(dbContext);
         }
 
-        public virtual void Dispose(IIocResolver iocResolver)
+        public virtual void Dispose(IScopeResolver iocResolver)
         {
-            foreach (DbContext dbContext in DbContexts)
-            {
-                //iocResolver.Release(dbContext);
-            }
+            iocResolver.Dispose();
+            //foreach (DbContext dbContext in DbContexts)
+            //{
+            //   iocResolver.Release(dbContext);
+            //}
 
             if (CurrentTransaction != null)
             {

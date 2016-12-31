@@ -6,7 +6,7 @@ using FluentAssemblyScanner;
 
 using Stove.EntityFramework.EntityFramework;
 
-namespace Stove.EntityFramework
+namespace Stove.EntityFramework.Startables
 {
     public class DbContextPopulator : IStartable
     {

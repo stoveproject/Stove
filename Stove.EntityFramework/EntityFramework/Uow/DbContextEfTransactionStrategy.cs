@@ -12,24 +12,23 @@ namespace Stove.EntityFramework.EntityFramework.Uow
 {
     public class DbContextEfTransactionStrategy : IEfTransactionStrategy
     {
-        protected UnitOfWorkOptions Options { get; private set; }
-
-        protected IDictionary<string, ActiveTransactionInfo> ActiveTransactions { get; }
-
         public DbContextEfTransactionStrategy()
         {
             ActiveTransactions = new Dictionary<string, ActiveTransactionInfo>();
         }
+
+        protected UnitOfWorkOptions Options { get; private set; }
+
+        protected IDictionary<string, ActiveTransactionInfo> ActiveTransactions { get; }
 
         public void InitOptions(UnitOfWorkOptions options)
         {
             Options = options;
         }
 
-
         public void Commit()
         {
-            foreach (var activeTransaction in ActiveTransactions.Values)
+            foreach (ActiveTransactionInfo activeTransaction in ActiveTransactions.Values)
             {
                 activeTransaction.DbContextTransaction.Commit();
             }
@@ -37,7 +36,7 @@ namespace Stove.EntityFramework.EntityFramework.Uow
 
         public void InitDbContext(DbContext dbContext, string connectionString)
         {
-            var activeTransaction = ActiveTransactions.GetOrDefault(connectionString);
+            ActiveTransactionInfo activeTransaction = ActiveTransactions.GetOrDefault(connectionString);
             if (activeTransaction == null)
             {
                 activeTransaction = new ActiveTransactionInfo(
@@ -54,17 +53,18 @@ namespace Stove.EntityFramework.EntityFramework.Uow
                 dbContext.Database.UseTransaction(activeTransaction.DbContextTransaction.UnderlyingTransaction);
                 activeTransaction.AttendedDbContexts.Add(dbContext);
             }
-
         }
 
-        public void Dispose(IIocResolver iocResolver)
+        public void Dispose(IScopeResolver scopedResolver)
         {
-            foreach (var activeTransaction in ActiveTransactions.Values)
+            scopedResolver.Dispose();
+
+            foreach (ActiveTransactionInfo activeTransaction in ActiveTransactions.Values)
             {
-                foreach (var attendedDbContext in activeTransaction.AttendedDbContexts)
-                {
-                    //iocResolver.Release(attendedDbContext);
-                }
+                //foreach (var attendedDbContext in activeTransaction.AttendedDbContexts)
+                //{
+                //    //iocResolver.Release(attendedDbContext);
+                //}
 
                 activeTransaction.DbContextTransaction.Dispose();
                 activeTransaction.StarterDbContext.Dispose();

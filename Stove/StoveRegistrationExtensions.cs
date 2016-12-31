@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+using Autofac;
 using Autofac.Builder;
 using Autofac.Core;
 using Autofac.Extras.DynamicProxy;
@@ -19,19 +20,34 @@ namespace Stove
     {
         public static IIocBuilder UseStove(this IIocBuilder builder)
         {
-            builder.RegisterServices(r => r.UseBuilder(containerBuilder => containerBuilder.RegisterCallback(registry => registry.Registered += RegistryOnRegistered)));
+            builder.RegisterServices(r => r.UseBuilder(containerBuilder => containerBuilder.RegisterCallback(registry => registry.Registered += (sender, args) =>
+            {
+                RegistryOnRegistered(sender, args, builder);
+            })));
+
             builder.RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
             builder.RegisterServices(r => r.Register<IGuidGenerator>(context => SequentialGuidGenerator.Instance));
+            return builder;
+        }
+
+        public static IIocBuilder UseDefaultEventBus(this IIocBuilder builder)
+        {
             builder.RegisterServices(r => r.Register<IEventBus>(context => EventBus.Default));
             return builder;
         }
 
-        private static void RegistryOnRegistered(object sender, ComponentRegisteredEventArgs componentRegisteredEventArgs)
+        public static IIocBuilder UseEventBus(this IIocBuilder builder)
         {
-            HandleUnitOfWorkRegistar(componentRegisteredEventArgs);
+            builder.RegisterServices(r => r.Register<IEventBus, EventBus>());
+            return builder;
         }
 
-        private static void HandleUnitOfWorkRegistar(ComponentRegisteredEventArgs args)
+        private static void RegistryOnRegistered(object sender, ComponentRegisteredEventArgs componentRegisteredEventArgs, IIocBuilder builder)
+        {
+            HandleUnitOfWorkRegistar(componentRegisteredEventArgs, builder);
+        }
+
+        private static void HandleUnitOfWorkRegistar(ComponentRegisteredEventArgs args, IIocBuilder builder)
         {
             List<TypedService> uowClasses = args.ComponentRegistration.Services.GetOrDefaultConventionalUowClassesAsTypedService();
 
@@ -44,15 +60,16 @@ namespace Stove
             List<Type> interfaceTypes = uowClasses.Where(x => x.ServiceType != implementationType).Select(t => t.ServiceType).ToList();
             if (implementationType != null && interfaceTypes.Any())
             {
-                args.ComponentRegistry.Register(
-                    RegistrationBuilder.ForType(implementationType)
-                                       .As(interfaceTypes.ToArray())
-                                       .EnableClassInterceptors(ProxyGenerationOptions.Default, interfaceTypes.ToArray())
-                                       .InterceptedBy(typeof(UnitOfWorkInterceptor))
-                                       .InjectPropertiesAsAutowired()
-                                       .InstancePerDependency()
-                                       .CreateRegistration()
-                );
+                builder.RegisterServices(r => r.UseBuilder(containerBuilder =>
+                {
+                    containerBuilder.RegisterType(implementationType)
+                                    .As(interfaceTypes.ToArray())
+                                    .EnableClassInterceptors(ProxyGenerationOptions.Default, interfaceTypes.ToArray())
+                                    .InterceptedBy(typeof(UnitOfWorkInterceptor))
+                                    .InjectPropertiesAsAutowired()
+                                    .InstancePerDependency()
+                                    .CreateRegistration();
+                }));
             }
         }
     }

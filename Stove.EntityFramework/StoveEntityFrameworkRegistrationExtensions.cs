@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-using Autofac;
 using Autofac.Extras.IocManager;
 
 using FluentAssemblyScanner;
@@ -24,7 +23,7 @@ namespace Stove.EntityFramework
             builder.RegisterServices(r => r.Register<IUnitOfWorkFilterExecuter, EfDynamicFiltersUnitOfWorkFilterExecuter>());
             builder.RegisterServices(r => r.RegisterGeneric(typeof(IDbContextProvider<>), typeof(UnitOfWorkDbContextProvider<>)));
 
-            List<Type> dbContextTypes = AssemblyScanner.FromThisAssembly()
+            List<Type> dbContextTypes = AssemblyScanner.FromAssemblyInDirectory(new AssemblyFilter(string.Empty))
                                                        .BasedOn<StoveDbContext>()
                                                        .Filter()
                                                        .Classes()
@@ -33,6 +32,18 @@ namespace Stove.EntityFramework
 
             dbContextTypes.ForEach(type => RegisterRepositories(type, builder));
 
+            return builder;
+        }
+
+        public static IIocBuilder UseTransacitonScopeEfTransactionStrategy(this IIocBuilder builder)
+        {
+            builder.RegisterServices(r => r.Register<IEfTransactionStrategy, TransactionScopeEfTransactionStrategy>());
+            return builder;
+        }
+
+        public static IIocBuilder UseDbContextEfTransactionStrategy(this IIocBuilder builder)
+        {
+            builder.RegisterServices(r => r.Register<IEfTransactionStrategy, DbContextEfTransactionStrategy>());
             return builder;
         }
 

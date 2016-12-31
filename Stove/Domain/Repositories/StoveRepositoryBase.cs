@@ -4,8 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-using Autofac.Extras.IocManager;
-
 using Stove.Domain.Entities;
 
 namespace Stove.Domain.Repositories
@@ -19,8 +17,6 @@ namespace Stove.Domain.Repositories
     public abstract class StoveRepositoryBase<TEntity, TPrimaryKey> : IRepository<TEntity, TPrimaryKey>
         where TEntity : class, IEntity<TPrimaryKey>
     {
-        public IIocResolver IocResolver { get; set; }
-
         public abstract IQueryable<TEntity> GetAll();
 
         public virtual IQueryable<TEntity> GetAllIncluding(params Expression<Func<TEntity, object>>[] propertySelectors)

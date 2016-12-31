@@ -9,7 +9,7 @@ using Stove.Events.Bus;
 using Stove.Events.Bus.Factories;
 using Stove.Events.Bus.Handlers;
 
-namespace Stove
+namespace Stove.Startables
 {
     public class EventBusRegistrar : IStartable, ITransientDependency
     {
