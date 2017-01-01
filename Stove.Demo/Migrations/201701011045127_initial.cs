@@ -1,7 +1,8 @@
-using System.Data.Entity.Migrations;
-
 namespace Stove.Demo.Migrations
 {
+    using System;
+    using System.Data.Entity.Migrations;
+    
     public partial class initial : DbMigration
     {
         public override void Up()

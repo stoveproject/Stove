@@ -2,14 +2,14 @@ using System.Data.Entity.Migrations;
 
 namespace Stove.Demo.Migrations
 {
-    internal sealed class Configuration : DbMigrationsConfiguration<DemoDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<DemoStoveDbContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(DemoDbContext context)
+        protected override void Seed(DemoStoveDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 

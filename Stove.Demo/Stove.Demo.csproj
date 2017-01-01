@@ -53,6 +53,10 @@
       <HintPath>..\packages\FluentAssemblyScanner.1.0.5\lib\net452\FluentAssemblyScanner.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="HibernatingRhinos.Profiler.Appender, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0774796e73ebf640, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFrameworkProfiler.Appender.3.0.3105.0\lib\HibernatingRhinos.Profiler.Appender.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -66,9 +70,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DemoDbContext.cs" />
-    <Compile Include="Migrations\201612311942230_initial.cs" />
-    <Compile Include="Migrations\201612311942230_initial.Designer.cs">
-      <DependentUpon>201612311942230_initial.cs</DependentUpon>
+    <Compile Include="Migrations\201701011045127_initial.cs" />
+    <Compile Include="Migrations\201701011045127_initial.Designer.cs">
+      <DependentUpon>201701011045127_initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Person.cs" />
@@ -91,8 +95,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201612311942230_initial.resx">
-      <DependentUpon>201612311942230_initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201701011045127_initial.resx">
+      <DependentUpon>201701011045127_initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
