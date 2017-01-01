@@ -18,7 +18,7 @@ namespace Stove.Linq.Extensions
         {
             if (query == null)
             {
-                throw new ArgumentNullException("query");
+                throw new ArgumentNullException(nameof(query));
             }
 
             return query.Skip(skipCount).Take(maxResultCount);

@@ -1,7 +1,5 @@
 using System.Data.Entity;
 
-using Autofac.Extras.IocManager;
-
 using Stove.Domain.Uow;
 
 namespace Stove.EntityFramework.EntityFramework.Uow
@@ -14,6 +12,6 @@ namespace Stove.EntityFramework.EntityFramework.Uow
 
         void InitDbContext(DbContext dbContext, string connectionString);
 
-        void Dispose(IScopeResolver scopeResolver);
+        void Dispose();
     }
 }

@@ -37,10 +37,8 @@ namespace Stove.EntityFramework.EntityFramework.Uow
             DbContexts.Add(dbContext);
         }
 
-        public virtual void Dispose(IScopeResolver scopeResolver)
+        public virtual void Dispose()
         {
-            scopeResolver.Dispose();
-
             if (CurrentTransaction != null)
             {
                 CurrentTransaction.Dispose();

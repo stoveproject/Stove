@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Transactions;
 
-using Autofac.Extras.IocManager;
-
 using Stove.Collections.Extensions;
 using Stove.Domain.Uow;
 using Stove.Transactions.Extensions;
@@ -55,7 +53,7 @@ namespace Stove.EntityFramework.EntityFramework.Uow
             }
         }
 
-        public void Dispose(IScopeResolver scopeResolver)
+        public void Dispose()
         {
             foreach (ActiveTransactionInfo activeTransaction in ActiveTransactions.Values)
             {
@@ -64,7 +62,6 @@ namespace Stove.EntityFramework.EntityFramework.Uow
             }
 
             ActiveTransactions.Clear();
-            scopeResolver.Dispose();
         }
     }
 }

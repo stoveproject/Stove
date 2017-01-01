@@ -8,13 +8,11 @@ using Stove.Log;
 namespace Stove.Domain.Uow
 {
     /// <summary>
-    /// CallContext implementation of <see cref="ICurrentUnitOfWorkProvider"/>. 
-    /// This is the default implementation.
+    ///     CallContext implementation of <see cref="ICurrentUnitOfWorkProvider" />.
+    ///     This is the default implementation.
     /// </summary>
     public class CallContextCurrentUnitOfWorkProvider : ICurrentUnitOfWorkProvider, ITransientDependency
     {
-        public ILogger Logger { get; set; }
-
         private const string ContextKey = "Stove.UnitOfWork.Current";
 
         private static readonly ConcurrentDictionary<string, IUnitOfWork> UnitOfWorkDictionary = new ConcurrentDictionary<string, IUnitOfWork>();
@@ -22,6 +20,16 @@ namespace Stove.Domain.Uow
         public CallContextCurrentUnitOfWorkProvider()
         {
             Logger = NullLogger.Instance;
+        }
+
+        public ILogger Logger { get; set; }
+
+        /// <inheritdoc />
+        [DoNotInject]
+        public IUnitOfWork Current
+        {
+            get { return GetCurrentUow(Logger); }
+            set { SetCurrentUow(value, Logger); }
         }
 
         private static IUnitOfWork GetCurrentUow(ILogger logger)
@@ -73,10 +81,6 @@ namespace Stove.Domain.Uow
 
                     value.Outer = outer;
                 }
-                else
-                {
-                    //logger.Warn("There is a unitOfWorkKey in CallContext but not in UnitOfWorkDictionary (on SetCurrentUow)! UnitOfWork key: " + unitOfWorkKey);
-                }
             }
 
             unitOfWorkKey = value.Id;
@@ -114,7 +118,7 @@ namespace Stove.Domain.Uow
 
             //Restore outer UOW
 
-            var outerUnitOfWorkKey = unitOfWork.Outer.Id;
+            string outerUnitOfWorkKey = unitOfWork.Outer.Id;
             if (!UnitOfWorkDictionary.TryGetValue(outerUnitOfWorkKey, out unitOfWork))
             {
                 //No outer UOW
@@ -124,14 +128,6 @@ namespace Stove.Domain.Uow
             }
 
             CallContext.LogicalSetData(ContextKey, outerUnitOfWorkKey);
-        }
-
-        /// <inheritdoc />
-        [DoNotInject]
-        public IUnitOfWork Current
-        {
-            get { return GetCurrentUow(Logger); }
-            set { SetCurrentUow(value, Logger); }
         }
     }
 }

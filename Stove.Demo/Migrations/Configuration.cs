@@ -1,5 +1,7 @@
 using System.Data.Entity.Migrations;
 
+using Stove.Demo.DbContexes;
+
 namespace Stove.Demo.Migrations
 {
     internal sealed class Configuration : DbMigrationsConfiguration<DemoStoveDbContext>

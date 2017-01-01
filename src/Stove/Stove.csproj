@@ -210,7 +210,6 @@
     <Compile Include="Startables\StoveConfigurer.cs" />
     <Compile Include="StoveException.cs" />
     <Compile Include="StoveRegistrationExtensions.cs" />
-    <Compile Include="StoveServiceBase.cs" />
     <Compile Include="Threading\AsyncHelper.cs" />
     <Compile Include="Threading\Extensions\LockExtensions.cs" />
     <Compile Include="Threading\InternalAsyncHelper.cs" />

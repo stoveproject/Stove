@@ -69,16 +69,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DemoDbContext.cs" />
-    <Compile Include="Migrations\201701011045127_initial.cs" />
-    <Compile Include="Migrations\201701011045127_initial.Designer.cs">
-      <DependentUpon>201701011045127_initial.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Entities\Animal.cs" />
+    <Compile Include="DbContexes\DemoStoveDbContext.cs" />
+    <Compile Include="Entities\Person.cs" />
+    <Compile Include="Events\PersonCreatedEventHandler.cs" />
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Person.cs" />
-    <Compile Include="PersonCreatedEventHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SomeDomainService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -93,11 +91,6 @@
       <Project>{82ad5a75-1860-427b-843f-892324d20a76}</Project>
       <Name>Stove</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201701011045127_initial.resx">
-      <DependentUpon>201701011045127_initial.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

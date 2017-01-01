@@ -3,15 +3,25 @@
 namespace Stove.Domain.Uow
 {
     /// <summary>
-    /// Null implementation of unit of work.
-    /// It's used if no component registered for <see cref="IUnitOfWork"/>.
-    /// This ensures working Stove without a database.
+    ///     Null implementation of unit of work.
+    ///     It's used if no component registered for <see cref="IUnitOfWork" />.
+    ///     This ensures working Stove without a database.
     /// </summary>
     public sealed class NullUnitOfWork : UnitOfWorkBase
     {
+        public NullUnitOfWork(
+            IConnectionStringResolver connectionStringResolver,
+            IUnitOfWorkDefaultOptions defaultOptions,
+            IUnitOfWorkFilterExecuter filterExecuter
+        ) : base(
+            connectionStringResolver,
+            defaultOptions,
+            filterExecuter)
+        {
+        }
+
         public override void SaveChanges()
         {
-
         }
 
         public override Task SaveChangesAsync()
@@ -21,12 +31,10 @@ namespace Stove.Domain.Uow
 
         protected override void BeginUow()
         {
-
         }
 
         protected override void CompleteUow()
         {
-
         }
 
         protected override Task CompleteUowAsync()
@@ -35,18 +43,6 @@ namespace Stove.Domain.Uow
         }
 
         protected override void DisposeUow()
-        {
-
-        }
-
-        public NullUnitOfWork(
-            IConnectionStringResolver connectionStringResolver,
-            IUnitOfWorkDefaultOptions defaultOptions,
-            IUnitOfWorkFilterExecuter filterExecuter
-            ) : base(
-                connectionStringResolver,
-                defaultOptions,
-                filterExecuter)
         {
         }
     }

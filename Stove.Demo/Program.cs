@@ -5,8 +5,7 @@ using Autofac.Extras.IocManager;
 
 using HibernatingRhinos.Profiler.Appender.EntityFramework;
 
-using Stove.Domain.Repositories;
-using Stove.Domain.Uow;
+using Stove.Demo.DbContexes;
 using Stove.EntityFramework;
 
 namespace Stove.Demo
@@ -28,20 +27,8 @@ namespace Stove.Demo
 
             Database.SetInitializer(new CreateDatabaseIfNotExists<DemoStoveDbContext>());
 
-            var uowManager = resolver.Resolve<IUnitOfWorkManager>();
-
-            using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
-            {
-                var personRepository = resolver.Resolve<IRepository<Person>>();
-
-                personRepository.Insert(new Person { Id = 4, Name = "Oğuzhan" });
-
-                uowManager.Current.SaveChanges();
-
-                Person person = personRepository.Get(1);
-
-                uow.Complete();
-            }
+            var someDomainService = resolver.Resolve<SomeDomainService>();
+            someDomainService.DoSomeStuff();
         }
     }
 }

@@ -28,7 +28,6 @@ namespace Stove.EntityFramework.EntityFramework.Uow
         ///     Creates a new <see cref="EfUnitOfWork" />.
         /// </summary>
         public EfUnitOfWork(
-            IScopeResolver scopedResolver,
             IConnectionStringResolver connectionStringResolver,
             IDbContextResolver dbContextResolver,
             IEfUnitOfWorkFilterExecuter filterExecuter,
@@ -40,7 +39,6 @@ namespace Stove.EntityFramework.EntityFramework.Uow
                 defaultOptions,
                 filterExecuter)
         {
-            ScopeResolver = scopedResolver;
             _dbContextResolver = dbContextResolver;
             _dbContextTypeMatcher = dbContextTypeMatcher;
             _transactionStrategy = transactionStrategy;
@@ -49,8 +47,6 @@ namespace Stove.EntityFramework.EntityFramework.Uow
         }
 
         protected IDictionary<string, DbContext> ActiveDbContexts { get; }
-
-        protected IScopeResolver ScopeResolver { get; }
 
         protected override void BeginUow()
         {
@@ -135,7 +131,7 @@ namespace Stove.EntityFramework.EntityFramework.Uow
         {
             if (Options.IsTransactional == true)
             {
-                _transactionStrategy.Dispose(ScopeResolver);
+                _transactionStrategy.Dispose();
             }
             else
             {
@@ -161,7 +157,6 @@ namespace Stove.EntityFramework.EntityFramework.Uow
         protected virtual void Release(DbContext dbContext)
         {
             dbContext.Dispose();
-            ScopeResolver.Dispose();
         }
 
         private static void ObjectContext_ObjectMaterialized(DbContext dbContext, ObjectMaterializedEventArgs e)

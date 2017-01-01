@@ -21,8 +21,6 @@
             return session.UserId.Value;
         }
 
-       
-
         /// <summary>
         ///     Creates <see cref="UserIdentifier" /> from given session.
         ///     Returns null if <see cref="IStoveSession.UserId" /> is null.

@@ -17,30 +17,20 @@ using Stove.Threading.Extensions;
 namespace Stove.Events.Bus
 {
     /// <summary>
-    /// Implements EventBus as Singleton pattern.
+    ///     Implements EventBus as Singleton pattern.
     /// </summary>
     public class EventBus : IEventBus
     {
         /// <summary>
-        /// Gets the default <see cref="EventBus"/> instance.
-        /// </summary>
-        public static EventBus Default { get; } = new EventBus();
-
-        /// <summary>
-        /// Reference to the Logger.
-        /// </summary>
-        public ILogger Logger { get; set; }
-
-        /// <summary>
-        /// All registered handler factories.
-        /// Key: Type of the event
-        /// Value: List of handler factories
+        ///     All registered handler factories.
+        ///     Key: Type of the event
+        ///     Value: List of handler factories
         /// </summary>
         private readonly ConcurrentDictionary<Type, List<IEventHandlerFactory>> _handlerFactories;
 
         /// <summary>
-        /// Creates a new <see cref="EventBus"/> instance.
-        /// Instead of creating a new instace, you can use <see cref="Default"/> to use Global <see cref="EventBus"/>.
+        ///     Creates a new <see cref="EventBus" /> instance.
+        ///     Instead of creating a new instace, you can use <see cref="Default" /> to use Global <see cref="EventBus" />.
         /// </summary>
         public EventBus()
         {
@@ -48,19 +38,29 @@ namespace Stove.Events.Bus
             Logger = NullLogger.Instance;
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        ///     Gets the default <see cref="EventBus" /> instance.
+        /// </summary>
+        public static EventBus Default { get; } = new EventBus();
+
+        /// <summary>
+        ///     Reference to the Logger.
+        /// </summary>
+        public ILogger Logger { get; set; }
+
+        /// <inheritdoc />
         public IDisposable Register<TEventData>(Action<TEventData> action) where TEventData : IEventData
         {
             return Register(typeof(TEventData), new ActionEventHandler<TEventData>(action));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDisposable Register<TEventData>(IEventHandler<TEventData> handler) where TEventData : IEventData
         {
             return Register(typeof(TEventData), handler);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDisposable Register<TEventData, THandler>()
             where TEventData : IEventData
             where THandler : IEventHandler<TEventData>, new()
@@ -68,19 +68,19 @@ namespace Stove.Events.Bus
             return Register(typeof(TEventData), new TransientEventHandlerFactory<THandler>());
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDisposable Register(Type eventType, IEventHandler handler)
         {
             return Register(eventType, new SingleInstanceHandlerFactory(handler));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDisposable Register<TEventData>(IEventHandlerFactory handlerFactory) where TEventData : IEventData
         {
             return Register(typeof(TEventData), handlerFactory);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDisposable Register(Type eventType, IEventHandlerFactory handlerFactory)
         {
             GetOrCreateHandlerFactories(eventType)
@@ -89,7 +89,7 @@ namespace Stove.Events.Bus
             return new FactoryUnregistrar(this, eventType, handlerFactory);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Unregister<TEventData>(Action<TEventData> action) where TEventData : IEventData
         {
             Check.NotNull(action, nameof(action));
@@ -117,13 +117,13 @@ namespace Stove.Events.Bus
                 });
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Unregister<TEventData>(IEventHandler<TEventData> handler) where TEventData : IEventData
         {
             Unregister(typeof(TEventData), handler);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Unregister(Type eventType, IEventHandler handler)
         {
             GetOrCreateHandlerFactories(eventType)
@@ -133,53 +133,53 @@ namespace Stove.Events.Bus
                         factory =>
                             factory is SingleInstanceHandlerFactory &&
                             (factory as SingleInstanceHandlerFactory).HandlerInstance == handler
-                        );
+                    );
                 });
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Unregister<TEventData>(IEventHandlerFactory factory) where TEventData : IEventData
         {
             Unregister(typeof(TEventData), factory);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Unregister(Type eventType, IEventHandlerFactory factory)
         {
             GetOrCreateHandlerFactories(eventType).Locking(factories => factories.Remove(factory));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void UnregisterAll<TEventData>() where TEventData : IEventData
         {
             UnregisterAll(typeof(TEventData));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void UnregisterAll(Type eventType)
         {
             GetOrCreateHandlerFactories(eventType).Locking(factories => factories.Clear());
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Trigger<TEventData>(TEventData eventData) where TEventData : IEventData
         {
             Trigger((object)null, eventData);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Trigger<TEventData>(object eventSource, TEventData eventData) where TEventData : IEventData
         {
             Trigger(typeof(TEventData), eventSource, eventData);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Trigger(Type eventType, IEventData eventData)
         {
             Trigger(eventType, null, eventData);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Trigger(Type eventType, object eventSource, IEventData eventData)
         {
             var exceptions = new List<Exception>();
@@ -197,17 +197,75 @@ namespace Stove.Events.Bus
             }
         }
 
+        /// <inheritdoc />
+        public Task TriggerAsync<TEventData>(TEventData eventData) where TEventData : IEventData
+        {
+            return TriggerAsync((object)null, eventData);
+        }
+
+        /// <inheritdoc />
+        public Task TriggerAsync<TEventData>(object eventSource, TEventData eventData) where TEventData : IEventData
+        {
+            ExecutionContext.SuppressFlow();
+
+            Task task = Task.Factory.StartNew(
+                () =>
+                {
+                    try
+                    {
+                        Trigger(eventSource, eventData);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Warn(ex.ToString(), ex);
+                    }
+                });
+
+            ExecutionContext.RestoreFlow();
+
+            return task;
+        }
+
+        /// <inheritdoc />
+        public Task TriggerAsync(Type eventType, IEventData eventData)
+        {
+            return TriggerAsync(eventType, null, eventData);
+        }
+
+        /// <inheritdoc />
+        public Task TriggerAsync(Type eventType, object eventSource, IEventData eventData)
+        {
+            ExecutionContext.SuppressFlow();
+
+            Task task = Task.Factory.StartNew(
+                () =>
+                {
+                    try
+                    {
+                        Trigger(eventType, eventSource, eventData);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Warn(ex.ToString(), ex);
+                    }
+                });
+
+            ExecutionContext.RestoreFlow();
+
+            return task;
+        }
+
         private void TriggerHandlingException(Type eventType, object eventSource, IEventData eventData, List<Exception> exceptions)
         {
             //TODO: This method can be optimized by adding all possibilities to a dictionary.
 
             eventData.EventSource = eventSource;
 
-            foreach (var handlerFactories in GetHandlerFactories(eventType))
+            foreach (EventTypeWithEventHandlerFactories handlerFactories in GetHandlerFactories(eventType))
             {
-                foreach (var handlerFactory in handlerFactories.EventHandlerFactories)
+                foreach (IEventHandlerFactory handlerFactory in handlerFactories.EventHandlerFactories)
                 {
-                    var eventHandler = handlerFactory.GetHandler();
+                    IEventHandler eventHandler = handlerFactory.GetHandler();
 
                     try
                     {
@@ -216,9 +274,9 @@ namespace Stove.Events.Bus
                             throw new Exception($"Registered event handler for event type {handlerFactories.EventType.Name} does not implement IEventHandler<{handlerFactories.EventType.Name}> interface!");
                         }
 
-                        var handlerType = typeof(IEventHandler<>).MakeGenericType(handlerFactories.EventType);
+                        Type handlerType = typeof(IEventHandler<>).MakeGenericType(handlerFactories.EventType);
 
-                        var method = handlerType.GetMethod(
+                        MethodInfo method = handlerType.GetMethod(
                             "HandleEvent",
                             BindingFlags.Public | BindingFlags.Instance,
                             null,
@@ -248,13 +306,13 @@ namespace Stove.Events.Bus
                 eventType.GetGenericArguments().Length == 1 &&
                 typeof(IEventDataWithInheritableGenericArgument).IsAssignableFrom(eventType))
             {
-                var genericArg = eventType.GetGenericArguments()[0];
-                var baseArg = genericArg.BaseType;
+                Type genericArg = eventType.GetGenericArguments()[0];
+                Type baseArg = genericArg.BaseType;
                 if (baseArg != null)
                 {
-                    var baseEventType = eventType.GetGenericTypeDefinition().MakeGenericType(baseArg);
-                    var constructorArgs = ((IEventDataWithInheritableGenericArgument) eventData).GetConstructorArgs();
-                    var baseEventData = (IEventData) Activator.CreateInstance(baseEventType, constructorArgs);
+                    Type baseEventType = eventType.GetGenericTypeDefinition().MakeGenericType(baseArg);
+                    object[] constructorArgs = ((IEventDataWithInheritableGenericArgument)eventData).GetConstructorArgs();
+                    var baseEventData = (IEventData)Activator.CreateInstance(baseEventType, constructorArgs);
                     baseEventData.EventTime = eventData.EventTime;
                     Trigger(baseEventType, eventData.EventSource, baseEventData);
                 }
@@ -265,7 +323,7 @@ namespace Stove.Events.Bus
         {
             var handlerFactoryList = new List<EventTypeWithEventHandlerFactories>();
 
-            foreach (var handlerFactory in _handlerFactories.Where(hf => ShouldTriggerEventForHandler(eventType, hf.Key)))
+            foreach (KeyValuePair<Type, List<IEventHandlerFactory>> handlerFactory in _handlerFactories.Where(hf => ShouldTriggerEventForHandler(eventType, hf.Key)))
             {
                 handlerFactoryList.Add(new EventTypeWithEventHandlerFactories(handlerFactory.Key, handlerFactory.Value));
             }
@@ -290,80 +348,22 @@ namespace Stove.Events.Bus
             return false;
         }
 
-        /// <inheritdoc/>
-        public Task TriggerAsync<TEventData>(TEventData eventData) where TEventData : IEventData
-        {
-            return TriggerAsync((object)null, eventData);
-        }
-
-        /// <inheritdoc/>
-        public Task TriggerAsync<TEventData>(object eventSource, TEventData eventData) where TEventData : IEventData
-        {
-            ExecutionContext.SuppressFlow();
-
-            var task = Task.Factory.StartNew(
-                () =>
-                {
-                    try
-                    {
-                        Trigger(eventSource, eventData);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Warn(ex.ToString(), ex);
-                    }
-                });
-
-            ExecutionContext.RestoreFlow();
-
-            return task;
-        }
-
-        /// <inheritdoc/>
-        public Task TriggerAsync(Type eventType, IEventData eventData)
-        {
-            return TriggerAsync(eventType, null, eventData);
-        }
-
-        /// <inheritdoc/>
-        public Task TriggerAsync(Type eventType, object eventSource, IEventData eventData)
-        {
-            ExecutionContext.SuppressFlow();
-
-            var task = Task.Factory.StartNew(
-                () =>
-                {
-                    try
-                    {
-                        Trigger(eventType, eventSource, eventData);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Warn(ex.ToString(), ex);
-                    }
-                });
-
-            ExecutionContext.RestoreFlow();
-
-            return task;
-        }
-
         private List<IEventHandlerFactory> GetOrCreateHandlerFactories(Type eventType)
         {
-            return _handlerFactories.GetOrAdd(eventType, (type) => new List<IEventHandlerFactory>());
+            return _handlerFactories.GetOrAdd(eventType, type => new List<IEventHandlerFactory>());
         }
 
         private class EventTypeWithEventHandlerFactories
         {
-            public Type EventType { get; }
-
-            public List<IEventHandlerFactory> EventHandlerFactories { get; }
-
             public EventTypeWithEventHandlerFactories(Type eventType, List<IEventHandlerFactory> eventHandlerFactories)
             {
                 EventType = eventType;
                 EventHandlerFactories = eventHandlerFactories;
             }
+
+            public Type EventType { get; }
+
+            public List<IEventHandlerFactory> EventHandlerFactories { get; }
         }
     }
 }

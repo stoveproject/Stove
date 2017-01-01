@@ -1,8 +1,9 @@
 ﻿using System.Data.Entity;
 
+using Stove.Demo.Entities;
 using Stove.EntityFramework.EntityFramework;
 
-namespace Stove.Demo
+namespace Stove.Demo.DbContexes
 {
     public class DemoStoveDbContext : StoveDbContext
     {
@@ -11,5 +12,7 @@ namespace Stove.Demo
         }
 
         public virtual IDbSet<Person> Persons { get; set; }
+
+        public virtual IDbSet<Animal> Animals { get; set; }
     }
 }

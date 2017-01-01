@@ -23,7 +23,7 @@ namespace Stove.Domain.Uow
             ICurrentUnitOfWorkProvider currentUnitOfWorkProvider,
             IUnitOfWorkDefaultOptions defaultOptions)
         {
-            _scopeResolver = scopedResolver;
+            _scopeResolver = scopedResolver.BeginScope();
             _currentUnitOfWorkProvider = currentUnitOfWorkProvider;
             _defaultOptions = defaultOptions;
         }
