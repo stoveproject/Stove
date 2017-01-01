@@ -207,6 +207,7 @@
     <Compile Include="Runtime\Session\IPrincipalAccessor.cs" />
     <Compile Include="Runtime\Session\NullStoveSession.cs" />
     <Compile Include="SequentalGuidGenerator.cs" />
+    <Compile Include="Startables\StoveConfigurer.cs" />
     <Compile Include="StoveException.cs" />
     <Compile Include="StoveRegistrationExtensions.cs" />
     <Compile Include="StoveServiceBase.cs" />
