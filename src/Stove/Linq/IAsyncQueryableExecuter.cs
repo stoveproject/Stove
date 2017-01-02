@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 namespace Stove.Linq
 {
     /// <summary>
-    /// This interface is intended to be used by ABP.
+    /// This interface is intended to be used by Stove.
     /// </summary>
     public interface IAsyncQueryableExecuter
     {
