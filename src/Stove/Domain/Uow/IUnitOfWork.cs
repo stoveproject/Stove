@@ -22,5 +22,7 @@ namespace Stove.Domain.Uow
         /// </summary>
         /// <param name="options">Unit of work options</param>
         void Begin(UnitOfWorkOptions options);
+
+        void Rollback();
     }
 }

@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Transactions;
 
-using Autofac.Extras.IocManager;
-
 using Stove.Domain.Uow;
 
 namespace Stove.EntityFramework.EntityFramework.Uow
@@ -44,6 +42,11 @@ namespace Stove.EntityFramework.EntityFramework.Uow
                 CurrentTransaction.Dispose();
                 CurrentTransaction = null;
             }
+        }
+
+        public void Rollback()
+        {
+            //Rollacked by Dispose!
         }
 
         private void EnsureCurrentTransactionInitialized()
