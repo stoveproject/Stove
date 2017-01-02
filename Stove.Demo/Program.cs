@@ -23,7 +23,7 @@ namespace Stove.Demo
             IRootResolver resolver = IocBuilder.New
                                                .UseAutofacContainerBuilder()
                                                .UseStove()
-                                               .UseEntityFramework()
+                                               .UseStoveEntityFramework()
                                                .UseDefaultEventBus()
                                                .UseDbContextEfTransactionStrategy()
                                                .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()))

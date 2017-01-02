@@ -14,7 +14,7 @@ namespace Stove.EntityFramework
 {
     public static class StoveEntityFrameworkRegistrationExtensions
     {
-        public static IIocBuilder UseEntityFramework(this IIocBuilder builder)
+        public static IIocBuilder UseStoveEntityFramework(this IIocBuilder builder)
         {
             builder.RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
             builder.RegisterServices(r => r.Register<IEfUnitOfWorkFilterExecuter, IEfUnitOfWorkFilterExecuter, EfDynamicFiltersUnitOfWorkFilterExecuter>());
