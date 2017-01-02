@@ -23,6 +23,7 @@ namespace Stove.Demo
                                                .UseEntityFramework()
                                                .UseDefaultEventBus()
                                                .UseDbContextEfTransactionStrategy()
+                                               //.UseTransacitonScopeEfTransactionStrategy()
                                                .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()))
                                                .UseNLog()
                                                .CreateResolver();
