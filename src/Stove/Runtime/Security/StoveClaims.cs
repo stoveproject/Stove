@@ -8,6 +8,6 @@
         /// <summary>
         ///     ImpersonatorUserId.
         /// </summary>
-        public const string ImpersonatorUserId = "http://www.aspnetboilerplate.com/identity/claims/impersonatorUserId";
+        public const string ImpersonatorUserId = "http://www.thestoveproject.com/identity/claims/impersonatorUserId";
     }
 }

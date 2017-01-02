@@ -8,11 +8,11 @@ using Stove.EntityFramework.EntityFramework;
 
 namespace Stove.EntityFramework.Configurer
 {
-    public class DbContextPopulator : StoveConfigurer
+    public class DbContextTypePopulateConfigurer : StoveConfigurer
     {
         private readonly IDbContextTypeMatcher _dbContextTypeMatcher;
 
-        public DbContextPopulator(IStoveStartupConfiguration configuration, IDbContextTypeMatcher dbContextTypeMatcher) : base(configuration)
+        public DbContextTypePopulateConfigurer(IStoveStartupConfiguration configuration, IDbContextTypeMatcher dbContextTypeMatcher) : base(configuration)
         {
             _dbContextTypeMatcher = dbContextTypeMatcher;
         }
