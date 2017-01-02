@@ -1,4 +1,6 @@
-﻿using Autofac.Extras.IocManager;
+﻿using System;
+
+using Autofac.Extras.IocManager;
 
 using Stove.Demo.Entities;
 using Stove.Domain.Repositories;
@@ -25,12 +27,14 @@ namespace Stove.Demo
 
         public void DoSomeStuff()
         {
-            using (_unitOfWorkManager.Begin())
+            using (IUnitOfWorkCompleteHandle uow = _unitOfWorkManager.Begin())
             {
                 Logger.Debug("Uow Began!");
 
                 _personRepository.Insert(new Person("Oğuzhan"));
+                _personRepository.Insert(new Person("Ekmek"));
                 _animalRepository.Insert(new Animal("Kuş"));
+                _animalRepository.Insert(new Animal("Kedi"));
 
                 _unitOfWorkManager.Current.SaveChanges();
 

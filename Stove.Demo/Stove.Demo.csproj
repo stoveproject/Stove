@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -69,11 +70,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DbContexes\PersonDbContext.cs" />
     <Compile Include="Entities\Animal.cs" />
-    <Compile Include="DbContexes\DemoStoveDbContext.cs" />
+    <Compile Include="DbContexes\AnimalDbContext.cs" />
     <Compile Include="Entities\Person.cs" />
     <Compile Include="Events\PersonCreatedEventHandler.cs" />
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SomeDomainService.cs" />

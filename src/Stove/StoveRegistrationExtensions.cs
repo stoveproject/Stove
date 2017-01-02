@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 
 using Autofac.Extras.IocManager;
 
@@ -11,9 +12,21 @@ namespace Stove
     {
         public static IIocBuilder UseStove(this IIocBuilder builder)
         {
+            RegisterDefaults(builder);
+            return builder;
+        }
+
+        private static void RegisterDefaults(IIocBuilder builder)
+        {
             builder.RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
             builder.RegisterServices(r => r.Register<IGuidGenerator>(context => SequentialGuidGenerator.Instance));
             builder.RegisterServices(r => r.Register<IStoveStartupConfiguration, StoveStartupConfiguration>(Lifetime.Singleton));
+        }
+
+        public static IIocBuilder UseStove(this IIocBuilder builder, Func<IStoveStartupConfiguration, IStoveStartupConfiguration> configurationAction)
+        {
+            RegisterDefaults(builder);
+            builder.RegisterServices(r => r.Register(context => configurationAction(new StoveStartupConfiguration(context.Resolver)), Lifetime.Singleton));
             return builder;
         }
 
