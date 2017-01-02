@@ -7,7 +7,7 @@ namespace Stove.Log
     /// <summary>
     ///     Implementation of ILogger, deriving from NLog.Logger
     /// </summary>
-    public class LoggerAdapter : ILogger 
+    public class LoggerAdapter : ILogger
     {
         private readonly Logger _logger;
 
@@ -29,45 +29,21 @@ namespace Stove.Log
             remove { _logger.LoggerReconfigured -= value; }
         }
 
-        public string Name
-        {
-            get { return _logger.Name; }
-        }
+        public string Name => _logger.Name;
 
-        public LogFactory Factory
-        {
-            get { return _logger.Factory; }
-        }
+        public LogFactory Factory => _logger.Factory;
 
-        public bool IsTraceEnabled
-        {
-            get { return _logger.IsTraceEnabled; }
-        }
+        public bool IsTraceEnabled => _logger.IsTraceEnabled;
 
-        public bool IsDebugEnabled
-        {
-            get { return _logger.IsDebugEnabled; }
-        }
+        public bool IsDebugEnabled => _logger.IsDebugEnabled;
 
-        public bool IsInfoEnabled
-        {
-            get { return _logger.IsInfoEnabled; }
-        }
+        public bool IsInfoEnabled => _logger.IsInfoEnabled;
 
-        public bool IsWarnEnabled
-        {
-            get { return _logger.IsWarnEnabled; }
-        }
+        public bool IsWarnEnabled => _logger.IsWarnEnabled;
 
-        public bool IsErrorEnabled
-        {
-            get { return _logger.IsErrorEnabled; }
-        }
+        public bool IsErrorEnabled => _logger.IsErrorEnabled;
 
-        public bool IsFatalEnabled
-        {
-            get { return _logger.IsErrorEnabled; }
-        }
+        public bool IsFatalEnabled => _logger.IsErrorEnabled;
 
         public bool IsEnabled(LogLevel level)
         {
@@ -96,7 +72,7 @@ namespace Stove.Log
 
         public void LogException(LogLevel level, string message, Exception exception)
         {
-            _logger.Log(level, message, exception);
+            _logger.Log(level, exception, message);
         }
 
         public void Log(LogLevel level, IFormatProvider formatProvider, string message, params object[] args)
@@ -156,7 +132,7 @@ namespace Stove.Log
 
         public void Trace(string message, Exception exception)
         {
-            _logger.Trace(message, exception);
+            _logger.Trace(exception, message);
         }
 
         public void Trace(IFormatProvider formatProvider, string message, params object[] args)
@@ -216,7 +192,7 @@ namespace Stove.Log
 
         public void Debug(string message, Exception exception)
         {
-            _logger.Debug(message, exception);
+            _logger.Debug(exception, message);
         }
 
         public void Debug(IFormatProvider formatProvider, string message, params object[] args)
@@ -276,7 +252,7 @@ namespace Stove.Log
 
         public void Info(string message, Exception exception)
         {
-            _logger.Info(message, exception);
+            _logger.Info(exception, message);
         }
 
         public void Info(IFormatProvider formatProvider, string message, params object[] args)
@@ -336,7 +312,7 @@ namespace Stove.Log
 
         public void Warn(string message, Exception exception)
         {
-            _logger.Warn(message, exception);
+            _logger.Warn(exception, message);
         }
 
         public void Warn(IFormatProvider formatProvider, string message, params object[] args)
@@ -396,7 +372,7 @@ namespace Stove.Log
 
         public void Error(string message, Exception exception)
         {
-            _logger.Error(message, exception);
+            _logger.Error(exception, message);
         }
 
         public void Error(IFormatProvider formatProvider, string message, params object[] args)
@@ -456,7 +432,7 @@ namespace Stove.Log
 
         public void Fatal(string message, Exception exception)
         {
-            _logger.Fatal(message, exception);
+            _logger.Fatal(exception, message);
         }
 
         public void Fatal(IFormatProvider formatProvider, string message, params object[] args)
