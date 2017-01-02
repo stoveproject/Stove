@@ -14,17 +14,17 @@ namespace Stove.Startables
     public class EventBusRegistrar : IStartable, ITransientDependency
     {
         private readonly IEventBus _eventBus;
-        private readonly IScopeResolver _scopeResolver;
+        private readonly IResolver _resolver;
 
         public EventBusRegistrar(IScopeResolver resolver, IEventBus eventBus)
         {
-            _scopeResolver = resolver;
+            _resolver = resolver;
             _eventBus = eventBus;
         }
 
         public void Start()
         {
-            List<Type> serviceTypes = _scopeResolver.GetRegisteredServices().ToList();
+            List<Type> serviceTypes = _resolver.GetRegisteredServices().ToList();
 
             if (!serviceTypes.Any(x => typeof(IEventHandler).IsAssignableFrom(x)))
             {
@@ -45,7 +45,7 @@ namespace Stove.Startables
                 Type[] genericArgs = @interface.GetGenericArguments();
                 if (genericArgs.Length == 1)
                 {
-                    _eventBus.Register(genericArgs[0], new IocHandlerFactory(_scopeResolver.BeginScope(), impl));
+                    _eventBus.Register(genericArgs[0], new IocHandlerFactory(_resolver, impl));
                 }
             }
         }

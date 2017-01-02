@@ -41,6 +41,8 @@ namespace Stove.Demo
                 _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan");
                 _animalRepository.FirstOrDefault(x => x.Name == "Kuş");
 
+                uow.Complete();
+
                 Logger.Debug("Uow End!");
             }
         }

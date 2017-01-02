@@ -1,9 +1,11 @@
-﻿using System.Reflection;
+﻿using System.Data.Entity;
+using System.Reflection;
 
 using Autofac.Extras.IocManager;
 
 using HibernatingRhinos.Profiler.Appender.EntityFramework;
 
+using Stove.Demo.DbContexes;
 using Stove.EntityFramework;
 using Stove.Log;
 
@@ -14,6 +16,8 @@ namespace Stove.Demo
         private static void Main(string[] args)
         {
             EntityFrameworkProfiler.Initialize();
+
+            //Database.SetInitializer(new CreateDatabaseIfNotExists<AnimalStoveDbContext>());
 
             IRootResolver resolver = IocBuilder.New
                                                .UseAutofacContainerBuilder()
@@ -28,8 +32,6 @@ namespace Stove.Demo
                                                .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()))
                                                .UseNLog()
                                                .CreateResolver();
-
-            //Database.SetInitializer(new CreateDatabaseIfNotExists<AnimalStoveDbContext>());
 
             var someDomainService = resolver.Resolve<SomeDomainService>();
             someDomainService.DoSomeStuff();

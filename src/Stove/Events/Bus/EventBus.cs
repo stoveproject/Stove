@@ -294,10 +294,6 @@ namespace Stove.Events.Bus
                     {
                         exceptions.Add(ex);
                     }
-                    finally
-                    {
-                        handlerFactory.ReleaseHandler(eventHandler);
-                    }
                 }
             }
 

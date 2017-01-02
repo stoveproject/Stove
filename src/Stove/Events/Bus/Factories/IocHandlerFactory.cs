@@ -12,17 +12,17 @@ namespace Stove.Events.Bus.Factories
     /// </summary>
     public class IocHandlerFactory : IEventHandlerFactory
     {
-        private readonly IScopeResolver _scopeResolver;
+        private readonly IResolver _resolver;
 
         /// <summary>
         ///     Creates a new instance of <see cref="IocHandlerFactory" /> class.
         /// </summary>
-        /// <param name="scopeResolver"></param>
+        /// <param name="resolver"></param>
         /// <param name="handlerType">Type of the handler</param>
-        public IocHandlerFactory(IScopeResolver scopeResolver, Type handlerType)
+        public IocHandlerFactory(IResolver resolver, Type handlerType)
         {
-            _scopeResolver = scopeResolver;
             HandlerType = handlerType;
+            _resolver = resolver;
         }
 
         /// <summary>
@@ -36,16 +36,7 @@ namespace Stove.Events.Bus.Factories
         /// <returns>Resolved handler object</returns>
         public IEventHandler GetHandler()
         {
-            return (IEventHandler)_scopeResolver.Resolve(HandlerType);
-        }
-
-        /// <summary>
-        ///     Releases handler object using Ioc container.
-        /// </summary>
-        /// <param name="handler">Handler to be released</param>
-        public void ReleaseHandler(IEventHandler handler)
-        {
-            _scopeResolver.Dispose();
+            return (IEventHandler)_resolver.Resolve(HandlerType);
         }
     }
 }
