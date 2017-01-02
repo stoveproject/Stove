@@ -70,6 +70,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DbContexes\DbContextConfigurer.cs" />
     <Compile Include="DbContexes\PersonDbContext.cs" />
     <Compile Include="Entities\Animal.cs" />
     <Compile Include="DbContexes\AnimalDbContext.cs" />

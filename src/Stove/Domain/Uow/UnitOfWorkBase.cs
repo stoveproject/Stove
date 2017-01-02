@@ -294,9 +294,9 @@ namespace Stove.Domain.Uow
             FilterExecuter.ApplyFilterParameterValue(this, filterName, parameterName, value);
         }
 
-        protected virtual string ResolveConnectionString()
+        protected virtual string ResolveConnectionString<TDbContext>()
         {
-            return ConnectionStringResolver.GetNameOrConnectionString();
+            return ConnectionStringResolver.GetNameOrConnectionString<TDbContext>();
         }
 
         /// <summary>

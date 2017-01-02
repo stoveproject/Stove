@@ -164,10 +164,6 @@ namespace Stove.EntityFramework.EntityFramework
                     CheckAndSetId(entry.Entity);
                     SetCreationAuditProperties(entry.Entity, GetAuditUserId());
                     break;
-
-                //case EntityState.Deleted: //It's not going here at all
-                //    SetDeletionAuditProperties(entry.Entity, GetAuditUserId());
-                //    break;
             }
         }
 

@@ -1,6 +1,4 @@
-﻿using System;
-
-using Autofac.Extras.IocManager;
+﻿using Autofac.Extras.IocManager;
 
 using Stove.Demo.Entities;
 using Stove.Domain.Repositories;
@@ -33,15 +31,16 @@ namespace Stove.Demo
 
                 _personRepository.Insert(new Person("Oğuzhan"));
                 _personRepository.Insert(new Person("Ekmek"));
+
                 _animalRepository.Insert(new Animal("Kuş"));
                 _animalRepository.Insert(new Animal("Kedi"));
 
                 _unitOfWorkManager.Current.SaveChanges();
 
-                _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan");
-                _animalRepository.FirstOrDefault(x => x.Name == "Kuş");
+                Person person = _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan");
+                Animal animal = _animalRepository.FirstOrDefault(x => x.Name == "Kuş");
 
-                uow.Complete();
+                //uow.Complete();
 
                 Logger.Debug("Uow End!");
             }

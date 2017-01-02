@@ -1,4 +1,7 @@
-﻿using Autofac.Extras.IocManager;
+﻿using System;
+using System.Collections.Generic;
+
+using Autofac.Extras.IocManager;
 
 using Stove.Domain.Uow;
 
@@ -18,5 +21,13 @@ namespace Stove.Configuration
         ///     Used to configure unit of work defaults.
         /// </summary>
         IUnitOfWorkDefaultOptions UnitOfWork { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the typed connection strings.
+        /// </summary>
+        /// <value>
+        ///     The typed connection strings.
+        /// </value>
+        Dictionary<Type, string> TypedConnectionStrings { get; set; }
     }
 }

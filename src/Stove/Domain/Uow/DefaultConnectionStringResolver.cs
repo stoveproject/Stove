@@ -24,12 +24,18 @@ namespace Stove.Domain.Uow
             _configuration = configuration;
         }
 
-        public virtual string GetNameOrConnectionString()
+        public virtual string GetNameOrConnectionString<TDbContext>()
         {
-            string defaultConnectionString = _configuration.DefaultNameOrConnectionString;
-            if (!string.IsNullOrWhiteSpace(defaultConnectionString))
+            string connectionString;
+            if (_configuration.TypedConnectionStrings.TryGetValue(typeof(TDbContext), out connectionString))
             {
-                return defaultConnectionString;
+                return connectionString;
+            }
+
+            connectionString = _configuration.DefaultNameOrConnectionString;
+            if (!string.IsNullOrWhiteSpace(connectionString))
+            {
+                return connectionString;
             }
 
             if (ConfigurationManager.ConnectionStrings["Default"] != null)

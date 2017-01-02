@@ -1,24 +1,23 @@
 ﻿using System;
 
-using Autofac;
-using Autofac.Extras.IocManager;
-
 using FluentAssemblyScanner;
 
+using Stove.Configuration;
+using Stove.Configuration.Configurers;
 using Stove.EntityFramework.EntityFramework;
 
-namespace Stove.EntityFramework.Startables
+namespace Stove.EntityFramework.Configurer
 {
-    public class DbContextPopulator : IStartable, ITransientDependency
+    public class DbContextPopulator : StoveConfigurer
     {
         private readonly IDbContextTypeMatcher _dbContextTypeMatcher;
 
-        public DbContextPopulator(IDbContextTypeMatcher dbContextTypeMatcher)
+        public DbContextPopulator(IStoveStartupConfiguration configuration, IDbContextTypeMatcher dbContextTypeMatcher) : base(configuration)
         {
             _dbContextTypeMatcher = dbContextTypeMatcher;
         }
 
-        public void Start()
+        public override void Start()
         {
             Type[] dbContextTypes = AssemblyScanner.FromAssemblyInDirectory(new AssemblyFilter(string.Empty))
                                                    .BasedOn<StoveDbContext>()

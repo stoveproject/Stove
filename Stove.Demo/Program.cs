@@ -17,15 +17,12 @@ namespace Stove.Demo
         {
             EntityFrameworkProfiler.Initialize();
 
-            //Database.SetInitializer(new CreateDatabaseIfNotExists<AnimalStoveDbContext>());
+            Database.SetInitializer(new NullDatabaseInitializer<AnimalStoveDbContext>());
+            Database.SetInitializer(new NullDatabaseInitializer<PersonStoveDbContext>());
 
             IRootResolver resolver = IocBuilder.New
                                                .UseAutofacContainerBuilder()
-                                               .UseStove(configuration =>
-                                               {
-                                                   configuration.DefaultNameOrConnectionString = "Default";
-                                                   return configuration;
-                                               })
+                                               .UseStove()
                                                .UseEntityFramework()
                                                .UseDefaultEventBus()
                                                .UseDbContextEfTransactionStrategy()

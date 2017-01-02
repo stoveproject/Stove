@@ -71,7 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EfRepositoryRegistrar.cs" />
-    <Compile Include="Startables\DbContextPopulator.cs" />
+    <Compile Include="Configurer\DbContextPopulator.cs" />
     <Compile Include="EntityFramework\StoveDbContext.cs" />
     <Compile Include="EntityFramework\AutoRepositoryTypesAttribute.cs" />
     <Compile Include="EntityFramework\DbContextHelper.cs" />

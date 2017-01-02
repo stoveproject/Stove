@@ -1,4 +1,7 @@
-﻿using Autofac;
+﻿using System;
+using System.Collections.Generic;
+
+using Autofac;
 using Autofac.Extras.IocManager;
 
 using Stove.Domain.Uow;
@@ -10,6 +13,7 @@ namespace Stove.Configuration
         public StoveStartupConfiguration(IResolver resolver)
         {
             Resolver = resolver;
+            TypedConnectionStrings = new Dictionary<Type, string>();
         }
 
         public void Start()
@@ -22,6 +26,8 @@ namespace Stove.Configuration
         public string DefaultNameOrConnectionString { get; set; }
 
         public IUnitOfWorkDefaultOptions UnitOfWork { get; set; }
+
+        public Dictionary<Type, string> TypedConnectionStrings { get; set; }
 
         public T Get<T>()
         {

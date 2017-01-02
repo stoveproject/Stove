@@ -2,27 +2,30 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Autofac;
 using Autofac.Extras.IocManager;
 
+using Stove.Configuration;
+using Stove.Configuration.Configurers;
 using Stove.Events.Bus;
 using Stove.Events.Bus.Factories;
 using Stove.Events.Bus.Handlers;
 
-namespace Stove.Startables
+namespace Stove.Events
 {
-    public class EventBusRegistrar : IStartable, ITransientDependency
+    public class EventBusConfigurer : StoveConfigurer
     {
         private readonly IEventBus _eventBus;
         private readonly IResolver _resolver;
 
-        public EventBusRegistrar(IScopeResolver resolver, IEventBus eventBus)
+        public EventBusConfigurer(IStoveStartupConfiguration configuration,
+            IResolver resolver,
+            IEventBus eventBus) : base(configuration)
         {
             _resolver = resolver;
             _eventBus = eventBus;
         }
 
-        public void Start()
+        public override void Start()
         {
             List<Type> serviceTypes = _resolver.GetRegisteredServices().ToList();
 

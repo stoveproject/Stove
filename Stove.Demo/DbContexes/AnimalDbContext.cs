@@ -7,6 +7,10 @@ namespace Stove.Demo.DbContexes
 {
     public class AnimalStoveDbContext : StoveDbContext
     {
+        public AnimalStoveDbContext() : base("Animal")
+        {
+        }
+
         public virtual IDbSet<Animal> Animals { get; set; }
     }
 }
