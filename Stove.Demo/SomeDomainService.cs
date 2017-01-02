@@ -1,8 +1,10 @@
 ﻿using Autofac.Extras.IocManager;
 
+using Stove.Demo.DbContexes;
 using Stove.Demo.Entities;
 using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
+using Stove.EntityFramework.EntityFramework;
 using Stove.Log;
 
 namespace Stove.Demo
@@ -12,12 +14,18 @@ namespace Stove.Demo
         private readonly IRepository<Animal> _animalRepository;
         private readonly IRepository<Person> _personRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
+        private readonly IDbContextProvider<AnimalStoveDbContext> _animalDbContextProvider;
 
-        public SomeDomainService(IRepository<Person> personRepository, IRepository<Animal> animalRepository, IUnitOfWorkManager unitOfWorkManager)
+        public SomeDomainService(
+            IRepository<Person> personRepository, 
+            IRepository<Animal> animalRepository, 
+            IUnitOfWorkManager unitOfWorkManager,
+            IDbContextProvider<AnimalStoveDbContext> animalDbContextProvider)
         {
             _personRepository = personRepository;
             _animalRepository = animalRepository;
             _unitOfWorkManager = unitOfWorkManager;
+            _animalDbContextProvider = animalDbContextProvider;
             Logger = NullLogger.Instance;
         }
 
@@ -34,6 +42,8 @@ namespace Stove.Demo
 
                 _animalRepository.Insert(new Animal("Kuş"));
                 _animalRepository.Insert(new Animal("Kedi"));
+
+                _animalDbContextProvider.GetDbContext().Animals.Add(new Animal("Kelebek"));
 
                 _unitOfWorkManager.Current.SaveChanges();
 
