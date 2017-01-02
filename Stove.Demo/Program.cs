@@ -7,6 +7,7 @@ using HibernatingRhinos.Profiler.Appender.EntityFramework;
 
 using Stove.Demo.DbContexes;
 using Stove.EntityFramework;
+using Stove.Log;
 
 namespace Stove.Demo
 {
@@ -23,6 +24,7 @@ namespace Stove.Demo
                                                .UseDefaultEventBus()
                                                .UseDbContextEfTransactionStrategy()
                                                .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()))
+                                               .UseNLog()
                                                .CreateResolver();
 
             Database.SetInitializer(new CreateDatabaseIfNotExists<DemoStoveDbContext>());
