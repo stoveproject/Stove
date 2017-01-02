@@ -62,6 +62,10 @@
       <HintPath>..\packages\Nito.AsyncEx.3.0.1\lib\net45\Nito.AsyncEx.Enlightenment.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NLog.4.4.1\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable, Version=1.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Collections.Immutable.1.3.0\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
@@ -137,6 +141,10 @@
     <Compile Include="Domain\Entities\IEntityOfTPrimaryKey.cs" />
     <Compile Include="Domain\Entities\IPassivable.cs" />
     <Compile Include="Domain\Entities\ISoftDelete.cs" />
+    <Compile Include="Log\LoggerAdapter.cs" />
+    <Compile Include="Log\NLogRegistrationExtensions.cs" />
+    <Compile Include="Log\NLogRegistrarModule.cs" />
+    <Compile Include="Log\NullLogger.cs" />
     <Compile Include="Startables\EventBusRegistrar.cs" />
     <Compile Include="Events\Bus\Entities\DomainEventEntry.cs" />
     <Compile Include="Events\Bus\Entities\EntityChangedEventData.cs" />
@@ -185,7 +193,6 @@
     <Compile Include="Linq\IAsyncQueryableExecuter.cs" />
     <Compile Include="Linq\NullAsyncQueryableExecuter.cs" />
     <Compile Include="Log\ILogger.cs" />
-    <Compile Include="Log\NullLogger.cs" />
     <Compile Include="NameValue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reflection\Extensions\MemberInfoExtensions.cs" />
