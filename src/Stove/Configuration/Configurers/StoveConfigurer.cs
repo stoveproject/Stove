@@ -5,12 +5,7 @@ namespace Stove.Configuration.Configurers
 {
     public abstract class StoveConfigurer : IStartable, ITransientDependency
     {
-        protected StoveConfigurer(IStoveStartupConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
-        public IStoveStartupConfiguration Configuration { get; }
+        public IStoveStartupConfiguration Configuration { get; set; }
 
         public abstract void Start();
     }

@@ -4,7 +4,6 @@ using System.Linq;
 
 using Autofac.Extras.IocManager;
 
-using Stove.Configuration;
 using Stove.Configuration.Configurers;
 using Stove.Events.Bus;
 using Stove.Events.Bus.Factories;
@@ -17,9 +16,7 @@ namespace Stove.Events
         private readonly IEventBus _eventBus;
         private readonly IResolver _resolver;
 
-        public EventBusConfigurer(IStoveStartupConfiguration configuration,
-            IResolver resolver,
-            IEventBus eventBus) : base(configuration)
+        public EventBusConfigurer(IResolver resolver, IEventBus eventBus)
         {
             _resolver = resolver;
             _eventBus = eventBus;
