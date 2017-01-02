@@ -144,11 +144,6 @@ namespace Stove.EntityFramework.EntityFramework.Uow
             ActiveDbContexts.Clear();
         }
 
-        public override void Rollback()
-        {
-            _transactionStrategy.Rollback();
-        }
-
         protected virtual void SaveChangesInDbContext(DbContext dbContext)
         {
             dbContext.SaveChanges();

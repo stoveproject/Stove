@@ -63,13 +63,5 @@ namespace Stove.EntityFramework.EntityFramework.Uow
 
             ActiveTransactions.Clear();
         }
-
-        public void Rollback()
-        {
-            foreach (ActiveTransactionInfo activeTransaction in ActiveTransactions.Values)
-            {
-                activeTransaction.DbContextTransaction.Rollback();
-            }
-        }
     }
 }

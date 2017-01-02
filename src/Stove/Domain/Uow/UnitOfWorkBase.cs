@@ -251,15 +251,10 @@ namespace Stove.Domain.Uow
             if (!_succeed)
             {
                 OnFailed(_exception);
-                Rollback();
             }
 
             DisposeUow();
             OnDisposed();
-        }
-
-        public virtual void Rollback()
-        {
         }
 
         /// <summary>

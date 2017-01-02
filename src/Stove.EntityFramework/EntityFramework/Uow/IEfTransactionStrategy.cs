@@ -13,7 +13,5 @@ namespace Stove.EntityFramework.EntityFramework.Uow
         void InitDbContext(DbContext dbContext, string connectionString);
 
         void Dispose();
-
-        void Rollback();
     }
 }

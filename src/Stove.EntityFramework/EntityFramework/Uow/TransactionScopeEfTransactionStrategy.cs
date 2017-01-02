@@ -44,11 +44,6 @@ namespace Stove.EntityFramework.EntityFramework.Uow
             }
         }
 
-        public void Rollback()
-        {
-            //Rollacked by Dispose!
-        }
-
         private void EnsureCurrentTransactionInitialized()
         {
             if (CurrentTransaction != null)
