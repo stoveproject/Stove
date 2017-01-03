@@ -1,6 +1,5 @@
+using System;
 using System.Configuration;
-
-using Autofac.Extras.IocManager;
 
 using Stove.Configuration;
 
@@ -12,7 +11,7 @@ namespace Stove.Domain.Uow
     ///     or "Default" connection string in config file,
     ///     or single connection string in config file.
     /// </summary>
-    public class DefaultConnectionStringResolver : IConnectionStringResolver, ITransientDependency
+    public class DefaultConnectionStringResolver : IConnectionStringResolver
     {
         private readonly IStoveStartupConfiguration _configuration;
 
@@ -24,18 +23,17 @@ namespace Stove.Domain.Uow
             _configuration = configuration;
         }
 
-        public virtual string GetNameOrConnectionString<TDbContext>()
+        public virtual string GetNameOrConnectionString(ConnectionStringResolveArgs args)
         {
-            string connectionString;
-            if (_configuration.TypedConnectionStrings.TryGetValue(typeof(TDbContext), out connectionString))
+            if (args == null)
             {
-                return connectionString;
+                throw new ArgumentNullException(nameof(args));
             }
 
-            connectionString = _configuration.DefaultNameOrConnectionString;
-            if (!string.IsNullOrWhiteSpace(connectionString))
+            string defaultConnectionString = _configuration.DefaultNameOrConnectionString;
+            if (!string.IsNullOrWhiteSpace(defaultConnectionString))
             {
-                return connectionString;
+                return defaultConnectionString;
             }
 
             if (ConfigurationManager.ConnectionStrings["Default"] != null)

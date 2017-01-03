@@ -103,7 +103,10 @@ namespace Stove.EntityFramework.EntityFramework.Uow
         {
             Type concreteDbContextType = _dbContextTypeMatcher.GetConcreteType(typeof(TDbContext));
 
-            string connectionString = ResolveConnectionString<TDbContext>();
+            var connectionStringResolveArgs = new ConnectionStringResolveArgs();
+            connectionStringResolveArgs["DbContextType"] = typeof(TDbContext);
+            connectionStringResolveArgs["DbContextConcreteType"] = concreteDbContextType;
+            string connectionString = ResolveConnectionString(connectionStringResolveArgs);
 
             string dbContextKey = concreteDbContextType.FullName + "#" + connectionString;
 
