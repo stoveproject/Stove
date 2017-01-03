@@ -23,12 +23,6 @@ namespace Stove
             builder.RegisterServices(r => r.Register<IStoveStartupConfiguration, StoveStartupConfiguration>(Lifetime.Singleton));
         }
 
-        public static IIocBuilder UseTypedConnectionStringResolver(this IIocBuilder builder)
-        {
-            builder.RegisterServices(r => r.Register<IConnectionStringResolver, TypedConnectionStringResolver>());
-            return builder;
-        }
-
         public static IIocBuilder UseDefaultConnectionStringResolver(this IIocBuilder builder)
         {
             builder.RegisterServices(r => r.Register<IConnectionStringResolver, DefaultConnectionStringResolver>());

@@ -26,11 +26,12 @@ namespace Stove.Demo
                                                .UseStoveEntityFramework()
                                                .UseDefaultEventBus()
                                                .UseDbContextEfTransactionStrategy()
+                                               //.UseTransacitonScopeEfTransactionStrategy()
                                                .UseTypedConnectionStringResolver()
-                                               .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()))
                                                .UseNLog()
+                                               .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()))
                                                .CreateResolver();
-
+            var a = new AnimalStoveDbContext();
             var someDomainService = resolver.Resolve<SomeDomainService>();
             someDomainService.DoSomeStuff();
         }

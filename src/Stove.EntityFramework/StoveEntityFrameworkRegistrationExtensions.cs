@@ -33,6 +33,12 @@ namespace Stove.EntityFramework
             return builder;
         }
 
+        public static IIocBuilder UseTypedConnectionStringResolver(this IIocBuilder builder)
+        {
+            builder.RegisterServices(r => r.Register<IConnectionStringResolver, TypedConnectionStringResolver>());
+            return builder;
+        }
+        
         public static IIocBuilder UseTransacitonScopeEfTransactionStrategy(this IIocBuilder builder)
         {
             builder.RegisterServices(r => r.Register<IEfTransactionStrategy, TransactionScopeEfTransactionStrategy>());

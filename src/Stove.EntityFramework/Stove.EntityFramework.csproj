@@ -98,6 +98,7 @@
     <Compile Include="EntityFramework\Uow\IEfTransactionStrategy.cs" />
     <Compile Include="EntityFramework\Uow\IEfUnitOfWorkFilterExecuter.cs" />
     <Compile Include="EntityFramework\Uow\TransactionScopeEfTransactionStrategy.cs" />
+    <Compile Include="EntityFramework\Uow\TypedConnectionStringResolver.cs" />
     <Compile Include="EntityFramework\Uow\UnitOfWorkDbContextProvider.cs" />
     <Compile Include="EntityFramework\Uow\UnitOfWorkExtensions.cs" />
     <Compile Include="EntityFramework\Utils\DateTimePropertyInfoHelper.cs" />

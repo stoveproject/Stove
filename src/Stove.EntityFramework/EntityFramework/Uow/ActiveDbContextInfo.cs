@@ -4,11 +4,14 @@ namespace Stove.EntityFramework.EntityFramework.Uow
 {
     public class ActiveDbContextInfo
     {
-        public DbContext DbContext { get; }
-
-        public ActiveDbContextInfo(DbContext dbContext)
+        public ActiveDbContextInfo(DbContext dbContext, string nameOrConnectionString)
         {
             DbContext = dbContext;
+            NameOrConnectionString = nameOrConnectionString;
         }
+
+        public DbContext DbContext { get; }
+
+        public string NameOrConnectionString { get; }
     }
 }

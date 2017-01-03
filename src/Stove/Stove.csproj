@@ -143,7 +143,6 @@
     <Compile Include="Domain\Entities\ISoftDelete.cs" />
     <Compile Include="Domain\FilterRegistrationConfigurer.cs" />
     <Compile Include="Domain\Uow\ConnectionStringResolveArgs.cs" />
-    <Compile Include="Domain\Uow\TypedConnectionStringResolver.cs" />
     <Compile Include="Log\LoggerAdapter.cs" />
     <Compile Include="Log\NLogRegistrationExtensions.cs" />
     <Compile Include="Log\NLogRegistrarModule.cs" />

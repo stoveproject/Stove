@@ -1,4 +1,5 @@
 using System;
+using System.Data.Common;
 
 using Autofac.Extras.IocManager;
 
@@ -31,6 +32,25 @@ namespace Stove.EntityFramework.EntityFramework
             return (TDbContext)_scopeResolver.Resolve(concreteType, new
             {
                 nameOrConnectionString = connectionString
+            });
+        }
+
+        public TDbContext Resolve<TDbContext>(DbConnection existingConnection)
+        {
+            Type dbContextType = typeof(TDbContext);
+
+            if (!dbContextType.IsAbstract)
+            {
+                return _scopeResolver.Resolve<TDbContext>(new
+                {
+                    existingConnection
+                });
+            }
+
+            Type concreteType = _dbContextTypeMatcher.GetConcreteType(dbContextType);
+            return (TDbContext)_scopeResolver.Resolve(concreteType, new
+            {
+                existingConnection
             });
         }
     }

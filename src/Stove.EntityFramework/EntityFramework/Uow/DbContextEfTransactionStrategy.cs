@@ -34,8 +34,7 @@ namespace Stove.EntityFramework.EntityFramework.Uow
 
         public void InitDbContext(DbContext dbContext, string connectionString)
         {
-            string activeTransactionKey = $"{dbContext.GetType().FullName}#{connectionString}";
-            ActiveTransactionInfo activeTransaction = ActiveTransactions.GetOrDefault(activeTransactionKey);
+            ActiveTransactionInfo activeTransaction = ActiveTransactions.GetOrDefault(connectionString);
             if (activeTransaction == null)
             {
                 activeTransaction = new ActiveTransactionInfo(
@@ -45,13 +44,18 @@ namespace Stove.EntityFramework.EntityFramework.Uow
                     dbContext
                 );
 
-                ActiveTransactions[activeTransactionKey] = activeTransaction;
+                ActiveTransactions[connectionString] = activeTransaction;
             }
             else
             {
                 dbContext.Database.UseTransaction(activeTransaction.DbContextTransaction.UnderlyingTransaction);
                 activeTransaction.AttendedDbContexts.Add(dbContext);
             }
+        }
+
+        public ActiveTransactionInfo GetActiveTransaction<TDbContext>(string connectionString) where TDbContext : DbContext
+        {
+            return ActiveTransactions.GetOrDefault(connectionString);
         }
 
         public void Dispose()

@@ -113,7 +113,15 @@ namespace Stove.EntityFramework.EntityFramework.Uow
             DbContext dbContext;
             if (!ActiveDbContexts.TryGetValue(dbContextKey, out dbContext))
             {
-                dbContext = _dbContextResolver.Resolve<TDbContext>(connectionString);
+                ActiveTransactionInfo activeTransaction = _transactionStrategy.GetActiveTransaction<TDbContext>(connectionString);
+                if (Options.IsTransactional == true && activeTransaction != null)
+                {
+                    dbContext = _dbContextResolver.Resolve<TDbContext>(activeTransaction.DbContextTransaction.UnderlyingTransaction.Connection);
+                }
+                else
+                {
+                    dbContext = _dbContextResolver.Resolve<TDbContext>(connectionString);
+                }
 
                 ((IObjectContextAdapter)dbContext).ObjectContext.ObjectMaterialized += (sender, args) => { ObjectContext_ObjectMaterialized(dbContext, args); };
 

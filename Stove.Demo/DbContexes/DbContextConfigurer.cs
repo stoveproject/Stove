@@ -6,8 +6,8 @@ namespace Stove.Demo.DbContexes
     {
         public override void Start()
         {
-            Configuration.TypedConnectionStrings.Add(typeof(AnimalStoveDbContext), "Animal");
-            Configuration.TypedConnectionStrings.Add(typeof(PersonStoveDbContext), "Person");
+            Configuration.TypedConnectionStrings.Add(typeof(AnimalStoveDbContext), "Default");
+            Configuration.TypedConnectionStrings.Add(typeof(PersonStoveDbContext), "Default");
         }
     }
 }

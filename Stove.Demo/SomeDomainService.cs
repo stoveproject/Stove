@@ -50,7 +50,7 @@ namespace Stove.Demo
                 Person person = _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan");
                 Animal animal = _animalRepository.FirstOrDefault(x => x.Name == "Kuş");
 
-                //uow.Complete();
+                uow.Complete();
 
                 Logger.Debug("Uow End!");
             }

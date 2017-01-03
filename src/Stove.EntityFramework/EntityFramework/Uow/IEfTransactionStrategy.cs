@@ -13,5 +13,7 @@ namespace Stove.EntityFramework.EntityFramework.Uow
         void InitDbContext(DbContext dbContext, string connectionString);
 
         void Dispose();
+
+        ActiveTransactionInfo GetActiveTransaction<TDbContext>(string connectionString) where TDbContext : DbContext;
     }
 }
