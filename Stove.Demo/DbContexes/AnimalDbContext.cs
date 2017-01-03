@@ -12,7 +12,7 @@ namespace Stove.Demo.DbContexes
         {
         }
 
-        public AnimalStoveDbContext(DbConnection existingConnection) : base(existingConnection, true)
+        public AnimalStoveDbContext(DbConnection existingConnection) : base(existingConnection, false)
         {
         }
 
