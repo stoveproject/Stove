@@ -31,7 +31,7 @@ namespace Stove.Demo
                                                .UseNLog()
                                                .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()))
                                                .CreateResolver();
-            var a = new AnimalStoveDbContext();
+
             var someDomainService = resolver.Resolve<SomeDomainService>();
             someDomainService.DoSomeStuff();
         }
