@@ -2,14 +2,14 @@
 
 using Autofac.Extras.IocManager;
 
-namespace Stove.Tests
+namespace Stove.TestBase
 {
-    public abstract class TestBaseWithLocalIoc
+    public abstract class TestBaseWithLocalIocResolver
     {
         protected IIocBuilder IocBuilder;
         protected IRootResolver LocalResolver;
 
-        protected TestBaseWithLocalIoc()
+        protected TestBaseWithLocalIocResolver()
         {
             IocBuilder = Autofac.Extras.IocManager.IocBuilder.New
                                 .UseAutofacContainerBuilder();

@@ -113,10 +113,9 @@ namespace Stove.EntityFramework.EntityFramework.Uow
             DbContext dbContext;
             if (!ActiveDbContexts.TryGetValue(dbContextKey, out dbContext))
             {
-                ActiveTransactionInfo activeTransaction = _transactionStrategy.GetActiveTransaction<TDbContext>(connectionString);
-                if (Options.IsTransactional == true && activeTransaction != null)
+                if (Options.IsTransactional == true)
                 {
-                    dbContext = _dbContextResolver.Resolve<TDbContext>(activeTransaction.DbContextTransaction.UnderlyingTransaction.Connection);
+                    dbContext = _transactionStrategy.CreateDbContext<TDbContext>(connectionString, _dbContextResolver);
                 }
                 else
                 {
@@ -126,11 +125,6 @@ namespace Stove.EntityFramework.EntityFramework.Uow
                 ((IObjectContextAdapter)dbContext).ObjectContext.ObjectMaterialized += (sender, args) => { ObjectContext_ObjectMaterialized(dbContext, args); };
 
                 FilterExecuter.As<IEfUnitOfWorkFilterExecuter>().ApplyCurrentFilters(this, dbContext);
-
-                if (Options.IsTransactional == true)
-                {
-                    _transactionStrategy.InitDbContext(dbContext, connectionString);
-                }
 
                 ActiveDbContexts[dbContextKey] = dbContext;
             }

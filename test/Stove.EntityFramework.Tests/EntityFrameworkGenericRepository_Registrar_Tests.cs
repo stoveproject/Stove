@@ -9,13 +9,13 @@ using Stove.Domain.Entities;
 using Stove.Domain.Repositories;
 using Stove.EntityFramework.EntityFramework;
 using Stove.EntityFramework.EntityFramework.Repositories;
-using Stove.Tests;
+using Stove.TestBase;
 
 using Xunit;
 
 namespace Stove.EntityFramework.Tests
 {
-    public class EntityFrameworkGenericRepositoryRegistrar_Tests : TestBaseWithLocalIoc
+    public class EntityFrameworkGenericRepositoryRegistrar_Tests : TestBaseWithLocalIocResolver
     {
         public EntityFrameworkGenericRepositoryRegistrar_Tests()
         {

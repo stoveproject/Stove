@@ -6,6 +6,6 @@ namespace Stove.EntityFramework.EntityFramework
     {
         TDbContext Resolve<TDbContext>(string connectionString);
 
-        TDbContext Resolve<TDbContext>(DbConnection existingConnection);
+        TDbContext Resolve<TDbContext>(DbConnection existingConnection, bool contextOwnsConnection);
     }
 }

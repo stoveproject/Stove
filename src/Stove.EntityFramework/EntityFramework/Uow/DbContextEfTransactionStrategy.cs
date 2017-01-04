@@ -37,13 +37,8 @@ namespace Stove.EntityFramework.EntityFramework.Uow
             ActiveTransactionInfo activeTransaction = ActiveTransactions.GetOrDefault(connectionString);
             if (activeTransaction == null)
             {
-                activeTransaction = new ActiveTransactionInfo(
-                    dbContext.Database.BeginTransaction(
-                        (Options.IsolationLevel ?? IsolationLevel.ReadUncommitted).ToSystemDataIsolationLevel()
-                    ),
-                    dbContext
-                );
-
+                DbContextTransaction dbtransaction = dbContext.Database.BeginTransaction((Options.IsolationLevel ?? IsolationLevel.ReadUncommitted).ToSystemDataIsolationLevel());
+                activeTransaction = new ActiveTransactionInfo(dbtransaction, dbContext);
                 ActiveTransactions[connectionString] = activeTransaction;
             }
             else
@@ -67,6 +62,27 @@ namespace Stove.EntityFramework.EntityFramework.Uow
             }
 
             ActiveTransactions.Clear();
+        }
+
+        public DbContext CreateDbContext<TDbContext>(string connectionString, IDbContextResolver dbContextResolver) where TDbContext : DbContext
+        {
+            DbContext dbContext;
+
+            var activeTransaction = ActiveTransactions.GetOrDefault(connectionString);
+            if (activeTransaction == null)
+            {
+                dbContext = dbContextResolver.Resolve<TDbContext>(connectionString);
+                var dbtransaction = dbContext.Database.BeginTransaction((Options.IsolationLevel ?? IsolationLevel.ReadUncommitted).ToSystemDataIsolationLevel());
+                activeTransaction = new ActiveTransactionInfo(dbtransaction, dbContext);
+                ActiveTransactions[connectionString] = activeTransaction;
+            }
+            else
+            {
+                dbContext = dbContextResolver.Resolve<TDbContext>(activeTransaction.DbContextTransaction.UnderlyingTransaction.Connection, false);
+                activeTransaction.AttendedDbContexts.Add(dbContext);
+            }
+
+            return dbContext;
         }
     }
 }

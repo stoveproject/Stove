@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Stove.EntityFramework.Tests</RootNamespace>
     <AssemblyName>Stove.EntityFramework.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -98,9 +99,9 @@
       <Project>{11006B8D-F644-45FA-AEDA-06ABFACE0B79}</Project>
       <Name>Stove.EntityFramework</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Stove.Tests\Stove.Tests.csproj">
+    <ProjectReference Include="..\Stove.TestBase\Stove.TestBase.csproj">
       <Project>{97EBAAAF-EB2F-4700-84F0-E27922ADFD4C}</Project>
-      <Name>Stove.Tests</Name>
+      <Name>Stove.TestBase</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\Stove\Stove.csproj">
       <Project>{82AD5A75-1860-427B-843F-892324D20A76}</Project>

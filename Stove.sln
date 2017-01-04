@@ -9,13 +9,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stove.EntityFramework", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stove.Demo", "Stove.Demo\Stove.Demo.csproj", "{53CA9367-14F4-4AA0-8745-412B8571FC8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stove.Tests", "test\Stove.Tests\Stove.Tests.csproj", "{97EBAAAF-EB2F-4700-84F0-E27922ADFD4C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stove.TestBase", "test\Stove.TestBase\Stove.TestBase.csproj", "{97EBAAAF-EB2F-4700-84F0-E27922ADFD4C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{4D2BAE52-1E23-4321-BBE6-2BAC28F7B389}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{23CB5044-8ECE-4DDC-89E0-FC1B8EC9DDDF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stove.EntityFramework.Tests", "test\Stove.EntityFramework.Tests\Stove.EntityFramework.Tests.csproj", "{5A2A6E9E-7704-4D9E-B0C6-C528EAA5D79F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stove.Tests", "test\Stove.Tests\Stove.Tests.csproj", "{F157FE21-283D-4B0E-BB28-89125017A3A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +45,10 @@ Global
 		{5A2A6E9E-7704-4D9E-B0C6-C528EAA5D79F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A2A6E9E-7704-4D9E-B0C6-C528EAA5D79F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A2A6E9E-7704-4D9E-B0C6-C528EAA5D79F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F157FE21-283D-4B0E-BB28-89125017A3A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F157FE21-283D-4B0E-BB28-89125017A3A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F157FE21-283D-4B0E-BB28-89125017A3A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F157FE21-283D-4B0E-BB28-89125017A3A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -52,5 +58,6 @@ Global
 		{11006B8D-F644-45FA-AEDA-06ABFACE0B79} = {23CB5044-8ECE-4DDC-89E0-FC1B8EC9DDDF}
 		{97EBAAAF-EB2F-4700-84F0-E27922ADFD4C} = {4D2BAE52-1E23-4321-BBE6-2BAC28F7B389}
 		{5A2A6E9E-7704-4D9E-B0C6-C528EAA5D79F} = {4D2BAE52-1E23-4321-BBE6-2BAC28F7B389}
+		{F157FE21-283D-4B0E-BB28-89125017A3A2} = {4D2BAE52-1E23-4321-BBE6-2BAC28F7B389}
 	EndGlobalSection
 EndGlobal

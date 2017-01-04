@@ -7,13 +7,13 @@ using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
 using Stove.EntityFramework.EntityFramework;
 using Stove.EntityFramework.EntityFramework.Repositories;
-using Stove.Tests;
+using Stove.TestBase;
 
 using Xunit;
 
 namespace Stove.EntityFramework.Tests
 {
-    public class DbContextTypeMatcher_Tests : TestBaseWithLocalIoc
+    public class DbContextTypeMatcher_Tests : TestBaseWithLocalIocResolver
     {
         private readonly DbContextTypeMatcher matcher;
 
