@@ -50,6 +50,10 @@
       <HintPath>..\..\packages\FluentAssemblyScanner.1.0.5\lib\net452\FluentAssemblyScanner.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Nito.AsyncEx, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Nito.AsyncEx.3.0.1\lib\net45\Nito.AsyncEx.dll</HintPath>
       <Private>True</Private>
@@ -144,6 +148,9 @@
     <Compile Include="Domain\FilterRegistrationConfigurer.cs" />
     <Compile Include="Domain\Uow\ConnectionStringResolveArgs.cs" />
     <Compile Include="Domain\Values\ValueObject.cs" />
+    <Compile Include="Json\JsonExtensions.cs" />
+    <Compile Include="Json\JsonSerializeHelper.cs" />
+    <Compile Include="Json\StoveDateTimeConverter.cs" />
     <Compile Include="Log\LoggerAdapter.cs" />
     <Compile Include="Log\NLogRegistrationExtensions.cs" />
     <Compile Include="Log\NLogRegistrarModule.cs" />
@@ -220,6 +227,10 @@
     <Compile Include="Configuration\Configurers\StoveConfigurer.cs" />
     <Compile Include="StoveException.cs" />
     <Compile Include="StoveRegistrationExtensions.cs" />
+    <Compile Include="Text\FormattedStringValueExtracter.cs" />
+    <Compile Include="Text\Formatting\FormatStringToken.cs" />
+    <Compile Include="Text\Formatting\FormatStringTokenizer.cs" />
+    <Compile Include="Text\Formatting\FormatStringTokenType.cs" />
     <Compile Include="Threading\AsyncHelper.cs" />
     <Compile Include="Threading\Extensions\LockExtensions.cs" />
     <Compile Include="Threading\InternalAsyncHelper.cs" />
@@ -258,9 +269,6 @@
     <Compile Include="Transactions\Extensions\IsolationLevelExtensions.cs" />
     <Compile Include="UserIdentifier.cs" />
     <Compile Include="Utils\Etc\NullDisposable.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Timing\Timezone\Mapping\WindowsZones.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

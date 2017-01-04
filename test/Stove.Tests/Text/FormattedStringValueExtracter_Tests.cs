@@ -18,9 +18,9 @@ namespace Stove.Tests.Text
                 );
 
             Test_Matched(
-                "User halil does not exist.",
+                "User oğuzhan does not exist.",
                 "User {0} does not exist.",
-                new NameValue("0", "halil")
+                new NameValue("0", "oğuzhan")
                 );
         }
 
@@ -52,8 +52,8 @@ namespace Stove.Tests.Text
         public void IsMatch_Test()
         {
             string[] values;
-            FormattedStringValueExtracter.IsMatch("User halil does not exist.", "User {0} does not exist.", out values).ShouldBe(true);
-            values[0].ShouldBe("halil");
+            FormattedStringValueExtracter.IsMatch("User oğuzhan does not exist.", "User {0} does not exist.", out values).ShouldBe(true);
+            values[0].ShouldBe("oğuzhan");
         }
 
         private static void Test_Matched(string str, string format, params NameValue[] expectedPairs)

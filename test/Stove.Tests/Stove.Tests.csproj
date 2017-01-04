@@ -93,6 +93,7 @@
     <Compile Include="Collections\Extensions\ListExtensions_Tests.cs" />
     <Compile Include="Collections\TypeList_Tests.cs" />
     <Compile Include="Configuration\DictionaryBasedConfig_Tests.cs" />
+    <Compile Include="DisposeAction_Tests.cs" />
     <Compile Include="Domain\Entities\Department.cs" />
     <Compile Include="Domain\Entities\EntityHelper_Tests.cs" />
     <Compile Include="Domain\Entities\Manager.cs" />
@@ -112,7 +113,24 @@
     <Compile Include="Events\Bus\MySimpleEventData.cs" />
     <Compile Include="Events\Bus\MySimpleTransientEventHandler.cs" />
     <Compile Include="Events\Bus\TransientDisposableEventHandlerTest.cs" />
+    <Compile Include="Experimental\GenericMethodCallTests.cs" />
+    <Compile Include="Extensions\ComparableExtensions_Tests.cs" />
+    <Compile Include="Extensions\DateTimeRange_Tests.cs" />
+    <Compile Include="Extensions\DayOfWeekExtensions_Tests.cs" />
+    <Compile Include="Extensions\ObjectExtension_Test.cs" />
+    <Compile Include="Extensions\StringExtensions_Tests.cs" />
+    <Compile Include="Json\JsonExtensions_Tests.cs" />
+    <Compile Include="Json\JsonSerializationHelper_Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reflection\Extensions\MemberInfoExtensions_Tests.cs" />
+    <Compile Include="Reflection\ReflectionHelper_Tests.cs" />
+    <Compile Include="Reflection\TypeHelper_Tests.cs" />
+    <Compile Include="Security\SimpleStringCipher_Tests.cs" />
+    <Compile Include="Text\FormattedStringTokenizer_Test.cs" />
+    <Compile Include="Text\FormattedStringValueExtracter_Tests.cs" />
+    <Compile Include="Threading\AsyncHelper_Tests.cs" />
+    <Compile Include="Threading\InternalAsyncHelper_Tests.cs" />
+    <Compile Include="Threading\LockExtensions_Tests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -128,6 +146,7 @@
       <Name>Stove.TestBase</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
