@@ -29,12 +29,6 @@ namespace Stove.EntityFramework.EntityFramework.Uow
             CurrentTransaction?.Complete();
         }
 
-        public virtual void InitDbContext(DbContext dbContext, string connectionString)
-        {
-            EnsureCurrentTransactionInitialized();
-            DbContexts.Add(dbContext);
-        }
-
         public virtual void Dispose()
         {
             if (CurrentTransaction != null)
@@ -51,18 +45,6 @@ namespace Stove.EntityFramework.EntityFramework.Uow
             var dbContext = dbContextResolver.Resolve<TDbContext>(connectionString);
             DbContexts.Add(dbContext);
             return dbContext;
-        }
-
-        /// <summary>
-        ///     Gets active transaction for beginned transactions, returns null when TransactionScopeEFTransactionStrategy is
-        ///     active.
-        /// </summary>
-        /// <typeparam name="TDbContext">The type of the database context.</typeparam>
-        /// <param name="connectionString">The connection string.</param>
-        /// <returns></returns>
-        public ActiveTransactionInfo GetActiveTransaction<TDbContext>(string connectionString) where TDbContext : DbContext
-        {
-            return null;
         }
 
         private void EnsureCurrentTransactionInitialized()

@@ -32,27 +32,6 @@ namespace Stove.EntityFramework.EntityFramework.Uow
             }
         }
 
-        public void InitDbContext(DbContext dbContext, string connectionString)
-        {
-            ActiveTransactionInfo activeTransaction = ActiveTransactions.GetOrDefault(connectionString);
-            if (activeTransaction == null)
-            {
-                DbContextTransaction dbtransaction = dbContext.Database.BeginTransaction((Options.IsolationLevel ?? IsolationLevel.ReadUncommitted).ToSystemDataIsolationLevel());
-                activeTransaction = new ActiveTransactionInfo(dbtransaction, dbContext);
-                ActiveTransactions[connectionString] = activeTransaction;
-            }
-            else
-            {
-                dbContext.Database.UseTransaction(activeTransaction.DbContextTransaction.UnderlyingTransaction);
-                activeTransaction.AttendedDbContexts.Add(dbContext);
-            }
-        }
-
-        public ActiveTransactionInfo GetActiveTransaction<TDbContext>(string connectionString) where TDbContext : DbContext
-        {
-            return ActiveTransactions.GetOrDefault(connectionString);
-        }
-
         public void Dispose()
         {
             foreach (ActiveTransactionInfo activeTransaction in ActiveTransactions.Values)
@@ -68,11 +47,11 @@ namespace Stove.EntityFramework.EntityFramework.Uow
         {
             DbContext dbContext;
 
-            var activeTransaction = ActiveTransactions.GetOrDefault(connectionString);
+            ActiveTransactionInfo activeTransaction = ActiveTransactions.GetOrDefault(connectionString);
             if (activeTransaction == null)
             {
                 dbContext = dbContextResolver.Resolve<TDbContext>(connectionString);
-                var dbtransaction = dbContext.Database.BeginTransaction((Options.IsolationLevel ?? IsolationLevel.ReadUncommitted).ToSystemDataIsolationLevel());
+                DbContextTransaction dbtransaction = dbContext.Database.BeginTransaction((Options.IsolationLevel ?? IsolationLevel.ReadUncommitted).ToSystemDataIsolationLevel());
                 activeTransaction = new ActiveTransactionInfo(dbtransaction, dbContext);
                 ActiveTransactions[connectionString] = activeTransaction;
             }

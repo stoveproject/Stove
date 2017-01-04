@@ -10,8 +10,6 @@ namespace Stove.EntityFramework.EntityFramework.Uow
 
         void Commit();
 
-        void InitDbContext(DbContext dbContext, string connectionString);
-
         void Dispose();
 
         DbContext CreateDbContext<TDbContext>(string connectionString, IDbContextResolver dbContextResolver)
