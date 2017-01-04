@@ -12,5 +12,11 @@ namespace Stove.Events.Bus.Factories
         /// </summary>
         /// <returns>The event handler</returns>
         IEventHandler GetHandler();
+
+        /// <summary>
+        ///     Releases the handler.
+        /// </summary>
+        /// <param name="handler">The handler.</param>
+        void ReleaseHandler(IEventHandler handler);
     }
 }

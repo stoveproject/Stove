@@ -45,7 +45,7 @@ namespace Stove.Events
                 Type[] genericArgs = @interface.GetGenericArguments();
                 if (genericArgs.Length == 1)
                 {
-                    _eventBus.Register(genericArgs[0], new IocHandlerFactory(_resolver, impl));
+                    _eventBus.Register(genericArgs[0], new IocHandlerFactory(_resolver.Resolve<IScopeResolver>(), impl));
                 }
             }
         }

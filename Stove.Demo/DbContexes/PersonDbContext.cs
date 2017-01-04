@@ -12,7 +12,7 @@ namespace Stove.Demo.DbContexes
         {
         }
 
-        public PersonStoveDbContext(DbConnection existingConnection) : base(existingConnection, false)
+        public PersonStoveDbContext(DbConnection existingConnection, bool contextOwnsConnection) : base(existingConnection, contextOwnsConnection)
         {
         }
 
