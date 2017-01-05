@@ -47,7 +47,6 @@ namespace Stove.EntityFramework.EntityFramework
             }
         }
 
-        //TODO: GetConcreteType method can be optimized by extracting/caching MultiTenancySideAttribute attributes for DbContexes.
         /// <summary>
         ///     Gets the type of the concrete.
         /// </summary>
