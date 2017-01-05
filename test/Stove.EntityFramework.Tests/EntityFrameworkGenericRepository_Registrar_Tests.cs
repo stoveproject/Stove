@@ -43,8 +43,7 @@ namespace Stove.EntityFramework.Tests
             (entity1Repository is EfRepositoryBase<MyBaseDbContext, MyEntity1>).ShouldBe(true);
 
             //Entity 1 (with specified PK)
-
-            var entity1RepositoryWithPk = LocalResolver.Resolve<IRepository<MyEntity1>>();
+            var entity1RepositoryWithPk = LocalResolver.Resolve<IRepository<MyEntity1, int>>();
             entity1RepositoryWithPk.ShouldNotBe(null);
             (entity1RepositoryWithPk is EfRepositoryBase<MyBaseDbContext, MyEntity1, int>).ShouldBe(true);
 
@@ -55,8 +54,7 @@ namespace Stove.EntityFramework.Tests
             (entity1RepositoryWithModuleInterface is EfRepositoryBase<MyModuleDbContext, MyEntity1, int>).ShouldBe(true);
 
             //Entity 1 (with specified Repository forIMyModuleRepository )
-
-            var entity1RepositoryWithModuleInterfaceWithPk = LocalResolver.Resolve<IMyModuleRepository<MyEntity1>>();
+            var entity1RepositoryWithModuleInterfaceWithPk = LocalResolver.Resolve<IMyModuleRepository<MyEntity1, int>>();
             entity1RepositoryWithModuleInterfaceWithPk.ShouldNotBe(null);
             (entity1RepositoryWithModuleInterfaceWithPk is MyModuleRepositoryBase<MyEntity1, int>).ShouldBe(true);
             (entity1RepositoryWithModuleInterfaceWithPk is EfRepositoryBase<MyModuleDbContext, MyEntity1, int>).ShouldBe(true);
@@ -93,7 +91,7 @@ namespace Stove.EntityFramework.Tests
             public virtual IDbSet<MyEntity1> MyEntities1 { get; set; }
         }
 
-        public class MyEntity1 : Entity
+        public class MyEntity1 : Entity<int>
         {
         }
 
