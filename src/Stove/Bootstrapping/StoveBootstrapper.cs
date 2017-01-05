@@ -1,9 +1,11 @@
 ﻿using Autofac;
 using Autofac.Extras.IocManager;
 
-namespace Stove.Configuration.Configurers
+using Stove.Configuration;
+
+namespace Stove.Bootstrapping
 {
-    public abstract class StoveConfigurer : IStartable, ITransientDependency
+    public abstract class StoveBootstrapper : IStartable, IBootsrapper, ITransientDependency
     {
         public IStoveStartupConfiguration Configuration { get; set; }
 

@@ -4,19 +4,19 @@ using System.Linq;
 
 using Autofac.Extras.IocManager;
 
-using Stove.Configuration.Configurers;
+using Stove.Bootstrapping;
 using Stove.Events.Bus;
 using Stove.Events.Bus.Factories;
 using Stove.Events.Bus.Handlers;
 
 namespace Stove.Events
 {
-    public class EventBusConfigurer : StoveConfigurer
+    public class EventBusBootstrapper : StoveBootstrapper
     {
         private readonly IEventBus _eventBus;
         private readonly IResolver _resolver;
 
-        public EventBusConfigurer(IResolver resolver, IEventBus eventBus)
+        public EventBusBootstrapper(IResolver resolver, IEventBus eventBus)
         {
             _resolver = resolver;
             _eventBus = eventBus;

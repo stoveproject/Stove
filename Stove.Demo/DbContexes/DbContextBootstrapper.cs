@@ -1,8 +1,8 @@
-﻿using Stove.Configuration.Configurers;
+﻿using Stove.Bootstrapping;
 
 namespace Stove.Demo.DbContexes
 {
-    public class DbContextConfigurer : StoveConfigurer
+    public class DbContextBootstrapper : StoveBootstrapper
     {
         public override void Start()
         {

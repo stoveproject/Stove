@@ -1,9 +1,9 @@
-﻿using Stove.Configuration.Configurers;
+﻿using Stove.Bootstrapping;
 using Stove.Domain.Uow;
 
 namespace Stove.Domain
 {
-    public class FilterRegistrationConfigurer : StoveConfigurer
+    public class FilterRegistrationBootstrapper : StoveBootstrapper
     {
         public override void Start()
         {

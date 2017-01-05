@@ -2,16 +2,16 @@
 
 using FluentAssemblyScanner;
 
-using Stove.Configuration.Configurers;
+using Stove.Bootstrapping;
 using Stove.EntityFramework.EntityFramework;
 
-namespace Stove.EntityFramework.Configurer
+namespace Stove.EntityFramework.Bootstrapper
 {
-    public class DbContextTypePopulateConfigurer : StoveConfigurer
+    public class DbContextTypePopulateBootstrapper : StoveBootstrapper
     {
         private readonly IDbContextTypeMatcher _dbContextTypeMatcher;
 
-        public DbContextTypePopulateConfigurer(IDbContextTypeMatcher dbContextTypeMatcher)
+        public DbContextTypePopulateBootstrapper(IDbContextTypeMatcher dbContextTypeMatcher)
         {
             _dbContextTypeMatcher = dbContextTypeMatcher;
         }
