@@ -29,5 +29,10 @@ namespace Stove.Configuration
         ///     The typed connection strings.
         /// </value>
         Dictionary<Type, string> TypedConnectionStrings { get; set; }
+
+        /// <summary>
+        ///     Gets a configuration object.
+        /// </summary>
+        T Get<T>();
     }
 }
