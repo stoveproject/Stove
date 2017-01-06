@@ -2,5 +2,6 @@
 {
     public interface IBootsrapper
     {
+        void Start();
     }
 }

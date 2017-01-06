@@ -1,5 +1,7 @@
 ﻿using Autofac.Extras.IocManager;
 
+using Stove.BackgroundJobs;
+using Stove.Demo.BackgroundJobs;
 using Stove.Demo.DbContexes;
 using Stove.Demo.Entities;
 using Stove.Domain.Repositories;
@@ -11,21 +13,24 @@ namespace Stove.Demo
 {
     public class SomeDomainService : ITransientDependency
     {
+        private readonly IDbContextProvider<AnimalStoveDbContext> _animalDbContextProvider;
         private readonly IRepository<Animal> _animalRepository;
+        private readonly IBackgroundJobManager _hangfireBackgroundJobManager;
         private readonly IRepository<Person> _personRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
-        private readonly IDbContextProvider<AnimalStoveDbContext> _animalDbContextProvider;
 
         public SomeDomainService(
-            IRepository<Person> personRepository, 
-            IRepository<Animal> animalRepository, 
+            IRepository<Person> personRepository,
+            IRepository<Animal> animalRepository,
             IUnitOfWorkManager unitOfWorkManager,
-            IDbContextProvider<AnimalStoveDbContext> animalDbContextProvider)
+            IDbContextProvider<AnimalStoveDbContext> animalDbContextProvider,
+            IBackgroundJobManager hangfireBackgroundJobManager)
         {
             _personRepository = personRepository;
             _animalRepository = animalRepository;
             _unitOfWorkManager = unitOfWorkManager;
             _animalDbContextProvider = animalDbContextProvider;
+            _hangfireBackgroundJobManager = hangfireBackgroundJobManager;
             Logger = NullLogger.Instance;
         }
 
@@ -51,6 +56,11 @@ namespace Stove.Demo
                 Animal animal = _animalRepository.FirstOrDefault(x => x.Name == "Kuş");
 
                 uow.Complete();
+
+                _hangfireBackgroundJobManager.EnqueueAsync<SimpleBackgroundJob, SimpleBackgroundJobArgs>(new SimpleBackgroundJobArgs
+                {
+                    Message = "Uow Completed!"
+                });
 
                 Logger.Debug("Uow End!");
             }

@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Reflection;
 
 using Autofac.Extras.IocManager;
@@ -29,18 +30,23 @@ namespace Stove.Demo
                                                .UseStoveEntityFramework()
                                                .UseDefaultEventBus()
                                                .UseDbContextEfTransactionStrategy()
-
                                                .UseTypedConnectionStringResolver()
                                                .UseNLog()
+                                               .UseBackgroundJobs()
                                                .UseHangfire(configuration =>
                                                {
-                                                   configuration.GlobalConfiguration.UseSqlServerStorage("Default");
+                                                   configuration.GlobalConfiguration
+                                                                .UseSqlServerStorage("Default")
+                                                                .UseNLogLogProvider();
+                                                   return configuration;
                                                })
                                                .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()))
                                                .CreateResolver();
 
             var someDomainService = resolver.Resolve<SomeDomainService>();
             someDomainService.DoSomeStuff();
+
+            Console.ReadKey();
         }
     }
 }

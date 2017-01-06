@@ -1,7 +1,9 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 
 using Autofac.Extras.IocManager;
 
+using Stove.BackgroundJobs;
 using Stove.Configuration;
 using Stove.Domain.Uow;
 using Stove.Events.Bus;
@@ -21,6 +23,7 @@ namespace Stove
             builder.RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
             builder.RegisterServices(r => r.Register<IGuidGenerator>(context => SequentialGuidGenerator.Instance));
             builder.RegisterServices(r => r.Register<IStoveStartupConfiguration, StoveStartupConfiguration>(Lifetime.Singleton));
+            builder.RegisterServices(r => r.Register<IBackgroundJobConfiguration, BackgroundJobConfiguration>(Lifetime.Singleton));
         }
 
         public static IIocBuilder UseDefaultConnectionStringResolver(this IIocBuilder builder)
@@ -38,6 +41,18 @@ namespace Stove
         public static IIocBuilder UseEventBus(this IIocBuilder builder)
         {
             builder.RegisterServices(r => r.Register<IEventBus, EventBus>());
+            return builder;
+        }
+
+        public static IIocBuilder UseBackgroundJobs(this IIocBuilder builder)
+        {
+            Func<IBackgroundJobConfiguration, IBackgroundJobConfiguration> configurer = configuration =>
+            {
+                configuration.IsJobExecutionEnabled = true;
+                return configuration;
+            };
+
+            builder.RegisterServices(r => r.Register(ctx => configurer));
             return builder;
         }
     }

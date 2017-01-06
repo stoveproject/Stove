@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 
+using Autofac.Extras.IocManager;
+
 using Hangfire;
 
 using Stove.BackgroundJobs;
@@ -8,20 +10,22 @@ using Stove.Threading.BackgrodunWorkers;
 
 namespace Stove.HangFire.Hangfire
 {
-    public class HangfireBackgroundJobManager : BackgroundWorkerBase, IBackgroundJobManager
+    public class HangfireBackgroundJobManager : BackgroundWorkerBase, IBackgroundJobManager, ISingletonDependency
     {
+        private readonly IBackgroundJobConfiguration _backgroundJobConfiguration;
         private readonly IStoveHangfireConfiguration _hangfireConfiguration;
 
-        public HangfireBackgroundJobManager(IStoveHangfireConfiguration hangfireConfiguration)
+        public HangfireBackgroundJobManager(IStoveHangfireConfiguration hangfireConfiguration, IBackgroundJobConfiguration backgroundJobConfiguration)
         {
             _hangfireConfiguration = hangfireConfiguration;
+            _backgroundJobConfiguration = backgroundJobConfiguration;
         }
 
         public override void Start()
         {
             base.Start();
 
-            if (_hangfireConfiguration.Server == null)
+            if (_hangfireConfiguration.Server == null && _backgroundJobConfiguration.IsJobExecutionEnabled)
             {
                 _hangfireConfiguration.Server = new BackgroundJobServer();
             }
