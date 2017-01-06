@@ -3,10 +3,13 @@ using System.Reflection;
 
 using Autofac.Extras.IocManager;
 
+using Hangfire;
+
 using HibernatingRhinos.Profiler.Appender.EntityFramework;
 
 using Stove.Demo.DbContexes;
 using Stove.EntityFramework;
+using Stove.HangFire.Hangfire;
 using Stove.Log;
 
 namespace Stove.Demo
@@ -26,9 +29,13 @@ namespace Stove.Demo
                                                .UseStoveEntityFramework()
                                                .UseDefaultEventBus()
                                                .UseDbContextEfTransactionStrategy()
-                                               //.UseTransacitonScopeEfTransactionStrategy()
+
                                                .UseTypedConnectionStringResolver()
                                                .UseNLog()
+                                               .UseHangfire(configuration =>
+                                               {
+                                                   configuration.GlobalConfiguration.UseSqlServerStorage("Default");
+                                               })
                                                .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()))
                                                .CreateResolver();
 
