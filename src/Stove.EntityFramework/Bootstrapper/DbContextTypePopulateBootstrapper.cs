@@ -1,9 +1,9 @@
 ﻿using System;
-
-using FluentAssemblyScanner;
+using System.Linq;
 
 using Stove.Bootstrapping;
 using Stove.EntityFramework.EntityFramework;
+using Stove.Reflection.Extensions;
 
 namespace Stove.EntityFramework.Bootstrapper
 {
@@ -18,13 +18,7 @@ namespace Stove.EntityFramework.Bootstrapper
 
         public override void Start()
         {
-            Type[] dbContextTypes = AssemblyScanner.FromAssemblyInDirectory(new AssemblyFilter(string.Empty))
-                                                   .BasedOn<StoveDbContext>()
-                                                   .Filter()
-                                                   .Classes()
-                                                   .NonStatic()
-                                                   .Scan().ToArray();
-
+            Type[] dbContextTypes = typeof(StoveDbContext).AssignedTypes().ToArray();
             _dbContextTypeMatcher.Populate(dbContextTypes);
         }
     }

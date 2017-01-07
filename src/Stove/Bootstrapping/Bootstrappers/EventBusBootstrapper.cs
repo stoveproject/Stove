@@ -1,15 +1,14 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 using Autofac.Extras.IocManager;
 
-using Stove.Bootstrapping;
 using Stove.Events.Bus;
 using Stove.Events.Bus.Factories;
 using Stove.Events.Bus.Handlers;
 
-namespace Stove.Events
+namespace Stove.Bootstrapping.Bootstrappers
 {
     public class EventBusBootstrapper : StoveBootstrapper
     {

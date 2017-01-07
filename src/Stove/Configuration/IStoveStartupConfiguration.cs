@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using Autofac.Extras.IocManager;
 
+using Stove.BackgroundJobs;
 using Stove.Domain.Uow;
 
 namespace Stove.Configuration
@@ -29,6 +30,22 @@ namespace Stove.Configuration
         ///     The typed connection strings.
         /// </value>
         Dictionary<Type, string> TypedConnectionStrings { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the background jobs configuration.
+        /// </summary>
+        /// <value>
+        ///     The background jobs.
+        /// </value>
+        IBackgroundJobConfiguration BackgroundJobs { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the modules.
+        /// </summary>
+        /// <value>
+        ///     The modules.
+        /// </value>
+        IModuleConfigurations Modules { get; set; }
 
         /// <summary>
         ///     Gets a configuration object.

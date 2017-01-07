@@ -1,7 +1,6 @@
-﻿using Stove.Bootstrapping;
 using Stove.Domain.Uow;
 
-namespace Stove.Domain
+namespace Stove.Bootstrapping.Bootstrappers
 {
     public class FilterRegistrationBootstrapper : StoveBootstrapper
     {

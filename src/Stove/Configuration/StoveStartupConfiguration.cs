@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using Autofac.Extras.IocManager;
 
+using Stove.BackgroundJobs;
 using Stove.Domain.Uow;
 
 namespace Stove.Configuration
@@ -14,6 +15,10 @@ namespace Stove.Configuration
             Resolver = resolver;
             TypedConnectionStrings = new Dictionary<Type, string>();
         }
+
+        public IModuleConfigurations Modules { get; set; }
+
+        public IBackgroundJobConfiguration BackgroundJobs { get; set; }
 
         public IResolver Resolver { get; }
 

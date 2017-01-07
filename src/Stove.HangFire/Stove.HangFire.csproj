@@ -80,8 +80,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configurations\StoveHangfireConfigurationExtensions.cs" />
     <Compile Include="Hangfire\HangfireBackgroundJobManager.cs" />
-    <Compile Include="Bootsrapper\HangFireBootstrapper.cs" />
+    <Compile Include="Bootsrappers\HangFireBootstrapper.cs" />
     <Compile Include="Hangfire\StoveHangfireConfiguration.cs" />
     <Compile Include="Hangfire\HangfireRegistrationExtensions.cs" />
     <Compile Include="Hangfire\IStoveHangfireConfiguration.cs" />
