@@ -3,7 +3,9 @@ using Autofac.Extras.IocManager;
 
 using NLog;
 
-namespace Stove.Log
+using ILogger = Stove.Log.ILogger;
+
+namespace Stove.NLog
 {
     public static class NLogRegistrationExtensions
     {

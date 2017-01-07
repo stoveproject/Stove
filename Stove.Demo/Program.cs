@@ -12,6 +12,7 @@ using Stove.Demo.DbContexes;
 using Stove.EntityFramework;
 using Stove.HangFire.Hangfire;
 using Stove.Log;
+using Stove.NLog;
 
 namespace Stove.Demo
 {

@@ -116,6 +116,10 @@
       <Project>{5D2D455C-95C1-41E6-98A3-027840898314}</Project>
       <Name>Stove.HangFire</Name>
     </ProjectReference>
+    <ProjectReference Include="..\src\Stove.NLog\Stove.NLog.csproj">
+      <Project>{9FC330E7-34A0-420D-8FDF-DCD1CAF00C47}</Project>
+      <Name>Stove.NLog</Name>
+    </ProjectReference>
     <ProjectReference Include="..\src\Stove\Stove.csproj">
       <Project>{82ad5a75-1860-427b-843f-892324d20a76}</Project>
       <Name>Stove</Name>

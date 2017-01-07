@@ -2,7 +2,9 @@
 
 using NLog;
 
-namespace Stove.Log
+using ILogger = Stove.Log.ILogger;
+
+namespace Stove.NLog
 {
     /// <summary>
     ///     Implementation of ILogger, deriving from NLog.Logger
@@ -31,8 +33,6 @@ namespace Stove.Log
 
         public string Name => _logger.Name;
 
-        public LogFactory Factory => _logger.Factory;
-
         public bool IsTraceEnabled => _logger.IsTraceEnabled;
 
         public bool IsDebugEnabled => _logger.IsDebugEnabled;
@@ -44,81 +44,6 @@ namespace Stove.Log
         public bool IsErrorEnabled => _logger.IsErrorEnabled;
 
         public bool IsFatalEnabled => _logger.IsErrorEnabled;
-
-        public bool IsEnabled(LogLevel level)
-        {
-            return _logger.IsEnabled(level);
-        }
-
-        public void Log(LogEventInfo logEvent)
-        {
-            _logger.Log(logEvent);
-        }
-
-        public void Log(Type wrapperType, LogEventInfo logEvent)
-        {
-            _logger.Log(wrapperType, logEvent);
-        }
-
-        public void Log<T>(LogLevel level, T value)
-        {
-            _logger.Log(level, value);
-        }
-
-        public void Log<T>(LogLevel level, IFormatProvider formatProvider, T value)
-        {
-            _logger.Log(level, formatProvider, value);
-        }
-
-        public void LogException(LogLevel level, string message, Exception exception)
-        {
-            _logger.Log(level, exception, message);
-        }
-
-        public void Log(LogLevel level, IFormatProvider formatProvider, string message, params object[] args)
-        {
-            _logger.Log(level, formatProvider, message, args);
-        }
-
-        public void Log(LogLevel level, string message)
-        {
-            _logger.Log(level, message);
-        }
-
-        public void Log(LogLevel level, string message, params object[] args)
-        {
-            _logger.Log(level, message, args);
-        }
-
-        public void Log<TArgument>(LogLevel level, IFormatProvider formatProvider, string message, TArgument argument)
-        {
-            _logger.Log(level, formatProvider, message, argument);
-        }
-
-        public void Log<TArgument>(LogLevel level, string message, TArgument argument)
-        {
-            _logger.Log(level, message, argument);
-        }
-
-        public void Log<TArgument1, TArgument2>(LogLevel level, IFormatProvider formatProvider, string message, TArgument1 argument1, TArgument2 argument2)
-        {
-            _logger.Log(level, formatProvider, message, argument1, argument2);
-        }
-
-        public void Log<TArgument1, TArgument2>(LogLevel level, string message, TArgument1 argument1, TArgument2 argument2)
-        {
-            _logger.Log(level, message, argument1, argument2);
-        }
-
-        public void Log<TArgument1, TArgument2, TArgument3>(LogLevel level, IFormatProvider formatProvider, string message, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3)
-        {
-            _logger.Log(level, formatProvider, message, argument1, argument2, argument3);
-        }
-
-        public void Log<TArgument1, TArgument2, TArgument3>(LogLevel level, string message, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3)
-        {
-            _logger.Log(level, message, argument1, argument2, argument3);
-        }
 
         public void Trace<T>(T value)
         {
@@ -478,6 +403,16 @@ namespace Stove.Log
         public void Fatal<TArgument1, TArgument2, TArgument3>(string message, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3)
         {
             _logger.Fatal(message, argument1, argument2, argument3);
+        }
+
+        public void Log(LogEventInfo logEvent)
+        {
+            _logger.Log(logEvent);
+        }
+
+        public void Log(Type wrapperType, LogEventInfo logEvent)
+        {
+            _logger.Log(wrapperType, logEvent);
         }
     }
 }

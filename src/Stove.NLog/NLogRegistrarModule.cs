@@ -7,9 +7,10 @@ using Autofac.Core;
 
 using NLog;
 
+using ILogger = Stove.Log.ILogger;
 using Module = Autofac.Module;
 
-namespace Stove.Log
+namespace Stove.NLog
 {
     public class NLogRegistrarModule : Module
     {
@@ -22,7 +23,7 @@ namespace Stove.Log
             // here's where you'd do it.
             IEnumerable<PropertyInfo> properties = instanceType
                 .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(p => p.PropertyType == typeof(NLog.ILogger) && p.CanWrite && p.GetIndexParameters().Length == 0);
+                .Where(p => p.PropertyType == typeof(ILogger) && p.CanWrite && p.GetIndexParameters().Length == 0);
 
             // Set the properties located.
             foreach (PropertyInfo propToSet in properties)
@@ -37,7 +38,7 @@ namespace Stove.Log
             e.Parameters = e.Parameters.Union(
                 new[]
                 {
-                    new ResolvedParameter((p, i) => p.ParameterType == typeof(NLog.ILogger),
+                    new ResolvedParameter((p, i) => p.ParameterType == typeof(ILogger),
                         (p, i) => new LoggerAdapter(LogManager.GetLogger(t.FullName)))
                 });
         }

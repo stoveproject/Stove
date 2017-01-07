@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stove.Tests", "test\Stove.T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stove.HangFire", "src\Stove.HangFire\Stove.HangFire.csproj", "{5D2D455C-95C1-41E6-98A3-027840898314}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stove.NLog", "src\Stove.NLog\Stove.NLog.csproj", "{9FC330E7-34A0-420D-8FDF-DCD1CAF00C47}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{5D2D455C-95C1-41E6-98A3-027840898314}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D2D455C-95C1-41E6-98A3-027840898314}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D2D455C-95C1-41E6-98A3-027840898314}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FC330E7-34A0-420D-8FDF-DCD1CAF00C47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FC330E7-34A0-420D-8FDF-DCD1CAF00C47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FC330E7-34A0-420D-8FDF-DCD1CAF00C47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FC330E7-34A0-420D-8FDF-DCD1CAF00C47}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,5 +72,6 @@ Global
 		{5A2A6E9E-7704-4D9E-B0C6-C528EAA5D79F} = {4D2BAE52-1E23-4321-BBE6-2BAC28F7B389}
 		{F157FE21-283D-4B0E-BB28-89125017A3A2} = {4D2BAE52-1E23-4321-BBE6-2BAC28F7B389}
 		{5D2D455C-95C1-41E6-98A3-027840898314} = {23CB5044-8ECE-4DDC-89E0-FC1B8EC9DDDF}
+		{9FC330E7-34A0-420D-8FDF-DCD1CAF00C47} = {23CB5044-8ECE-4DDC-89E0-FC1B8EC9DDDF}
 	EndGlobalSection
 EndGlobal

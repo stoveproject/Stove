@@ -1,7 +1,5 @@
 ﻿using System;
 
-using NLog;
-
 namespace Stove.Log
 {
     public class NullLogger : ILogger
@@ -11,8 +9,6 @@ namespace Stove.Log
         public event EventHandler<EventArgs> LoggerReconfigured;
 
         public string Name { get; set; }
-
-        public LogFactory Factory { get; set; }
 
         public bool IsTraceEnabled { get; set; }
 
@@ -25,70 +21,6 @@ namespace Stove.Log
         public bool IsErrorEnabled { get; set; }
 
         public bool IsFatalEnabled { get; set; }
-
-        public bool IsEnabled(LogLevel level)
-        {
-            return true;
-        }
-
-        public void Log(LogEventInfo logEvent)
-        {
-        }
-
-        public void Log(Type wrapperType, LogEventInfo logEvent)
-        {
-        }
-
-        public void Log<T>(LogLevel level, T value)
-        {
-        }
-
-        public void Log<T>(LogLevel level, IFormatProvider formatProvider, T value)
-        {
-        }
-
-        public void LogException(LogLevel level, string message, Exception exception)
-        {
-        }
-
-        public void Log(LogLevel level, IFormatProvider formatProvider, string message, params object[] args)
-        {
-        }
-
-        public void Log(LogLevel level, string message)
-        {
-        }
-
-        public void Log(LogLevel level, string message, params object[] args)
-        {
-        }
-
-        public void Log<TArgument>(LogLevel level, IFormatProvider formatProvider, string message, TArgument argument)
-        {
-        }
-
-        public void Log<TArgument>(LogLevel level, string message, TArgument argument)
-        {
-        }
-
-        public void Log<TArgument1, TArgument2>(LogLevel level, IFormatProvider formatProvider, string message, TArgument1 argument1,
-            TArgument2 argument2)
-        {
-        }
-
-        public void Log<TArgument1, TArgument2>(LogLevel level, string message, TArgument1 argument1, TArgument2 argument2)
-        {
-        }
-
-        public void Log<TArgument1, TArgument2, TArgument3>(LogLevel level, IFormatProvider formatProvider, string message,
-            TArgument1 argument1, TArgument2 argument2, TArgument3 argument3)
-        {
-        }
-
-        public void Log<TArgument1, TArgument2, TArgument3>(LogLevel level, string message, TArgument1 argument1, TArgument2 argument2,
-            TArgument3 argument3)
-        {
-        }
 
         public void Trace<T>(T value)
         {
