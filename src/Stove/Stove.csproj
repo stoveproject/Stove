@@ -161,6 +161,9 @@
     <Compile Include="Domain\FilterRegistrationBootstrapper.cs" />
     <Compile Include="Domain\Uow\ConnectionStringResolveArgs.cs" />
     <Compile Include="Domain\Values\ValueObject.cs" />
+    <Compile Include="IO\DeleteIfExists.cs" />
+    <Compile Include="IO\DirectoryHelper.cs" />
+    <Compile Include="IO\Extensions\StreamExtensions.cs" />
     <Compile Include="Json\JsonExtensions.cs" />
     <Compile Include="Json\JsonSerializeHelper.cs" />
     <Compile Include="Json\StoveDateTimeConverter.cs" />

@@ -3,8 +3,9 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 
+using JetBrains.Annotations;
+
 using Stove.Extensions;
-using Stove.JetBrains.Annotations;
 
 namespace Stove.Runtime.Security
 {
