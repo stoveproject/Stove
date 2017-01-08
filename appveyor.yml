@@ -1,34 +1,42 @@
 version: 1.0.{build}
+configuration: Release
+
 before_build:
 - cmd: nuget.exe restore
-assembly_info:
-  patch: true
-  file: '**\AssemblyInfo.*'
-  assembly_version: '{version}'
-  assembly_file_version: '{version}'
-  assembly_informational_version: '{version}'
-environment:
-  nuget_user: oguzhansoykan@outlook.com
-  nuget_password:
-    secure: w73Xs1Is7iK/DtAOf0XTHg==
+
 build:
   publish_nuget: true
   publish_nuget_symbols: true
   include_nuget_references: true
   verbosity: minimal
+  
 after_build:
 - cmd: nuget pack "src\Stove" -c "Release" -o "nupkg/"
 - cmd: nuget pack "src\Stove.EntityFramework" -c "Release" -o "nupkg/"
 - cmd: nuget pack "src\Stove.HangFire" -c "Release" -o "nupkg/"
 - cmd: nuget pack "src\Stove.NLog" -c "Release" -o "nupkg/"
 
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}'
+  
+environment:
+  nuget_user: oguzhansoykan@outlook.com
+  nuget_password:
+    secure: w73Xs1Is7iK/DtAOf0XTHg==
+
 test:
   assemblies:
   - test\Stove.EntityFramework.Tests
   - test\Stove.Tests
+  
 deploy:
 - provider: NuGet
   api_key:
     secure: liSTqN52OJQy9fZJk6gubSgYBAy4EXcEPCDSCLJ/3T9cZufzpTwvBlGPLX+iP2n9
+    
 artifacts:
 - path: '**\.nupkg/'
