@@ -34,6 +34,18 @@ namespace Stove.Domain.Uow
         }
 
         /// <summary>
+        ///     Determines whether <see cref="UnitOfWorkAttribute" />  [the specified type].
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>
+        ///     <c>true</c> if <see cref="UnitOfWorkAttribute" /> [the specified type]; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool HasUnitOfWorkAttribute(Type type)
+        {
+            return type.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).Any(HasUnitOfWorkAttribute);
+        }
+
+        /// <summary>
         ///     Returns UnitOfWorkAttribute it exists.
         /// </summary>
         /// <param name="methodInfo">Method info to check</param>

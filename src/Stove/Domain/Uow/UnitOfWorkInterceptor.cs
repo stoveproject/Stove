@@ -1,5 +1,7 @@
 using System.Threading.Tasks;
 
+using Autofac.Extras.IocManager;
+
 using Castle.DynamicProxy;
 
 using Stove.Threading;
@@ -9,7 +11,7 @@ namespace Stove.Domain.Uow
     /// <summary>
     /// This interceptor is used to manage database connection and transactions.
     /// </summary>
-    internal class UnitOfWorkInterceptor : IInterceptor
+    internal class UnitOfWorkInterceptor : IInterceptor, ITransientDependency
     {
         private readonly IUnitOfWorkManager _unitOfWorkManager;
 

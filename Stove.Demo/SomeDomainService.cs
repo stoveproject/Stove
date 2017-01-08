@@ -59,7 +59,7 @@ namespace Stove.Demo
 
                 _hangfireBackgroundJobManager.EnqueueAsync<SimpleBackgroundJob, SimpleBackgroundJobArgs>(new SimpleBackgroundJobArgs
                 {
-                    Message = "Uow Completed!"
+                    Message = "Oğuzhan"
                 });
 
                 Logger.Debug("Uow End!");

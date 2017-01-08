@@ -34,8 +34,8 @@
       <HintPath>..\..\packages\Autofac.4.2.1\lib\net45\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Autofac.Extras.IocManager, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Autofac.Extras.IocManager.2.0.1\lib\net452\Autofac.Extras.IocManager.dll</HintPath>
+    <Reference Include="Autofac.Extras.IocManager, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Autofac.Extras.IocManager.2.0.2\lib\net452\Autofac.Extras.IocManager.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="FluentAssemblyScanner, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">

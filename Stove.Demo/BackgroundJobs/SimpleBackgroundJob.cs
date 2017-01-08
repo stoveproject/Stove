@@ -1,21 +1,28 @@
 ﻿using Autofac.Extras.IocManager;
 
 using Stove.BackgroundJobs;
+using Stove.Demo.Entities;
+using Stove.Domain.Repositories;
+using Stove.Domain.Uow;
 
 namespace Stove.Demo.BackgroundJobs
 {
     public class SimpleBackgroundJob : BackgroundJob<SimpleBackgroundJobArgs>, ITransientDependency
     {
-        private readonly ISimpleDependency _simpleDependency;
+        private readonly IRepository<Person> _personRepository;
 
-        public SimpleBackgroundJob(ISimpleDependency simpleDependency)
+        public SimpleBackgroundJob(IRepository<Person> personRepository)
         {
-            _simpleDependency = simpleDependency;
+            _personRepository = personRepository;
         }
 
         public override void Execute(SimpleBackgroundJobArgs args)
         {
-            string message = args.Message;
+            using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin())
+            {
+                string message = _personRepository.FirstOrDefault(person => person.Name == args.Message).Name;
+                uow.Complete();
+            }
         }
     }
 }

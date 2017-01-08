@@ -5,27 +5,28 @@ using Autofac.Extras.IocManager;
 namespace Stove.Domain.Uow
 {
     /// <summary>
-    /// Unit of work manager.
+    ///     Unit of work manager.
     /// </summary>
     internal class UnitOfWorkManager : IUnitOfWorkManager, ITransientDependency
     {
-        private readonly IScopeResolver _scopeResolver;
+        private IScopeResolver _childScope;
         private readonly ICurrentUnitOfWorkProvider _currentUnitOfWorkProvider;
         private readonly IUnitOfWorkDefaultOptions _defaultOptions;
-
-        public IActiveUnitOfWork Current
-        {
-            get { return _currentUnitOfWorkProvider.Current; }
-        }
+        private readonly IScopeResolver _scopeResolver;
 
         public UnitOfWorkManager(
             IScopeResolver scopedResolver,
             ICurrentUnitOfWorkProvider currentUnitOfWorkProvider,
             IUnitOfWorkDefaultOptions defaultOptions)
         {
-            _scopeResolver = scopedResolver.BeginScope();
+            _scopeResolver = scopedResolver;
             _currentUnitOfWorkProvider = currentUnitOfWorkProvider;
             _defaultOptions = defaultOptions;
+        }
+
+        public IActiveUnitOfWork Current
+        {
+            get { return _currentUnitOfWorkProvider.Current; }
         }
 
         public IUnitOfWorkCompleteHandle Begin()
@@ -40,6 +41,8 @@ namespace Stove.Domain.Uow
 
         public IUnitOfWorkCompleteHandle Begin(UnitOfWorkOptions options)
         {
+            _childScope = _scopeResolver.BeginScope();
+
             options.FillDefaultsForNonProvidedOptions(_defaultOptions);
 
             if (options.Scope == TransactionScopeOption.Required && _currentUnitOfWorkProvider.Current != null)
@@ -47,22 +50,13 @@ namespace Stove.Domain.Uow
                 return new InnerUnitOfWorkCompleteHandle();
             }
 
-            var uow = _scopeResolver.Resolve<IUnitOfWork>();
+            var uow = _childScope.Resolve<IUnitOfWork>();
 
-            uow.Completed += (sender, args) =>
-            {
-                _currentUnitOfWorkProvider.Current = null;
-            };
+            uow.Completed += (sender, args) => { _currentUnitOfWorkProvider.Current = null; };
 
-            uow.Failed += (sender, args) =>
-            {
-                _currentUnitOfWorkProvider.Current = null;
-            };
+            uow.Failed += (sender, args) => { _currentUnitOfWorkProvider.Current = null; };
 
-            uow.Disposed += (sender, args) =>
-            {
-               _scopeResolver.Dispose();
-            };
+            uow.Disposed += (sender, args) => { _childScope.Dispose(); };
 
             uow.Begin(options);
 

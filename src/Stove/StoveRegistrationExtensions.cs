@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Reflection;
 
+using Autofac.Core;
 using Autofac.Extras.IocManager;
+using Autofac.Extras.IocManager.DynamicProxy;
 
 using Stove.BackgroundJobs;
 using Stove.Configuration;
@@ -12,10 +14,28 @@ namespace Stove
 {
     public static class StoveRegistrationExtensions
     {
-        public static IIocBuilder UseStove(this IIocBuilder builder)
+        public static IIocBuilder UseStove(this IIocBuilder builder, bool autoUnitOfWorkInterceptionEnabled = false)
         {
+            if (autoUnitOfWorkInterceptionEnabled)
+            {
+                builder.RegisterServices(r => r.UseBuilder(cb => cb.RegisterCallback(registry => registry.Registered += RegistryOnRegistered)));
+            }
             RegisterDefaults(builder);
             return builder;
+        }
+
+        private static void RegistryOnRegistered(object sender, ComponentRegisteredEventArgs args)
+        {
+            if (UnitOfWorkHelper.IsConventionalUowClass(args.ComponentRegistration.Activator.LimitType)
+                || UnitOfWorkHelper.HasUnitOfWorkAttribute(args.ComponentRegistration.Activator.LimitType))
+            {
+                UnitOfWorkRegistrar(args);
+            }
+        }
+
+        private static void UnitOfWorkRegistrar(ComponentRegisteredEventArgs args)
+        {
+            args.ComponentRegistration.InterceptedBy<UnitOfWorkInterceptor>(interceptAdditionalInterfaces: true);
         }
 
         private static void RegisterDefaults(IIocBuilder builder)
