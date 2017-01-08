@@ -1,21 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Stove.JetBrains.Annotations;
+
 namespace Stove.Collections.Extensions
 {
     /// <summary>
-    /// Extension methods for <see cref="IList{T}"/>.
+    ///     Extension methods for <see cref="IList{T}" />.
     /// </summary>
     public static class ListExtensions
     {
         /// <summary>
-        /// Sort a list by a topological sorting, which consider their  dependencies
+        ///     Sort a list by a topological sorting, which consider their  dependencies
         /// </summary>
         /// <typeparam name="T">The type of the members of values.</typeparam>
         /// <param name="source">A list of objects to sort</param>
         /// <param name="getDependencies">Function to resolve the dependencies</param>
         /// <returns></returns>
-        public static List<T> SortByDependencies<T>(this IEnumerable<T> source, Func<T, IEnumerable<T>> getDependencies)
+        public static List<T> SortByDependencies<T>([NotNull] this IEnumerable<T> source, Func<T, IEnumerable<T>> getDependencies)
         {
             /* See: http://www.codeproject.com/Articles/869059/Topological-sorting-in-Csharp
              *      http://en.wikipedia.org/wiki/Topological_sorting
@@ -24,7 +26,7 @@ namespace Stove.Collections.Extensions
             var sorted = new List<T>();
             var visited = new Dictionary<T, bool>();
 
-            foreach (var item in source)
+            foreach (T item in source)
             {
                 SortByDependenciesVisit(item, getDependencies, sorted, visited);
             }
@@ -33,7 +35,6 @@ namespace Stove.Collections.Extensions
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <typeparam name="T">The type of the members of values.</typeparam>
         /// <param name="item">Item to resolve</param>
@@ -43,7 +44,7 @@ namespace Stove.Collections.Extensions
         private static void SortByDependenciesVisit<T>(T item, Func<T, IEnumerable<T>> getDependencies, List<T> sorted, Dictionary<T, bool> visited)
         {
             bool inProcess;
-            var alreadyVisited = visited.TryGetValue(item, out inProcess);
+            bool alreadyVisited = visited.TryGetValue(item, out inProcess);
 
             if (alreadyVisited)
             {
@@ -56,10 +57,10 @@ namespace Stove.Collections.Extensions
             {
                 visited[item] = true;
 
-                var dependencies = getDependencies(item);
+                IEnumerable<T> dependencies = getDependencies(item);
                 if (dependencies != null)
                 {
-                    foreach (var dependency in dependencies)
+                    foreach (T dependency in dependencies)
                     {
                         SortByDependenciesVisit(dependency, getDependencies, sorted, visited);
                     }

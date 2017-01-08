@@ -19,7 +19,10 @@ namespace Stove.BackgroundJobs
         /// <param name="args">Job arguments.</param>
         /// <param name="priority">Job priority.</param>
         /// <param name="delay">Job delay (wait duration before first try).</param>
-        Task EnqueueAsync<TJob, TArgs>(TArgs args, BackgroundJobPriority priority = BackgroundJobPriority.Normal, TimeSpan? delay = null)
+        Task EnqueueAsync<TJob, TArgs>(
+            TArgs args,
+            BackgroundJobPriority priority = BackgroundJobPriority.Normal,
+            TimeSpan? delay = null)
             where TJob : IBackgroundJob<TArgs>;
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-using JetBrains.Annotations;
+using Stove.JetBrains.Annotations;
 
 namespace Stove
 {

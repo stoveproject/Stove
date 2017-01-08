@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace JetBrains.Annotations
+namespace Stove.JetBrains.Annotations
 {
     /* MIT License
 
