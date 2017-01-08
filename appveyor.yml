@@ -11,10 +11,10 @@ build:
   verbosity: minimal
   
 after_build:
-- cmd: nuget pack "src\Stove" -c "Release" -o "nupkg/"
-- cmd: nuget pack "src\Stove.EntityFramework" -c "Release" -o "nupkg/"
-- cmd: nuget pack "src\Stove.HangFire" -c "Release" -o "nupkg/"
-- cmd: nuget pack "src\Stove.NLog" -c "Release" -o "nupkg/"
+- cmd: nuget pack "src\Stove"
+- cmd: nuget pack "src\Stove.EntityFramework"
+- cmd: nuget pack "src\Stove.HangFire"
+- cmd: nuget pack "src\Stove.NLog"
 
 assembly_info:
   patch: true
