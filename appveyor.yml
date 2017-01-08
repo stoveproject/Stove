@@ -5,9 +5,6 @@ before_build:
 - cmd: nuget.exe restore
 
 build:
-  publish_nuget: true
-  publish_nuget_symbols: true
-  include_nuget_references: true
   verbosity: minimal
   
 after_build:
@@ -15,6 +12,7 @@ after_build:
 - cmd: nuget pack "src\Stove.EntityFramework"
 - cmd: nuget pack "src\Stove.HangFire"
 - cmd: nuget pack "src\Stove.NLog"
+ publish_nuget: true
 
 assembly_info:
   patch: true
