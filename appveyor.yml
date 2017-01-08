@@ -12,7 +12,7 @@ after_build:
 - cmd: nuget pack "src\Stove.EntityFramework"
 - cmd: nuget pack "src\Stove.HangFire"
 - cmd: nuget pack "src\Stove.NLog"
- publish_nuget: true
+- publish_nuget: true
 
 assembly_info:
   patch: true
