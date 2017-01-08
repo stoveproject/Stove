@@ -91,6 +91,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Stove.HangFire.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Stove\Stove.csproj">

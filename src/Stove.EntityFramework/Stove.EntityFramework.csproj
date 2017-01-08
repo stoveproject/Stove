@@ -109,6 +109,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Stove.EntityFramework.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Stove\Stove.csproj">
