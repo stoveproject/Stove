@@ -13,7 +13,7 @@
   },
 
   "packOptions" : {
-    "summary" : "Application framework",
+    "summary" : "NLog integration for Stove.",
     "tags" : [
       ".net",
       "framework",

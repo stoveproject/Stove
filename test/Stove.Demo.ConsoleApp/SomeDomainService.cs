@@ -1,15 +1,15 @@
 ﻿using Autofac.Extras.IocManager;
 
 using Stove.BackgroundJobs;
-using Stove.Demo.BackgroundJobs;
-using Stove.Demo.DbContexes;
-using Stove.Demo.Entities;
+using Stove.Demo.ConsoleApp.BackgroundJobs;
+using Stove.Demo.ConsoleApp.DbContexes;
+using Stove.Demo.ConsoleApp.Entities;
 using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
 using Stove.EntityFramework.EntityFramework;
 using Stove.Log;
 
-namespace Stove.Demo
+namespace Stove.Demo.ConsoleApp
 {
     public class SomeDomainService : ITransientDependency
     {

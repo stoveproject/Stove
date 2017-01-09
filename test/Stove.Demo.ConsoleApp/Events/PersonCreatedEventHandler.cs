@@ -1,10 +1,10 @@
 ﻿using Autofac.Extras.IocManager;
 
-using Stove.Demo.Entities;
+using Stove.Demo.ConsoleApp.Entities;
 using Stove.Events.Bus.Entities;
 using Stove.Events.Bus.Handlers;
 
-namespace Stove.Demo.Events
+namespace Stove.Demo.ConsoleApp.Events
 {
     public class PersonCreatedEventHandler : IEventHandler<EntityCreatedEventData<Person>>, ITransientDependency
     {

@@ -5,11 +5,11 @@ using Autofac;
 using Hangfire;
 
 using Stove.Bootstrapping;
-using Stove.HangFire.Configurations;
-using Stove.HangFire.Hangfire;
+using Stove.Hangfire.Configurations;
+using Stove.Hangfire.Hangfire;
 using Stove.Threading.BackgrodunWorkers;
 
-namespace Stove.HangFire.Bootsrappers
+namespace Stove.Hangfire.Bootsrappers
 {
     public class HangFireBootstrapper : StoveBootstrapper
     {

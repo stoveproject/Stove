@@ -1,6 +1,6 @@
 ﻿using Stove.Bootstrapping;
 
-namespace Stove.Demo.DbContexes
+namespace Stove.Demo.ConsoleApp.DbContexes
 {
     public class DbContextBootstrapper : StoveBootstrapper
     {

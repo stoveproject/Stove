@@ -2,7 +2,7 @@
 
 using Autofac.Extras.IocManager;
 
-namespace Stove.Demo
+namespace Stove.Demo.ConsoleApp
 {
     public static class SomeRegistrationExtensions
     {

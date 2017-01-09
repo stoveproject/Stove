@@ -32,7 +32,7 @@
   },
 
   "packOptions" : {
-    "summary" : "Application framework",
+    "summary" : "Application framework and main package for Stove.",
     "tags" : [
       ".net",
       "framework",

@@ -8,12 +8,12 @@ using Hangfire;
 
 using HibernatingRhinos.Profiler.Appender.EntityFramework;
 
-using Stove.Demo.DbContexes;
+using Stove.Demo.ConsoleApp.DbContexes;
 using Stove.EntityFramework;
-using Stove.HangFire.Hangfire;
+using Stove.Hangfire.Hangfire;
 using Stove.NLog;
 
-namespace Stove.Demo
+namespace Stove.Demo.ConsoleApp
 {
     internal class Program
     {
@@ -35,8 +35,7 @@ namespace Stove.Demo
                                                .UseBackgroundJobs()
                                                .UseHangfire(configuration =>
                                                {
-                                                   configuration.GlobalConfiguration
-                                                                .UseSqlServerStorage("Default")
+                                                   SqlServerStorageExtensions.UseSqlServerStorage((IGlobalConfiguration)configuration.GlobalConfiguration, (string)"Default")
                                                                 .UseNLogLogProvider();
                                                    return configuration;
                                                })

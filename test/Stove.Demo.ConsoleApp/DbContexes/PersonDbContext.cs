@@ -1,10 +1,10 @@
 ﻿using System.Data.Common;
 using System.Data.Entity;
 
-using Stove.Demo.Entities;
+using Stove.Demo.ConsoleApp.Entities;
 using Stove.EntityFramework.EntityFramework;
 
-namespace Stove.Demo.DbContexes
+namespace Stove.Demo.ConsoleApp.DbContexes
 {
     public class PersonStoveDbContext : StoveDbContext
     {

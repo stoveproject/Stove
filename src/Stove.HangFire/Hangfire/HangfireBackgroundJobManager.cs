@@ -8,7 +8,7 @@ using Hangfire;
 using Stove.BackgroundJobs;
 using Stove.Threading.BackgrodunWorkers;
 
-namespace Stove.HangFire.Hangfire
+namespace Stove.Hangfire.Hangfire
 {
     public class HangfireBackgroundJobManager : BackgroundWorkerBase, IBackgroundJobManager, ISingletonDependency
     {

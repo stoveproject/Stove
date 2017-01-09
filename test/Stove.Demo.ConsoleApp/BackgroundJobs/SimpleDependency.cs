@@ -1,6 +1,6 @@
 ﻿using Autofac.Extras.IocManager;
 
-namespace Stove.Demo.BackgroundJobs
+namespace Stove.Demo.ConsoleApp.BackgroundJobs
 {
     public class SimpleDependency : ISimpleDependency, ITransientDependency
     {

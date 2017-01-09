@@ -2,7 +2,7 @@
 
 using Stove.Domain.Entities;
 
-namespace Stove.Demo.Entities
+namespace Stove.Demo.ConsoleApp.Entities
 {
     [Table("Animal")]
     public class Animal : Entity

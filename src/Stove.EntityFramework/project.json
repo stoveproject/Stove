@@ -19,11 +19,12 @@
   },
 
   "packOptions" : {
-    "summary" : "Application framework",
+    "summary" : "EntityFramework integration for Stove.",
     "tags" : [
       ".net",
       "framework",
-      "boilerplate"
+      "boilerplate",
+      "entityframework"
     ],
     "owners" : ["Oguzhan Soykan"],
     "authors" : ["Oguzhan Soykan"],

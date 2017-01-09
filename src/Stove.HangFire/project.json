@@ -23,7 +23,7 @@
   },
 
   "packOptions": {
-    "summary": "Application framework",
+    "summary": "Hangfire integration for Stove.",
     "tags": [
       ".net",
       "framework",

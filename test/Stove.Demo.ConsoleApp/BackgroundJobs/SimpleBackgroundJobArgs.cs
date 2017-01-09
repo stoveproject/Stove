@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Stove.Demo.BackgroundJobs
+namespace Stove.Demo.ConsoleApp.BackgroundJobs
 {
     [Serializable]
     public class SimpleBackgroundJobArgs

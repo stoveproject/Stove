@@ -2,7 +2,7 @@
 
 using Hangfire;
 
-namespace Stove.HangFire.Hangfire
+namespace Stove.Hangfire.Hangfire
 {
     public class StoveHangfireConfiguration : IStoveHangfireConfiguration, ISingletonDependency
     {

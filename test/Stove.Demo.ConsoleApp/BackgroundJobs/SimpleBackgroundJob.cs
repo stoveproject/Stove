@@ -1,11 +1,11 @@
 ﻿using Autofac.Extras.IocManager;
 
 using Stove.BackgroundJobs;
-using Stove.Demo.Entities;
+using Stove.Demo.ConsoleApp.Entities;
 using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
 
-namespace Stove.Demo.BackgroundJobs
+namespace Stove.Demo.ConsoleApp.BackgroundJobs
 {
     public class SimpleBackgroundJob : BackgroundJob<SimpleBackgroundJobArgs>, ITransientDependency
     {

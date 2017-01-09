@@ -1,4 +1,4 @@
-﻿namespace Stove.Demo.BackgroundJobs
+﻿namespace Stove.Demo.ConsoleApp.BackgroundJobs
 {
     public interface ISimpleDependency
     {
