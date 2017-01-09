@@ -3,7 +3,7 @@ using System.Reflection;
 
 using Autofac.Extras.IocManager;
 
-namespace Stove.HangFire.Hangfire
+namespace Stove.Hangfire.Hangfire
 {
     public static class HangfireRegistrationExtensions
     {

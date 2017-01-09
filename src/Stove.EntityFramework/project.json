@@ -1,0 +1,45 @@
+﻿{
+  "version" : "0.0.2-*",
+
+  "dependencies": {
+    "Stove": "0.0.2",
+    "Autofac": "4.2.1",
+    "Autofac.Extras.IocManager": "2.0.2",
+    "EntityFramework": "6.1.3",
+    "EntityFramework.DynamicFilters": "2.6.0",
+    "FluentAssemblyScanner": "1.0.5",
+    "System.Collections": "4.3.0",
+    "System.Collections.Immutable": "1.3.1"
+  },
+
+  "frameworks" : {
+    "net452" : {
+    
+    }
+  },
+
+  "packOptions" : {
+    "summary" : "EntityFramework integration for Stove.",
+    "tags" : [
+      ".net",
+      "framework",
+      "boilerplate",
+      "entityframework"
+    ],
+    "owners" : ["Oguzhan Soykan"],
+    "authors" : ["Oguzhan Soykan"],
+    "iconUrl" : "https://raw.githubusercontent.com/osoykan/Stove/master/stove.png",
+    "projectUrl" : "https://github.com/osoykan/Stove",
+    "licenseUrl" : "https://github.com/osoykan/Stove/blob/master/LICENSE",
+    "requireLicenseAcceptance" : false,
+    "repository" : {
+      "type" : "git",
+      "url" : "https://github.com/osoykan/Stove"
+    },
+    "files" : {
+      "mappings" : {
+        "lib/net452/" : "bin/Release/net452/Stove.EntityFramework.pdb"
+      }
+    }
+  }
+}

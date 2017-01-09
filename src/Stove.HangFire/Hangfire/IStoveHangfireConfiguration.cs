@@ -1,6 +1,6 @@
 ﻿using Hangfire;
 
-namespace Stove.HangFire.Hangfire
+namespace Stove.Hangfire.Hangfire
 {
     public interface IStoveHangfireConfiguration
     {

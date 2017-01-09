@@ -1,9 +1,9 @@
 ﻿using System;
 
 using Stove.Configuration;
-using Stove.HangFire.Hangfire;
+using Stove.Hangfire.Hangfire;
 
-namespace Stove.HangFire.Configurations
+namespace Stove.Hangfire.Configurations
 {
     public static class StoveHangfireConfigurationExtensions
     {

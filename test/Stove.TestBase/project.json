@@ -1,0 +1,15 @@
+﻿{
+  "version": "0.0.2-*",
+
+  "dependencies": {
+  "Autofac" :"4.2.1" ,
+  "Autofac.Extras.IocManager" :"2.0.2" ,
+    "FluentAssemblyScanner": "1.0.5" 
+  },
+
+  "frameworks": {
+    "net452": {
+
+    }
+  }
+}
