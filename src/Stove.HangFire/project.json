@@ -1,0 +1,48 @@
+{
+  "version": "0.0.2-*",
+
+  "dependencies": {
+    "Stove": "0.0.2",
+    "Autofac": "4.2.1",
+    "Autofac.Extras.IocManager": "2.0.2",
+    "FluentAssemblyScanner": "1.0.5",
+    "Hangfire": "1.6.8",
+    "Hangfire.Autofac": "2.2.0",
+    "Hangfire.Core": "1.6.8",
+    "Hangfire.SqlServer": "1.6.8",
+    "Microsoft.Owin": "3.0.1",
+    "Microsoft.Owin.Host.SystemWeb": "3.0.1",
+    "Newtonsoft.Json": "9.0.1",
+    "Owin": "1.0"
+  },
+
+  "frameworks": {
+    "net452": {
+
+    }
+  },
+
+  "packOptions": {
+    "summary": "Application framework",
+    "tags": [
+      ".net",
+      "framework",
+      "boilerplate"
+    ],
+    "owners": [ "Oguzhan Soykan" ],
+    "authors": [ "Oguzhan Soykan" ],
+    "iconUrl": "https://raw.githubusercontent.com/osoykan/Stove/master/stove.png",
+    "projectUrl": "https://github.com/osoykan/Stove",
+    "licenseUrl": "https://github.com/osoykan/Stove/blob/master/LICENSE",
+    "requireLicenseAcceptance": false,
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/osoykan/Stove"
+    },
+    "files": {
+      "mappings": {
+        "lib/net452/": "bin/Release/net452/Stove.Hangfire.pdb"
+      }
+    }
+  }
+}

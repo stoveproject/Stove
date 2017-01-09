@@ -14,7 +14,7 @@ namespace Stove.Tests.Domain.Uow
     public class UowManager_Tests : TestBaseWithLocalIocResolver
     {
         [Fact]
-        public void Should_Call_Uow_Methods()
+        public void Should_Call_Uow_Methods() 
         {
             var fakeUow = Substitute.For<IUnitOfWork>();
 

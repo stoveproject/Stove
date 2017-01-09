@@ -1,0 +1,38 @@
+{
+  "version" : "0.0.2-*",
+
+  "dependencies": {
+    "NLog": "4.4.1",
+    "Stove": "0.0.2"
+  },
+
+  "frameworks" : {
+    "net452" : {
+    
+    }
+  },
+
+  "packOptions" : {
+    "summary" : "Application framework",
+    "tags" : [
+      ".net",
+      "framework",
+      "boilerplate"
+    ],
+    "owners" : ["Oguzhan Soykan"],
+    "authors" : ["Oguzhan Soykan"],
+    "iconUrl" : "https://raw.githubusercontent.com/osoykan/Stove/master/stove.png",
+    "projectUrl" : "https://github.com/osoykan/Stove",
+    "licenseUrl" : "https://github.com/osoykan/Stove/blob/master/LICENSE",
+    "requireLicenseAcceptance" : false,
+    "repository" : {
+      "type" : "git",
+      "url" : "https://github.com/osoykan/Stove"
+    },
+    "files" : {
+      "mappings" : {
+        "lib/net452/" : "bin/Release/net452/Stove.NLog.pdb"
+      }
+    }
+  }
+}
