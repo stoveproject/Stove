@@ -31,7 +31,7 @@ namespace Stove.EntityFramework.Tests
 
                 EfRepositoryRegistrar.RegisterRepositories(typeof(MyModuleDbContext), builder);
                 EfRepositoryRegistrar.RegisterRepositories(typeof(MyMainDbContext), builder);
-            });
+            }).Ok();
         }
 
         [Fact]

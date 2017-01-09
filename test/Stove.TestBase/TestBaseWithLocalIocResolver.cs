@@ -4,7 +4,7 @@ using Autofac.Extras.IocManager;
 
 namespace Stove.TestBase
 {
-    public abstract class TestBaseWithLocalIocResolver
+    public abstract class TestBaseWithLocalIocResolver : IDisposable
     {
         protected IIocBuilder IocBuilder;
         protected IRootResolver LocalResolver;
@@ -15,10 +15,20 @@ namespace Stove.TestBase
                                 .UseAutofacContainerBuilder();
         }
 
-        protected void Building(Action<IIocBuilder> builderAction)
+        protected TestBaseWithLocalIocResolver Building(Action<IIocBuilder> builderAction)
         {
             builderAction(IocBuilder);
+            return this;
+        }
+
+        public void Ok()
+        {
             LocalResolver = IocBuilder.CreateResolver();
+        }
+
+        public void Dispose()
+        {
+            LocalResolver?.Dispose();
         }
     }
 }

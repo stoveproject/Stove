@@ -2,9 +2,14 @@
   "version": "0.0.2-*",
 
   "dependencies": {
-  "Autofac" :"4.2.1" ,
-  "Autofac.Extras.IocManager" :"2.0.2" ,
-    "FluentAssemblyScanner": "1.0.5" 
+    "Autofac": "4.2.1",
+    "Autofac.Extras.IocManager": "2.0.2",
+    "FluentAssemblyScanner": "1.0.5",
+    "dotnet-test-xunit": "2.2.0-preview2-build1029",
+    "xunit": "2.2.0-beta4-build3444",
+    "NSubstitute": "1.10.0",
+    "Shouldly": "2.8.2",
+    "Stove": "0.0.2"
   },
 
   "frameworks": {

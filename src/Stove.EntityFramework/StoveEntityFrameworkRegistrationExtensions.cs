@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 using Autofac.Extras.IocManager;
 
-using FluentAssemblyScanner;
-
 using Stove.Domain.Uow;
 using Stove.EntityFramework.EntityFramework;
 using Stove.EntityFramework.EntityFramework.Uow;
+using Stove.Reflection.Extensions;
 
 namespace Stove.EntityFramework
 {
@@ -21,12 +21,7 @@ namespace Stove.EntityFramework
             builder.RegisterServices(r => r.RegisterGeneric(typeof(IDbContextProvider<>), typeof(UnitOfWorkDbContextProvider<>)));
             builder.RegisterServices(r => r.Register<IUnitOfWorkDefaultOptions, UnitOfWorkDefaultOptions>(Lifetime.Singleton));
 
-            List<Type> dbContextTypes = AssemblyScanner.FromAssemblyInDirectory(new AssemblyFilter(string.Empty))
-                                                       .BasedOn<StoveDbContext>()
-                                                       .Filter()
-                                                       .Classes()
-                                                       .NonStatic()
-                                                       .Scan();
+            List<Type> dbContextTypes = typeof(StoveDbContext).AssignedTypes().ToList();
 
             dbContextTypes.ForEach(type => EfRepositoryRegistrar.RegisterRepositories(type, builder));
 
@@ -38,7 +33,7 @@ namespace Stove.EntityFramework
             builder.RegisterServices(r => r.Register<IConnectionStringResolver, TypedConnectionStringResolver>());
             return builder;
         }
-        
+
         public static IIocBuilder UseTransacitonScopeEfTransactionStrategy(this IIocBuilder builder)
         {
             builder.RegisterServices(r => r.Register<IEfTransactionStrategy, TransactionScopeEfTransactionStrategy>());
