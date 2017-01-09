@@ -35,7 +35,7 @@ namespace Stove.Demo.ConsoleApp
                                                .UseBackgroundJobs()
                                                .UseHangfire(configuration =>
                                                {
-                                                   SqlServerStorageExtensions.UseSqlServerStorage((IGlobalConfiguration)configuration.GlobalConfiguration, (string)"Default")
+                                                   configuration.GlobalConfiguration.UseSqlServerStorage("Default")
                                                                 .UseNLogLogProvider();
                                                    return configuration;
                                                })
