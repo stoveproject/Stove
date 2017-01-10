@@ -23,6 +23,8 @@ namespace Stove.Tests.SampleApplication.Domain
 
         public virtual IDbSet<Order> Orders { get; set; }
 
-        public virtual IDbSet<OrderProduct> OrderProducts { get; set; }
+        public virtual IDbSet<OrderDetail> OrderDetails { get; set; }
+
+        public virtual IDbSet<ProductDetail> ProductDetails { get; set; }
     }
 }

@@ -30,6 +30,7 @@ namespace Stove.Demo.ConsoleApp
                                                .UseStoveEntityFramework()
                                                .UseDefaultEventBus()
                                                .UseDbContextEfTransactionStrategy()
+                                               //.UseTransacitonScopeEfTransactionStrategy()
                                                .UseTypedConnectionStringResolver()
                                                .UseNLog()
                                                .UseBackgroundJobs()

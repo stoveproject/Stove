@@ -4,13 +4,13 @@ using Stove.Domain.Entities.Auditing;
 
 namespace Stove.Tests.SampleApplication.Domain.Entities
 {
-    [Table("Product")]
+    [Table(nameof(Product))]
     public class Product : CreationAuditedEntity<long, User>
     {
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
 
-        public string Code { get; set; }
+        public virtual string Code { get; set; }
 
-        public string Description { get; set; }
+        public virtual string Description { get; set; }
     }
 }

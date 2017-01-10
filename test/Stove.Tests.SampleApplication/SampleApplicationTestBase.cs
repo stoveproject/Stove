@@ -12,12 +12,14 @@ using Stove.EntityFramework;
 using Stove.Runtime.Session;
 using Stove.TestBase;
 using Stove.Tests.SampleApplication.Domain;
+using Stove.Tests.SampleApplication.Domain.Entities;
+using Stove.Timing;
 
 namespace Stove.Tests.SampleApplication
 {
-    public abstract class TestBase : TestBaseWithLocalIocResolver
+    public abstract class SampleApplicationTestBase : TestBaseWithLocalIocResolver
     {
-        protected TestBase()
+        protected SampleApplicationTestBase()
         {
             Building(builder =>
             {
@@ -35,6 +37,20 @@ namespace Stove.Tests.SampleApplication
         }
 
         protected TestStoveSession TestStoveSession => LocalResolver.Resolve<TestStoveSession>();
+
+        protected virtual void CreateInitialData()
+        {
+            UsingDbContext(context =>
+            {
+                context.Users.Add(new User
+                {
+                    CreationTime = Clock.Now,
+                    Name = "Oğuzhan",
+                    Surname = "Soykan",
+                    Email = "oguzhansoykan@outlook.com"
+                });
+            });
+        }
 
         public void UsingDbContext(Action<SampleApplicationDbContext> action)
         {
