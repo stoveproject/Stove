@@ -21,7 +21,7 @@ namespace Stove.Tests.SampleApplication
         public void firstordefault_should_work()
         {
             var uowManager = LocalResolver.Resolve<IUnitOfWorkManager>();
-            var userRepository = LocalResolver.Resolve<IRepository<User, long>>();
+            var userRepository = LocalResolver.Resolve<IRepository<User>>();
 
             using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
             {
@@ -36,7 +36,7 @@ namespace Stove.Tests.SampleApplication
         public void uow_rollback_should_work_with_repository_insert()
         {
             var uowManager = LocalResolver.Resolve<IUnitOfWorkManager>();
-            var userRepository = LocalResolver.Resolve<IRepository<User, long>>();
+            var userRepository = LocalResolver.Resolve<IRepository<User>>();
 
             using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
             {

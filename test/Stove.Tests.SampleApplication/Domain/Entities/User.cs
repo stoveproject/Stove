@@ -7,7 +7,7 @@ using Stove.Domain.Entities.Auditing;
 namespace Stove.Tests.SampleApplication.Domain.Entities
 {
     [Table(nameof(User))]
-    public class User : Entity<long>, IHasCreationTime
+    public class User : AggregateRoot, IHasCreationTime
     {
         public virtual string Name { get; set; }
 
@@ -15,6 +15,6 @@ namespace Stove.Tests.SampleApplication.Domain.Entities
 
         public virtual string Email { get; set; }
 
-        public DateTime CreationTime { get; set; }
+        public virtual DateTime CreationTime { get; set; }
     }
 }

@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-using Stove.Domain.Entities.Auditing;
+using Stove.Domain.Entities;
 
 namespace Stove.Tests.SampleApplication.Domain.Entities
 {
     [Table(nameof(ProductDetail))]
-    public class ProductDetail : CreationAuditedEntity<long, User>
+    public class ProductDetail : Entity
     {
-        public virtual Product Product { get; set; }
+        public Product Product { get; set; }
 
         public virtual string Age { get; set; }
     }
