@@ -21,7 +21,11 @@ namespace Stove.Bootstrapping.Bootstrappers
         public override void Start()
         {
             _backgroundJobConfigurer(Configuration.BackgroundJobs);
-            _backgroundWorkerManager.Start();
+
+            if (Configuration.BackgroundJobs.IsJobExecutionEnabled)
+            {
+                _backgroundWorkerManager.Start();
+            }
         }
     }
 }
