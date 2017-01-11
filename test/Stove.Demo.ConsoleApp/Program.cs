@@ -30,12 +30,13 @@ namespace Stove.Demo.ConsoleApp
                                                .UseStoveEntityFramework()
                                                .UseDefaultEventBus()
                                                .UseDbContextEfTransactionStrategy()
+                                               //.UseTransacitonScopeEfTransactionStrategy()
                                                .UseTypedConnectionStringResolver()
                                                .UseNLog()
                                                .UseBackgroundJobs()
                                                .UseHangfire(configuration =>
                                                {
-                                                   SqlServerStorageExtensions.UseSqlServerStorage((IGlobalConfiguration)configuration.GlobalConfiguration, (string)"Default")
+                                                   configuration.GlobalConfiguration.UseSqlServerStorage("Default")
                                                                 .UseNLogLogProvider();
                                                    return configuration;
                                                })

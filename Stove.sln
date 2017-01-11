@@ -28,6 +28,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Stove.Demo.ConsoleApp", "test\Stove.Demo.ConsoleApp\Stove.Demo.ConsoleApp.xproj", "{7428E8F9-A34C-4B05-B4FF-D5A0E19F3BE1}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Stove.Tests.SampleApplication", "test\Stove.Tests.SampleApplication\Stove.Tests.SampleApplication.xproj", "{1A13425B-038F-4F76-86C1-F25E5F02991C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +68,10 @@ Global
 		{7428E8F9-A34C-4B05-B4FF-D5A0E19F3BE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7428E8F9-A34C-4B05-B4FF-D5A0E19F3BE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7428E8F9-A34C-4B05-B4FF-D5A0E19F3BE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A13425B-038F-4F76-86C1-F25E5F02991C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A13425B-038F-4F76-86C1-F25E5F02991C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A13425B-038F-4F76-86C1-F25E5F02991C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A13425B-038F-4F76-86C1-F25E5F02991C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,5 +85,6 @@ Global
 		{F14A49EE-4931-4A13-86E2-74DAACFEAB94} = {4D2BAE52-1E23-4321-BBE6-2BAC28F7B389}
 		{A540038F-D692-41E6-9455-8D420E024A86} = {4D2BAE52-1E23-4321-BBE6-2BAC28F7B389}
 		{7428E8F9-A34C-4B05-B4FF-D5A0E19F3BE1} = {4D2BAE52-1E23-4321-BBE6-2BAC28F7B389}
+		{1A13425B-038F-4F76-86C1-F25E5F02991C} = {4D2BAE52-1E23-4321-BBE6-2BAC28F7B389}
 	EndGlobalSection
 EndGlobal

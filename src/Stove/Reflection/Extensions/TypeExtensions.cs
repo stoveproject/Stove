@@ -20,7 +20,7 @@ namespace Stove.Reflection.Extensions
 
         public static IList<Type> AssignedTypes(this Type @this)
         {
-            return AssemblyScanner.FromAssemblyInDirectory(new AssemblyFilter(string.Empty))
+            return AssemblyScanner.FromAssemblyInDirectory(new AssemblyFilter(AppDomain.CurrentDomain.RelativeSearchPath))
                                   .BasedOn(@this)
                                   .Filter()
                                   .Classes()
