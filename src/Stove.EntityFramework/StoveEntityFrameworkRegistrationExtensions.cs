@@ -24,7 +24,7 @@ namespace Stove.EntityFramework
             return builder;
         }
 
-        public static IIocBuilder UseRepositoryRegistrarInAssembly(IIocBuilder builder, [NotNull] Assembly assembly)
+        public static IIocBuilder UseRepositoryRegistrarInAssembly(this IIocBuilder builder, [NotNull] Assembly assembly)
         {
             Check.NotNull(assembly, nameof(assembly));
 
