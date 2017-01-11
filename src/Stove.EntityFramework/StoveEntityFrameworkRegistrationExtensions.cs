@@ -21,6 +21,10 @@ namespace Stove.EntityFramework
             builder.RegisterServices(r => r.Register<IEfUnitOfWorkFilterExecuter, IEfUnitOfWorkFilterExecuter, EfDynamicFiltersUnitOfWorkFilterExecuter>());
             builder.RegisterServices(r => r.RegisterGeneric(typeof(IDbContextProvider<>), typeof(UnitOfWorkDbContextProvider<>)));
             builder.RegisterServices(r => r.Register<IUnitOfWorkDefaultOptions, UnitOfWorkDefaultOptions>(Lifetime.Singleton));
+
+            List<Type> dbContextTypes = typeof(StoveDbContext).AssignedTypes().ToList();
+            dbContextTypes.ForEach(type => EfRepositoryRegistrar.RegisterRepositories(type, builder));
+
             return builder;
         }
 
