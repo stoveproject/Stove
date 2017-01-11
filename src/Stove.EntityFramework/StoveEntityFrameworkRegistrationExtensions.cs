@@ -8,6 +8,7 @@ using Autofac.Extras.IocManager;
 using Stove.Domain.Uow;
 using Stove.EntityFramework.EntityFramework;
 using Stove.EntityFramework.EntityFramework.Uow;
+using Stove.JetBrains.Annotations;
 using Stove.Reflection.Extensions;
 
 namespace Stove.EntityFramework
@@ -20,11 +21,15 @@ namespace Stove.EntityFramework
             builder.RegisterServices(r => r.Register<IEfUnitOfWorkFilterExecuter, IEfUnitOfWorkFilterExecuter, EfDynamicFiltersUnitOfWorkFilterExecuter>());
             builder.RegisterServices(r => r.RegisterGeneric(typeof(IDbContextProvider<>), typeof(UnitOfWorkDbContextProvider<>)));
             builder.RegisterServices(r => r.Register<IUnitOfWorkDefaultOptions, UnitOfWorkDefaultOptions>(Lifetime.Singleton));
+            return builder;
+        }
 
-            List<Type> dbContextTypes = typeof(StoveDbContext).AssignedTypes().ToList();
+        public static IIocBuilder UseRepositoryRegistrarInAssembly(IIocBuilder builder, [NotNull] Assembly assembly)
+        {
+            Check.NotNull(assembly, nameof(assembly));
 
+            List<Type> dbContextTypes = typeof(StoveDbContext).AssignedTypesInAssembly(assembly).ToList();
             dbContextTypes.ForEach(type => EfRepositoryRegistrar.RegisterRepositories(type, builder));
-
             return builder;
         }
 
