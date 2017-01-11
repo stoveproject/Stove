@@ -1,9 +1,9 @@
 {
-  "version" : "0.0.2-*",
+  "version" : "0.0.3-*",
 
   "dependencies": {
     "NLog": "4.4.1",
-    "Stove": "0.0.2"
+    "Stove": "0.0.3"
   },
 
   "frameworks" : {

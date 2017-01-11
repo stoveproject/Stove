@@ -1,10 +1,10 @@
 {
-  "version": "0.0.2-*",
+  "version": "0.0.3-*",
   "testRunner": "xunit",
   "dependencies": {
    
-    "Stove.EntityFramework": "0.0.2-*",
-    "Stove.TestBase": "0.0.2-*"
+    "Stove.EntityFramework": "0.0.3-*",
+    "Stove.TestBase": "0.0.3-*"
   },
 
   "frameworks": {

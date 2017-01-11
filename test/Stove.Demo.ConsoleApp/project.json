@@ -1,5 +1,5 @@
 {
-  "version": "0.0.2-*",
+  "version": "0.0.3-*",
 
   "buildOptions": {
     "emitEntryPoint": true
@@ -15,10 +15,10 @@
     "Hangfire.SqlServer": "1.6.8",
     "Newtonsoft.Json": "9.0.1",
     "Owin": "1.0",
-    "Stove": "0.0.2",
-    "Stove.EntityFramework": "0.0.2-*",
-    "Stove.HangFire": "0.0.2-*",
-    "Stove.NLog": "0.0.2-*"
+    "Stove": "0.0.3",
+    "Stove.EntityFramework": "0.0.3-*",
+    "Stove.HangFire": "0.0.3-*",
+    "Stove.NLog": "0.0.3-*"
   },
 
   "frameworks": {
