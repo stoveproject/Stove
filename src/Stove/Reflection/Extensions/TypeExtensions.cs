@@ -4,6 +4,8 @@ using System.Reflection;
 
 using FluentAssemblyScanner;
 
+using Stove.IO;
+
 namespace Stove.Reflection.Extensions
 {
     public static class TypeExtensions
@@ -20,7 +22,7 @@ namespace Stove.Reflection.Extensions
 
         public static IList<Type> AssignedTypes(this Type @this)
         {
-            return AssemblyScanner.FromAssemblyInDirectory(new AssemblyFilter(AppDomain.CurrentDomain.RelativeSearchPath))
+            return AssemblyScanner.FromAssemblyInDirectory(new AssemblyFilter(AppDomain.CurrentDomain.GetActualDomainPath()))
                                   .BasedOn(@this)
                                   .Filter()
                                   .Classes()

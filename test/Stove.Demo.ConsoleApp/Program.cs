@@ -8,6 +8,7 @@ using Hangfire;
 
 using HibernatingRhinos.Profiler.Appender.EntityFramework;
 
+using Stove.Dapper;
 using Stove.Demo.ConsoleApp.DbContexes;
 using Stove.EntityFramework;
 using Stove.Hangfire.Hangfire;
@@ -28,9 +29,9 @@ namespace Stove.Demo.ConsoleApp
                                                .UseAutofacContainerBuilder()
                                                .UseStove(autoUnitOfWorkInterceptionEnabled: true)
                                                .UseStoveEntityFramework()
+                                               .UseDapper()
                                                .UseDefaultEventBus()
                                                .UseDbContextEfTransactionStrategy()
-                                               //.UseTransacitonScopeEfTransactionStrategy()
                                                .UseTypedConnectionStringResolver()
                                                .UseNLog()
                                                .UseBackgroundJobs()
