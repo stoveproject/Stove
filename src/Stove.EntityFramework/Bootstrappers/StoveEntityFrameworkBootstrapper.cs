@@ -6,7 +6,7 @@ using Stove.Bootstrapping.Bootstrappers;
 using Stove.EntityFramework.EntityFramework;
 using Stove.Reflection.Extensions;
 
-namespace Stove.EntityFramework.Bootstrapper
+namespace Stove.EntityFramework.Bootstrappers
 {
     [DependsOn(
         typeof(StoveKernelBootstrapper)

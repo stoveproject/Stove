@@ -4,11 +4,10 @@ using Autofac;
 using Autofac.Extras.IocManager;
 
 using Stove.Domain.Entities;
-using Stove.EntityFramework.EntityFramework;
 using Stove.EntityFramework.EntityFramework.Repositories;
 using Stove.Reflection.Extensions;
 
-namespace Stove.EntityFramework
+namespace Stove.EntityFramework.EntityFramework
 {
     public static class EfRepositoryRegistrar
     {
