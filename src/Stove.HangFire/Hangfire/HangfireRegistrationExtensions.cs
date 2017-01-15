@@ -7,7 +7,7 @@ namespace Stove.Hangfire.Hangfire
 {
     public static class HangfireRegistrationExtensions
     {
-        public static IIocBuilder UseHangfire(this IIocBuilder builder, Func<IStoveHangfireConfiguration, IStoveHangfireConfiguration> configureAction)
+        public static IIocBuilder UseStoveHangfire(this IIocBuilder builder, Func<IStoveHangfireConfiguration, IStoveHangfireConfiguration> configureAction)
         {
             builder.RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
             builder.RegisterServices(r => r.Register(context => configureAction));

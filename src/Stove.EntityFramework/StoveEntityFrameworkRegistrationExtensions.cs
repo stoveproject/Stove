@@ -37,19 +37,19 @@ namespace Stove.EntityFramework
             return builder;
         }
 
-        public static IIocBuilder UseTypedConnectionStringResolver(this IIocBuilder builder)
+        public static IIocBuilder UseStoveTypedConnectionStringResolver(this IIocBuilder builder)
         {
             builder.RegisterServices(r => r.Register<IConnectionStringResolver, TypedConnectionStringResolver>());
             return builder;
         }
 
-        public static IIocBuilder UseTransacitonScopeEfTransactionStrategy(this IIocBuilder builder)
+        public static IIocBuilder UseStoveTransactionScopeEfTransactionStrategy(this IIocBuilder builder)
         {
             builder.RegisterServices(r => r.Register<IEfTransactionStrategy, TransactionScopeEfTransactionStrategy>());
             return builder;
         }
 
-        public static IIocBuilder UseDbContextEfTransactionStrategy(this IIocBuilder builder)
+        public static IIocBuilder UseStoveDbContextEfTransactionStrategy(this IIocBuilder builder)
         {
             builder.RegisterServices(r => r.Register<IEfTransactionStrategy, DbContextEfTransactionStrategy>());
             return builder;

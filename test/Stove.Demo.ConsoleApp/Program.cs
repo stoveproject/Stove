@@ -29,13 +29,13 @@ namespace Stove.Demo.ConsoleApp
                                                .UseAutofacContainerBuilder()
                                                .UseStove(autoUnitOfWorkInterceptionEnabled: true)
                                                .UseStoveEntityFramework()
-                                               .UseDapper()
-                                               .UseDefaultEventBus()
-                                               .UseDbContextEfTransactionStrategy()
-                                               .UseTypedConnectionStringResolver()
-                                               .UseNLog()
-                                               .UseBackgroundJobs()
-                                               .UseHangfire(configuration =>
+                                               .UseStoveDapper()
+                                               .UseStoveDefaultEventBus()
+                                               .UseStoveDbContextEfTransactionStrategy()
+                                               .UseStoveTypedConnectionStringResolver()
+                                               .UseStoveNLog()
+                                               .UseStoveBackgroundJobs()
+                                               .UseStoveHangfire(configuration =>
                                                {
                                                    configuration.GlobalConfiguration.UseSqlServerStorage("Default")
                                                                 .UseNLogLogProvider();

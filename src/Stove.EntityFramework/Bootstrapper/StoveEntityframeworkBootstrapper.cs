@@ -11,11 +11,11 @@ namespace Stove.EntityFramework.Bootstrapper
     [DependsOn(
         typeof(StoveKernelBootstrapper)
     )]
-    public class StoveEntityframeworkBootstrapper : StoveBootstrapper
+    public class StoveEntityFrameworkBootstrapper : StoveBootstrapper
     {
         private readonly IDbContextTypeMatcher _dbContextTypeMatcher;
 
-        public StoveEntityframeworkBootstrapper(IDbContextTypeMatcher dbContextTypeMatcher)
+        public StoveEntityFrameworkBootstrapper(IDbContextTypeMatcher dbContextTypeMatcher)
         {
             _dbContextTypeMatcher = dbContextTypeMatcher;
         }

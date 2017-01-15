@@ -50,39 +50,36 @@ namespace Stove.Demo.ConsoleApp
         {
             using (IUnitOfWorkCompleteHandle uow = _unitOfWorkManager.Begin())
             {
-                //Logger.Debug("Uow Began!");
+                Logger.Debug("Uow Began!");
 
-                //_personRepository.Insert(new Person("Oğuzhan"));
-                //_personRepository.Insert(new Person("Ekmek"));
+                _personRepository.Insert(new Person("Oğuzhan"));
+                _personRepository.Insert(new Person("Ekmek"));
 
-                //_animalRepository.Insert(new Animal("Kuş"));
-                //_animalRepository.Insert(new Animal("Kedi"));
+                _animalRepository.Insert(new Animal("Kuş"));
+                _animalRepository.Insert(new Animal("Kedi"));
 
-                //_animalDbContextProvider.GetDbContext().Animals.Add(new Animal("Kelebek"));
+                _animalDbContextProvider.GetDbContext().Animals.Add(new Animal("Kelebek"));
 
-                //_unitOfWorkManager.Current.SaveChanges();
+                _unitOfWorkManager.Current.SaveChanges();
 
-                //Person person = _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan");
-                //Animal animal = _animalRepository.FirstOrDefault(x => x.Name == "Kuş");
+                Person person = _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan");
+                Animal animal = _animalRepository.FirstOrDefault(x => x.Name == "Kuş");
 
-                var birds = _animalDapperRepository.GetSet(new { Name = "Kuş" }, 0, 10, "Id");
+                IEnumerable<Animal> birds = _animalDapperRepository.GetSet(new { Name = "Kuş" }, 0, 10, "Id");
 
                 IEnumerable<Person> personFromDapper = _personDapperRepository.GetList(new { Name = "Oğuzhan" });
                 IEnumerable<Person> person2FromDapper = _personDapperRepository.Query("select * from Person with(nolock) where name =@name", new { name = "Oğuzhan" });
-
 
                 birds = birds.ToList();
 
                 uow.Complete();
 
-              
+                _hangfireBackgroundJobManager.EnqueueAsync<SimpleBackgroundJob, SimpleBackgroundJobArgs>(new SimpleBackgroundJobArgs
+                {
+                    Message = "Oğuzhan"
+                });
 
-                //_hangfireBackgroundJobManager.EnqueueAsync<SimpleBackgroundJob, SimpleBackgroundJobArgs>(new SimpleBackgroundJobArgs
-                //{
-                //    Message = "Oğuzhan"
-                //});
-
-                //Logger.Debug("Uow End!");
+                Logger.Debug("Uow End!");
             }
         }
     }

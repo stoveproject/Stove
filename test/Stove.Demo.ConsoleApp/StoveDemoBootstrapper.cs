@@ -6,7 +6,7 @@ using Stove.Hangfire.Bootsrappers;
 namespace Stove.Demo.ConsoleApp
 {
     [DependsOn(
-        typeof(StoveEntityframeworkBootstrapper),
+        typeof(StoveEntityFrameworkBootstrapper),
         typeof(StoveHangFireBootstrapper)
         )]
     public class StoveDemoBootstrapper : StoveBootstrapper

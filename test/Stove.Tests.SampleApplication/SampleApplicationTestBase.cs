@@ -27,9 +27,9 @@ namespace Stove.Tests.SampleApplication
                 builder
                     .UseStove()
                     .UseStoveEntityFramework()
-                    .UseDefaultEventBus()
-                    .UseDefaultConnectionStringResolver()
-                    .UseDbContextEfTransactionStrategy()
+                    .UseStoveDefaultEventBus()
+                    .UseStoveDefaultConnectionStringResolver()
+                    .UseStoveDbContextEfTransactionStrategy()
                     .UseNullLogger();
 
                 builder.RegisterServices(r => r.Register(context => DbConnectionFactory.CreateTransient(), Lifetime.Singleton));

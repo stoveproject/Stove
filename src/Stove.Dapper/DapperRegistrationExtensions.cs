@@ -13,7 +13,7 @@ namespace Stove.Dapper
 {
     public static class DapperRegistrationExtensions
     {
-        public static IIocBuilder UseDapper(this IIocBuilder builder)
+        public static IIocBuilder UseStoveDapper(this IIocBuilder builder)
         {
             builder.RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
 
