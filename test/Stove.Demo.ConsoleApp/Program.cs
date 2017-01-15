@@ -27,7 +27,7 @@ namespace Stove.Demo.ConsoleApp
 
             IRootResolver resolver = IocBuilder.New
                                                .UseAutofacContainerBuilder()
-                                               .UseStove(autoUnitOfWorkInterceptionEnabled: true)
+                                               .UseStove(true)
                                                .UseStoveEntityFramework()
                                                .UseStoveDapper()
                                                .UseStoveDefaultEventBus()
@@ -37,7 +37,8 @@ namespace Stove.Demo.ConsoleApp
                                                .UseStoveBackgroundJobs()
                                                .UseStoveHangfire(configuration =>
                                                {
-                                                   configuration.GlobalConfiguration.UseSqlServerStorage("Default")
+                                                   configuration.GlobalConfiguration
+                                                                .UseSqlServerStorage("Default")
                                                                 .UseNLogLogProvider();
                                                    return configuration;
                                                })
