@@ -1,12 +1,15 @@
-﻿using Stove.Bootstrapping;
+using Stove.Bootstrapping;
+using Stove.Demo.ConsoleApp.DbContexes;
 using Stove.EntityFramework.Bootstrapper;
+using Stove.Hangfire.Bootsrappers;
 
-namespace Stove.Demo.ConsoleApp.DbContexes
+namespace Stove.Demo.ConsoleApp
 {
     [DependsOn(
-        typeof(DbContextTypePopulateBootstrapper)
+        typeof(StoveEntityframeworkBootstrapper),
+        typeof(StoveHangFireBootstrapper)
         )]
-    public class DbContextBootstrapper : StoveBootstrapper
+    public class StoveDemoBootstrapper : StoveBootstrapper
     {
         public override void Start()
         {

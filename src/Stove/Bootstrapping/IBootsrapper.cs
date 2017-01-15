@@ -2,6 +2,10 @@
 {
     public interface IBootsrapper
     {
+        void PreStart();
+
         void Start();
+
+        void PostStart();
     }
 }

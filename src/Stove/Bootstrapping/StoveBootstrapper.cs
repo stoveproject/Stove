@@ -23,9 +23,17 @@ namespace Stove.Bootstrapping
 
         public IResolver Resolver { get; internal set; }
 
-        public ILogger Logger { get; set; }
+        public ILogger Logger { get; internal set; }
+
+        public virtual void PreStart()
+        {
+        }
 
         public virtual void Start()
+        {
+        }
+
+        public virtual void PostStart()
         {
         }
 

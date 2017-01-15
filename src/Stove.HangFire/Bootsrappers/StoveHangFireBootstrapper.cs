@@ -13,14 +13,14 @@ using Stove.Threading.BackgrodunWorkers;
 namespace Stove.Hangfire.Bootsrappers
 {
     [DependsOn(
-        typeof(BackgroundWorkerBootstrapper)
+        typeof(StoveKernelBootstrapper)
     )]
-    public class HangFireBootstrapper : StoveBootstrapper
+    public class StoveHangFireBootstrapper : StoveBootstrapper
     {
         private readonly IBackgroundWorkerManager _backgroundWorkerManager;
         private readonly Func<IStoveHangfireConfiguration, IStoveHangfireConfiguration> _hangFireConfigurer;
 
-        public HangFireBootstrapper(
+        public StoveHangFireBootstrapper(
             IBackgroundWorkerManager backgroundWorkerManager,
             Func<IStoveHangfireConfiguration, IStoveHangfireConfiguration> hangFireConfigurer)
         {
@@ -32,7 +32,7 @@ namespace Stove.Hangfire.Bootsrappers
         {
             Configuration.Modules.StoveHangfire().Configure(configuration =>
             {
-                configuration.GlobalConfiguration.UseAutofacActivator(Configuration.Resolver.Resolve<ILifetimeScope>());
+                configuration.GlobalConfiguration.UseAutofacActivator(Resolver.Resolve<ILifetimeScope>());
                 _hangFireConfigurer(configuration);
             });
 
