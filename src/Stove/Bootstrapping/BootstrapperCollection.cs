@@ -1,15 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+
+using Stove.Bootstrapping.Bootstrappers;
+using Stove.Collections.Extensions;
 
 namespace Stove.Bootstrapping
 {
     public class BootstrapperCollection : List<BootstrapperInfo>
     {
-        public BootstrapperCollection(Type initialBootstrapperType)
+        public static void EnsureKernelBootstrapperToBeFirst(List<BootstrapperInfo> bootstrappers)
         {
-            InitialBootstrapperType = initialBootstrapperType;
+            int kernelBootstrapperIndex = bootstrappers.FindIndex(m => m.Type == typeof(StoveKernelBootstrapper));
+            if (kernelBootstrapperIndex <= 0)
+            {
+                //It's already the first!
+                return;
+            }
+
+            BootstrapperInfo kernelBootstrapper = bootstrappers[kernelBootstrapperIndex];
+            bootstrappers.RemoveAt(kernelBootstrapperIndex);
+            bootstrappers.Insert(0, kernelBootstrapper);
         }
 
-        public Type InitialBootstrapperType { get; }
+        public List<BootstrapperInfo> GetSortedBootstrapperListByDependency()
+        {
+            List<BootstrapperInfo> sortedBootstrappers = this.SortByDependencies(x => x.Dependencies);
+            EnsureKernelBootstrapperToBeFirst(sortedBootstrappers);
+            return sortedBootstrappers;
+        }
+
+        public void EnsureKernelBootstrapperToBeFirst()
+        {
+            EnsureKernelBootstrapperToBeFirst(this);
+        }
     }
 }

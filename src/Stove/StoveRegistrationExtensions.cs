@@ -6,6 +6,7 @@ using Autofac.Extras.IocManager;
 using Autofac.Extras.IocManager.DynamicProxy;
 
 using Stove.BackgroundJobs;
+using Stove.Bootstrapping;
 using Stove.Configuration;
 using Stove.Domain.Uow;
 using Stove.Events.Bus;
@@ -45,6 +46,7 @@ namespace Stove
             builder.RegisterServices(r => r.Register<IStoveStartupConfiguration, StoveStartupConfiguration>(Lifetime.Singleton));
             builder.RegisterServices(r => r.Register<IBackgroundJobConfiguration, BackgroundJobConfiguration>(Lifetime.Singleton));
             builder.RegisterServices(r => r.Register<IModuleConfigurations, ModuleConfigurations>(Lifetime.Singleton));
+            builder.RegisterServices(r => r.Register<IBootstrapperManager, BootstrapperManager>(Lifetime.Singleton));
         }
 
         public static IIocBuilder UseDefaultConnectionStringResolver(this IIocBuilder builder)

@@ -10,6 +10,9 @@ using Stove.Events.Bus.Handlers;
 
 namespace Stove.Bootstrapping.Bootstrappers
 {
+    [DependsOn(
+        typeof(StoveKernelBootstrapper)
+    )]
     public class EventBusBootstrapper : StoveBootstrapper
     {
         private readonly IEventBus _eventBus;

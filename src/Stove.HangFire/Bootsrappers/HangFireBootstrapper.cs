@@ -5,12 +5,16 @@ using Autofac;
 using Hangfire;
 
 using Stove.Bootstrapping;
+using Stove.Bootstrapping.Bootstrappers;
 using Stove.Hangfire.Configurations;
 using Stove.Hangfire.Hangfire;
 using Stove.Threading.BackgrodunWorkers;
 
 namespace Stove.Hangfire.Bootsrappers
 {
+    [DependsOn(
+        typeof(BackgroundWorkerBootstrapper)
+    )]
     public class HangFireBootstrapper : StoveBootstrapper
     {
         private readonly IBackgroundWorkerManager _backgroundWorkerManager;

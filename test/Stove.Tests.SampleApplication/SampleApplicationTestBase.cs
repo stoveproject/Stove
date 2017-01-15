@@ -9,6 +9,7 @@ using Effort;
 using EntityFramework.DynamicFilters;
 
 using Stove.EntityFramework;
+using Stove.Log;
 using Stove.Runtime.Session;
 using Stove.TestBase;
 using Stove.Tests.SampleApplication.Domain;
@@ -28,7 +29,8 @@ namespace Stove.Tests.SampleApplication
                     .UseStoveEntityFramework()
                     .UseDefaultEventBus()
                     .UseDefaultConnectionStringResolver()
-                    .UseDbContextEfTransactionStrategy();
+                    .UseDbContextEfTransactionStrategy()
+                    .UseNullLogger();
 
                 builder.RegisterServices(r => r.Register(context => DbConnectionFactory.CreateTransient(), Lifetime.Singleton));
                 builder.RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));

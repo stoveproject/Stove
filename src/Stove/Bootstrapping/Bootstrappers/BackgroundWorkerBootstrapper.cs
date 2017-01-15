@@ -5,6 +5,9 @@ using Stove.Threading.BackgrodunWorkers;
 
 namespace Stove.Bootstrapping.Bootstrappers
 {
+    [DependsOn(
+        typeof(StoveKernelBootstrapper)
+        )]
     public class BackgroundWorkerBootstrapper : StoveBootstrapper
     {
         private readonly Func<IBackgroundJobConfiguration, IBackgroundJobConfiguration> _backgroundJobConfigurer;
