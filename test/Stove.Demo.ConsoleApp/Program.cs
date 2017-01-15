@@ -27,7 +27,7 @@ namespace Stove.Demo.ConsoleApp
 
             IRootResolver resolver = IocBuilder.New
                                                .UseAutofacContainerBuilder()
-                                               .UseStove(true)
+                                               .UseStove(autoUnitOfWorkInterceptionEnabled: true)
                                                .UseStoveEntityFramework()
                                                .UseStoveDapper()
                                                .UseStoveDefaultEventBus()
