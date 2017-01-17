@@ -1,22 +1,28 @@
 ﻿using System;
 
+using Autofac.Extras.IocManager;
+
 using StackExchange.Redis;
 
-namespace Stove.Redis.Runtime.Caching.Redis
+using Stove.Json;
+
+namespace Stove.Redis.Redis
 {
     /// <summary>
-    ///     Interface to be implemented by all custom (de)serialization methods used when persisting and retrieving
-    ///     objects from the Redis cache.
+    ///     Default implementation uses JSON as the underlying persistence mechanism.
     /// </summary>
-    public interface IRedisCacheSerializer
+    public class DefaultRedisCacheSerializer : IRedisCacheSerializer, ITransientDependency
     {
         /// <summary>
         ///     Creates an instance of the object from its serialized string representation.
         /// </summary>
         /// <param name="objbyte">String representation of the object from the Redis server.</param>
         /// <returns>Returns a newly constructed object.</returns>
-        /// <seealso cref="Serialize" />
-        object Deserialize(RedisValue objbyte);
+        /// <seealso cref="IRedisCacheSerializer.Serialize" />
+        public virtual object Deserialize(RedisValue objbyte)
+        {
+            return JsonSerializationHelper.DeserializeWithType(objbyte);
+        }
 
         /// <summary>
         ///     Produce a string representation of the supplied object.
@@ -24,7 +30,10 @@ namespace Stove.Redis.Runtime.Caching.Redis
         /// <param name="value">Instance to serialize.</param>
         /// <param name="type">Type of the object.</param>
         /// <returns>Returns a string representing the object instance that can be placed into the Redis cache.</returns>
-        /// <seealso cref="Deserialize" />
-        string Serialize(object value, Type type);
+        /// <seealso cref="IRedisCacheSerializer.Deserialize" />
+        public virtual string Serialize(object value, Type type)
+        {
+            return JsonSerializationHelper.SerializeWithType(value, type);
+        }
     }
 }

@@ -1,13 +1,14 @@
 {
-  "version" : "0.0.3-*",
+  "version": "0.0.1-*",
+
   "testRunner": "xunit",
   "dependencies": {
     "Autofac": "4.3.0",
-    "Stove.TestBase": "0.0.3-*"
+    "Stove.TestBase": "0.0.1-*"
   },
 
   "frameworks" : {
-    "net452" : {
+    "net461" : {
     
     }
   }

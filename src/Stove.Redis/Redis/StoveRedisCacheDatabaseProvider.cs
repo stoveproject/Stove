@@ -4,7 +4,7 @@ using Autofac.Extras.IocManager;
 
 using StackExchange.Redis;
 
-namespace Stove.Redis.Runtime.Caching.Redis
+namespace Stove.Redis.Redis
 {
     /// <summary>
     ///     Implements <see cref="IStoveRedisCacheDatabaseProvider" />.

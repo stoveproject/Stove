@@ -1,5 +1,5 @@
 {
-  "version": "0.0.3-*",
+  "version": "0.0.1-*",
 
   "buildOptions": {
     "emitEntryPoint": true
@@ -16,16 +16,16 @@
     "Newtonsoft.Json": "9.0.1",
     "Owin": "1.0",
     "Stove": "0.0.3",
-    "Stove.Dapper": "1.0.0-*",
+    "Stove.Dapper": "0.0.3-*",
     "Stove.EntityFramework": "0.0.3-*",
     "Stove.HangFire": "0.0.3-*",
-    "Stove.Mapster": "1.0.0-*",
+    "Stove.Mapster": "0.0.3-*",
     "Stove.NLog": "0.0.3-*",
     "Stove.Redis": "0.0.3-*"
   },
 
   "frameworks": {
-    "net452": {
+    "net461": {
 
     }
    

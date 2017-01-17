@@ -3,7 +3,7 @@
 using Stove.Configuration;
 using Stove.Extensions;
 
-namespace Stove.Redis.Runtime.Caching.Redis
+namespace Stove.Redis.Redis
 {
     public class StoveRedisCacheOptions
     {

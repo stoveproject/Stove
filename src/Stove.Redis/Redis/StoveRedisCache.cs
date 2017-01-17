@@ -5,7 +5,7 @@ using StackExchange.Redis;
 using Stove.Domain.Entities;
 using Stove.Runtime.Caching;
 
-namespace Stove.Redis.Runtime.Caching.Redis
+namespace Stove.Redis.Redis
 {
     /// <summary>
     ///     Used to store cache in a Redis server.

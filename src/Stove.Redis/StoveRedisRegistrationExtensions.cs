@@ -3,7 +3,7 @@ using System.Reflection;
 
 using Autofac.Extras.IocManager;
 
-using Stove.Redis.Runtime.Caching.Redis;
+using Stove.Redis.Redis;
 using Stove.Runtime.Caching;
 
 namespace Stove.Redis

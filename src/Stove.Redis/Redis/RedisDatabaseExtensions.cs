@@ -2,7 +2,7 @@
 
 using StackExchange.Redis;
 
-namespace Stove.Redis.Runtime.Caching.Redis
+namespace Stove.Redis.Redis
 {
     /// <summary>
     ///     Extension methods for <see cref="IDatabase" />.

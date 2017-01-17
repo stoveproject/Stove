@@ -1,5 +1,5 @@
 {
-  "version": "0.0.3-*",
+  "version": "0.0.1-*",
 
   "dependencies": {
     "FluentAssemblyScanner": "1.0.5",
@@ -7,9 +7,7 @@
     "xunit": "2.2.0-beta4-build3444",
     "NSubstitute": "1.10.0",
     "Shouldly": "2.8.2",
-    "Stove": "0.0.3",
-    "Autofac.Extras.IocManager": "2.0.5",
-    "Autofac": "4.3.0"
+    "Stove": "0.0.3"
   },
 
   "frameworks": {

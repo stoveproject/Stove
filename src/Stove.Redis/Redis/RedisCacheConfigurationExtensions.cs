@@ -4,7 +4,7 @@ using Autofac.Extras.IocManager;
 
 using Stove.Runtime.Caching.Configuration;
 
-namespace Stove.Redis.Runtime.Caching.Redis
+namespace Stove.Redis.Redis
 {
     /// <summary>
     ///     Extension methods for <see cref="ICachingConfiguration" />.

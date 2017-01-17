@@ -1,6 +1,6 @@
 ﻿using StackExchange.Redis;
 
-namespace Stove.Redis.Runtime.Caching.Redis
+namespace Stove.Redis.Redis
 {
     /// <summary>
     ///     Used to get <see cref="IDatabase" /> for Redis cache.

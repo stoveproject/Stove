@@ -2,7 +2,7 @@
 
 using Stove.Bootstrapping;
 using Stove.Bootstrapping.Bootstrappers;
-using Stove.Redis.Runtime.Caching.Redis;
+using Stove.Redis.Redis;
 
 namespace Stove.Redis.Bootstrappers
 {
