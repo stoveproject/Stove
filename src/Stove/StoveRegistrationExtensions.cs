@@ -144,7 +144,8 @@ namespace Stove
                    .RegisterServices(r => r.Register<IModuleConfigurations, ModuleConfigurations>(Lifetime.Singleton))
                    .RegisterServices(r => r.Register<IStoveBootstrapperManager, StoveBootstrapperManager>(Lifetime.Singleton))
                    .RegisterServices(r => r.Register<IUnitOfWorkDefaultOptions, UnitOfWorkDefaultOptions>(Lifetime.Singleton))
-                   .RegisterServices(r => r.Register<IStoveAssemblyFinder, StoveAssemblyFinder>(Lifetime.Singleton));
+                   .RegisterServices(r => r.Register<IStoveAssemblyFinder, StoveAssemblyFinder>(Lifetime.Singleton))
+                   .RegisterServices(r => r.Register<ITypeFinder, TypeFinder>(Lifetime.Singleton));
         }
     }
 }
