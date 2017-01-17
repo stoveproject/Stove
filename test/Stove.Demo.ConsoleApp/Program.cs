@@ -14,6 +14,7 @@ using Stove.EntityFramework;
 using Stove.Hangfire.Hangfire;
 using Stove.Mapster;
 using Stove.NLog;
+using Stove.Redis;
 
 namespace Stove.Demo.ConsoleApp
 {
@@ -37,7 +38,8 @@ namespace Stove.Demo.ConsoleApp
                                                .UseStoveTypedConnectionStringResolver()
                                                .UseStoveNLog()
                                                .UseStoveBackgroundJobs()
-                                               .UseStoveMemoryCaching()
+                                               //.UseStoveMemoryCaching()
+                                               .UseStoveRedisCache()
                                                .UseStoveHangfire(configuration =>
                                                {
                                                    configuration.GlobalConfiguration

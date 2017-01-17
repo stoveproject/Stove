@@ -78,6 +78,11 @@ namespace Stove.Demo.ConsoleApp
                 IEnumerable<Person> personFromDapper = _personDapperRepository.GetList(new { Name = "Oğuzhan" });
                 IEnumerable<Person> person2FromDapper = _personDapperRepository.Query("select * from Person with(nolock) where name =@name", new { name = "Oğuzhan" });
 
+
+                Person person2Cache = _cacheManager
+                 .GetCache(DemoCacheName.Demo)
+                 .Get("person", () => _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan"));
+
                 birds = birds.ToList();
 
                 uow.Complete();

@@ -20,7 +20,8 @@
     "Stove.EntityFramework": "0.0.3-*",
     "Stove.HangFire": "0.0.3-*",
     "Stove.Mapster": "1.0.0-*",
-    "Stove.NLog": "0.0.3-*"
+    "Stove.NLog": "0.0.3-*",
+    "Stove.Redis": "0.0.3-*"
   },
 
   "frameworks": {

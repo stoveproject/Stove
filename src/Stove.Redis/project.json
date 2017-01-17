@@ -2,7 +2,8 @@
   "version" : "0.0.3-*",
 
   "dependencies" : {
-    "Mapster" : "2.6.1",
+    "ServiceStack.Redis" : "4.5.4",
+    "StackExchange.Redis" : "1.1.603",
     "Stove" : "0.0.3"
   },
 
@@ -13,12 +14,13 @@
   },
 
   "packOptions" : {
-    "summary" : "Mapster object mapper integration for Stove.",
+    "summary" : "Redis caching integration for Stove.",
     "tags" : [
       ".net",
       "framework",
       "boilerplate",
-      "mapster"
+      "caching",
+      "redis"
     ],
     "owners" : ["Oguzhan Soykan"],
     "authors" : ["Oguzhan Soykan"],
@@ -32,9 +34,8 @@
     },
     "files" : {
       "mappings" : {
-        "lib/net452/" : "bin/Release/net452/Stove.Mapster.pdb"
+        "lib/net452/" : "bin/Release/net452/Stove.Redis.pdb"
       }
     }
   }
-
 }
