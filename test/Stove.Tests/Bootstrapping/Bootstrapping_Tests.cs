@@ -17,9 +17,7 @@ namespace Stove.Tests.Bootstrapping
             Building(builder =>
             {
                 builder
-                    .UseStove()
-                    .UseStoveDefaultEventBus()
-                    .UseStoveNullLogger()
+                    .UseStoveWithNullables()
                     .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
             }).Ok(false);
 

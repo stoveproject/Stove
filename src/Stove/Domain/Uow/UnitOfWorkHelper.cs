@@ -5,6 +5,7 @@ using System.Reflection;
 
 using Autofac.Core;
 
+using Stove.Application.Services;
 using Stove.Domain.Repositories;
 using Stove.Extensions;
 
@@ -21,7 +22,7 @@ namespace Stove.Domain.Uow
         /// <param name="type">Type to check</param>
         public static bool IsConventionalUowClass(Type type)
         {
-            return typeof(IRepository).IsAssignableFrom(type);
+            return typeof(IRepository).IsAssignableFrom(type) || typeof(IApplicationService).IsAssignableFrom(type);
         }
 
         /// <summary>

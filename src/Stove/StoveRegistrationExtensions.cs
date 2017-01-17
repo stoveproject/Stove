@@ -10,7 +10,10 @@ using Stove.Bootstrapping;
 using Stove.Configuration;
 using Stove.Domain.Uow;
 using Stove.Events.Bus;
+using Stove.Events.Bus.Entities;
+using Stove.Linq;
 using Stove.Log;
+using Stove.ObjectMapping;
 using Stove.Reflection;
 
 namespace Stove
@@ -23,7 +26,9 @@ namespace Stove
             {
                 builder.RegisterServices(r => r.UseBuilder(cb => cb.RegisterCallback(registry => registry.Registered += RegistryOnRegistered)));
             }
+
             RegisterDefaults(builder);
+
             return builder;
         }
 
@@ -51,6 +56,36 @@ namespace Stove
             return builder;
         }
 
+        public static IIocBuilder UseStoveNullObjectMapper(this IIocBuilder builder)
+        {
+            builder.RegisterServices(r => r.Register<IObjectMapper>(context => NullObjectMapper.Instance));
+            return builder;
+        }
+
+        public static IIocBuilder UseStoveNullUnitOfWork(this IIocBuilder builder)
+        {
+            builder.RegisterServices(r => r.Register<IUnitOfWork, NullUnitOfWork>());
+            return builder;
+        }
+
+        public static IIocBuilder UseStoveNullUnitOfWorkFilterExecuter(this IIocBuilder builder)
+        {
+            builder.RegisterServices(r => r.Register<IUnitOfWorkFilterExecuter, NullUnitOfWorkFilterExecuter>());
+            return builder;
+        }
+
+        public static IIocBuilder UseStoveNullEntityChangedEventHelper(this IIocBuilder builder)
+        {
+            builder.RegisterServices(r => r.Register<IEntityChangeEventHelper, NullEntityChangeEventHelper>());
+            return builder;
+        }
+
+        public static IIocBuilder UseStoveNullAsyncQueryableExecuter(this IIocBuilder builder)
+        {
+            builder.RegisterServices(r => r.Register<IAsyncQueryableExecuter, NullAsyncQueryableExecuter>());
+            return builder;
+        }
+
         public static IIocBuilder UseStoveBackgroundJobs(this IIocBuilder builder)
         {
             Func<IBackgroundJobConfiguration, IBackgroundJobConfiguration> configurer = configuration =>
@@ -61,6 +96,24 @@ namespace Stove
 
             builder.RegisterServices(r => r.Register(ctx => configurer));
             return builder;
+        }
+
+        /// <summary>
+        ///     Uses the Stove with nullables, prefer when you writing unit tests.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        /// <param name="autoUnitOfWorkInterceptionEnabled"></param>
+        /// <returns></returns>
+        public static IIocBuilder UseStoveWithNullables(this IIocBuilder builder, bool autoUnitOfWorkInterceptionEnabled = false)
+        {
+            return builder.UseStove(autoUnitOfWorkInterceptionEnabled)
+                          .UseStoveNullLogger()
+                          .UseStoveNullEventBus()
+                          .UseStoveNullObjectMapper()
+                          .UseStoveNullUnitOfWork()
+                          .UseStoveNullUnitOfWorkFilterExecuter()
+                          .UseStoveNullEntityChangedEventHelper()
+                          .UseStoveNullAsyncQueryableExecuter();
         }
 
         public static IIocBuilder UseStoveNullLogger(this IIocBuilder builder)
