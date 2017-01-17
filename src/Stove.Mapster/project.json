@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "Mapster": "2.6.1",
+    "Stove": "0.0.3"
+  },
+
+  "frameworks": {
+    "net452": {
+      
+    } 
+  }
+}

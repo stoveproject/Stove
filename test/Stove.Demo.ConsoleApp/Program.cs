@@ -12,6 +12,7 @@ using Stove.Dapper;
 using Stove.Demo.ConsoleApp.DbContexes;
 using Stove.EntityFramework;
 using Stove.Hangfire.Hangfire;
+using Stove.Mapster;
 using Stove.NLog;
 
 namespace Stove.Demo.ConsoleApp
@@ -30,6 +31,7 @@ namespace Stove.Demo.ConsoleApp
                                                .UseStove(autoUnitOfWorkInterceptionEnabled: true)
                                                .UseStoveEntityFramework()
                                                .UseStoveDapper()
+                                               .UseStoveMapster()
                                                .UseStoveDefaultEventBus()
                                                .UseStoveDbContextEfTransactionStrategy()
                                                .UseStoveTypedConnectionStringResolver()
