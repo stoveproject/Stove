@@ -2,6 +2,7 @@
   "version": "0.0.3-*",
 
   "dependencies": {
+    "Autofac": "4.3.0",
     "Dapper": "1.50.2",
     "DapperExtensions": "1.5.0",
     "EntityFramework": "6.1.3",

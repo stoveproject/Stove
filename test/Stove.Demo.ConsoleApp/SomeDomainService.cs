@@ -12,6 +12,7 @@ using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
 using Stove.EntityFramework.EntityFramework;
 using Stove.Log;
+using Stove.Runtime.Caching;
 
 namespace Stove.Demo.ConsoleApp
 {
@@ -20,6 +21,7 @@ namespace Stove.Demo.ConsoleApp
         private readonly IDapperRepository<Animal> _animalDapperRepository;
         private readonly IDbContextProvider<AnimalStoveDbContext> _animalDbContextProvider;
         private readonly IRepository<Animal> _animalRepository;
+        private readonly ICacheManager _cacheManager;
         private readonly IBackgroundJobManager _hangfireBackgroundJobManager;
         private readonly IDapperRepository<Person> _personDapperRepository;
         private readonly IRepository<Person> _personRepository;
@@ -32,7 +34,8 @@ namespace Stove.Demo.ConsoleApp
             IDbContextProvider<AnimalStoveDbContext> animalDbContextProvider,
             IBackgroundJobManager hangfireBackgroundJobManager,
             IDapperRepository<Person> personDapperRepository,
-            IDapperRepository<Animal> animalDapperRepository)
+            IDapperRepository<Animal> animalDapperRepository,
+            ICacheManager cacheManager)
         {
             _personRepository = personRepository;
             _animalRepository = animalRepository;
@@ -41,6 +44,7 @@ namespace Stove.Demo.ConsoleApp
             _hangfireBackgroundJobManager = hangfireBackgroundJobManager;
             _personDapperRepository = personDapperRepository;
             _animalDapperRepository = animalDapperRepository;
+            _cacheManager = cacheManager;
             Logger = NullLogger.Instance;
         }
 
@@ -62,7 +66,11 @@ namespace Stove.Demo.ConsoleApp
 
                 _unitOfWorkManager.Current.SaveChanges();
 
-                Person person = _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan");
+                Person personCache = _cacheManager
+                    .GetCache(DemoCacheName.Demo)
+                    .Get("person", () => _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan"));
+
+                //Person person = _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan");
                 Animal animal = _animalRepository.FirstOrDefault(x => x.Name == "Kuş");
 
                 IEnumerable<Animal> birds = _animalDapperRepository.GetSet(new { Name = "Kuş" }, 0, 10, "Id");

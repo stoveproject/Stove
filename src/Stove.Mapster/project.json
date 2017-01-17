@@ -2,6 +2,7 @@
   "version": "1.0.0-*",
 
   "dependencies": {
+    "Autofac": "4.3.0",
     "Mapster": "2.6.1",
     "Stove": "0.0.3"
   },

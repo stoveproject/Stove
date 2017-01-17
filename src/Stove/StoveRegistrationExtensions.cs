@@ -15,6 +15,9 @@ using Stove.Linq;
 using Stove.Log;
 using Stove.ObjectMapping;
 using Stove.Reflection;
+using Stove.Runtime.Caching;
+using Stove.Runtime.Caching.Configuration;
+using Stove.Runtime.Caching.Memory;
 
 namespace Stove
 {
@@ -86,6 +89,11 @@ namespace Stove
             return builder;
         }
 
+        public static IIocBuilder UseStoveMemoryCaching(this IIocBuilder builder)
+        {
+            return builder.RegisterServices(r => r.RegisterType<StoveMemoryCache>(keepDefault: true));
+        }
+
         public static IIocBuilder UseStoveBackgroundJobs(this IIocBuilder builder)
         {
             Func<IBackgroundJobConfiguration, IBackgroundJobConfiguration> configurer = configuration =>
@@ -145,6 +153,7 @@ namespace Stove
                    .RegisterServices(r => r.Register<IStoveBootstrapperManager, StoveBootstrapperManager>(Lifetime.Singleton))
                    .RegisterServices(r => r.Register<IUnitOfWorkDefaultOptions, UnitOfWorkDefaultOptions>(Lifetime.Singleton))
                    .RegisterServices(r => r.Register<IStoveAssemblyFinder, StoveAssemblyFinder>(Lifetime.Singleton))
+                   .RegisterServices(r => r.Register<ICachingConfiguration, CachingConfiguration>(Lifetime.Singleton))
                    .RegisterServices(r => r.Register<ITypeFinder, TypeFinder>(Lifetime.Singleton));
         }
     }

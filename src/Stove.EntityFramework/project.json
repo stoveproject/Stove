@@ -8,8 +8,8 @@
     "FluentAssemblyScanner": "1.0.5",
     "System.Collections": "4.3.0",
     "System.Collections.Immutable": "1.3.1",
-    "Autofac": "4.3.0",
-    "Autofac.Extras.IocManager": "2.0.5"
+    "Autofac.Extras.IocManager": "2.0.5",
+    "Autofac": "4.3.0"
   },
 
   "frameworks" : {

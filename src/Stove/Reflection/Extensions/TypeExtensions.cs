@@ -23,10 +23,12 @@ namespace Stove.Reflection.Extensions
         public static IList<Type> AssignedTypes(this Type @this)
         {
             return AssemblyScanner.FromAssemblyInDirectory(new AssemblyFilter(AppDomain.CurrentDomain.GetActualDomainPath()))
+                                  .IncludeNonPublicTypes()
                                   .BasedOn(@this)
                                   .Filter()
                                   .Classes()
                                   .NonStatic()
+                                  .Where(type => !type.Assembly.IsDynamic && !type.IsAbstract)
                                   .Scan();
         }
     }
