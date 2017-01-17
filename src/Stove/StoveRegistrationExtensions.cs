@@ -10,6 +10,7 @@ using Stove.Bootstrapping;
 using Stove.Configuration;
 using Stove.Domain.Uow;
 using Stove.Events.Bus;
+using Stove.Log;
 
 namespace Stove
 {
@@ -55,6 +56,11 @@ namespace Stove
             return builder;
         }
 
+        public static IIocBuilder UseStoveNullLogger(this IIocBuilder builder)
+        {
+            return builder.RegisterServices(r => r.Register<ILogger, NullLogger>());
+        }
+
         private static void RegistryOnRegistered(object sender, ComponentRegisteredEventArgs args)
         {
             if (UnitOfWorkHelper.IsConventionalUowClass(args.ComponentRegistration.Activator.LimitType)
@@ -71,12 +77,13 @@ namespace Stove
 
         private static void RegisterDefaults(IIocBuilder builder)
         {
-            builder.RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
-            builder.RegisterServices(r => r.Register<IGuidGenerator>(context => SequentialGuidGenerator.Instance, Lifetime.Singleton));
-            builder.RegisterServices(r => r.Register<IStoveStartupConfiguration, StoveStartupConfiguration>(Lifetime.Singleton));
-            builder.RegisterServices(r => r.Register<IBackgroundJobConfiguration, BackgroundJobConfiguration>(Lifetime.Singleton));
-            builder.RegisterServices(r => r.Register<IModuleConfigurations, ModuleConfigurations>(Lifetime.Singleton));
-            builder.RegisterServices(r => r.Register<IBootstrapperManager, BootstrapperManager>(Lifetime.Singleton));
+            builder.RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()))
+                   .RegisterServices(r => r.Register<IGuidGenerator>(context => SequentialGuidGenerator.Instance, Lifetime.Singleton))
+                   .RegisterServices(r => r.Register<IStoveStartupConfiguration, StoveStartupConfiguration>(Lifetime.Singleton))
+                   .RegisterServices(r => r.Register<IBackgroundJobConfiguration, BackgroundJobConfiguration>(Lifetime.Singleton))
+                   .RegisterServices(r => r.Register<IModuleConfigurations, ModuleConfigurations>(Lifetime.Singleton))
+                   .RegisterServices(r => r.Register<IBootstrapperManager, BootstrapperManager>(Lifetime.Singleton))
+                   .RegisterServices(r => r.Register<IUnitOfWorkDefaultOptions, UnitOfWorkDefaultOptions>(Lifetime.Singleton));
         }
     }
 }

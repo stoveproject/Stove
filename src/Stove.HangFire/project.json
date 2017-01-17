@@ -4,7 +4,6 @@
   "dependencies": {
     "Stove": "0.0.3",
     "Autofac": "4.2.1",
-    "Autofac.Extras.IocManager": "2.0.2",
     "FluentAssemblyScanner": "1.0.5",
     "Hangfire": "1.6.8",
     "Hangfire.Autofac": "2.2.0",
@@ -13,7 +12,8 @@
     "Microsoft.Owin": "3.0.1",
     "Microsoft.Owin.Host.SystemWeb": "3.0.1",
     "Newtonsoft.Json": "9.0.1",
-    "Owin": "1.0"
+    "Owin": "1.0",
+    "Autofac.Extras.IocManager": "2.0.4"
   },
 
   "frameworks": {

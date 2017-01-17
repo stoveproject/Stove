@@ -30,7 +30,7 @@ namespace Stove.Tests.SampleApplication
                     .UseStoveDefaultEventBus()
                     .UseStoveDefaultConnectionStringResolver()
                     .UseStoveDbContextEfTransactionStrategy()
-                    .UseNullLogger();
+                    .UseStoveNullLogger();
 
                 builder.RegisterServices(r => r.Register(context => DbConnectionFactory.CreateTransient(), Lifetime.Singleton));
                 builder.RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));

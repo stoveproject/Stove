@@ -12,7 +12,7 @@ using Stove.Reflection.Extensions;
 
 namespace Stove.Bootstrapping
 {
-    public abstract class StoveBootstrapper : IBootsrapper, ITransientDependency
+    public abstract class StoveBootstrapper : IBootsrapper, ISingletonDependency
     {
         protected StoveBootstrapper()
         {
