@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 using Autofac.Extras.IocManager;
 
@@ -37,6 +38,10 @@ namespace Stove.Bootstrapping
         {
         }
 
+        public virtual Assembly[] GetAdditionalAssemblies()
+        {
+            return new Assembly[0];
+        }
         public static bool IsStoveBootstrapper(Type type)
         {
             return

@@ -5,16 +5,16 @@ namespace Stove.Bootstrapping
 {
     public class StoveMainBootstrapper : IStartable, ITransientDependency
     {
-        private readonly IBootstrapperManager _bootstrapperManager;
+        private readonly IStoveBootstrapperManager _stoveBootstrapperManager;
 
-        public StoveMainBootstrapper(IBootstrapperManager bootstrapperManager)
+        public StoveMainBootstrapper(IStoveBootstrapperManager stoveBootstrapperManager)
         {
-            _bootstrapperManager = bootstrapperManager;
+            _stoveBootstrapperManager = stoveBootstrapperManager;
         }
 
         public void Start()
         {
-            _bootstrapperManager.StartBootstrappers();
+            _stoveBootstrapperManager.StartBootstrappers();
         }
     }
 }

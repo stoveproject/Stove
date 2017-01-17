@@ -11,6 +11,7 @@ using Stove.Configuration;
 using Stove.Domain.Uow;
 using Stove.Events.Bus;
 using Stove.Log;
+using Stove.Reflection;
 
 namespace Stove
 {
@@ -41,6 +42,12 @@ namespace Stove
         public static IIocBuilder UseStoveEventBus(this IIocBuilder builder)
         {
             builder.RegisterServices(r => r.Register<IEventBus, EventBus>());
+            return builder;
+        }
+
+        public static IIocBuilder UseStoveNullEventBus(this IIocBuilder builder)
+        {
+            builder.RegisterServices(r => r.Register<IEventBus>(context => NullEventBus.Instance));
             return builder;
         }
 
@@ -82,8 +89,9 @@ namespace Stove
                    .RegisterServices(r => r.Register<IStoveStartupConfiguration, StoveStartupConfiguration>(Lifetime.Singleton))
                    .RegisterServices(r => r.Register<IBackgroundJobConfiguration, BackgroundJobConfiguration>(Lifetime.Singleton))
                    .RegisterServices(r => r.Register<IModuleConfigurations, ModuleConfigurations>(Lifetime.Singleton))
-                   .RegisterServices(r => r.Register<IBootstrapperManager, BootstrapperManager>(Lifetime.Singleton))
-                   .RegisterServices(r => r.Register<IUnitOfWorkDefaultOptions, UnitOfWorkDefaultOptions>(Lifetime.Singleton));
+                   .RegisterServices(r => r.Register<IStoveBootstrapperManager, StoveBootstrapperManager>(Lifetime.Singleton))
+                   .RegisterServices(r => r.Register<IUnitOfWorkDefaultOptions, UnitOfWorkDefaultOptions>(Lifetime.Singleton))
+                   .RegisterServices(r => r.Register<IStoveAssemblyFinder, StoveAssemblyFinder>(Lifetime.Singleton));
         }
     }
 }

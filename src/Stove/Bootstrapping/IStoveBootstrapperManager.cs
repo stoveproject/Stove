@@ -2,7 +2,7 @@
 
 namespace Stove.Bootstrapping
 {
-    public interface IBootstrapperManager
+    public interface IStoveBootstrapperManager
     {
         IReadOnlyList<BootstrapperInfo> Bootstrappers { get; }
 

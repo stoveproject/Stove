@@ -11,12 +11,12 @@ using Stove.Log;
 
 namespace Stove.Bootstrapping
 {
-    public class BootstrapperManager : IBootstrapperManager
+    public class StoveBootstrapperManager : IStoveBootstrapperManager
     {
         private readonly BootstrapperCollection _bootstrappers;
         private readonly IResolver _resolver;
 
-        public BootstrapperManager(IResolver resolver)
+        public StoveBootstrapperManager(IResolver resolver)
         {
             _resolver = resolver;
             _bootstrappers = new BootstrapperCollection();

@@ -12,7 +12,8 @@ namespace Stove.TestBase
         protected TestBaseWithLocalIocResolver()
         {
             IocBuilder = Autofac.Extras.IocManager.IocBuilder.New
-                                .UseAutofacContainerBuilder();
+                                .UseAutofacContainerBuilder()
+                                .UseStoveNullLogger();
         }
 
         protected TestBaseWithLocalIocResolver Building(Action<IIocBuilder> builderAction)
