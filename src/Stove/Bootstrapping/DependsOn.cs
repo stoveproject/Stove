@@ -5,11 +5,11 @@ namespace Stove.Bootstrapping
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public class DependsOnAttribute : Attribute
     {
-        public DependsOnAttribute(params Type[] dependedModuleTypes)
+        public DependsOnAttribute(params Type[] dependedBootstrapperTypes)
         {
-            DependedModuleTypes = dependedModuleTypes;
+            DependedBootstrapperTypes = dependedBootstrapperTypes;
         }
 
-        public Type[] DependedModuleTypes { get; private set; }
+        public Type[] DependedBootstrapperTypes { get; private set; }
     }
 }

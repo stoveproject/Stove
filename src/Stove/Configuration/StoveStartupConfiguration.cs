@@ -5,6 +5,7 @@ using Autofac.Extras.IocManager;
 
 using Stove.BackgroundJobs;
 using Stove.Domain.Uow;
+using Stove.Runtime.Caching.Configuration;
 
 namespace Stove.Configuration
 {
@@ -13,6 +14,7 @@ namespace Stove.Configuration
         public StoveStartupConfiguration(IResolver resolver)
         {
             Resolver = resolver;
+
             TypedConnectionStrings = new Dictionary<Type, string>();
         }
 
@@ -27,6 +29,8 @@ namespace Stove.Configuration
         public IUnitOfWorkDefaultOptions UnitOfWork { get; set; }
 
         public Dictionary<Type, string> TypedConnectionStrings { get; set; }
+
+        public ICachingConfiguration Caching { get; set; }
 
         public T Get<T>()
         {

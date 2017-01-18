@@ -8,10 +8,13 @@ using Hangfire;
 
 using HibernatingRhinos.Profiler.Appender.EntityFramework;
 
+using Stove.Dapper;
 using Stove.Demo.ConsoleApp.DbContexes;
 using Stove.EntityFramework;
 using Stove.Hangfire.Hangfire;
+using Stove.Mapster;
 using Stove.NLog;
+using Stove.Redis;
 
 namespace Stove.Demo.ConsoleApp
 {
@@ -28,15 +31,19 @@ namespace Stove.Demo.ConsoleApp
                                                .UseAutofacContainerBuilder()
                                                .UseStove(autoUnitOfWorkInterceptionEnabled: true)
                                                .UseStoveEntityFramework()
-                                               .UseDefaultEventBus()
-                                               .UseDbContextEfTransactionStrategy()
-                                               //.UseTransacitonScopeEfTransactionStrategy()
-                                               .UseTypedConnectionStringResolver()
-                                               .UseNLog()
-                                               .UseBackgroundJobs()
-                                               .UseHangfire(configuration =>
+                                               .UseStoveDapper()
+                                               .UseStoveMapster()
+                                               .UseStoveDefaultEventBus()
+                                               .UseStoveDbContextEfTransactionStrategy()
+                                               .UseStoveTypedConnectionStringResolver()
+                                               .UseStoveNLog()
+                                               .UseStoveBackgroundJobs()
+                                               //.UseStoveMemoryCaching()
+                                               .UseStoveRedisCaching()
+                                               .UseStoveHangfire(configuration =>
                                                {
-                                                   configuration.GlobalConfiguration.UseSqlServerStorage("Default")
+                                                   configuration.GlobalConfiguration
+                                                                .UseSqlServerStorage("Default")
                                                                 .UseNLogLogProvider();
                                                    return configuration;
                                                })

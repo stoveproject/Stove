@@ -11,8 +11,7 @@ namespace Stove.TestBase
 
         protected TestBaseWithLocalIocResolver()
         {
-            IocBuilder = Autofac.Extras.IocManager.IocBuilder.New
-                                .UseAutofacContainerBuilder();
+            IocBuilder = Autofac.Extras.IocManager.IocBuilder.New.UseAutofacContainerBuilder();
         }
 
         protected TestBaseWithLocalIocResolver Building(Action<IIocBuilder> builderAction)
@@ -21,9 +20,9 @@ namespace Stove.TestBase
             return this;
         }
 
-        public void Ok()
+        public void Ok(bool ignoreStartableComponents = true)
         {
-            LocalResolver = IocBuilder.CreateResolver();
+            LocalResolver = IocBuilder.CreateResolver(ignoreStartableComponents);
         }
 
         public void Dispose()

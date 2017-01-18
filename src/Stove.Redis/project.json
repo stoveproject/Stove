@@ -1,0 +1,41 @@
+{
+  "version" : "0.0.4-*",
+
+  "dependencies": {
+    "ServiceStack.Redis": "4.5.4",
+    "StackExchange.Redis": "1.2.0",
+    "Stove": "0.0.4"
+  },
+
+  "frameworks" : {
+    "net452" : {
+    
+    }
+  },
+
+  "packOptions" : {
+    "summary" : "Redis caching integration for Stove.",
+    "tags" : [
+      ".net",
+      "framework",
+      "boilerplate",
+      "caching",
+      "redis"
+    ],
+    "owners" : ["Oguzhan Soykan"],
+    "authors" : ["Oguzhan Soykan"],
+    "iconUrl" : "https://raw.githubusercontent.com/osoykan/Stove/master/stove.png",
+    "projectUrl" : "https://github.com/osoykan/Stove",
+    "licenseUrl" : "https://github.com/osoykan/Stove/blob/master/LICENSE",
+    "requireLicenseAcceptance" : false,
+    "repository" : {
+      "type" : "git",
+      "url" : "https://github.com/osoykan/Stove"
+    },
+    "files" : {
+      "mappings" : {
+        "lib/net452/" : "bin/Release/net452/Stove.Redis.pdb"
+      }
+    }
+  }
+}

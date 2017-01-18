@@ -1,6 +1,10 @@
-﻿using Autofac.Extras.IocManager;
+﻿using System.Collections.Generic;
+using System.Linq;
+
+using Autofac.Extras.IocManager;
 
 using Stove.BackgroundJobs;
+using Stove.Dapper.Dapper.Repositories;
 using Stove.Demo.ConsoleApp.BackgroundJobs;
 using Stove.Demo.ConsoleApp.DbContexes;
 using Stove.Demo.ConsoleApp.Entities;
@@ -8,14 +12,18 @@ using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
 using Stove.EntityFramework.EntityFramework;
 using Stove.Log;
+using Stove.Runtime.Caching;
 
 namespace Stove.Demo.ConsoleApp
 {
     public class SomeDomainService : ITransientDependency
     {
+        private readonly IDapperRepository<Animal> _animalDapperRepository;
         private readonly IDbContextProvider<AnimalStoveDbContext> _animalDbContextProvider;
         private readonly IRepository<Animal> _animalRepository;
+        private readonly ICacheManager _cacheManager;
         private readonly IBackgroundJobManager _hangfireBackgroundJobManager;
+        private readonly IDapperRepository<Person> _personDapperRepository;
         private readonly IRepository<Person> _personRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
 
@@ -24,13 +32,19 @@ namespace Stove.Demo.ConsoleApp
             IRepository<Animal> animalRepository,
             IUnitOfWorkManager unitOfWorkManager,
             IDbContextProvider<AnimalStoveDbContext> animalDbContextProvider,
-            IBackgroundJobManager hangfireBackgroundJobManager)
+            IBackgroundJobManager hangfireBackgroundJobManager,
+            IDapperRepository<Person> personDapperRepository,
+            IDapperRepository<Animal> animalDapperRepository,
+            ICacheManager cacheManager)
         {
             _personRepository = personRepository;
             _animalRepository = animalRepository;
             _unitOfWorkManager = unitOfWorkManager;
             _animalDbContextProvider = animalDbContextProvider;
             _hangfireBackgroundJobManager = hangfireBackgroundJobManager;
+            _personDapperRepository = personDapperRepository;
+            _animalDapperRepository = animalDapperRepository;
+            _cacheManager = cacheManager;
             Logger = NullLogger.Instance;
         }
 
@@ -52,8 +66,24 @@ namespace Stove.Demo.ConsoleApp
 
                 _unitOfWorkManager.Current.SaveChanges();
 
-                Person person = _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan");
+                Person personCache = _cacheManager
+                    .GetCache(DemoCacheName.Demo)
+                    .Get("person", () => _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan"));
+
+                //Person person = _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan");
                 Animal animal = _animalRepository.FirstOrDefault(x => x.Name == "Kuş");
+
+                IEnumerable<Animal> birds = _animalDapperRepository.GetSet(new { Name = "Kuş" }, 0, 10, "Id");
+
+                IEnumerable<Person> personFromDapper = _personDapperRepository.GetList(new { Name = "Oğuzhan" });
+                IEnumerable<Person> person2FromDapper = _personDapperRepository.Query("select * from Person with(nolock) where name =@name", new { name = "Oğuzhan" });
+
+
+                Person person2Cache = _cacheManager
+                 .GetCache(DemoCacheName.Demo)
+                 .Get("person", () => _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan"));
+
+                birds = birds.ToList();
 
                 uow.Complete();
 

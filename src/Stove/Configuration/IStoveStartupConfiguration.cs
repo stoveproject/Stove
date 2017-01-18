@@ -5,6 +5,7 @@ using Autofac.Extras.IocManager;
 
 using Stove.BackgroundJobs;
 using Stove.Domain.Uow;
+using Stove.Runtime.Caching.Configuration;
 
 namespace Stove.Configuration
 {
@@ -46,6 +47,14 @@ namespace Stove.Configuration
         ///     The modules.
         /// </value>
         IModuleConfigurations Modules { get; set; }
+
+        /// <summary>
+        ///     Gets the caching.
+        /// </summary>
+        /// <value>
+        ///     The caching.
+        /// </value>
+        ICachingConfiguration Caching { get; set; }
 
         /// <summary>
         ///     Gets a configuration object.

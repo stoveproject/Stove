@@ -11,7 +11,7 @@ namespace Stove.Events.Bus.Entities
     /// <summary>
     /// Used to trigger entity change events.
     /// </summary>
-    public class EntityChangeEventHelper : ITransientDependency, IEntityChangeEventHelper
+    public class EntityChangeEventHelper : IEntityChangeEventHelper, ITransientDependency
     {
         public IEventBus EventBus { get; set; }
 

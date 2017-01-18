@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 using Stove.JetBrains.Annotations;
 
@@ -7,20 +8,20 @@ namespace Stove.Bootstrapping
 {
     public class BootstrapperInfo
     {
-        public BootstrapperInfo([NotNull] Type type)
+        public BootstrapperInfo([NotNull] Type type, StoveBootstrapper instance)
         {
             Type = type;
+            Assembly = Type.Assembly;
+            Instance = instance;
             Dependencies = new List<BootstrapperInfo>();
         }
 
-        /// <summary>
-        ///     Type of the module.
-        /// </summary>
+        public StoveBootstrapper Instance { get; }
+
         public Type Type { get; }
 
-        /// <summary>
-        ///     All dependent modules of this module.
-        /// </summary>
         public List<BootstrapperInfo> Dependencies { get; }
+
+        public Assembly Assembly { get; }
     }
 }

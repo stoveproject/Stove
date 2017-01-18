@@ -8,9 +8,7 @@ namespace Stove.Events.Bus.Handlers.Internals
     /// This event handler is an adapter to be able to use an action as <see cref="IEventHandler{TEventData}"/> implementation.
     /// </summary>
     /// <typeparam name="TEventData">Event type</typeparam>
-    internal class ActionEventHandler<TEventData> :
-        IEventHandler<TEventData>,
-        ITransientDependency
+    internal class ActionEventHandler<TEventData> : IEventHandler<TEventData>, ITransientDependency
     {
         /// <summary>
         /// Action to handle the event.
