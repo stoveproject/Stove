@@ -1,9 +1,9 @@
 {
-  "version" : "0.0.4-*",
+  "version" : "0.0.5-*",
 
   "dependencies" : {
     "Mapster" : "2.6.1",
-    "Stove" : "0.0.4"
+    "Stove" : "0.0.5"
   },
 
   "frameworks" : {

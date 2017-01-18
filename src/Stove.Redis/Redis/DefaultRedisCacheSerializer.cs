@@ -35,5 +35,18 @@ namespace Stove.Redis.Redis
         {
             return JsonSerializationHelper.SerializeWithType(value, type);
         }
+
+        /// <summary>
+        ///     Produce a string representation of the supplied object.
+        /// </summary>
+        /// <param name="value">Instance to serialize.</param>
+        /// <returns>
+        ///     Returns a string representing the object instance that can be placed into the Redis cache.
+        /// </returns>
+        /// <seealso cref="Deserialize" />
+        public string Serialize(object value)
+        {
+            return JsonSerializationHelper.SerializeWithType(value);
+        }
     }
 }

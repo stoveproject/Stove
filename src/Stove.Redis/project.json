@@ -1,10 +1,10 @@
 {
-  "version" : "0.0.4-*",
+  "version" : "0.0.5-*",
 
   "dependencies": {
-    "ServiceStack.Redis": "4.5.4",
     "StackExchange.Redis": "1.2.0",
-    "Stove": "0.0.4"
+    "StackExchange.Redis.Extensions.Core": "2.0.0",
+    "Stove": "0.0.5"
   },
 
   "frameworks" : {
