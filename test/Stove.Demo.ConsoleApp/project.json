@@ -15,13 +15,13 @@
     "Hangfire.SqlServer": "1.6.8",
     "Newtonsoft.Json": "9.0.1",
     "Owin": "1.0",
-    "Stove": "0.0.4",
-    "Stove.Dapper": "0.0.4-*",
-    "Stove.EntityFramework": "0.0.4-*",
-    "Stove.HangFire": "0.0.4-*",
-    "Stove.Mapster": "0.0.4-*",
-    "Stove.NLog": "0.0.4-*",
-    "Stove.Redis": "0.0.4-*"
+    "Stove": "0.0.5",
+    "Stove.Dapper": "0.0.5-*",
+    "Stove.EntityFramework": "0.0.5-*",
+    "Stove.HangFire": "0.0.5-*",
+    "Stove.Mapster": "0.0.5-*",
+    "Stove.NLog": "0.0.5-*",
+    "Stove.Redis": "0.0.5-*"
   },
 
   "frameworks": {
