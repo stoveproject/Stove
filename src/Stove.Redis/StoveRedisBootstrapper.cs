@@ -30,6 +30,13 @@ namespace Stove.Redis
         private void ConfigureRedis(IStoveRedisCacheConfiguration redisConfiguration)
         {
             redisConfiguration.Configuration = RedisCachingSectionHandler.GetConfig();
+
+            if (redisConfiguration.Configuration == null)
+            {
+                throw new StoveException("There is no Redis connection string section in app.config or web.config file and define section and configurations. If it is please" +
+                                         " make sure of your config file is setted as CopyAlways from it's properties.");
+            }
+
             redisConfiguration.ConfigurationOptions = new ConfigurationOptions
             {
                 AllowAdmin = redisConfiguration.Configuration.AllowAdmin,
