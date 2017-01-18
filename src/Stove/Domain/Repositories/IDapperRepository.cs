@@ -1,6 +1,6 @@
 ﻿using Autofac.Extras.IocManager;
 
-namespace Stove.Dapper.Dapper.Repositories
+namespace Stove.Domain.Repositories
 {
     public interface IDapperRepository : ITransientDependency
     {

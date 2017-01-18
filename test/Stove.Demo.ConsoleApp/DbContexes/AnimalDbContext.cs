@@ -12,6 +12,10 @@ namespace Stove.Demo.ConsoleApp.DbContexes
         {
         }
 
+        public AnimalStoveDbContext(string nameOrConnectionString) : base(nameOrConnectionString)
+        {
+        }
+
         public AnimalStoveDbContext(DbConnection existingConnection, bool contextOwnsConnection) : base(existingConnection, contextOwnsConnection)
         {
         }
