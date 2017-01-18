@@ -10,7 +10,7 @@ namespace Stove.Redis
 {
     public static class StoveRedisRegistrationExtensions
     {
-        public static IIocBuilder UseStoveRedisCache(this IIocBuilder builder, Func<StoveRedisCacheOptions, StoveRedisCacheOptions> redisCacheConfigurer = null)
+        public static IIocBuilder UseStoveRedisCaching(this IIocBuilder builder, Func<StoveRedisCacheOptions, StoveRedisCacheOptions> redisCacheConfigurer = null)
         {
             builder.RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
             builder.RegisterServices(r => r.RegisterType<StoveRedisCache>());

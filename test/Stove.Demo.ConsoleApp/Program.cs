@@ -39,7 +39,7 @@ namespace Stove.Demo.ConsoleApp
                                                .UseStoveNLog()
                                                .UseStoveBackgroundJobs()
                                                //.UseStoveMemoryCaching()
-                                               .UseStoveRedisCache()
+                                               .UseStoveRedisCaching()
                                                .UseStoveHangfire(configuration =>
                                                {
                                                    configuration.GlobalConfiguration
