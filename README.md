@@ -8,6 +8,7 @@
 |Stove.NLog|[![NuGet version](https://badge.fury.io/nu/Stove.NLog.svg)](https://badge.fury.io/nu/Stove.NLog)|
 |Stove.Mapster|[![NuGet version](https://badge.fury.io/nu/Stove.Mapster.svg)](https://badge.fury.io/nu/Stove.Mapster)|
 |Stove.Redis|[![NuGet version](https://badge.fury.io/nu/Stove.Redis.svg)](https://badge.fury.io/nu/Stove.Redis)|
+|Stove.Dapper|[![NuGet version](https://badge.fury.io/nu/Stove.Dapper.svg)](https://badge.fury.io/nu/Stove.Dapper)|
 
 * Autofac for Ioc
 * AmbientContext Unit Of Work pattern
