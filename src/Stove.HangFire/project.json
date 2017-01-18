@@ -1,8 +1,8 @@
 {
-  "version": "0.0.3-*",
+  "version": "0.0.4-*",
 
   "dependencies": {
-    "Stove": "0.0.3",
+    "Stove": "0.0.4",
     "FluentAssemblyScanner": "1.0.5",
     "Hangfire": "1.6.8",
     "Hangfire.Core": "1.6.8",
