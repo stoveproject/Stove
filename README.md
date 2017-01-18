@@ -6,6 +6,9 @@
 |Stove.Entityframework|[![NuGet version](https://badge.fury.io/nu/Stove.EntityFramework.svg)](https://badge.fury.io/nu/Stove.EntityFramework)|
 |Stove.Hangfire|[![NuGet version](https://badge.fury.io/nu/Stove.Hangfire.svg)](https://badge.fury.io/nu/Stove.Hangfire)|
 |Stove.NLog|[![NuGet version](https://badge.fury.io/nu/Stove.NLog.svg)](https://badge.fury.io/nu/Stove.NLog)|
+|Stove.Mapster|[![NuGet version](https://badge.fury.io/nu/Stove.Mapster.svg)](https://badge.fury.io/nu/Stove.Mapster)|
+|Stove.Redis|[![NuGet version](https://badge.fury.io/nu/Stove.Redis.svg)](https://badge.fury.io/nu/Stove.Redis)|
+|Stove.Dapper|[![NuGet version](https://badge.fury.io/nu/Stove.Dapper.svg)](https://badge.fury.io/nu/Stove.Dapper)|
 
 * Autofac for Ioc
 * AmbientContext Unit Of Work pattern
