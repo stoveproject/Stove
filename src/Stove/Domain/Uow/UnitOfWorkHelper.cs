@@ -22,7 +22,7 @@ namespace Stove.Domain.Uow
         /// <param name="type">Type to check</param>
         public static bool IsConventionalUowClass(Type type)
         {
-            return typeof(IRepository).IsAssignableFrom(type) || typeof(IApplicationService).IsAssignableFrom(type) || typeof(IDapperRepository).IsAssignableFrom(type);
+            return typeof(IRepository).IsAssignableFrom(type) || typeof(IApplicationService).IsAssignableFrom(type);
         }
 
         /// <summary>
