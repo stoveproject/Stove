@@ -4,7 +4,7 @@ using Stove.Bootstrapping;
 using Stove.Bootstrapping.Bootstrappers;
 using Stove.Redis.Redis;
 
-namespace Stove.Redis.Bootstrappers
+namespace Stove.Redis
 {
     [DependsOn(
         typeof(StoveKernelBootstrapper)
