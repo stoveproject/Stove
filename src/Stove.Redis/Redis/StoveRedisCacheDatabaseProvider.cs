@@ -3,6 +3,7 @@
 using Autofac.Extras.IocManager;
 
 using StackExchange.Redis;
+using StackExchange.Redis.Extensions.Core;
 
 namespace Stove.Redis.Redis
 {
@@ -11,29 +12,36 @@ namespace Stove.Redis.Redis
     /// </summary>
     public class StoveRedisCacheDatabaseProvider : IStoveRedisCacheDatabaseProvider, ISingletonDependency
     {
+        private readonly IStoveRedisCacheConfiguration _configuration;
         private readonly Lazy<ConnectionMultiplexer> _connectionMultiplexer;
-        private readonly StoveRedisCacheOptions _options;
+        private readonly RedisSerializer _redisSerializer;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="StoveRedisCacheDatabaseProvider" /> class.
         /// </summary>
-        public StoveRedisCacheDatabaseProvider(StoveRedisCacheOptions options)
+        public StoveRedisCacheDatabaseProvider(IStoveRedisCacheConfiguration configuration, RedisSerializer redisSerializer)
         {
-            _options = options;
+            _configuration = configuration;
+            _redisSerializer = redisSerializer;
             _connectionMultiplexer = new Lazy<ConnectionMultiplexer>(CreateConnectionMultiplexer);
         }
 
         /// <summary>
-        ///     Gets the database connection.
+        ///     Gets the client.
         /// </summary>
-        public IDatabase GetDatabase()
+        /// <returns></returns>
+        public ICacheClient GetClient()
         {
-            return _connectionMultiplexer.Value.GetDatabase(_options.DatabaseId);
+            return new StackExchangeRedisCacheClient(_connectionMultiplexer.Value, _redisSerializer, _configuration.Configuration.Database);
         }
 
+        /// <summary>
+        ///     Creates the connection multiplexer.
+        /// </summary>
+        /// <returns></returns>
         private ConnectionMultiplexer CreateConnectionMultiplexer()
         {
-            return ConnectionMultiplexer.Connect(_options.ConnectionString);
+            return ConnectionMultiplexer.Connect(_configuration.ConfigurationOptions);
         }
     }
 }

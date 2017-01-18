@@ -1,7 +1,6 @@
 ﻿using System;
 
-using Autofac.Extras.IocManager;
-
+using Stove.Configuration;
 using Stove.Runtime.Caching.Configuration;
 
 namespace Stove.Redis.Redis
@@ -25,10 +24,19 @@ namespace Stove.Redis.Redis
         /// </summary>
         /// <param name="cachingConfiguration">The caching configuration.</param>
         /// <param name="optionsAction">Ac action to get/set options</param>
-        public static void UseRedis(this ICachingConfiguration cachingConfiguration, Action<StoveRedisCacheOptions> optionsAction)
+        public static void UseRedis(this ICachingConfiguration cachingConfiguration, Action<IStoveRedisCacheConfiguration> optionsAction)
         {
-            IResolver resolver = cachingConfiguration.StoveConfiguration.Resolver;
-            optionsAction(resolver.Resolve<StoveRedisCacheOptions>());
+            optionsAction(cachingConfiguration.StoveConfiguration.Modules.StoveRedis());
+        }
+
+        /// <summary>
+        ///     Stove Redis configuration accessor.
+        /// </summary>
+        /// <param name="configurations">The configurations.</param>
+        /// <returns></returns>
+        public static IStoveRedisCacheConfiguration StoveRedis(this IModuleConfigurations configurations)
+        {
+            return configurations.StoveConfiguration.Get<IStoveRedisCacheConfiguration>();
         }
     }
 }

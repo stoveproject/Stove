@@ -1,4 +1,5 @@
 ﻿using StackExchange.Redis;
+using StackExchange.Redis.Extensions.Core;
 
 namespace Stove.Redis.Redis
 {
@@ -8,8 +9,9 @@ namespace Stove.Redis.Redis
     public interface IStoveRedisCacheDatabaseProvider
     {
         /// <summary>
-        ///     Gets the database connection.
+        ///     Gets the client.
         /// </summary>
-        IDatabase GetDatabase();
+        /// <returns></returns>
+        ICacheClient GetClient();
     }
 }

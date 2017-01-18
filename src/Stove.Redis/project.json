@@ -3,6 +3,7 @@
 
   "dependencies": {
     "StackExchange.Redis": "1.2.0",
+    "StackExchange.Redis.Extensions.Core": "2.0.0",
     "Stove": "0.0.4"
   },
 

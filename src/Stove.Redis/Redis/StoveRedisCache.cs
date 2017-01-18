@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 using StackExchange.Redis;
+using StackExchange.Redis.Extensions.Core;
 
-using Stove.Domain.Entities;
 using Stove.Runtime.Caching;
 
 namespace Stove.Redis.Redis
@@ -12,26 +13,26 @@ namespace Stove.Redis.Redis
     /// </summary>
     public class StoveRedisCache : CacheBase
     {
+        private readonly ICacheClient _cacheClient;
         private readonly IDatabase _database;
-        private readonly IRedisCacheSerializer _serializer;
 
         /// <summary>
         ///     Constructor.
         /// </summary>
-        public StoveRedisCache(
-            string name,
-            IStoveRedisCacheDatabaseProvider redisCacheDatabaseProvider,
-            IRedisCacheSerializer redisCacheSerializer)
-            : base(name)
+        public StoveRedisCache(string name, IStoveRedisCacheDatabaseProvider redisCacheDatabaseProvider) : base(name)
         {
-            _database = redisCacheDatabaseProvider.GetDatabase();
-            _serializer = redisCacheSerializer;
+            _cacheClient = redisCacheDatabaseProvider.GetClient();
+            _database = _cacheClient.Database;
         }
 
         public override object GetOrDefault(string key)
         {
-            RedisValue objbyte = _database.StringGet(GetLocalizedKey(key));
-            return objbyte.HasValue ? Deserialize(objbyte) : null;
+            return _cacheClient.Get<object>(GetLocalizedKey(key));
+        }
+
+        public override Task<object> GetOrDefaultAsync(string key)
+        {
+            return _cacheClient.GetAsync<object>(GetLocalizedKey(key));
         }
 
         public override void Set(string key, object value, TimeSpan? slidingExpireTime = null, TimeSpan? absoluteExpireTime = null)
@@ -40,19 +41,13 @@ namespace Stove.Redis.Redis
             {
                 throw new StoveException("Can not insert null values to the cache!");
             }
+           
+            _cacheClient.Add(GetLocalizedKey(key), value, absoluteExpireTime ?? slidingExpireTime ?? DefaultAbsoluteExpireTime ?? DefaultSlidingExpireTime);
+        }
 
-            //TODO: This is a workaround for serialization problems of entities.
-            Type type = value.GetType();
-            if (EntityHelper.IsEntity(type) && type.Assembly.FullName.Contains("EntityFrameworkDynamicProxies"))
-            {
-                type = type.BaseType;
-            }
-
-            _database.StringSet(
-                GetLocalizedKey(key),
-                Serialize(value, type),
-                absoluteExpireTime ?? slidingExpireTime ?? DefaultAbsoluteExpireTime ?? DefaultSlidingExpireTime
-            );
+        public override Task SetAsync(string key, object value, TimeSpan? slidingExpireTime = null, TimeSpan? absoluteExpireTime = null)
+        {
+            return _cacheClient.AddAsync(GetLocalizedKey(key), value, absoluteExpireTime ?? slidingExpireTime ?? DefaultAbsoluteExpireTime ?? DefaultSlidingExpireTime);
         }
 
         public override void Remove(string key)
@@ -60,19 +55,14 @@ namespace Stove.Redis.Redis
             _database.KeyDelete(GetLocalizedKey(key));
         }
 
+        public override Task RemoveAsync(string key)
+        {
+            return _database.KeyDeleteAsync(GetLocalizedKey(key));
+        }
+
         public override void Clear()
         {
             _database.KeyDeleteWithPrefix(GetLocalizedKey("*"));
-        }
-
-        protected virtual string Serialize(object value, Type type)
-        {
-            return _serializer.Serialize(value, type);
-        }
-
-        protected virtual object Deserialize(RedisValue objbyte)
-        {
-            return _serializer.Deserialize(objbyte);
         }
 
         protected virtual string GetLocalizedKey(string key)

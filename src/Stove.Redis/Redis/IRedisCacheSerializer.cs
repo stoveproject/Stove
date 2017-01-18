@@ -14,8 +14,9 @@ namespace Stove.Redis.Redis
         ///     Creates an instance of the object from its serialized string representation.
         /// </summary>
         /// <param name="objbyte">String representation of the object from the Redis server.</param>
-        /// <returns>Returns a newly constructed object.</returns>
-        /// <seealso cref="Serialize" />
+        /// <returns>
+        ///     Returns a newly constructed object.
+        /// </returns>
         object Deserialize(RedisValue objbyte);
 
         /// <summary>
@@ -26,5 +27,15 @@ namespace Stove.Redis.Redis
         /// <returns>Returns a string representing the object instance that can be placed into the Redis cache.</returns>
         /// <seealso cref="Deserialize" />
         string Serialize(object value, Type type);
+
+        /// <summary>
+        ///     Produce a string representation of the supplied object.
+        /// </summary>
+        /// <param name="value">Instance to serialize.</param>
+        /// <returns>
+        ///     Returns a string representing the object instance that can be placed into the Redis cache.
+        /// </returns>
+        /// <seealso cref="Deserialize" />
+        string Serialize(object value);
     }
 }
