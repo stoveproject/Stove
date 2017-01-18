@@ -5,26 +5,22 @@ using System.Linq;
 using Autofac.Extras.IocManager;
 
 using Stove.BackgroundJobs;
+using Stove.Dependency;
 using Stove.Domain.Uow;
 using Stove.Events.Bus;
 using Stove.Events.Bus.Factories;
 using Stove.Events.Bus.Handlers;
 using Stove.Threading.BackgrodunWorkers;
 
-namespace Stove.Bootstrapping.Bootstrappers
+namespace Stove.Bootstrapping
 {
     public class StoveKernelBootstrapper : StoveBootstrapper
     {
-        private readonly Func<IBackgroundJobConfiguration, IBackgroundJobConfiguration> _backgroundJobConfigurer;
         private readonly IBackgroundWorkerManager _backgroundWorkerManager;
         private readonly IEventBus _eventBus;
 
-        public StoveKernelBootstrapper(
-            Func<IBackgroundJobConfiguration, IBackgroundJobConfiguration> backgroundJobConfigurer,
-            IBackgroundWorkerManager backgroundWorkerManager,
-            IEventBus eventBus)
+        public StoveKernelBootstrapper(IBackgroundWorkerManager backgroundWorkerManager, IEventBus eventBus)
         {
-            _backgroundJobConfigurer = backgroundJobConfigurer;
             _backgroundWorkerManager = backgroundWorkerManager;
             _eventBus = eventBus;
         }
@@ -42,7 +38,11 @@ namespace Stove.Bootstrapping.Bootstrappers
 
         private void ConfigureBackgroundJobs()
         {
-            _backgroundJobConfigurer(Configuration.BackgroundJobs);
+            Func<IBackgroundJobConfiguration, IBackgroundJobConfiguration> backgroundJobConfigurer;
+            if (Resolver.ResolveIfExists(out backgroundJobConfigurer))
+            {
+                backgroundJobConfigurer(Configuration.BackgroundJobs);
+            }
 
             if (Configuration.BackgroundJobs.IsJobExecutionEnabled)
             {

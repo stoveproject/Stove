@@ -1,6 +1,5 @@
 ﻿using Stove.Bootstrapping;
-using Stove.Bootstrapping.Bootstrappers;
-using Stove.EntityFramework.Bootstrappers;
+using Stove.EntityFramework;
 using Stove.Mapster.Bootstrappers;
 using Stove.Mapster.Mapster;
 using Stove.Tests.SampleApplication.Domain.Entities;

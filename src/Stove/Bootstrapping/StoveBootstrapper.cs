@@ -5,7 +5,6 @@ using System.Reflection;
 
 using Autofac.Extras.IocManager;
 
-using Stove.Bootstrapping.Bootstrappers;
 using Stove.Collections.Extensions;
 using Stove.Configuration;
 using Stove.Log;

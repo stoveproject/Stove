@@ -4,7 +4,7 @@ using StackExchange.Redis;
 using StackExchange.Redis.Extensions.Core.Configuration;
 
 using Stove.Bootstrapping;
-using Stove.Bootstrapping.Bootstrappers;
+using Stove.Dependency;
 using Stove.Redis.Redis;
 
 namespace Stove.Redis
@@ -16,9 +16,9 @@ namespace Stove.Redis
     {
         public override void PreStart()
         {
-            if (Resolver.IsRegistered<Func<IStoveRedisCacheConfiguration, IStoveRedisCacheConfiguration>>())
+            Func<IStoveRedisCacheConfiguration, IStoveRedisCacheConfiguration> redisConfigurer;
+            if (Resolver.ResolveIfExists(out redisConfigurer))
             {
-                var redisConfigurer = Resolver.Resolve<Func<IStoveRedisCacheConfiguration, IStoveRedisCacheConfiguration>>();
                 Configuration.Caching.UseRedis(options => redisConfigurer(options));
             }
             else

@@ -7,7 +7,7 @@ using ILogger = Stove.Log.ILogger;
 
 namespace Stove.NLog
 {
-    public static class NLogRegistrationExtensions
+    public static class StoveNLogRegistrationExtensions
     {
         public static IIocBuilder UseStoveNLog(this IIocBuilder builder)
         {

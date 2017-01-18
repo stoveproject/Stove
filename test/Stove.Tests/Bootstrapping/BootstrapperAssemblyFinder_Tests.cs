@@ -5,7 +5,6 @@ using System.Reflection;
 using Shouldly;
 
 using Stove.Bootstrapping;
-using Stove.Bootstrapping.Bootstrappers;
 using Stove.Reflection;
 using Stove.TestBase;
 

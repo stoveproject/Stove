@@ -21,7 +21,7 @@ using Stove.Runtime.Caching.Memory;
 
 namespace Stove
 {
-    public static class StoveRegistrationExtensions
+    public static class StoveCoreRegistrationExtensions
     {
         public static IIocBuilder UseStove(this IIocBuilder builder, bool autoUnitOfWorkInterceptionEnabled = false)
         {

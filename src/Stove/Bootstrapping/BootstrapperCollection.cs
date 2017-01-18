@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 
-using Stove.Bootstrapping.Bootstrappers;
 using Stove.Collections.Extensions;
 
 namespace Stove.Bootstrapping
