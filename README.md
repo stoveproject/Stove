@@ -1,4 +1,6 @@
-#  Stove [![Build status](https://ci.appveyor.com/api/projects/status/wv4049ey7666vrq4?svg=true)](https://ci.appveyor.com/project/osoykan/stove-jo52k) <img src="https://raw.githubusercontent.com/osoykan/Stove/master/stove.png" alt="alt text" width="100" height="100">
+
+<img src="https://raw.githubusercontent.com/osoykan/Stove/master/stove.png" alt="alt text" width="100" height="100">  
+# Stove [![Build status](https://ci.appveyor.com/api/projects/status/wv4049ey7666vrq4?svg=true)](https://ci.appveyor.com/project/osoykan/stove-jo52k) 
 
 
  
