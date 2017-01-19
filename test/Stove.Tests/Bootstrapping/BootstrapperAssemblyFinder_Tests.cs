@@ -35,6 +35,7 @@ namespace Stove.Tests.Bootstrapping
             assemblies.Any(a => a == typeof(FactAttribute).Assembly).ShouldBeTrue();
         }
 
+        [StarterBootstrapper]
         public class MyStartupBootstrapper : StoveBootstrapper
         {
             public override Assembly[] GetAdditionalAssemblies()

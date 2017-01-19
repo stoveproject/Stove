@@ -12,19 +12,24 @@ namespace Stove.Bootstrapping
 {
     public class StoveBootstrapperManager : IStoveBootstrapperManager
     {
-        private readonly BootstrapperCollection _bootstrappers;
         private readonly IResolver _resolver;
+        private BootstrapperCollection _bootstrappers;
 
         public StoveBootstrapperManager(IResolver resolver)
         {
             _resolver = resolver;
-            _bootstrappers = new BootstrapperCollection();
+
+            Logger = NullLogger.Instance;
         }
+
+        public ILogger Logger { get; set; }
 
         public IReadOnlyList<BootstrapperInfo> Bootstrappers => _bootstrappers.ToImmutableList();
 
-        public void StartBootstrappers()
+        public void StartBootstrappers(Type startupBootstrapperType)
         {
+            _bootstrappers = new BootstrapperCollection(startupBootstrapperType);
+
             LoadAllBootstrappers();
 
             List<BootstrapperInfo> sortedBootstrappers = _bootstrappers.GetSortedBootstrapperListByDependency();
@@ -38,6 +43,9 @@ namespace Stove.Bootstrapping
             List<Type> bootstrappers = FindAllBootstrapperTypes();
 
             CreateBootstrapper(bootstrappers);
+
+            _bootstrappers.EnsureKernelBootstrapperToBeFirst();
+            _bootstrappers.EnsureStartupBootstrapperToBeLast();
 
             SetDependencies();
         }
@@ -64,7 +72,7 @@ namespace Stove.Bootstrapping
 
         private List<Type> FindAllBootstrapperTypes()
         {
-            List<Type> bootstrappers = StoveBootstrapper.FindDependedBootstrapperTypesRecursivelyIncludingGivenBootstrapper(typeof(StoveKernelBootstrapper));
+            List<Type> bootstrappers = StoveBootstrapper.FindDependedBootstrapperTypesRecursivelyIncludingGivenBootstrapper(_bootstrappers.StartupBootstrapperType);
             return bootstrappers;
         }
 

@@ -8,7 +8,6 @@ using Autofac.Extras.IocManager;
 using Stove.Collections.Extensions;
 using Stove.Configuration;
 using Stove.Log;
-using Stove.Reflection.Extensions;
 
 namespace Stove.Bootstrapping
 {
@@ -41,6 +40,7 @@ namespace Stove.Bootstrapping
         {
             return new Assembly[0];
         }
+
         public static bool IsStoveBootstrapper(Type type)
         {
             return
@@ -74,29 +74,29 @@ namespace Stove.Bootstrapping
             return list;
         }
 
-        public static List<Type> FindDependedBootstrapperTypesRecursivelyIncludingGivenBootstrapper(Type bootstrapper)
+        public static List<Type> FindDependedBootstrapperTypesRecursivelyIncludingGivenBootstrapper(Type bootstrapperType)
         {
-            List<Type> list = typeof(StoveBootstrapper).AssignedTypes().ToList();
-            AddBootstrapperAndDependenciesResursively(list, bootstrapper);
+            var list = new List<Type>();
+            AddBootstrapperAndDependenciesResursively(list, bootstrapperType);
             list.AddIfNotContains(typeof(StoveKernelBootstrapper));
             return list;
         }
 
-        private static void AddBootstrapperAndDependenciesResursively(List<Type> bootstrappers, Type bootstrapper)
+        private static void AddBootstrapperAndDependenciesResursively(List<Type> bootstrappers, Type bootstrapperType)
         {
-            if (!IsStoveBootstrapper(bootstrapper))
+            if (!IsStoveBootstrapper(bootstrapperType))
             {
-                throw new StoveInitializationException("This type is not an Stove Bootstrapper: " + bootstrapper.AssemblyQualifiedName);
+                throw new StoveInitializationException("This type is not an Stove Bootstrapper: " + bootstrapperType.AssemblyQualifiedName);
             }
 
-            if (bootstrappers.Contains(bootstrapper))
+            if (bootstrappers.Contains(bootstrapperType))
             {
                 return;
             }
 
-            bootstrappers.Add(bootstrapper);
+            bootstrappers.Add(bootstrapperType);
 
-            List<Type> dependedBootstrappers = FindDependedBootstrapperTypes(bootstrapper);
+            List<Type> dependedBootstrappers = FindDependedBootstrapperTypes(bootstrapperType);
             foreach (Type dependedBootstrapper in dependedBootstrappers)
             {
                 AddBootstrapperAndDependenciesResursively(bootstrappers, dependedBootstrapper);

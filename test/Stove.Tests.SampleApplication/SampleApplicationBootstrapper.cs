@@ -2,10 +2,10 @@
 using Stove.EntityFramework;
 using Stove.Mapster.Bootstrappers;
 using Stove.Mapster.Mapster;
-using Stove.Tests.SampleApplication.Domain.Entities;
 
 namespace Stove.Tests.SampleApplication
 {
+    [StarterBootstrapper]
     [DependsOn(
         typeof(StoveKernelBootstrapper),
         typeof(StoveEntityFrameworkBootstrapper),

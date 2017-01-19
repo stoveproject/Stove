@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Stove.Bootstrapping
 {
@@ -6,6 +7,6 @@ namespace Stove.Bootstrapping
     {
         IReadOnlyList<BootstrapperInfo> Bootstrappers { get; }
 
-        void StartBootstrappers();
+        void StartBootstrappers(Type starterBootStrapperType);
     }
 }

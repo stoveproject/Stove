@@ -19,7 +19,8 @@ namespace Stove.Tests.Bootstrapping
                 builder
                     .UseStoveWithNullables()
                     .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
-            }).Ok(false);
+            })
+            .Ok(false);
 
             var testModule = LocalResolver.Resolve<MyTestBootstrapper>();
             var otherModule = LocalResolver.Resolve<MyOtherBootstrapper>();
@@ -41,6 +42,7 @@ namespace Stove.Tests.Bootstrapping
         }
     }
 
+    [StarterBootstrapper]
     [DependsOn(typeof(MyOtherBootstrapper))]
     [DependsOn(typeof(MyAnotherBootstrapper))]
     public class MyTestBootstrapper : MyEventCounterBootstrapperBase
