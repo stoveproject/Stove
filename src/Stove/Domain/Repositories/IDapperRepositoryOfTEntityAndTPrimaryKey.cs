@@ -3,15 +3,15 @@ using System.Threading.Tasks;
 
 using Stove.Domain.Entities;
 
-namespace Stove.Dapper.Dapper.Repositories
+namespace Stove.Domain.Repositories
 {
     /// <summary>
     ///     Dapper repository abstraction interface.
     /// </summary>
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
     /// <typeparam name="TPrimaryKey">The type of the primary key.</typeparam>
-    /// <seealso cref="Stove.Dapper.Dapper.Repositories.IDapperRepository" />
-    public interface IDapperRepository<TEntity, TPrimaryKey> : IDapperRepository where TEntity : class, IEntity<TPrimaryKey>
+    /// <seealso cref="IDapperRepository" />
+    public interface IDapperRepository<TEntity, TPrimaryKey> : IRepository where TEntity : class, IEntity<TPrimaryKey>
     {
         /// <summary>
         ///     Gets the specified identifier.

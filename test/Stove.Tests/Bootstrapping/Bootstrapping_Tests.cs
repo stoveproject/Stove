@@ -17,9 +17,10 @@ namespace Stove.Tests.Bootstrapping
             Building(builder =>
             {
                 builder
-                    .UseStoveWithNullables()
+                    .UseStoveWithNullables(typeof(MyTestBootstrapper))
                     .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
-            }).Ok(false);
+            })
+            .Ok();
 
             var testModule = LocalResolver.Resolve<MyTestBootstrapper>();
             var otherModule = LocalResolver.Resolve<MyOtherBootstrapper>();

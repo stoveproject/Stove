@@ -104,10 +104,7 @@ namespace Stove.Domain.Uow
         /// <inheritdoc />
         public void Begin(UnitOfWorkOptions options)
         {
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
+            Check.NotNull(options, nameof(options));
 
             PreventMultipleBegin();
             Options = options; //TODO: Do not set options like that, instead make a copy?
@@ -241,7 +238,7 @@ namespace Stove.Domain.Uow
         /// <inheritdoc />
         public void Dispose()
         {
-            if (IsDisposed)
+            if (!_isBeginCalledBefore || IsDisposed)
             {
                 return;
             }

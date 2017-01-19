@@ -3,9 +3,11 @@ using System.Reflection;
 
 using Autofac.Extras.IocManager;
 
-namespace Stove.Hangfire.Hangfire
+using Stove.Hangfire.Hangfire;
+
+namespace Stove.Hangfire
 {
-    public static class HangfireRegistrationExtensions
+    public static class StoveHangfireRegistrationExtensions
     {
         public static IIocBuilder UseStoveHangfire(this IIocBuilder builder, Func<IStoveHangfireConfiguration, IStoveHangfireConfiguration> configureAction)
         {

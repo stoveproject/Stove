@@ -5,7 +5,6 @@ using System.Reflection;
 using Shouldly;
 
 using Stove.Bootstrapping;
-using Stove.Bootstrapping.Bootstrappers;
 using Stove.Reflection;
 using Stove.TestBase;
 
@@ -19,11 +18,12 @@ namespace Stove.Tests.Bootstrapping
         public void Should_Get_Bootstrapper_And_Additional_Assemblies()
         {
             Building(builder =>
-            {
-                builder
-                    .UseStoveWithNullables()
-                    .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
-            }).Ok(false);
+                {
+                    builder
+                        .UseStoveWithNullables(typeof(MyStartupBootstrapper))
+                        .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
+                })
+                .Ok();
 
             //Act
             List<Assembly> assemblies = LocalResolver.Resolve<StoveAssemblyFinder>().GetAllAssemblies();

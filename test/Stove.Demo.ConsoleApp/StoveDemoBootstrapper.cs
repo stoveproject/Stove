@@ -2,8 +2,8 @@ using System;
 
 using Stove.Bootstrapping;
 using Stove.Demo.ConsoleApp.DbContexes;
-using Stove.EntityFramework.Bootstrappers;
-using Stove.Hangfire.Bootsrappers;
+using Stove.EntityFramework;
+using Stove.Hangfire;
 using Stove.Mapster.Bootstrappers;
 
 namespace Stove.Demo.ConsoleApp

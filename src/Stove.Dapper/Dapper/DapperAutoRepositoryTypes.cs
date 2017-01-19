@@ -1,4 +1,5 @@
 ﻿using Stove.Dapper.Dapper.Repositories;
+using Stove.Domain.Repositories;
 using Stove.EntityFramework.EntityFramework;
 
 namespace Stove.Dapper.Dapper

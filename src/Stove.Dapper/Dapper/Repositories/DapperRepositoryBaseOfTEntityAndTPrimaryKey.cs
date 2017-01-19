@@ -9,6 +9,7 @@ using Dapper;
 using DapperExtensions;
 
 using Stove.Domain.Entities;
+using Stove.Domain.Repositories;
 using Stove.EntityFramework.EntityFramework;
 
 namespace Stove.Dapper.Dapper.Repositories

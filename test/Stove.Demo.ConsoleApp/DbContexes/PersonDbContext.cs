@@ -16,6 +16,10 @@ namespace Stove.Demo.ConsoleApp.DbContexes
         {
         }
 
+        protected PersonStoveDbContext(string nameOrConnectionString) : base(nameOrConnectionString)
+        {
+        }
+
         public virtual IDbSet<Person> Persons { get; set; }
     }
 }

@@ -7,12 +7,12 @@ using Xunit;
 
 namespace Stove.Tests.SampleApplication
 {
-    public class AutoMapping_Tests : SampleApplicationTestBase
+    public class AutoMapping_Tests : SampleApplicationTestBase<SampleApplicationBootstrapper>
     {
         [Fact]
         public void auto_object_mapping_should_work()
         {
-            Building(builder => { }).Ok(false);
+            Building(builder => { }).Ok();
 
             var mapper = LocalResolver.Resolve<IObjectMapper>();
 

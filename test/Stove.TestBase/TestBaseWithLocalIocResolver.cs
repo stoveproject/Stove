@@ -20,7 +20,7 @@ namespace Stove.TestBase
             return this;
         }
 
-        public void Ok(bool ignoreStartableComponents = true)
+        public void Ok(bool ignoreStartableComponents = false)
         {
             LocalResolver = IocBuilder.CreateResolver(ignoreStartableComponents);
         }

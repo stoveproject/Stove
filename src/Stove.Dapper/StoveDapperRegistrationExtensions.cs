@@ -11,7 +11,7 @@ using Stove.Reflection.Extensions;
 
 namespace Stove.Dapper
 {
-    public static class DapperRegistrationExtensions
+    public static class StoveDapperRegistrationExtensions
     {
         public static IIocBuilder UseStoveDapper(this IIocBuilder builder)
         {

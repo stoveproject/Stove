@@ -28,7 +28,6 @@ namespace Stove.Reflection.Extensions
                                   .Filter()
                                   .Classes()
                                   .NonStatic()
-                                  .Where(type => !type.Assembly.IsDynamic && !type.IsAbstract)
                                   .Scan();
         }
     }

@@ -30,8 +30,8 @@ namespace Stove.EntityFramework.EntityFramework
             Type dbContextType = GetConcreteType<TDbContext>();
             return (TDbContext)_scopeResolver.Resolve(dbContextType, new
             {
-                existingConnection,
-                contextOwnsConnection
+                existingConnection = existingConnection,
+                contextOwnsConnection = contextOwnsConnection
             });
         }
 

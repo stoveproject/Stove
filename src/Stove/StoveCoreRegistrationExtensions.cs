@@ -15,21 +15,27 @@ using Stove.Linq;
 using Stove.Log;
 using Stove.ObjectMapping;
 using Stove.Reflection;
-using Stove.Runtime.Caching;
 using Stove.Runtime.Caching.Configuration;
 using Stove.Runtime.Caching.Memory;
 
 namespace Stove
 {
-    public static class StoveRegistrationExtensions
+    public static class StoveCoreRegistrationExtensions
     {
-        public static IIocBuilder UseStove(this IIocBuilder builder, bool autoUnitOfWorkInterceptionEnabled = false)
+        public static IIocBuilder UseStove(this IIocBuilder builder, Type starterBootstrapperType, bool autoUnitOfWorkInterceptionEnabled = false)
         {
             if (autoUnitOfWorkInterceptionEnabled)
             {
                 builder.RegisterServices(r => r.UseBuilder(cb => cb.RegisterCallback(registry => registry.Registered += RegistryOnRegistered)));
             }
 
+            Func<IStoveStartupConfiguration, IStoveStartupConfiguration> starterBootstrapperConfigurer = configuration =>
+            {
+                configuration.StarterBootstrapperType = starterBootstrapperType;
+                return configuration;
+            };
+
+            builder.RegisterServices(r => r.Register(ctx => starterBootstrapperConfigurer));
             RegisterDefaults(builder);
 
             return builder;
@@ -110,11 +116,12 @@ namespace Stove
         ///     Uses the Stove with nullables, prefer when you writing unit tests.
         /// </summary>
         /// <param name="builder">The builder.</param>
+        /// <param name="starterBootstrapperType"></param>
         /// <param name="autoUnitOfWorkInterceptionEnabled"></param>
         /// <returns></returns>
-        public static IIocBuilder UseStoveWithNullables(this IIocBuilder builder, bool autoUnitOfWorkInterceptionEnabled = false)
+        public static IIocBuilder UseStoveWithNullables(this IIocBuilder builder, Type starterBootstrapperType, bool autoUnitOfWorkInterceptionEnabled = false)
         {
-            return builder.UseStove(autoUnitOfWorkInterceptionEnabled)
+            return builder.UseStove(starterBootstrapperType, autoUnitOfWorkInterceptionEnabled)
                           .UseStoveNullLogger()
                           .UseStoveNullEventBus()
                           .UseStoveNullObjectMapper()
