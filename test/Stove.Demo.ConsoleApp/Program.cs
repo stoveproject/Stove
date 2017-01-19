@@ -39,7 +39,6 @@ namespace Stove.Demo.ConsoleApp
                                                .UseStoveTypedConnectionStringResolver()
                                                .UseStoveNLog()
                                                .UseStoveBackgroundJobs()
-                                               //.UseStoveMemoryCaching()
                                                .UseStoveRedisCaching()
                                                .UseStoveHangfire(configuration =>
                                                {

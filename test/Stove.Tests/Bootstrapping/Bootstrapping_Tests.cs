@@ -20,7 +20,7 @@ namespace Stove.Tests.Bootstrapping
                     .UseStoveWithNullables(typeof(MyTestBootstrapper))
                     .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
             })
-            .Ok(false);
+            .Ok();
 
             var testModule = LocalResolver.Resolve<MyTestBootstrapper>();
             var otherModule = LocalResolver.Resolve<MyOtherBootstrapper>();

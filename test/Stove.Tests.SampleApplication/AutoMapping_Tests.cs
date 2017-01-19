@@ -12,7 +12,7 @@ namespace Stove.Tests.SampleApplication
         [Fact]
         public void auto_object_mapping_should_work()
         {
-            Building(builder => { }).Ok(false);
+            Building(builder => { }).Ok();
 
             var mapper = LocalResolver.Resolve<IObjectMapper>();
 
