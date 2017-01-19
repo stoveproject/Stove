@@ -23,3 +23,30 @@
 * EventBus for DDD use cases
 * EntityFramework
 * Generic Repository Pattern, DbContext, Multiple DbContext control in one unit of work, TransactionScope support
+
+
+## Composition Root
+```csharp
+IRootResolver resolver = IocBuilder.New
+                                   .UseAutofacContainerBuilder()
+                                   .UseStove(starterBootstrapperType: typeof(StoveDemoBootstrapper), autoUnitOfWorkInterceptionEnabled: true)
+                                   .UseStoveEntityFramework()
+                                   .UseStoveDapper()
+                                   .UseStoveMapster()
+                                   .UseStoveDefaultEventBus()
+                                   .UseStoveDbContextEfTransactionStrategy()
+                                   .UseStoveTypedConnectionStringResolver()
+                                   .UseStoveNLog()
+                                   .UseStoveBackgroundJobs()
+                                   .UseStoveRedisCaching()
+                                   .UseStoveHangfire(configuration =>
+                                   {
+                                       configuration.GlobalConfiguration
+                                                    .UseSqlServerStorage("Default")
+                                                    .UseNLogLogProvider();
+                                       return configuration;
+                                   })
+                                   .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()))
+                                   .CreateResolver();
+
+```
