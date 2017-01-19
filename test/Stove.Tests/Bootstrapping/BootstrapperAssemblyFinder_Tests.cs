@@ -20,7 +20,7 @@ namespace Stove.Tests.Bootstrapping
             Building(builder =>
             {
                 builder
-                    .UseStoveWithNullables()
+                    .UseStoveWithNullables(typeof(MyStartupBootstrapper))
                     .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
             }).Ok(false);
 
@@ -35,7 +35,6 @@ namespace Stove.Tests.Bootstrapping
             assemblies.Any(a => a == typeof(FactAttribute).Assembly).ShouldBeTrue();
         }
 
-        [StarterBootstrapper]
         public class MyStartupBootstrapper : StoveBootstrapper
         {
             public override Assembly[] GetAdditionalAssemblies()

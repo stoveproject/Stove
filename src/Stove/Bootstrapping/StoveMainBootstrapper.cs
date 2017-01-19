@@ -1,33 +1,31 @@
 ﻿using System;
-using System.Linq;
 
 using Autofac;
 using Autofac.Extras.IocManager;
 
-using Stove.Reflection.Extensions;
+using Stove.Configuration;
 
 namespace Stove.Bootstrapping
 {
     public class StoveMainBootstrapper : IStartable, ITransientDependency
     {
+        private readonly Func<IStoveStartupConfiguration, IStoveStartupConfiguration> _configurer;
+        private readonly IStoveStartupConfiguration _startupConfiguration;
         private readonly IStoveBootstrapperManager _stoveBootstrapperManager;
 
-        public StoveMainBootstrapper(IStoveBootstrapperManager stoveBootstrapperManager)
+        public StoveMainBootstrapper(
+            IStoveBootstrapperManager stoveBootstrapperManager,
+            Func<IStoveStartupConfiguration, IStoveStartupConfiguration> configuree,
+            IStoveStartupConfiguration startupConfiguration)
         {
             _stoveBootstrapperManager = stoveBootstrapperManager;
+            _configurer = configuree;
+            _startupConfiguration = startupConfiguration;
         }
 
         public void Start()
         {
-            Type starterBootstrapper = typeof(StoveBootstrapper).AssignedTypes()
-                                                                .FirstOrDefault(x => x.GetSingleAttributeOrNull<StarterBootstrapper>() != null);
-
-            if (starterBootstrapper == null)
-            {
-                throw new StoveException("There is no StarterBootstraper, please define a starter bootstrapper in your entry bootstrapper as attribute.");
-            }
-
-            _stoveBootstrapperManager.StartBootstrappers(starterBootstrapper);
+            _stoveBootstrapperManager.StartBootstrappers(_configurer(_startupConfiguration).StarterBootstrapperType);
         }
     }
 }

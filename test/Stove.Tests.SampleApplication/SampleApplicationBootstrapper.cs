@@ -5,7 +5,6 @@ using Stove.Mapster.Mapster;
 
 namespace Stove.Tests.SampleApplication
 {
-    [StarterBootstrapper]
     [DependsOn(
         typeof(StoveKernelBootstrapper),
         typeof(StoveEntityFrameworkBootstrapper),

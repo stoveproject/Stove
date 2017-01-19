@@ -19,14 +19,14 @@ using Stove.Timing;
 
 namespace Stove.Tests.SampleApplication
 {
-    public abstract class SampleApplicationTestBase : TestBaseWithLocalIocResolver
+    public abstract class SampleApplicationTestBase<TStarterBootstrapper> : TestBaseWithLocalIocResolver
     {
         protected SampleApplicationTestBase()
         {
             Building(builder =>
             {
                 builder
-                    .UseStove()
+                    .UseStove(typeof(TStarterBootstrapper))
                     .UseStoveEntityFramework()
                     .UseStoveDefaultEventBus()
                     .UseStoveDefaultConnectionStringResolver()

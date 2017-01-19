@@ -17,7 +17,7 @@ namespace Stove.Tests.Bootstrapping
             Building(builder =>
             {
                 builder
-                    .UseStoveWithNullables()
+                    .UseStoveWithNullables(typeof(MyTestBootstrapper))
                     .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
             })
             .Ok(false);
@@ -42,7 +42,6 @@ namespace Stove.Tests.Bootstrapping
         }
     }
 
-    [StarterBootstrapper]
     [DependsOn(typeof(MyOtherBootstrapper))]
     [DependsOn(typeof(MyAnotherBootstrapper))]
     public class MyTestBootstrapper : MyEventCounterBootstrapperBase

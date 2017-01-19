@@ -11,6 +11,14 @@ namespace Stove.Configuration
 {
     public interface IStoveStartupConfiguration
     {
+        /// <summary>
+        ///     Gets or sets the type of the starter bootstrapper.
+        /// </summary>
+        /// <value>
+        ///     The type of the starter bootstrapper.
+        /// </value>
+        Type StarterBootstrapperType { get; set; }
+
         IResolver Resolver { get; }
 
         /// <summary>

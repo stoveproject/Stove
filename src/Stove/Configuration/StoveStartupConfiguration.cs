@@ -36,5 +36,7 @@ namespace Stove.Configuration
         {
             return GetOrCreate(typeof(T).FullName, () => Resolver.Resolve<T>());
         }
+
+        public Type StarterBootstrapperType { get; set; }
     }
 }
