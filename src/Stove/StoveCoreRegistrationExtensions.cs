@@ -22,6 +22,12 @@ namespace Stove
 {
     public static class StoveCoreRegistrationExtensions
     {
+        public static IIocBuilder UseStove<TStarterBootstrapper>(this IIocBuilder builder, bool autoUnitOfWorkInterceptionEnabled = false)
+            where TStarterBootstrapper : StoveBootstrapper
+        {
+            return UseStove(builder, typeof(TStarterBootstrapper), autoUnitOfWorkInterceptionEnabled);
+        }
+
         public static IIocBuilder UseStove(this IIocBuilder builder, Type starterBootstrapperType, bool autoUnitOfWorkInterceptionEnabled = false)
         {
             if (autoUnitOfWorkInterceptionEnabled)
