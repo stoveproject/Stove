@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-using Stove.JetBrains.Annotations;
+using JetBrains.Annotations;
 
 namespace Stove.Bootstrapping
 {

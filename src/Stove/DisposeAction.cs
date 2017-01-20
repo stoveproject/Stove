@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading;
 
+using JetBrains.Annotations;
+
 namespace Stove
 {
     /// <summary>
@@ -16,7 +18,7 @@ namespace Stove
         ///     Creates a new <see cref="DisposeAction" /> object.
         /// </summary>
         /// <param name="action">Action to be executed when this object is disposed.</param>
-        public DisposeAction(Action action)
+        public DisposeAction([CanBeNull] Action action)
         {
             _action = action;
         }
@@ -24,8 +26,8 @@ namespace Stove
         public void Dispose()
         {
             // Interlocked allows the continuation to be executed only once
-            Action continuation = Interlocked.Exchange(ref _action, null);
-            continuation?.Invoke();
+            Action action = Interlocked.Exchange(ref _action, null);
+            action?.Invoke();
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Stove.JetBrains.Annotations;
+using JetBrains.Annotations;
 
 namespace Stove.Collections.Extensions
 {

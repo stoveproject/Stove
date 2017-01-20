@@ -4,7 +4,7 @@ using Stove.Bootstrapping;
 using Stove.Demo.ConsoleApp.DbContexes;
 using Stove.EntityFramework;
 using Stove.Hangfire;
-using Stove.Mapster.Bootstrappers;
+using Stove.Mapster;
 
 namespace Stove.Demo.ConsoleApp
 {
