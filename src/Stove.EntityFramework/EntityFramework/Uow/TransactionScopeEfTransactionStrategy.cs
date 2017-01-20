@@ -26,7 +26,15 @@ namespace Stove.EntityFramework.EntityFramework.Uow
 
         public virtual void Commit()
         {
-            CurrentTransaction?.Complete();
+            if (CurrentTransaction == null)
+            {
+                return;
+            }
+
+            CurrentTransaction.Complete();
+
+            CurrentTransaction.Dispose();
+            CurrentTransaction = null;
         }
 
         public virtual void Dispose()
