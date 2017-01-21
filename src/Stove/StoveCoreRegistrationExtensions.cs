@@ -140,7 +140,8 @@ namespace Stove
                           .UseStoveNullUnitOfWork()
                           .UseStoveNullUnitOfWorkFilterExecuter()
                           .UseStoveNullEntityChangedEventHelper()
-                          .UseStoveNullAsyncQueryableExecuter();
+                          .UseStoveNullAsyncQueryableExecuter()
+                          .UseStoveNullMessageBus();
         }
 
         public static IIocBuilder UseStoveNullLogger(this IIocBuilder builder)
