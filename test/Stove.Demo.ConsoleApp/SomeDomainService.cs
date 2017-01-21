@@ -3,6 +3,8 @@ using System.Linq;
 
 using Autofac.Extras.IocManager;
 
+using MassTransit;
+
 using Stove.BackgroundJobs;
 using Stove.Demo.ConsoleApp.BackgroundJobs;
 using Stove.Demo.ConsoleApp.DbContexes;
@@ -88,9 +90,10 @@ namespace Stove.Demo.ConsoleApp
 
                 birds = birds.ToList();
 
-                _messageBus.Publish(new PersonMessage
+                _messageBus.Publish<IPersonAddedMessage>(new PersonAddedMessage
                 {
-                    Name = "Oğuzhan"
+                    Name = "Oğuzhan",
+                    CorrelationId = NewId.NextGuid()
                 });
 
                 uow.Complete();

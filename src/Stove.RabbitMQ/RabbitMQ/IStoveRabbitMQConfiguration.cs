@@ -9,5 +9,9 @@
         string Password { get; set; }
 
         string QueueName { get; set; }
+
+        bool UseRetryMechanism { get; set; }
+
+        int MaxRetryCount { get; set; }
     }
 }

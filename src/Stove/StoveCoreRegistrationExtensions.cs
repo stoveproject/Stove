@@ -13,6 +13,7 @@ using Stove.Events.Bus;
 using Stove.Events.Bus.Entities;
 using Stove.Linq;
 using Stove.Log;
+using Stove.MQ;
 using Stove.ObjectMapping;
 using Stove.Reflection;
 using Stove.Runtime.Caching.Configuration;
@@ -99,6 +100,11 @@ namespace Stove
         {
             builder.RegisterServices(r => r.Register<IAsyncQueryableExecuter, NullAsyncQueryableExecuter>());
             return builder;
+        }
+
+        public static IIocBuilder UseStoveNullMessageBus(this IIocBuilder builder)
+        {
+            return builder.RegisterServices(r => r.Register<IMessageBus>(ctx => NullMessageBus.Instance));
         }
 
         public static IIocBuilder UseStoveMemoryCaching(this IIocBuilder builder)

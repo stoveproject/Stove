@@ -36,7 +36,7 @@ namespace Stove.Configuration
         /// <summary>
         ///     Used to configure unit of work defaults.
         /// </summary>
-        IUnitOfWorkDefaultOptions UnitOfWork { get; set; }
+        IUnitOfWorkDefaultOptions UnitOfWork { get; }
 
         /// <summary>
         ///     Gets or sets the typed connection strings.
@@ -44,7 +44,7 @@ namespace Stove.Configuration
         /// <value>
         ///     The typed connection strings.
         /// </value>
-        Dictionary<Type, string> TypedConnectionStrings { get; set; }
+        Dictionary<Type, string> TypedConnectionStrings { get; }
 
         /// <summary>
         ///     Gets or sets the background jobs configuration.
@@ -52,7 +52,7 @@ namespace Stove.Configuration
         /// <value>
         ///     The background jobs.
         /// </value>
-        IBackgroundJobConfiguration BackgroundJobs { get; set; }
+        IBackgroundJobConfiguration BackgroundJobs { get; }
 
         /// <summary>
         ///     Gets or sets the modules.
@@ -60,7 +60,7 @@ namespace Stove.Configuration
         /// <value>
         ///     The modules.
         /// </value>
-        IModuleConfigurations Modules { get; set; }
+        IModuleConfigurations Modules { get; }
 
         /// <summary>
         ///     Gets the caching.
@@ -68,7 +68,7 @@ namespace Stove.Configuration
         /// <value>
         ///     The caching.
         /// </value>
-        ICachingConfiguration Caching { get; set; }
+        ICachingConfiguration Caching { get; }
 
         /// <summary>
         ///     Gets a configuration object.

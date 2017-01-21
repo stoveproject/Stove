@@ -15,25 +15,23 @@ namespace Stove.Configuration
         public StoveStartupConfiguration(IResolver resolver)
         {
             Resolver = resolver;
-
-            TypedConnectionStrings = new Dictionary<Type, string>();
         }
-
-        public Type StarterBootstrapperType { get; set; }
-
-        public IModuleConfigurations Modules { get; set; }
-
-        public IBackgroundJobConfiguration BackgroundJobs { get; set; }
 
         public IResolver Resolver { get; }
 
-        public string DefaultNameOrConnectionString { get; set; }
+        public Type StarterBootstrapperType { get; set; }
 
-        public IUnitOfWorkDefaultOptions UnitOfWork { get; set; }
+        public string DefaultNameOrConnectionString { get; set; }
 
         public Dictionary<Type, string> TypedConnectionStrings { get; set; }
 
-        public ICachingConfiguration Caching { get; set; }
+        public IModuleConfigurations Modules { get; private set; }
+
+        public IBackgroundJobConfiguration BackgroundJobs { get; private set; }
+
+        public IUnitOfWorkDefaultOptions UnitOfWork { get; private set; }
+
+        public ICachingConfiguration Caching { get; private set; }
 
         public T Get<T>()
         {
@@ -52,6 +50,15 @@ namespace Stove.Configuration
 
                 return (arg => arg);
             });
+        }
+
+        public void Initialize()
+        {
+            Modules = Resolver.Resolve<IModuleConfigurations>();
+            BackgroundJobs = Resolver.Resolve<IBackgroundJobConfiguration>();
+            UnitOfWork = Resolver.Resolve<IUnitOfWorkDefaultOptions>();
+            Caching = Resolver.Resolve<ICachingConfiguration>();
+            TypedConnectionStrings = new Dictionary<Type, string>();
         }
     }
 }

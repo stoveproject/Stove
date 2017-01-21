@@ -10,13 +10,13 @@ namespace Stove.Bootstrapping
     public class StoveMainBootstrapper : IStartable, ITransientDependency
     {
         private readonly Func<IStoveStartupConfiguration, IStoveStartupConfiguration> _configurer;
-        private readonly IStoveStartupConfiguration _startupConfiguration;
+        private readonly StoveStartupConfiguration _startupConfiguration;
         private readonly IStoveBootstrapperManager _stoveBootstrapperManager;
 
         public StoveMainBootstrapper(
             IStoveBootstrapperManager stoveBootstrapperManager,
             Func<IStoveStartupConfiguration, IStoveStartupConfiguration> configurer,
-            IStoveStartupConfiguration startupConfiguration)
+            StoveStartupConfiguration startupConfiguration)
         {
             _stoveBootstrapperManager = stoveBootstrapperManager;
             _configurer = configurer;
@@ -25,6 +25,7 @@ namespace Stove.Bootstrapping
 
         public void Start()
         {
+            _startupConfiguration.Initialize();
             _stoveBootstrapperManager.StartBootstrappers(_configurer(_startupConfiguration).StarterBootstrapperType);
         }
     }

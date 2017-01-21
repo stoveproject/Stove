@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Reflection;
+using System.Transactions;
 
 using Autofac;
 using Autofac.Extras.IocManager;
+
+using GreenPipes;
 
 using MassTransit;
 using MassTransit.RabbitMqTransport;
@@ -33,24 +36,31 @@ namespace Stove.RabbitMQ
             {
                 cb.Register(ctx =>
                   {
-                      var busConfiguration = ctx.Resolve<IStoveRabbitMQConfiguration>();
+                      var configuration = ctx.Resolve<IStoveRabbitMQConfiguration>();
 
                       IBusControl busControl = Bus.Factory.CreateUsingRabbitMq(cfg =>
                       {
-                          IRabbitMqHost host = cfg.Host(new Uri(busConfiguration.HostAddress), h =>
+                          IRabbitMqHost host = cfg.Host(new Uri(configuration.HostAddress), h =>
                           {
-                              h.Username(busConfiguration.Username);
-                              h.Password(busConfiguration.Password);
+                              h.Username(configuration.Username);
+                              h.Password(configuration.Password);
                           });
 
-                          cfg.ReceiveEndpoint(busConfiguration.QueueName, ec => { ec.LoadFrom(ctx); });
+                          if (configuration.UseRetryMechanism)
+                          {
+                              cfg.UseRetry(rtryConf =>
+                              {
+                                  rtryConf.Immediate(configuration.MaxRetryCount);
+                              });
+                          }
+
+                          cfg.ReceiveEndpoint(host, configuration.QueueName, ec => { ec.LoadFrom(ctx); });
                       });
 
                       return busControl;
                   }).SingleInstance()
                   .As<IBusControl>()
                   .As<IBus>();
-                ;
             }));
 
             return builder;

@@ -5,7 +5,7 @@ namespace Stove.RabbitMQ.RabbitMQ
     public static class StoveRabbitMQConfigurationExtensions
     {
         /// <summary>
-        ///    Gets RabbitMQ Configuration from Ioc Container.
+        ///     Gets RabbitMQ Configuration from Ioc Container.
         /// </summary>
         /// <param name="configurations">The configurations.</param>
         /// <returns></returns>
