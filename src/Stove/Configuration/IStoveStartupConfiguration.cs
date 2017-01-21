@@ -19,6 +19,12 @@ namespace Stove.Configuration
         /// </value>
         Type StarterBootstrapperType { get; set; }
 
+        /// <summary>
+        ///     Gets the resolver.
+        /// </summary>
+        /// <value>
+        ///     The resolver.
+        /// </value>
         IResolver Resolver { get; }
 
         /// <summary>
@@ -68,5 +74,12 @@ namespace Stove.Configuration
         ///     Gets a configuration object.
         /// </summary>
         T Get<T>();
+
+        /// <summary>
+        ///     Gets the configurer.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        Func<T, T> GetConfigurerIfExists<T>();
     }
 }

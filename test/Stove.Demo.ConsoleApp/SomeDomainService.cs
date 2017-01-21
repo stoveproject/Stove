@@ -4,14 +4,15 @@ using System.Linq;
 using Autofac.Extras.IocManager;
 
 using Stove.BackgroundJobs;
-using Stove.Dapper.Dapper.Repositories;
 using Stove.Demo.ConsoleApp.BackgroundJobs;
 using Stove.Demo.ConsoleApp.DbContexes;
 using Stove.Demo.ConsoleApp.Entities;
+using Stove.Demo.ConsoleApp.RabbitMQ.Messages;
 using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
 using Stove.EntityFramework.EntityFramework;
 using Stove.Log;
+using Stove.MQ;
 using Stove.Runtime.Caching;
 
 namespace Stove.Demo.ConsoleApp
@@ -23,6 +24,7 @@ namespace Stove.Demo.ConsoleApp
         private readonly IRepository<Animal> _animalRepository;
         private readonly ICacheManager _cacheManager;
         private readonly IBackgroundJobManager _hangfireBackgroundJobManager;
+        private readonly IMessageBus _messageBus;
         private readonly IDapperRepository<Person> _personDapperRepository;
         private readonly IRepository<Person> _personRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
@@ -35,7 +37,8 @@ namespace Stove.Demo.ConsoleApp
             IBackgroundJobManager hangfireBackgroundJobManager,
             IDapperRepository<Person> personDapperRepository,
             IDapperRepository<Animal> animalDapperRepository,
-            ICacheManager cacheManager)
+            ICacheManager cacheManager,
+            IMessageBus messageBus)
         {
             _personRepository = personRepository;
             _animalRepository = animalRepository;
@@ -45,6 +48,7 @@ namespace Stove.Demo.ConsoleApp
             _personDapperRepository = personDapperRepository;
             _animalDapperRepository = animalDapperRepository;
             _cacheManager = cacheManager;
+            _messageBus = messageBus;
             Logger = NullLogger.Instance;
         }
 
@@ -78,12 +82,16 @@ namespace Stove.Demo.ConsoleApp
                 IEnumerable<Person> personFromDapper = _personDapperRepository.GetList(new { Name = "Oğuzhan" });
                 IEnumerable<Person> person2FromDapper = _personDapperRepository.Query("select * from Person with(nolock) where name =@name", new { name = "Oğuzhan" });
 
-
                 Person person2Cache = _cacheManager
-                 .GetCache(DemoCacheName.Demo)
-                 .Get("person", () => _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan"));
+                    .GetCache(DemoCacheName.Demo)
+                    .Get("person", () => _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan"));
 
                 birds = birds.ToList();
+
+                _messageBus.Publish(new PersonMessage
+                {
+                    Name = "Oğuzhan"
+                });
 
                 uow.Complete();
 

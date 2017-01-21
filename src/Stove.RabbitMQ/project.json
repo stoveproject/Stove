@@ -1,0 +1,42 @@
+﻿{
+  "version": "0.0.6-*",
+
+  "dependencies": {
+    "MassTransit": "3.5.4",
+    "MassTransit.Autofac": "3.5.4",
+    "MassTransit.RabbitMQ": "3.5.4",
+    "Stove": "0.0.6"
+  },
+
+  "frameworks": {
+    "net452": {
+
+    }
+  },
+
+  "packOptions": {
+    "summary": "RabbitMQ integration for Stove.",
+    "tags": [
+      ".net",
+      "framework",
+      "boilerplate",
+      "Queue",
+      "RabbitMQ"
+    ],
+    "owners": [ "Oguzhan Soykan" ],
+    "authors": [ "Oguzhan Soykan" ],
+    "iconUrl": "https://raw.githubusercontent.com/osoykan/Stove/master/stove.png",
+    "projectUrl": "https://github.com/osoykan/Stove",
+    "licenseUrl": "https://github.com/osoykan/Stove/blob/master/LICENSE",
+    "requireLicenseAcceptance": false,
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/osoykan/Stove"
+    },
+    "files": {
+      "mappings": {
+        "lib/net452/": "bin/Release/net452/Stove.RabbitMQ.pdb"
+      }
+    }
+  }
+}

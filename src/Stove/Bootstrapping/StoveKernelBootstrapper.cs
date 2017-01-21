@@ -5,7 +5,6 @@ using System.Linq;
 using Autofac.Extras.IocManager;
 
 using Stove.BackgroundJobs;
-using Stove.Dependency;
 using Stove.Domain.Uow;
 using Stove.Events.Bus;
 using Stove.Events.Bus.Factories;
@@ -38,11 +37,7 @@ namespace Stove.Bootstrapping
 
         private void ConfigureBackgroundJobs()
         {
-            Func<IBackgroundJobConfiguration, IBackgroundJobConfiguration> backgroundJobConfigurer;
-            if (Resolver.ResolveIfExists(out backgroundJobConfigurer))
-            {
-                backgroundJobConfigurer(Configuration.BackgroundJobs);
-            }
+            Configuration.GetConfigurerIfExists<IBackgroundJobConfiguration>().Invoke(Configuration.BackgroundJobs);
 
             if (Configuration.BackgroundJobs.IsJobExecutionEnabled)
             {

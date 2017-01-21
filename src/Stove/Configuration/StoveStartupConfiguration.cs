@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Autofac.Extras.IocManager;
 
 using Stove.BackgroundJobs;
+using Stove.Dependency;
 using Stove.Domain.Uow;
 using Stove.Runtime.Caching.Configuration;
 
@@ -17,6 +18,8 @@ namespace Stove.Configuration
 
             TypedConnectionStrings = new Dictionary<Type, string>();
         }
+
+        public Type StarterBootstrapperType { get; set; }
 
         public IModuleConfigurations Modules { get; set; }
 
@@ -37,6 +40,18 @@ namespace Stove.Configuration
             return GetOrCreate(typeof(T).FullName, () => Resolver.Resolve<T>());
         }
 
-        public Type StarterBootstrapperType { get; set; }
+        public Func<T, T> GetConfigurerIfExists<T>()
+        {
+            return GetOrCreate($"{typeof(T)}.Configurer", () =>
+            {
+                Func<T, T> configurer;
+                if (Resolver.ResolveIfExists(out configurer))
+                {
+                    return configurer;
+                }
+
+                return (arg => arg);
+            });
+        }
     }
 }

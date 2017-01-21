@@ -5,22 +5,23 @@ using Stove.Demo.ConsoleApp.DbContexes;
 using Stove.EntityFramework;
 using Stove.Hangfire;
 using Stove.Mapster;
+using Stove.RabbitMQ;
+using Stove.Redis;
 
 namespace Stove.Demo.ConsoleApp
 {
     [DependsOn(
         typeof(StoveEntityFrameworkBootstrapper),
         typeof(StoveHangFireBootstrapper),
-        typeof(StoveMapsterBootstrapper)
+        typeof(StoveMapsterBootstrapper),
+        typeof(StoveRabbitMQBootstrapper),
+        typeof(StoveRedisBootstrapper)
     )]
     public class StoveDemoBootstrapper : StoveBootstrapper
     {
         public override void PreStart()
         {
-            Configuration.Caching.Configure(DemoCacheName.Demo, cache =>
-            {
-                cache.DefaultSlidingExpireTime = TimeSpan.FromMinutes(1);
-            });
+            Configuration.Caching.Configure(DemoCacheName.Demo, cache => { cache.DefaultSlidingExpireTime = TimeSpan.FromMinutes(1); });
         }
 
         public override void Start()

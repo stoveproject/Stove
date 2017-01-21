@@ -15,11 +15,11 @@ namespace Stove.Bootstrapping
 
         public StoveMainBootstrapper(
             IStoveBootstrapperManager stoveBootstrapperManager,
-            Func<IStoveStartupConfiguration, IStoveStartupConfiguration> configuree,
+            Func<IStoveStartupConfiguration, IStoveStartupConfiguration> configurer,
             IStoveStartupConfiguration startupConfiguration)
         {
             _stoveBootstrapperManager = stoveBootstrapperManager;
-            _configurer = configuree;
+            _configurer = configurer;
             _startupConfiguration = startupConfiguration;
         }
 
