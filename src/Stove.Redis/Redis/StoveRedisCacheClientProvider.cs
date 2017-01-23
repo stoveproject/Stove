@@ -8,18 +8,18 @@ using StackExchange.Redis.Extensions.Core;
 namespace Stove.Redis.Redis
 {
     /// <summary>
-    ///     Implements <see cref="IStoveRedisCacheDatabaseProvider" />.
+    ///     Implements <see cref="IStoveRedisCacheClientProvider" />.
     /// </summary>
-    public class StoveRedisCacheDatabaseProvider : IStoveRedisCacheDatabaseProvider, ISingletonDependency
+    public class StoveRedisCacheClientProvider : IStoveRedisCacheClientProvider, ISingletonDependency
     {
         private readonly IStoveRedisCacheConfiguration _configuration;
         private readonly Lazy<ConnectionMultiplexer> _connectionMultiplexer;
         private readonly RedisSerializer _redisSerializer;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="StoveRedisCacheDatabaseProvider" /> class.
+        ///     Initializes a new instance of the <see cref="StoveRedisCacheClientProvider" /> class.
         /// </summary>
-        public StoveRedisCacheDatabaseProvider(IStoveRedisCacheConfiguration configuration, RedisSerializer redisSerializer)
+        public StoveRedisCacheClientProvider(IStoveRedisCacheConfiguration configuration, RedisSerializer redisSerializer)
         {
             _configuration = configuration;
             _redisSerializer = redisSerializer;

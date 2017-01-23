@@ -19,9 +19,9 @@ namespace Stove.Redis.Redis
         /// <summary>
         ///     Constructor.
         /// </summary>
-        public StoveRedisCache(string name, IStoveRedisCacheDatabaseProvider redisCacheDatabaseProvider) : base(name)
+        public StoveRedisCache(string name, IStoveRedisCacheClientProvider redisCacheClientProvider) : base(name)
         {
-            _cacheClient = redisCacheDatabaseProvider.GetClient();
+            _cacheClient = redisCacheClientProvider.GetClient();
             _database = _cacheClient.Database;
         }
 
