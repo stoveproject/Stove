@@ -107,6 +107,16 @@ namespace Stove.Dapper.Dapper.Repositories
             return Connection.QueryAsync<TEntity>(query, parameters, ActiveTransaction);
         }
 
+        public override IEnumerable<TAny> Query<TAny>(string query)
+        {
+            return Connection.Query<TAny>(query, transaction: ActiveTransaction);
+        }
+
+        public override Task<IEnumerable<TAny>> QueryAsync<TAny>(string query)
+        {
+            return Connection.QueryAsync<TAny>(query, transaction: ActiveTransaction);
+        }
+
         public override IEnumerable<TEntity> GetSet(object predicate, int firstResult, int maxResults, string sortingProperty, bool ascending = true)
         {
             return Connection.GetSet<TEntity>(
@@ -125,6 +135,16 @@ namespace Stove.Dapper.Dapper.Repositories
              firstResult: firstResult,
              maxResults: maxResults,
              transaction: ActiveTransaction);
+        }
+
+        public override IEnumerable<TAny> Query<TAny>(string query, object parameters)
+        {
+            return Connection.Query<TAny>(query, param: parameters, transaction: ActiveTransaction); ;
+        }
+
+        public override Task<IEnumerable<TAny>> QueryAsync<TAny>(string query, object parameters)
+        {
+            return Connection.QueryAsync<TAny>(query, param: parameters, transaction: ActiveTransaction);
         }
     }
 }

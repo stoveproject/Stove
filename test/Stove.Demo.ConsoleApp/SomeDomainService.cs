@@ -8,6 +8,7 @@ using MassTransit;
 using Stove.BackgroundJobs;
 using Stove.Demo.ConsoleApp.BackgroundJobs;
 using Stove.Demo.ConsoleApp.DbContexes;
+using Stove.Demo.ConsoleApp.Dto;
 using Stove.Demo.ConsoleApp.Entities;
 using Stove.Demo.ConsoleApp.RabbitMQ.Messages;
 using Stove.Domain.Repositories;
@@ -89,6 +90,8 @@ namespace Stove.Demo.ConsoleApp
                     .Get("person", () => _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan"));
 
                 birds = birds.ToList();
+
+                _animalDapperRepository.Query<PersonAnimalDto>("select PersonName,'Zürafa' from Person with(nolock) where name=@name", new { name = "Oğuzhan" });
 
                 _messageBus.Publish<IPersonAddedMessage>(new PersonAddedMessage
                 {
