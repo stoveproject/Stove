@@ -91,7 +91,7 @@ namespace Stove.Demo.ConsoleApp
 
                 birds = birds.ToList();
 
-                _animalDapperRepository.Query<PersonAnimalDto>("select PersonName,'Zürafa' from Person with(nolock) where name=@name", new { name = "Oğuzhan" });
+                IEnumerable<PersonAnimalDto> personAnimal = _animalDapperRepository.Query<PersonAnimalDto>("select Name as PersonName,'Zürafa' as AnimalName from Person with(nolock) where name=@name", new { name = "Oğuzhan" });
 
                 _messageBus.Publish<IPersonAddedMessage>(new PersonAddedMessage
                 {
