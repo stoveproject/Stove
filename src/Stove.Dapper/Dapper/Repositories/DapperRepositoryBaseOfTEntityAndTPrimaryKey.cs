@@ -42,7 +42,7 @@ namespace Stove.Dapper.Dapper.Repositories
 
         public override TEntity Get(TPrimaryKey id)
         {
-            return Connection.Get<TEntity>(id, ActiveTransaction);
+            return Connection.Get<TEntity>(id: id, transaction: ActiveTransaction);
         }
 
         public override IEnumerable<TEntity> GetList()
@@ -52,7 +52,7 @@ namespace Stove.Dapper.Dapper.Repositories
 
         public override IEnumerable<TEntity> GetList(object predicate)
         {
-            return Connection.GetList<TEntity>(predicate, transaction: ActiveTransaction);
+            return Connection.GetList<TEntity>(predicate: predicate, transaction: ActiveTransaction);
         }
 
         public override IEnumerable<TEntity> GetListPaged(
@@ -66,7 +66,7 @@ namespace Stove.Dapper.Dapper.Repositories
         {
             return Connection.GetPage<TEntity>(
                 predicate: predicate,
-                sort: new List<ISort>() { new Sort() { Ascending = ascending, PropertyName = sortingProperty } },
+                sort: new List<ISort> { new Sort { Ascending = ascending, PropertyName = sortingProperty } },
                 page: pageNumber,
                 resultsPerPage: itemsPerPage,
                 transaction: ActiveTransaction);
@@ -74,7 +74,7 @@ namespace Stove.Dapper.Dapper.Repositories
 
         public override Task<TEntity> GetAsync(TPrimaryKey id)
         {
-            return Connection.GetAsync<TEntity>(id, ActiveTransaction);
+            return Connection.GetAsync<TEntity>(id: id, transaction: ActiveTransaction);
         }
 
         public override Task<IEnumerable<TEntity>> GetListAsync()
@@ -84,67 +84,67 @@ namespace Stove.Dapper.Dapper.Repositories
 
         public override Task<IEnumerable<TEntity>> GetListAsync(object predicate)
         {
-            return Connection.GetListAsync<TEntity>(predicate, transaction: ActiveTransaction);
+            return Connection.GetListAsync<TEntity>(predicate: predicate, transaction: ActiveTransaction);
         }
 
         public override int Count(object predicate)
         {
-            return Connection.Count<TEntity>(predicate, ActiveTransaction);
+            return Connection.Count<TEntity>(predicate: predicate, transaction: ActiveTransaction);
         }
 
         public override Task<int> CountAsync(object predicate)
         {
-            return Connection.CountAsync<TEntity>(predicate, ActiveTransaction);
+            return Connection.CountAsync<TEntity>(predicate: predicate, transaction: ActiveTransaction);
         }
 
         public override IEnumerable<TEntity> Query(string query, object parameters)
         {
-            return Connection.Query<TEntity>(query, parameters, ActiveTransaction);
+            return Connection.Query<TEntity>(sql: query, param: parameters, transaction: ActiveTransaction);
         }
 
         public override Task<IEnumerable<TEntity>> QueryAsync(string query, object parameters)
         {
-            return Connection.QueryAsync<TEntity>(query, parameters, ActiveTransaction);
+            return Connection.QueryAsync<TEntity>(sql: query, param: parameters, transaction: ActiveTransaction);
         }
 
         public override IEnumerable<TAny> Query<TAny>(string query)
         {
-            return Connection.Query<TAny>(query, transaction: ActiveTransaction);
+            return Connection.Query<TAny>(sql: query, transaction: ActiveTransaction);
         }
 
         public override Task<IEnumerable<TAny>> QueryAsync<TAny>(string query)
         {
-            return Connection.QueryAsync<TAny>(query, transaction: ActiveTransaction);
+            return Connection.QueryAsync<TAny>(sql: query, transaction: ActiveTransaction);
+        }
+
+        public override IEnumerable<TAny> Query<TAny>(string query, object parameters)
+        {
+            return Connection.Query<TAny>(sql: query, param: parameters, transaction: ActiveTransaction);
+        }
+
+        public override Task<IEnumerable<TAny>> QueryAsync<TAny>(string query, object parameters)
+        {
+            return Connection.QueryAsync<TAny>(sql: query, param: parameters, transaction: ActiveTransaction);
         }
 
         public override IEnumerable<TEntity> GetSet(object predicate, int firstResult, int maxResults, string sortingProperty, bool ascending = true)
         {
             return Connection.GetSet<TEntity>(
-            predicate: predicate,
-            sort: new List<ISort>() { new Sort() { Ascending = ascending, PropertyName = sortingProperty } },
-            firstResult: firstResult,
-            maxResults: maxResults,
-            transaction: ActiveTransaction);
+                predicate: predicate,
+                sort: new List<ISort> { new Sort { Ascending = ascending, PropertyName = sortingProperty } },
+                firstResult: firstResult,
+                maxResults: maxResults,
+                transaction: ActiveTransaction);
         }
 
         public override Task<IEnumerable<TEntity>> GetSetAsync(object predicate, int firstResult, int maxResults, string sortingProperty, bool ascending = true)
         {
             return Connection.GetSetAsync<TEntity>(
-             predicate: predicate,
-             sort: new List<ISort>() { new Sort() { Ascending = ascending, PropertyName = sortingProperty } },
-             firstResult: firstResult,
-             maxResults: maxResults,
-             transaction: ActiveTransaction);
-        }
-
-        public override IEnumerable<TAny> Query<TAny>(string query, object parameters)
-        {
-            return Connection.Query<TAny>(query, param: parameters, transaction: ActiveTransaction); ;
-        }
-
-        public override Task<IEnumerable<TAny>> QueryAsync<TAny>(string query, object parameters)
-        {
-            return Connection.QueryAsync<TAny>(query, param: parameters, transaction: ActiveTransaction);
+                predicate: predicate,
+                sort: new List<ISort> { new Sort { Ascending = ascending, PropertyName = sortingProperty } },
+                firstResult: firstResult,
+                maxResults: maxResults,
+                transaction: ActiveTransaction);
         }
     }
 }
