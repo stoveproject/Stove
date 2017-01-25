@@ -7,7 +7,7 @@
     "xunit": "2.2.0-beta4-build3444",
     "NSubstitute": "1.10.0",
     "Shouldly": "2.8.2",
-    "Stove": "0.0.7"
+    "Stove": "0.0.8"
   },
 
   "frameworks": {

@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Stove.Tests.SampleApplication
 {
-    public class AutoMapping_Tests : SampleApplicationTestBase<SampleApplicationBootstrapper>
+    public class AutoMapping_Tests : SampleApplicationTestBase
     {
         [Fact]
         public void auto_object_mapping_should_work()

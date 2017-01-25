@@ -2,7 +2,7 @@
 
 using Stove.Runtime.Session;
 
-namespace Stove.Tests.SampleApplication
+namespace Stove.TestBase
 {
     public class TestStoveSession : IStoveSession, ISingletonDependency
     {

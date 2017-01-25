@@ -8,7 +8,6 @@ using Effort;
 
 using EntityFramework.DynamicFilters;
 
-using Stove.Bootstrapping;
 using Stove.EntityFramework;
 using Stove.Mapster;
 using Stove.Runtime.Session;
@@ -19,29 +18,28 @@ using Stove.Timing;
 
 namespace Stove.Tests.SampleApplication
 {
-    public abstract class SampleApplicationTestBase<TStarterBootstrapper> : TestBaseWithLocalIocResolver
-        where TStarterBootstrapper : StoveBootstrapper
+    public class SampleApplicationTestBase : ApplicationTestBase<SampleApplicationBootstrapper>
     {
-        protected SampleApplicationTestBase()
+        public SampleApplicationTestBase()
         {
             Building(builder =>
             {
                 builder
-                    .UseStove<TStarterBootstrapper>()
                     .UseStoveEntityFramework()
                     .UseStoveDefaultEventBus()
                     .UseStoveDefaultConnectionStringResolver()
                     .UseStoveDbContextEfTransactionStrategy()
-                    .UseStoveMapster()
-                    .UseStoveNullLogger();
+                    .UseStoveMapster();
 
                 builder.RegisterServices(r => r.Register(context => DbConnectionFactory.CreateTransient(), Lifetime.Singleton));
                 builder.RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
-                builder.RegisterServices(r => r.Register<IStoveSession, TestStoveSession>());
             });
         }
 
-        protected TestStoveSession TestStoveSession => LocalResolver.Resolve<TestStoveSession>();
+        protected override void PostBuild()
+        {
+            CreateInitialData();
+        }
 
         protected virtual void CreateInitialData()
         {
