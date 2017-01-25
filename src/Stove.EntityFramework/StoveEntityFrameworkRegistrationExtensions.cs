@@ -8,7 +8,7 @@ using Autofac.Extras.IocManager;
 using Stove.Domain.Uow;
 using Stove.EntityFramework.EntityFramework;
 using Stove.EntityFramework.EntityFramework.Uow;
-using Stove.JetBrains.Annotations;
+using JetBrains.Annotations;
 using Stove.Reflection.Extensions;
 
 namespace Stove.EntityFramework

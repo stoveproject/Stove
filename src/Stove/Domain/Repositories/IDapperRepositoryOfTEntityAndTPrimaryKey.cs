@@ -10,7 +10,7 @@ namespace Stove.Domain.Repositories
     /// </summary>
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
     /// <typeparam name="TPrimaryKey">The type of the primary key.</typeparam>
-    /// <seealso cref="IDapperRepository" />
+    /// <seealso cref="IDapperRepository{TEntity,TPrimaryKey}" />
     public interface IDapperRepository<TEntity, TPrimaryKey> : IRepository where TEntity : class, IEntity<TPrimaryKey>
     {
         /// <summary>
@@ -100,6 +100,38 @@ namespace Stove.Domain.Repositories
         /// <param name="parameters">The parameters.</param>
         /// <returns></returns>
         IEnumerable<TEntity> Query(string query, object parameters);
+
+        /// <summary>
+        ///     Queries the specified query.
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns></returns>
+        IEnumerable<TAny> Query<TAny>(string query, object parameters) where TAny : class;
+
+        /// <summary>
+        ///     Queries the specified query.
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns></returns>
+        Task<IEnumerable<TAny>> QueryAsync<TAny>(string query, object parameters) where TAny : class;
+
+        /// <summary>
+        /// Queries the specified query.
+        /// </summary>
+        /// <typeparam name="TAny">The type of any.</typeparam>
+        /// <param name="query">The query.</param>
+        /// <returns></returns>
+        IEnumerable<TAny> Query<TAny>(string query) where TAny : class;
+
+        /// <summary>
+        /// Queries the specified query.
+        /// </summary>
+        /// <typeparam name="TAny">The type of any.</typeparam>
+        /// <param name="query">The query.</param>
+        /// <returns></returns>
+        Task<IEnumerable<TAny>> QueryAsync<TAny>(string query) where TAny : class;
 
         /// <summary>
         ///     Queries the asynchronous.

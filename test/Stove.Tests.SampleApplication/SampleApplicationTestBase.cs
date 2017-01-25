@@ -27,7 +27,7 @@ namespace Stove.Tests.SampleApplication
             Building(builder =>
             {
                 builder
-                    .UseStove(typeof(TStarterBootstrapper))
+                    .UseStove<TStarterBootstrapper>()
                     .UseStoveEntityFramework()
                     .UseStoveDefaultEventBus()
                     .UseStoveDefaultConnectionStringResolver()

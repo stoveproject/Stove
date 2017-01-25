@@ -4,7 +4,7 @@ using System.Security.Claims;
 using System.Security.Principal;
 
 using Stove.Extensions;
-using Stove.JetBrains.Annotations;
+using JetBrains.Annotations;
 
 namespace Stove.Runtime.Security
 {

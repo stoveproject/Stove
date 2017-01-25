@@ -4,7 +4,6 @@ using StackExchange.Redis;
 using StackExchange.Redis.Extensions.Core.Configuration;
 
 using Stove.Bootstrapping;
-using Stove.Dependency;
 using Stove.Redis.Redis;
 
 namespace Stove.Redis
@@ -16,10 +15,9 @@ namespace Stove.Redis
     {
         public override void PreStart()
         {
-            Func<IStoveRedisCacheConfiguration, IStoveRedisCacheConfiguration> redisConfigurer;
-            if (Resolver.ResolveIfExists(out redisConfigurer))
+            if (Resolver.IsRegistered(typeof(Func<IStoveRedisCacheConfiguration, IStoveRedisCacheConfiguration>)))
             {
-                Configuration.Caching.UseRedis(options => redisConfigurer(options));
+                Configuration.GetConfigurerIfExists<IStoveRedisCacheConfiguration>().Invoke(Configuration.Modules.StoveRedis());
             }
             else
             {
@@ -33,8 +31,9 @@ namespace Stove.Redis
 
             if (redisConfiguration.Configuration == null)
             {
-                throw new StoveException("There is no Redis connection string section in app.config or web.config file and define section and configurations. If it is please" +
-                                         " make sure of your config file is setted as CopyAlways from it's properties.");
+                throw new StoveException("There is no Redis connection string section in app.config or web.config file, " +
+                                         "please define redisCacheClient section and configurations. " +
+                                         "If it is, please make sure of your config file is setted as CopyAlways from it's properties.");
             }
 
             redisConfiguration.ConfigurationOptions = new ConfigurationOptions

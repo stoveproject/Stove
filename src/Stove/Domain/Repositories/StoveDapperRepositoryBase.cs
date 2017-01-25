@@ -42,6 +42,20 @@ namespace Stove.Domain.Repositories
             return Task.FromResult(Query(query, parameters));
         }
 
+        public abstract IEnumerable<TAny> Query<TAny>(string query, object parameters) where TAny : class;
+
+        public virtual Task<IEnumerable<TAny>> QueryAsync<TAny>(string query, object parameters) where TAny : class
+        {
+            return Task.FromResult(Query<TAny>(query, parameters));
+        }
+
+        public abstract IEnumerable<TAny> Query<TAny>(string query) where TAny : class;
+
+        public virtual Task<IEnumerable<TAny>> QueryAsync<TAny>(string query) where TAny : class
+        {
+            return Task.FromResult(Query<TAny>(query));
+        }
+
         public abstract IEnumerable<TEntity> GetSet(object predicate, int firstResult, int maxResults, string sortingProperty, bool ascending = true);
 
         public virtual Task<IEnumerable<TEntity>> GetSetAsync(object predicate, int firstResult, int maxResults, string sortingProperty, bool ascending = true)

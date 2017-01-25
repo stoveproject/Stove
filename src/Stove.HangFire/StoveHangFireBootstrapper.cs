@@ -1,6 +1,4 @@
-﻿using System;
-
-using Autofac;
+﻿using Autofac;
 
 using Stove.Bootstrapping;
 using Stove.Hangfire.Configurations;
@@ -15,14 +13,10 @@ namespace Stove.Hangfire
     public class StoveHangFireBootstrapper : StoveBootstrapper
     {
         private readonly IBackgroundWorkerManager _backgroundWorkerManager;
-        private readonly Func<IStoveHangfireConfiguration, IStoveHangfireConfiguration> _hangFireConfigurer;
 
-        public StoveHangFireBootstrapper(
-            IBackgroundWorkerManager backgroundWorkerManager,
-            Func<IStoveHangfireConfiguration, IStoveHangfireConfiguration> hangFireConfigurer)
+        public StoveHangFireBootstrapper(IBackgroundWorkerManager backgroundWorkerManager)
         {
             _backgroundWorkerManager = backgroundWorkerManager;
-            _hangFireConfigurer = hangFireConfigurer;
         }
 
         public override void Start()
@@ -30,7 +24,7 @@ namespace Stove.Hangfire
             Configuration.Modules.StoveHangfire().Configure(configuration =>
             {
                 configuration.GlobalConfiguration.UseAutofacActivator(Resolver.Resolve<ILifetimeScope>());
-                _hangFireConfigurer(configuration);
+                Configuration.GetConfigurerIfExists<IStoveHangfireConfiguration>().Invoke(configuration);
             });
 
             _backgroundWorkerManager.Add(Configuration.Resolver.Resolve<HangfireBackgroundJobManager>());

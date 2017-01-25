@@ -12,9 +12,9 @@ using Stove.Dapper;
 using Stove.Demo.ConsoleApp.DbContexes;
 using Stove.EntityFramework;
 using Stove.Hangfire;
-using Stove.Hangfire.Hangfire;
 using Stove.Mapster;
 using Stove.NLog;
+using Stove.RabbitMQ;
 using Stove.Redis;
 
 namespace Stove.Demo.ConsoleApp
@@ -30,7 +30,7 @@ namespace Stove.Demo.ConsoleApp
 
             IRootResolver resolver = IocBuilder.New
                                                .UseAutofacContainerBuilder()
-                                               .UseStove(starterBootstrapperType: typeof(StoveDemoBootstrapper), autoUnitOfWorkInterceptionEnabled: true)
+                                               .UseStove<StoveDemoBootstrapper>(autoUnitOfWorkInterceptionEnabled: true)
                                                .UseStoveEntityFramework()
                                                .UseStoveDapper()
                                                .UseStoveMapster()
@@ -40,6 +40,14 @@ namespace Stove.Demo.ConsoleApp
                                                .UseStoveNLog()
                                                .UseStoveBackgroundJobs()
                                                .UseStoveRedisCaching()
+                                               .UseStoveRabbitMQ(configuration =>
+                                               {
+                                                   configuration.HostAddress = "rabbitmq://localhost/";
+                                                   configuration.Username = "admin";
+                                                   configuration.Password = "admin";
+                                                   configuration.QueueName = "Default";
+                                                   return configuration;
+                                               })
                                                .UseStoveHangfire(configuration =>
                                                {
                                                    configuration.GlobalConfiguration

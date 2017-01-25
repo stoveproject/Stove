@@ -1,10 +1,10 @@
 {
-  "version" : "0.0.6-*",
+  "version" : "0.0.7-*",
 
   "dependencies": {
     "Autofac": "4.3.0",
     "NLog": "4.4.1",
-    "Stove": "0.0.6"
+    "Stove": "0.0.7"
   },
 
   "frameworks" : {

@@ -7,7 +7,7 @@ using Stove.Bootstrapping;
 using Stove.Mapster.Mapster;
 using Stove.Reflection;
 
-namespace Stove.Mapster.Bootstrappers
+namespace Stove.Mapster
 {
     [DependsOn(
         typeof(StoveKernelBootstrapper)

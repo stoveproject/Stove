@@ -13,6 +13,7 @@ using Stove.Events.Bus;
 using Stove.Events.Bus.Entities;
 using Stove.Linq;
 using Stove.Log;
+using Stove.MQ;
 using Stove.ObjectMapping;
 using Stove.Reflection;
 using Stove.Runtime.Caching.Configuration;
@@ -22,6 +23,12 @@ namespace Stove
 {
     public static class StoveCoreRegistrationExtensions
     {
+        public static IIocBuilder UseStove<TStarterBootstrapper>(this IIocBuilder builder, bool autoUnitOfWorkInterceptionEnabled = false)
+            where TStarterBootstrapper : StoveBootstrapper
+        {
+            return UseStove(builder, typeof(TStarterBootstrapper), autoUnitOfWorkInterceptionEnabled);
+        }
+
         public static IIocBuilder UseStove(this IIocBuilder builder, Type starterBootstrapperType, bool autoUnitOfWorkInterceptionEnabled = false)
         {
             if (autoUnitOfWorkInterceptionEnabled)
@@ -95,6 +102,11 @@ namespace Stove
             return builder;
         }
 
+        public static IIocBuilder UseStoveNullMessageBus(this IIocBuilder builder)
+        {
+            return builder.RegisterServices(r => r.Register<IMessageBus>(ctx => NullMessageBus.Instance));
+        }
+
         public static IIocBuilder UseStoveMemoryCaching(this IIocBuilder builder)
         {
             return builder.RegisterServices(r => r.RegisterType<StoveMemoryCache>(keepDefault: true));
@@ -128,7 +140,8 @@ namespace Stove
                           .UseStoveNullUnitOfWork()
                           .UseStoveNullUnitOfWorkFilterExecuter()
                           .UseStoveNullEntityChangedEventHelper()
-                          .UseStoveNullAsyncQueryableExecuter();
+                          .UseStoveNullAsyncQueryableExecuter()
+                          .UseStoveNullMessageBus();
         }
 
         public static IIocBuilder UseStoveNullLogger(this IIocBuilder builder)

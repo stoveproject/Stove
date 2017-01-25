@@ -1,29 +1,27 @@
-{
+﻿{
   "version": "0.0.7-*",
 
   "dependencies": {
-    "Autofac": "4.3.0",
-    "Dapper": "1.50.2",
-    "DapperExtensions": "1.5.0",
-    "EntityFramework": "6.1.3",
-    "Stove": "0.0.7",
-    "Stove.EntityFramework": "0.0.7-*"
+    "MassTransit": "3.5.4",
+    "MassTransit.Autofac": "3.5.4",
+    "MassTransit.RabbitMQ": "3.5.4",
+    "Stove": "0.0.7"
   },
 
   "frameworks": {
     "net452": {
+
     }
   },
 
-
   "packOptions": {
-    "summary": "Dapper integration for Stove, depended on Stove.EntityFramework.",
+    "summary": "RabbitMQ integration for Stove.",
     "tags": [
       ".net",
       "framework",
       "boilerplate",
-      "entityframework",
-      "Dapper"
+      "Queue",
+      "RabbitMQ"
     ],
     "owners": [ "Oguzhan Soykan" ],
     "authors": [ "Oguzhan Soykan" ],
@@ -37,7 +35,7 @@
     },
     "files": {
       "mappings": {
-        "lib/net452/": "bin/Release/net452/Stove.Dapper.pdb"
+        "lib/net452/": "bin/Release/net452/Stove.RabbitMQ.pdb"
       }
     }
   }

@@ -6,7 +6,7 @@ namespace Stove.Redis.Redis
     /// <summary>
     ///     Used to get <see cref="IDatabase" /> for Redis cache.
     /// </summary>
-    public interface IStoveRedisCacheDatabaseProvider
+    public interface IStoveRedisCacheClientProvider
     {
         /// <summary>
         ///     Gets the client.

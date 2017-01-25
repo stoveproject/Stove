@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-using Stove.JetBrains.Annotations;
+using JetBrains.Annotations;
 
 namespace Stove.Collections.Extensions
 {
