@@ -22,7 +22,17 @@ namespace Stove.TestBase
 
         public void Ok(bool ignoreStartableComponents = false)
         {
+            PreBuild();
             LocalResolver = IocBuilder.CreateResolver(ignoreStartableComponents);
+            PostBuild();
+        }
+
+        protected virtual void PreBuild()
+        {
+        }
+
+        protected virtual void PostBuild()
+        {
         }
 
         public void Dispose()

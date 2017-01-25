@@ -8,13 +8,11 @@ using Xunit;
 
 namespace Stove.Tests.SampleApplication
 {
-    public class BasicRepository_Tests : SampleApplicationTestBase<SampleApplicationBootstrapper>
+    public class BasicRepository_Tests : SampleApplicationTestBase
     {
         public BasicRepository_Tests()
         {
             Building(builder => { }).Ok();
-
-            CreateInitialData();
         }
 
         [Fact]

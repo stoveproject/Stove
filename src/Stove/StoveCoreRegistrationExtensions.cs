@@ -66,52 +66,6 @@ namespace Stove
             return builder;
         }
 
-        public static IIocBuilder UseStoveNullEventBus(this IIocBuilder builder)
-        {
-            builder.RegisterServices(r => r.Register<IEventBus>(context => NullEventBus.Instance));
-            return builder;
-        }
-
-        public static IIocBuilder UseStoveNullObjectMapper(this IIocBuilder builder)
-        {
-            builder.RegisterServices(r => r.Register<IObjectMapper>(context => NullObjectMapper.Instance));
-            return builder;
-        }
-
-        public static IIocBuilder UseStoveNullUnitOfWork(this IIocBuilder builder)
-        {
-            builder.RegisterServices(r => r.Register<IUnitOfWork, NullUnitOfWork>());
-            return builder;
-        }
-
-        public static IIocBuilder UseStoveNullUnitOfWorkFilterExecuter(this IIocBuilder builder)
-        {
-            builder.RegisterServices(r => r.Register<IUnitOfWorkFilterExecuter, NullUnitOfWorkFilterExecuter>());
-            return builder;
-        }
-
-        public static IIocBuilder UseStoveNullEntityChangedEventHelper(this IIocBuilder builder)
-        {
-            builder.RegisterServices(r => r.Register<IEntityChangeEventHelper, NullEntityChangeEventHelper>());
-            return builder;
-        }
-
-        public static IIocBuilder UseStoveNullAsyncQueryableExecuter(this IIocBuilder builder)
-        {
-            builder.RegisterServices(r => r.Register<IAsyncQueryableExecuter, NullAsyncQueryableExecuter>());
-            return builder;
-        }
-
-        public static IIocBuilder UseStoveNullMessageBus(this IIocBuilder builder)
-        {
-            return builder.RegisterServices(r => r.Register<IMessageBus>(ctx => NullMessageBus.Instance));
-        }
-
-        public static IIocBuilder UseStoveMemoryCaching(this IIocBuilder builder)
-        {
-            return builder.RegisterServices(r => r.RegisterType<StoveMemoryCache>(keepDefault: true));
-        }
-
         public static IIocBuilder UseStoveBackgroundJobs(this IIocBuilder builder)
         {
             Func<IBackgroundJobConfiguration, IBackgroundJobConfiguration> configurer = configuration =>
@@ -122,6 +76,57 @@ namespace Stove
 
             builder.RegisterServices(r => r.Register(ctx => configurer));
             return builder;
+        }
+
+        public static IIocBuilder UseStoveNullEventBus(this IIocBuilder builder)
+        {
+            builder.RegisterServices(r => r.Register<IEventBus>(context => NullEventBus.Instance, keepDefault: true));
+            return builder;
+        }
+
+        public static IIocBuilder UseStoveNullObjectMapper(this IIocBuilder builder)
+        {
+            builder.RegisterServices(r => r.Register<IObjectMapper>(context => NullObjectMapper.Instance, keepDefault: true));
+            return builder;
+        }
+
+        public static IIocBuilder UseStoveNullUnitOfWork(this IIocBuilder builder)
+        {
+            builder.RegisterServices(r => r.Register<IUnitOfWork, NullUnitOfWork>(keepDefault: true));
+            return builder;
+        }
+
+        public static IIocBuilder UseStoveNullUnitOfWorkFilterExecuter(this IIocBuilder builder)
+        {
+            builder.RegisterServices(r => r.Register<IUnitOfWorkFilterExecuter, NullUnitOfWorkFilterExecuter>(keepDefault: true));
+            return builder;
+        }
+
+        public static IIocBuilder UseStoveNullEntityChangedEventHelper(this IIocBuilder builder)
+        {
+            builder.RegisterServices(r => r.Register<IEntityChangeEventHelper, NullEntityChangeEventHelper>(keepDefault: true));
+            return builder;
+        }
+
+        public static IIocBuilder UseStoveNullAsyncQueryableExecuter(this IIocBuilder builder)
+        {
+            builder.RegisterServices(r => r.Register<IAsyncQueryableExecuter, NullAsyncQueryableExecuter>(keepDefault: true));
+            return builder;
+        }
+
+        public static IIocBuilder UseStoveNullMessageBus(this IIocBuilder builder)
+        {
+            return builder.RegisterServices(r => r.Register<IMessageBus>(ctx => NullMessageBus.Instance, keepDefault: true));
+        }
+
+        public static IIocBuilder UseStoveNullLogger(this IIocBuilder builder)
+        {
+            return builder.RegisterServices(r => r.Register<ILogger, NullLogger>(keepDefault: true));
+        }
+
+        public static IIocBuilder UseStoveMemoryCaching(this IIocBuilder builder)
+        {
+            return builder.RegisterServices(r => r.RegisterType<StoveMemoryCache>(keepDefault: true));
         }
 
         /// <summary>
@@ -142,11 +147,6 @@ namespace Stove
                           .UseStoveNullEntityChangedEventHelper()
                           .UseStoveNullAsyncQueryableExecuter()
                           .UseStoveNullMessageBus();
-        }
-
-        public static IIocBuilder UseStoveNullLogger(this IIocBuilder builder)
-        {
-            return builder.RegisterServices(r => r.Register<ILogger, NullLogger>());
         }
 
         private static void RegistryOnRegistered(object sender, ComponentRegisteredEventArgs args)
