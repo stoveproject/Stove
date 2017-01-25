@@ -9,7 +9,7 @@
     "System.Collections": "4.3.0",
     "System.Collections.Immutable": "1.3.1",
     "Autofac": "4.3.0",
-    "Autofac.Extras.IocManager": "2.0.5"
+    "Autofac.Extras.IocManager": "2.0.6"
   },
 
   "frameworks" : {

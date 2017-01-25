@@ -12,7 +12,7 @@
     "Newtonsoft.Json": "9.0.1",
     "Owin": "1.0",
     "Autofac": "4.3.0",
-    "Autofac.Extras.IocManager": "2.0.5"
+    "Autofac.Extras.IocManager": "2.0.6"
   },
 
   "frameworks": {
