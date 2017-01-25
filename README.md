@@ -1,4 +1,11 @@
-# Stove [![Build status](https://ci.appveyor.com/api/projects/status/wv4049ey7666vrq4?svg=true)](https://ci.appveyor.com/project/osoykan/stove-jo52k)
+
+
+#   Stove [![Build status](https://ci.appveyor.com/api/projects/status/wv4049ey7666vrq4?svg=true)](https://ci.appveyor.com/project/osoykan/stove-jo52k) <img src="https://raw.githubusercontent.com/osoykan/Stove/master/stove.png" alt="alt text" width="100" height="100">  
+
+
+ 
+ 
+
 
 |Package|Status|
 |:------|:-----:|
@@ -9,6 +16,7 @@
 |Stove.Mapster|[![NuGet version](https://badge.fury.io/nu/Stove.Mapster.svg)](https://badge.fury.io/nu/Stove.Mapster)|
 |Stove.Redis|[![NuGet version](https://badge.fury.io/nu/Stove.Redis.svg)](https://badge.fury.io/nu/Stove.Redis)|
 |Stove.Dapper|[![NuGet version](https://badge.fury.io/nu/Stove.Dapper.svg)](https://badge.fury.io/nu/Stove.Dapper)|
+|Stove.RabbitMQ|[![NuGet version](https://badge.fury.io/nu/Stove.RabbitMQ.svg)](https://badge.fury.io/nu/Stove.RabbitMQ)|
 
 * Autofac for Ioc
 * AmbientContext Unit Of Work pattern
@@ -16,3 +24,30 @@
 * EventBus for DDD use cases
 * EntityFramework
 * Generic Repository Pattern, DbContext, Multiple DbContext control in one unit of work, TransactionScope support
+
+
+## Composition Root
+```csharp
+IRootResolver resolver = IocBuilder.New
+                                   .UseAutofacContainerBuilder()
+                                   .UseStove(starterBootstrapperType: typeof(StoveDemoBootstrapper), autoUnitOfWorkInterceptionEnabled: true)
+                                   .UseStoveEntityFramework()
+                                   .UseStoveDapper()
+                                   .UseStoveMapster()
+                                   .UseStoveDefaultEventBus()
+                                   .UseStoveDbContextEfTransactionStrategy()
+                                   .UseStoveTypedConnectionStringResolver()
+                                   .UseStoveNLog()
+                                   .UseStoveBackgroundJobs()
+                                   .UseStoveRedisCaching()
+                                   .UseStoveHangfire(configuration =>
+                                   {
+                                       configuration.GlobalConfiguration
+                                                    .UseSqlServerStorage("Default")
+                                                    .UseNLogLogProvider();
+                                       return configuration;
+                                   })
+                                   .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()))
+                                   .CreateResolver();
+
+```
