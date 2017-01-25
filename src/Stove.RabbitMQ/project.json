@@ -1,11 +1,11 @@
 ﻿{
-  "version": "0.0.7-*",
+  "version": "0.0.8-*",
 
   "dependencies": {
     "MassTransit": "3.5.4",
     "MassTransit.Autofac": "3.5.4",
     "MassTransit.RabbitMQ": "3.5.4",
-    "Stove": "0.0.7"
+    "Stove": "0.0.8"
   },
 
   "frameworks": {

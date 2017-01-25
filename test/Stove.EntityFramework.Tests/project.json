@@ -4,7 +4,7 @@
   "testRunner": "xunit",
   "dependencies": {
     "Autofac": "4.3.0",
-    "Stove.EntityFramework": "0.0.7-*",
+    "Stove.EntityFramework": "0.0.8-*",
     "Stove.TestBase": "0.0.1-*"
   },
 
