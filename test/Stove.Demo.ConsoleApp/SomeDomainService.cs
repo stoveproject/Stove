@@ -15,6 +15,7 @@ using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
 using Stove.EntityFramework.EntityFramework;
 using Stove.Log;
+using Stove.Mapster.Mapster;
 using Stove.MQ;
 using Stove.Runtime.Caching;
 
@@ -91,7 +92,8 @@ namespace Stove.Demo.ConsoleApp
 
                 birds = birds.ToList();
 
-                IEnumerable<PersonAnimalDto> personAnimal = _animalDapperRepository.Query<PersonAnimalDto>("select Name as PersonName,'Zürafa' as AnimalName from Person with(nolock) where name=@name", new { name = "Oğuzhan" });
+                var personAnimal = _animalDapperRepository.Query<PersonAnimal>("select Name as PersonName,'Zürafa' as AnimalName from Person with(nolock) where name=@name", new { name = "Oğuzhan" })
+                                                          .MapTo<List<PersonAnimalDto>>();
 
                 _messageBus.Publish<IPersonAddedMessage>(new PersonAddedMessage
                 {

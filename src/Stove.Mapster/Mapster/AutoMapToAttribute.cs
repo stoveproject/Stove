@@ -7,6 +7,10 @@ using Stove.Collections.Extensions;
 
 namespace Stove.Mapster.Mapster
 {
+    /// <summary>
+    ///     From Dto to Entity, Use on Dtos
+    /// </summary>
+    /// <seealso cref="Stove.Mapster.Mapster.AutoMapAttributeBase" />
     public class AutoMapToAttribute : AutoMapAttributeBase
     {
         public AutoMapToAttribute(params Type[] targetTypes)
