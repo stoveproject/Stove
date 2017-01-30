@@ -10,6 +10,7 @@ using DapperExtensions;
 
 using Stove.Domain.Entities;
 using Stove.Domain.Repositories;
+using Stove.Domain.Uow;
 using Stove.EntityFramework.EntityFramework;
 
 namespace Stove.Dapper.Dapper.Repositories
@@ -35,6 +36,13 @@ namespace Stove.Dapper.Dapper.Repositories
             get { return Context.Database.Connection; }
         }
 
+        /// <summary>
+        ///     Gets the active transaction. If Dapper is active then <see cref="IUnitOfWork" /> should be started before
+        ///     and there must be an active transaction.
+        /// </summary>
+        /// <value>
+        ///     The active transaction.
+        /// </value>
         public virtual IDbTransaction ActiveTransaction
         {
             get { return Context.Database.CurrentTransaction.UnderlyingTransaction; }
