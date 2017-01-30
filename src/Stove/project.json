@@ -7,7 +7,7 @@
     "Castle.Core": "4.0.0",
     "FluentAssemblyScanner": "1.0.5",
     "Newtonsoft.Json": "9.0.1",
-    "Nito.AsyncEx": "3.0.1",
+    "Nito.AsyncEx": "4.0.1",
     "System.Collections.Immutable": "1.3.1"
   },
 
