@@ -1,11 +1,13 @@
-﻿namespace Stove.Runtime.Session
+﻿using Stove.Runtime.Remoting;
+
+namespace Stove.Runtime.Session
 {
     /// <summary>
     ///     Implements null object pattern for <see cref="IStoveSession" />.
     /// </summary>
-    public class NullStoveSession : IStoveSession
+    public class NullStoveSession : StoveSessionBase
     {
-        private NullStoveSession()
+        private NullStoveSession() : base(new DataContextAmbientScopeProvider<SessionOverride>(new CallContextAmbientDataContext()))
         {
         }
 
@@ -15,8 +17,8 @@
         public static NullStoveSession Instance { get; } = new NullStoveSession();
 
         /// <inheritdoc />
-        public long? UserId => null;
+        public override long? UserId => null;
 
-        public long? ImpersonatorUserId => null;
+        public override long? ImpersonatorUserId => null;
     }
 }

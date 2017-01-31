@@ -13,19 +13,27 @@ namespace Stove.Runtime.Session
     ///     Implements <see cref="IStoveSession" /> to get session properties from claims of
     ///     <see cref="Thread.CurrentPrincipal" />.
     /// </summary>
-    public class ClaimsStoveSession : IStoveSession, ISingletonDependency
+    public class ClaimsStoveSession : StoveSessionBase, ISingletonDependency
     {
-        public ClaimsStoveSession()
+        public ClaimsStoveSession(
+            IAmbientScopeProvider<SessionOverride> sessionOverrideScopeProvider,
+            IPrincipalAccessor principalAccessor)
+            : base(sessionOverrideScopeProvider)
         {
-            PrincipalAccessor = DefaultPrincipalAccessor.Instance;
+            PrincipalAccessor = principalAccessor;
         }
 
-        public IPrincipalAccessor PrincipalAccessor { get; set; } //TODO: Convert to constructor-injection
+        protected IPrincipalAccessor PrincipalAccessor { get; }
 
-        public virtual long? UserId
+        public override long? UserId
         {
             get
             {
+                if (OverridedValue != null)
+                {
+                    return OverridedValue.UserId;
+                }
+
                 Claim userIdClaim = PrincipalAccessor.Principal?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
                 if (string.IsNullOrEmpty(userIdClaim?.Value))
                 {
@@ -42,7 +50,7 @@ namespace Stove.Runtime.Session
             }
         }
 
-        public virtual long? ImpersonatorUserId
+        public override long? ImpersonatorUserId
         {
             get
             {
