@@ -14,6 +14,7 @@ using Stove.Demo.ConsoleApp.RabbitMQ.Messages;
 using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
 using Stove.EntityFramework.EntityFramework;
+using Stove.EntityFramework.EntityFramework.Extensions;
 using Stove.Log;
 using Stove.Mapster.Mapster;
 using Stove.MQ;
@@ -89,6 +90,10 @@ namespace Stove.Demo.ConsoleApp
                 Person person2Cache = _cacheManager
                     .GetCache(DemoCacheName.Demo)
                     .Get("person", () => _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan"));
+
+                Person oguzhan = _personRepository.Nolocking(persons => persons.FirstOrDefault(x => x.Name == "Oğuzhan"));
+
+                Person oguzhan2 = _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan");
 
                 birds = birds.ToList();
 

@@ -1,8 +1,10 @@
 using System;
+using System.Data.Entity.Infrastructure.Interception;
 
 using Stove.Bootstrapping;
 using Stove.Demo.ConsoleApp.DbContexes;
 using Stove.EntityFramework;
+using Stove.EntityFramework.EntityFramework.Interceptors;
 using Stove.Hangfire;
 using Stove.Mapster;
 using Stove.RabbitMQ;
@@ -28,6 +30,8 @@ namespace Stove.Demo.ConsoleApp
         {
             Configuration.TypedConnectionStrings.Add(typeof(AnimalStoveDbContext), "Default");
             Configuration.TypedConnectionStrings.Add(typeof(PersonStoveDbContext), "Default");
+
+            DbInterception.Add(Configuration.Resolver.Resolve<WithNoLockInterceptor>());
         }
     }
 }

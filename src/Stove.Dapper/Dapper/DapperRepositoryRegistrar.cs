@@ -28,7 +28,7 @@ namespace Stove.Dapper.Dapper
                         ? autoRepositoryAttr.RepositoryImplementation.MakeGenericType(entityTypeInfo.EntityType)
                         : autoRepositoryAttr.RepositoryImplementation.MakeGenericType(entityTypeInfo.DeclaringType, entityTypeInfo.EntityType);
 
-                    builder.RegisterServices(r => r.UseBuilder(cb => cb.RegisterType(implType).As(genericRepositoryType).AsImplementedInterfaces()));
+                    builder.RegisterServices(r => r.UseBuilder(cb => cb.RegisterType(implType).As(genericRepositoryType).AsImplementedInterfaces().InjectPropertiesAsAutowired()));
                 }
                 else
                 {
@@ -38,7 +38,7 @@ namespace Stove.Dapper.Dapper
                         ? autoRepositoryAttr.RepositoryImplementationWithPrimaryKey.MakeGenericType(entityTypeInfo.EntityType, primaryKeyType)
                         : autoRepositoryAttr.RepositoryImplementationWithPrimaryKey.MakeGenericType(entityTypeInfo.DeclaringType, entityTypeInfo.EntityType, primaryKeyType);
 
-                    builder.RegisterServices(r => r.UseBuilder(cb => cb.RegisterType(implType).As(genericRepositoryTypeWithPrimaryKey).AsImplementedInterfaces()));
+                    builder.RegisterServices(r => r.UseBuilder(cb => cb.RegisterType(implType).As(genericRepositoryTypeWithPrimaryKey).AsImplementedInterfaces().InjectPropertiesAsAutowired()));
                 }
             }
         }
