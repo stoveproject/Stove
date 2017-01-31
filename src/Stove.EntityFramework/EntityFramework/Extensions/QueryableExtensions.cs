@@ -59,12 +59,37 @@ namespace Stove.EntityFramework.EntityFramework.Extensions
         /// <summary>
         ///     Nolockings the specified queryable.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TEntity"></typeparam>
         /// <typeparam name="TResult">The type of the result.</typeparam>
         /// <param name="repository">The repository.</param>
         /// <param name="queryable">The queryable.</param>
         /// <returns></returns>
-        public static TResult Nolocking<T, TResult>(this IRepository<T, int> repository, Func<IQueryable<T>, TResult> queryable) where T : class, IEntity<int>
+        public static TResult Nolocking<TEntity, TResult>(this IRepository<TEntity, int> repository, Func<IQueryable<TEntity>, TResult> queryable) where TEntity : class, IEntity<int>
+        {
+            Check.NotNull(queryable, nameof(queryable));
+
+            TResult result;
+            using (IScopeResolver scopeResolver = repository.As<IStoveRepositoryBaseWithResolver>().ScopeResolver.BeginScope())
+            {
+                using (scopeResolver.Resolve<WithNoLockInterceptor>().UseNolocking())
+                {
+                    result = queryable(repository.GetAll());
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        ///     Nolockings the specified queryable.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of the entity.</typeparam>
+        /// <typeparam name="TPrimaryKey">The type of the primary key.</typeparam>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="repository">The repository.</param>
+        /// <param name="queryable">The queryable.</param>
+        /// <returns></returns>
+        public static TResult Nolocking<TEntity, TPrimaryKey, TResult>(this IRepository<TEntity, TPrimaryKey> repository, Func<IQueryable<TEntity>, TResult> queryable) where TEntity : class, IEntity<TPrimaryKey>
         {
             Check.NotNull(queryable, nameof(queryable));
 
