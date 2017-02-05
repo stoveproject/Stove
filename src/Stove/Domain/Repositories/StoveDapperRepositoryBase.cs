@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using Stove.Domain.Entities;
@@ -63,11 +65,39 @@ namespace Stove.Domain.Repositories
             return Task.FromResult(GetSet(predicate, firstResult, maxResults, sortingProperty, ascending));
         }
 
-        public Task<IEnumerable<TEntity>> GetListPagedAsync(int pageNumber, int itemsPerPage, string conditions, string order, object predicate, string sortingProperty, bool ascending = true)
+        public virtual Task<IEnumerable<TEntity>> GetListPagedAsync(object predicate, int pageNumber, int itemsPerPage, string sortingProperty, bool ascending = true)
         {
-            return Task.FromResult(GetListPaged(pageNumber, itemsPerPage, conditions, order, predicate, sortingProperty, ascending));
+            return Task.FromResult(GetListPaged(predicate, pageNumber, itemsPerPage, sortingProperty, ascending));
         }
 
-        public abstract IEnumerable<TEntity> GetListPaged(int pageNumber, int itemsPerPage, string conditions, string order, object predicate, string sortingProperty, bool ascending = true);
+        public abstract IEnumerable<TEntity> GetListPaged(object predicate, int pageNumber, int itemsPerPage, string sortingProperty, bool ascending = true);
+
+        public abstract IEnumerable<TEntity> GetList(Expression<Func<TEntity, bool>> predicate);
+
+        public virtual Task<IEnumerable<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return Task.FromResult(GetList(predicate));
+        }
+
+        public virtual Task<IEnumerable<TEntity>> GetListPagedAsync(Expression<Func<TEntity, bool>> predicate, int pageNumber, int itemsPerPage, string sortingProperty, bool ascending = true)
+        {
+            return Task.FromResult(GetListPaged(predicate, pageNumber, itemsPerPage, sortingProperty, ascending));
+        }
+
+        public abstract IEnumerable<TEntity> GetListPaged(Expression<Func<TEntity, bool>> predicate, int pageNumber, int itemsPerPage, string sortingProperty, bool ascending = true);
+
+        public abstract int Count(Expression<Func<TEntity, bool>> predicate);
+
+        public virtual Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return Task.FromResult(Count(predicate));
+        }
+
+        public abstract IEnumerable<TEntity> GetSet(Expression<Func<TEntity, bool>> predicate, int firstResult, int maxResults, string sortingProperty, bool ascending = true);
+
+        public virtual Task<IEnumerable<TEntity>> GetSetAsync(Expression<Func<TEntity, bool>> predicate, int firstResult, int maxResults, string sortingProperty, bool ascending = true)
+        {
+            return Task.FromResult(GetSet(predicate, firstResult, maxResults, sortingProperty, ascending));
+        }
     }
 }

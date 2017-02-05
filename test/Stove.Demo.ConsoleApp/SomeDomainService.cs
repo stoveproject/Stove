@@ -79,12 +79,23 @@ namespace Stove.Demo.ConsoleApp
                     .GetCache(DemoCacheName.Demo)
                     .Get("person", () => _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan"));
 
-                //Person person = _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan");
+                Person person = _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan");
                 Animal animal = _animalRepository.FirstOrDefault(x => x.Name == "Kuş");
 
                 IEnumerable<Animal> birds = _animalDapperRepository.GetSet(new { Name = "Kuş" }, 0, 10, "Id");
-
                 IEnumerable<Person> personFromDapper = _personDapperRepository.GetList(new { Name = "Oğuzhan" });
+
+                IEnumerable<Animal> birdsFromExpression = _animalDapperRepository.GetSet(x => x.Name == "Kuş", 0, 10, "Id");
+
+                IEnumerable<Animal> birdsPagedFromExpression = _animalDapperRepository.GetListPaged(x => x.Name == "Kuş", 0, 10, "Name");
+
+                IEnumerable<Person> personFromDapperExpression = _personDapperRepository.GetList(x => x.Name.Contains("Oğuzhan"));
+
+                int birdCount = _animalDapperRepository.Count(x => x.Name == "Kuş");
+
+                birdsFromExpression.ToList();
+                birdsPagedFromExpression.ToList();
+
                 IEnumerable<Person> person2FromDapper = _personDapperRepository.Query("select * from Person with(nolock) where name =@name", new { name = "Oğuzhan" });
 
                 Person person2Cache = _cacheManager
@@ -100,13 +111,13 @@ namespace Stove.Demo.ConsoleApp
                 var personAnimal = _animalDapperRepository.Query<PersonAnimal>("select Name as PersonName,'Zürafa' as AnimalName from Person with(nolock) where name=@name", new { name = "Oğuzhan" })
                                                           .MapTo<List<PersonAnimalDto>>();
 
+                uow.Complete();
+
                 _messageBus.Publish<IPersonAddedMessage>(new PersonAddedMessage
                 {
                     Name = "Oğuzhan",
                     CorrelationId = NewId.NextGuid()
                 });
-
-                uow.Complete();
 
                 _hangfireBackgroundJobManager.EnqueueAsync<SimpleBackgroundJob, SimpleBackgroundJobArgs>(new SimpleBackgroundJobArgs
                 {

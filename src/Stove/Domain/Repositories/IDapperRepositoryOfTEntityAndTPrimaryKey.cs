@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using Stove.Domain.Entities;
@@ -47,6 +49,13 @@ namespace Stove.Domain.Repositories
         IEnumerable<TEntity> GetList(object predicate);
 
         /// <summary>
+        ///     Gets the list.
+        /// </summary>
+        /// <param name="predicate">The predicate.</param>
+        /// <returns></returns>
+        IEnumerable<TEntity> GetList(Expression<Func<TEntity, bool>> predicate);
+
+        /// <summary>
         ///     Gets the list asynchronous.
         /// </summary>
         /// <param name="predicate">The predicate.</param>
@@ -54,30 +63,55 @@ namespace Stove.Domain.Repositories
         Task<IEnumerable<TEntity>> GetListAsync(object predicate);
 
         /// <summary>
+        ///     Gets the list asynchronous.
+        /// </summary>
+        /// <param name="predicate">The predicate.</param>
+        /// <returns></returns>
+        Task<IEnumerable<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> predicate);
+
+        /// <summary>
         ///     Gets the list paged asynchronous.
         /// </summary>
+        /// <param name="predicate">The predicate.</param>
         /// <param name="pageNumber">The page number.</param>
         /// <param name="itemsPerPage">The items per page.</param>
-        /// <param name="conditions">The conditions.</param>
-        /// <param name="order">The order.</param>
-        /// <param name="predicate">The predicate.</param>
         /// <param name="sortingProperty">The sorting property.</param>
         /// <param name="ascending">if set to <c>true</c> [ascending].</param>
         /// <returns></returns>
-        Task<IEnumerable<TEntity>> GetListPagedAsync(int pageNumber, int itemsPerPage, string conditions, string order, object predicate, string sortingProperty, bool ascending = true);
+        Task<IEnumerable<TEntity>> GetListPagedAsync(object predicate, int pageNumber, int itemsPerPage, string sortingProperty, bool ascending = true);
+
+        /// <summary>
+        ///     Gets the list paged asynchronous.
+        /// </summary>
+        /// <param name="predicate">The predicate.</param>
+        /// <param name="pageNumber">The page number.</param>
+        /// <param name="itemsPerPage">The items per page.</param>
+        /// <param name="sortingProperty">The sorting property.</param>
+        /// <param name="ascending">if set to <c>true</c> [ascending].</param>
+        /// <returns></returns>
+        Task<IEnumerable<TEntity>> GetListPagedAsync(Expression<Func<TEntity, bool>> predicate, int pageNumber, int itemsPerPage, string sortingProperty, bool ascending = true);
 
         /// <summary>
         ///     Gets the list paged.
         /// </summary>
+        /// <param name="predicate">The predicate.</param>
         /// <param name="pageNumber">The page number.</param>
         /// <param name="itemsPerPage">The items per page.</param>
-        /// <param name="conditions">The conditions.</param>
-        /// <param name="order">The order.</param>
-        /// <param name="predicate">The predicate.</param>
         /// <param name="sortingProperty">The sorting property.</param>
         /// <param name="ascending">if set to <c>true</c> [ascending].</param>
         /// <returns></returns>
-        IEnumerable<TEntity> GetListPaged(int pageNumber, int itemsPerPage, string conditions, string order, object predicate, string sortingProperty, bool ascending = true);
+        IEnumerable<TEntity> GetListPaged(object predicate, int pageNumber, int itemsPerPage, string sortingProperty, bool ascending = true);
+
+        /// <summary>
+        ///     Gets the list paged.
+        /// </summary>
+        /// <param name="predicate">The predicate.</param>
+        /// <param name="pageNumber">The page number.</param>
+        /// <param name="itemsPerPage">The items per page.</param>
+        /// <param name="sortingProperty">The sorting property.</param>
+        /// <param name="ascending">if set to <c>true</c> [ascending].</param>
+        /// <returns></returns>
+        IEnumerable<TEntity> GetListPaged(Expression<Func<TEntity, bool>> predicate, int pageNumber, int itemsPerPage, string sortingProperty, bool ascending = true);
 
         /// <summary>
         ///     Counts the specified predicate.
@@ -87,11 +121,25 @@ namespace Stove.Domain.Repositories
         int Count(object predicate);
 
         /// <summary>
+        ///     Counts the specified predicate.
+        /// </summary>
+        /// <param name="predicate">The predicate.</param>
+        /// <returns></returns>
+        int Count(Expression<Func<TEntity, bool>> predicate);
+
+        /// <summary>
         ///     Counts the asynchronous.
         /// </summary>
         /// <param name="predicate">The predicate.</param>
         /// <returns></returns>
         Task<int> CountAsync(object predicate);
+
+        /// <summary>
+        ///     Counts the asynchronous.
+        /// </summary>
+        /// <param name="predicate">The predicate.</param>
+        /// <returns></returns>
+        Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate);
 
         /// <summary>
         ///     Queries the specified query.
@@ -118,7 +166,7 @@ namespace Stove.Domain.Repositories
         Task<IEnumerable<TAny>> QueryAsync<TAny>(string query, object parameters) where TAny : class;
 
         /// <summary>
-        /// Queries the specified query.
+        ///     Queries the specified query.
         /// </summary>
         /// <typeparam name="TAny">The type of any.</typeparam>
         /// <param name="query">The query.</param>
@@ -126,7 +174,7 @@ namespace Stove.Domain.Repositories
         IEnumerable<TAny> Query<TAny>(string query) where TAny : class;
 
         /// <summary>
-        /// Queries the specified query.
+        ///     Queries the specified query.
         /// </summary>
         /// <typeparam name="TAny">The type of any.</typeparam>
         /// <param name="query">The query.</param>
@@ -153,6 +201,17 @@ namespace Stove.Domain.Repositories
         IEnumerable<TEntity> GetSet(object predicate, int firstResult, int maxResults, string sortingProperty, bool ascending = true);
 
         /// <summary>
+        ///     Gets the set.
+        /// </summary>
+        /// <param name="predicate">The predicate.</param>
+        /// <param name="firstResult">The first result.</param>
+        /// <param name="maxResults">The maximum results.</param>
+        /// <param name="sortingProperty">The sorting property.</param>
+        /// <param name="ascending">if set to <c>true</c> [ascending].</param>
+        /// <returns></returns>
+        IEnumerable<TEntity> GetSet(Expression<Func<TEntity, bool>> predicate, int firstResult, int maxResults, string sortingProperty, bool ascending = true);
+
+        /// <summary>
         ///     Gets the set asynchronous.
         /// </summary>
         /// <param name="predicate">The predicate.</param>
@@ -162,5 +221,16 @@ namespace Stove.Domain.Repositories
         /// <param name="ascending">if set to <c>true</c> [ascending].</param>
         /// <returns></returns>
         Task<IEnumerable<TEntity>> GetSetAsync(object predicate, int firstResult, int maxResults, string sortingProperty, bool ascending = true);
+
+        /// <summary>
+        ///     Gets the set asynchronous.
+        /// </summary>
+        /// <param name="predicate">The predicate.</param>
+        /// <param name="firstResult">The first result.</param>
+        /// <param name="maxResults">The maximum results.</param>
+        /// <param name="sortingProperty">The sorting property.</param>
+        /// <param name="ascending">if set to <c>true</c> [ascending].</param>
+        /// <returns></returns>
+        Task<IEnumerable<TEntity>> GetSetAsync(Expression<Func<TEntity, bool>> predicate, int firstResult, int maxResults, string sortingProperty, bool ascending = true);
     }
 }
