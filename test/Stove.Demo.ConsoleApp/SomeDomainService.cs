@@ -3,6 +3,8 @@ using System.Linq;
 
 using Autofac.Extras.IocManager;
 
+using LinqKit;
+
 using MassTransit;
 
 using Stove.BackgroundJobs;
@@ -82,11 +84,19 @@ namespace Stove.Demo.ConsoleApp
 
                 #region DAPPER
 
+                var list = new List<string>
+                {
+                    "elma", "armut"
+                };
+
+                ExpressionStarter<Animal> predicate = PredicateBuilder.New<Animal>();
+                predicate.And(x => x.Name == "Kuş");
+
                 IEnumerable<Animal> birdsSet = _animalDapperRepository.GetSet(new { Name = "Kuş" }, 0, 10, "Id");
 
                 IEnumerable<Person> personFromDapper = _personDapperRepository.GetList(new { Name = "Oğuzhan" });
 
-                IEnumerable<Animal> birdsFromExpression = _animalDapperRepository.GetSet(x => x.Name == "Kuş", 0, 10, "Id");
+                IEnumerable<Animal> birdsFromExpression = _animalDapperRepository.GetSet(predicate, 0, 10, "Id");
 
                 IEnumerable<Animal> birdsPagedFromExpression = _animalDapperRepository.GetListPaged(x => x.Name == "Kuş", 0, 10, "Name");
 
