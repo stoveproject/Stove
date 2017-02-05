@@ -75,14 +75,15 @@ namespace Stove.Demo.ConsoleApp
 
                 _unitOfWorkManager.Current.SaveChanges();
 
-                Person personCache = _cacheManager
-                    .GetCache(DemoCacheName.Demo)
-                    .Get("person", () => _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan"));
+                Person personCache = _cacheManager.GetCache(DemoCacheName.Demo).Get("person", () => _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan"));
 
                 Person person = _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan");
                 Animal animal = _animalRepository.FirstOrDefault(x => x.Name == "Kuş");
 
-                IEnumerable<Animal> birds = _animalDapperRepository.GetSet(new { Name = "Kuş" }, 0, 10, "Id");
+                #region DAPPER
+
+                IEnumerable<Animal> birdsSet = _animalDapperRepository.GetSet(new { Name = "Kuş" }, 0, 10, "Id");
+
                 IEnumerable<Person> personFromDapper = _personDapperRepository.GetList(new { Name = "Oğuzhan" });
 
                 IEnumerable<Animal> birdsFromExpression = _animalDapperRepository.GetSet(x => x.Name == "Kuş", 0, 10, "Id");
@@ -93,23 +94,22 @@ namespace Stove.Demo.ConsoleApp
 
                 int birdCount = _animalDapperRepository.Count(x => x.Name == "Kuş");
 
+                var personAnimal = _animalDapperRepository.Query<PersonAnimal>("select Name as PersonName,'Zürafa' as AnimalName from Person with(nolock) where name=@name", new { name = "Oğuzhan" })
+                                                          .MapTo<List<PersonAnimalDto>>();
+
                 birdsFromExpression.ToList();
                 birdsPagedFromExpression.ToList();
+                birdsSet.ToList();
 
                 IEnumerable<Person> person2FromDapper = _personDapperRepository.Query("select * from Person with(nolock) where name =@name", new { name = "Oğuzhan" });
 
-                Person person2Cache = _cacheManager
-                    .GetCache(DemoCacheName.Demo)
-                    .Get("person", () => _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan"));
+                #endregion
+
+                Person person2Cache = _cacheManager.GetCache(DemoCacheName.Demo).Get("person", () => _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan"));
 
                 Person oguzhan = _personRepository.Nolocking(persons => persons.FirstOrDefault(x => x.Name == "Oğuzhan"));
 
                 Person oguzhan2 = _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan");
-
-                birds = birds.ToList();
-
-                var personAnimal = _animalDapperRepository.Query<PersonAnimal>("select Name as PersonName,'Zürafa' as AnimalName from Person with(nolock) where name=@name", new { name = "Oğuzhan" })
-                                                          .MapTo<List<PersonAnimalDto>>();
 
                 uow.Complete();
 
