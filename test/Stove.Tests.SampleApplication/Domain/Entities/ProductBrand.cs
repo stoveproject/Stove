@@ -7,20 +7,21 @@ using Stove.Domain.Entities;
 
 namespace Stove.Tests.SampleApplication.Domain.Entities
 {
-    [Table("ProductDetail")]
-    public class ProductDetail : Entity
+    [Table("ProductBrand")]
+    public class ProductBrand : Entity
     {
-        private ProductDetail()
+        private ProductBrand()
         {
         }
 
-        [Required]
         [NotNull]
-        public virtual string Description { get; protected set; }
-
         [Required]
-        [NotNull]
         public virtual Product Product { get; protected set; }
         public int ProductId { get; [UsedImplicitly] private set; }
+
+        [NotNull]
+        [Required]
+        public virtual Brand Brand { get; protected set; }
+        public int BrandId { get; [UsedImplicitly] private set; }
     }
 }
