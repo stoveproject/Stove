@@ -24,6 +24,10 @@ namespace Stove.TestBase
 
         protected TestStoveSession TestStoveSession => LocalResolver.Resolve<TestStoveSession>();
 
+        protected override void PreBuild()
+        {
+        }
+
         protected override void PostBuild()
         {
         }

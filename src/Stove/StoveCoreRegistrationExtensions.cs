@@ -16,8 +16,10 @@ using Stove.Log;
 using Stove.MQ;
 using Stove.ObjectMapping;
 using Stove.Reflection;
+using Stove.Runtime;
 using Stove.Runtime.Caching.Configuration;
 using Stove.Runtime.Caching.Memory;
+using Stove.Runtime.Remoting;
 
 namespace Stove
 {
@@ -174,7 +176,8 @@ namespace Stove
                    .RegisterServices(r => r.Register<IUnitOfWorkDefaultOptions, UnitOfWorkDefaultOptions>(Lifetime.Singleton))
                    .RegisterServices(r => r.Register<IStoveAssemblyFinder, StoveAssemblyFinder>(Lifetime.Singleton))
                    .RegisterServices(r => r.Register<ICachingConfiguration, CachingConfiguration>(Lifetime.Singleton))
-                   .RegisterServices(r => r.Register<ITypeFinder, TypeFinder>(Lifetime.Singleton));
+                   .RegisterServices(r => r.Register<ITypeFinder, TypeFinder>(Lifetime.Singleton))
+                   .RegisterServices(r => r.RegisterGeneric(typeof(IAmbientScopeProvider<>), typeof(DataContextAmbientScopeProvider<>)));
         }
     }
 }

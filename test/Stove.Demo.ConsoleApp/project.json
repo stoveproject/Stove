@@ -13,17 +13,18 @@
     "FluentAssemblyScanner": "1.0.5",
     "Hangfire.Core": "1.6.8",
     "Hangfire.SqlServer": "1.6.8",
-    "MassTransit": "3.5.4",
+    "LinqKit": "1.1.8",
+    "MassTransit": "3.5.5",
     "Newtonsoft.Json": "9.0.1",
     "Owin": "1.0",
-    "Stove": "0.0.8",
-    "Stove.Dapper": "0.0.8-*",
-    "Stove.EntityFramework": "0.0.8-*",
-    "Stove.HangFire": "0.0.8-*",
-    "Stove.Mapster": "0.0.8-*",
-    "Stove.NLog": "0.0.8-*",
+    "Stove": "0.0.9",
+    "Stove.Dapper": "0.0.9-*",
+    "Stove.EntityFramework": "0.0.9-*",
+    "Stove.HangFire": "0.0.9-*",
+    "Stove.Mapster": "0.0.9-*",
+    "Stove.NLog": "0.0.9-*",
     "Stove.RabbitMQ": "1.0.0-*",
-    "Stove.Redis": "0.0.8-*"
+    "Stove.Redis": "0.0.9-*"
   },
 
   "frameworks": {

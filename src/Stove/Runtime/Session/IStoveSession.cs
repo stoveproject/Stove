@@ -1,4 +1,6 @@
-﻿namespace Stove.Runtime.Session
+﻿using System;
+
+namespace Stove.Runtime.Session
 {
     /// <summary>
     ///     Defines some session information that can be useful for applications.
@@ -16,5 +18,12 @@
         ///     This is filled if a user is performing actions behalf of the <see cref="UserId" />.
         /// </summary>
         long? ImpersonatorUserId { get; }
+
+        /// <summary>
+        ///     Uses the specified user identifier.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns></returns>
+        IDisposable Use(long? userId);
     }
 }

@@ -7,16 +7,17 @@ using Stove.Domain.Entities;
 
 namespace Stove.Tests.SampleApplication.Domain.Entities
 {
-    [Table("ProductDetail")]
-    public class ProductDetail : Entity
+    [Table("ProductGender")]
+    public class ProductGender : Entity
     {
-        private ProductDetail()
+        private ProductGender()
         {
         }
 
         [Required]
         [NotNull]
-        public virtual string Description { get; protected set; }
+        public virtual Gender Gender { get; protected set; }
+        public int GenderId { get; [UsedImplicitly] private set; }
 
         [Required]
         [NotNull]
