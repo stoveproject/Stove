@@ -1,7 +1,6 @@
 ﻿using System.Data.Entity;
 
 using Stove.Domain.Entities;
-using Stove.Domain.Repositories;
 using Stove.EntityFramework.EntityFramework;
 
 namespace Stove.Dapper.Dapper.Repositories

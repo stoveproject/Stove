@@ -13,7 +13,6 @@ using DapperExtensions;
 using Stove.Dapper.Dapper.Expressions;
 using Stove.Dapper.Dapper.Extensions;
 using Stove.Domain.Entities;
-using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
 using Stove.EntityFramework.EntityFramework;
 
