@@ -113,6 +113,13 @@ namespace Stove.Demo.ConsoleApp
 
                 IEnumerable<Person> person2FromDapper = _personDapperRepository.Query("select * from Person with(nolock) where name =@name", new { name = "Oğuzhan" });
 
+                _personDapperRepository.Insert(new Person("oğuzhan2"));
+                int id = _personDapperRepository.InsertAndGetId(new Person("oğuzhan3"));
+                Person person3 = _personDapperRepository.Get(id);
+                person3.Name = "oğuzhan4";
+                _personDapperRepository.Update(person3);
+                _personDapperRepository.Delete(person3);
+
                 #endregion
 
                 Person person2Cache = _cacheManager.GetCache(DemoCacheName.Demo).Get("person", () => _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan"));
