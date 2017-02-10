@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 using Stove.Domain.Entities;
 
-namespace Stove.Domain.Repositories
+namespace Stove.Dapper.Dapper.Repositories
 {
     public abstract class StoveDapperRepositoryBase<TEntity, TPrimaryKey> : IDapperRepository<TEntity, TPrimaryKey> where TEntity : class, IEntity<TPrimaryKey>
     {

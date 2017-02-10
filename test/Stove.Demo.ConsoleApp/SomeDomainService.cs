@@ -8,6 +8,7 @@ using LinqKit;
 using MassTransit;
 
 using Stove.BackgroundJobs;
+using Stove.Dapper.Dapper.Repositories;
 using Stove.Demo.ConsoleApp.BackgroundJobs;
 using Stove.Demo.ConsoleApp.DbContexes;
 using Stove.Demo.ConsoleApp.Dto;

@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 
 using Stove.Domain.Entities;
+using Stove.Domain.Repositories;
 
-namespace Stove.Domain.Repositories
+namespace Stove.Dapper.Dapper.Repositories
 {
     /// <summary>
     ///     Dapper repository abstraction interface.
