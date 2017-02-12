@@ -1,5 +1,4 @@
 ﻿using Stove.Dapper.Dapper.Repositories;
-using Stove.EntityFramework.EntityFramework;
 
 namespace Stove.Dapper.Dapper
 {
@@ -7,7 +6,7 @@ namespace Stove.Dapper.Dapper
     {
         static DapperAutoRepositoryTypes()
         {
-            Default = new AutoRepositoryTypesAttribute(
+            Default = new DapperAutoRepositoryTypeAttribute(
                 typeof(IDapperRepository<>),
                 typeof(IDapperRepository<,>),
                 typeof(DapperRepositoryBase<,>),
@@ -15,6 +14,6 @@ namespace Stove.Dapper.Dapper
             );
         }
 
-        public static AutoRepositoryTypesAttribute Default { get; private set; }
+        public static DapperAutoRepositoryTypeAttribute Default { get; private set; }
     }
 }

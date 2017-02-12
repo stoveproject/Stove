@@ -13,7 +13,7 @@ namespace Stove.Dapper.Dapper
     {
         public static void RegisterRepositories(Type dbContextType, IIocBuilder builder)
         {
-            AutoRepositoryTypesAttribute autoRepositoryAttr = dbContextType.GetSingleAttributeOrNull<AutoRepositoryTypesAttribute>() ??
+            AutoRepositoryTypesAttribute autoRepositoryAttr = dbContextType.GetSingleAttributeOrNull<DapperAutoRepositoryTypeAttribute>() ??
                                                               DapperAutoRepositoryTypes.Default;
 
             foreach (EntityTypeInfo entityTypeInfo in DbContextHelper.GetEntityTypeInfos(dbContextType))
