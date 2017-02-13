@@ -5,11 +5,11 @@
     "Stove": "0.0.9",
     "EntityFramework": "6.1.3",
     "EntityFramework.DynamicFilters": "2.6.0",
-    "FluentAssemblyScanner": "1.0.5",
     "System.Collections": "4.3.0",
     "System.Collections.Immutable": "1.3.1",
     "Autofac": "4.3.0",
-    "Autofac.Extras.IocManager": "2.0.7"
+    "Autofac.Extras.IocManager": "2.0.7",
+    "FluentAssemblyScanner": "1.0.7"
   },
 
   "frameworks" : {
