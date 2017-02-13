@@ -34,7 +34,7 @@ test:
   - test\Stove.Tests\bin\Debug\net452\win7-x64\Stove.Tests.dll
 deploy:
 - provider: NuGet
- on:
+  on:
     branch: master
   api_key:
     secure: liSTqN52OJQy9fZJk6gubSgYBAy4EXcEPCDSCLJ/3T9cZufzpTwvBlGPLX+iP2n9
