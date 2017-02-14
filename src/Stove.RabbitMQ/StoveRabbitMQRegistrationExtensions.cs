@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Reflection;
-using System.Transactions;
 
 using Autofac;
 using Autofac.Extras.IocManager;
 
 using GreenPipes;
+
+using JetBrains.Annotations;
 
 using MassTransit;
 using MassTransit.RabbitMqTransport;
@@ -17,7 +18,8 @@ namespace Stove.RabbitMQ
 {
     public static class StoveRabbitMQRegistrationExtensions
     {
-        public static IIocBuilder UseStoveRabbitMQ(this IIocBuilder builder, Func<IStoveRabbitMQConfiguration, IStoveRabbitMQConfiguration> rabbitMQConfigurer = null)
+        [NotNull]
+        public static IIocBuilder UseStoveRabbitMQ([NotNull] this IIocBuilder builder, [CanBeNull] Func<IStoveRabbitMQConfiguration, IStoveRabbitMQConfiguration> rabbitMQConfigurer = null)
         {
             builder
                 .RegisterServices(r =>
@@ -48,10 +50,7 @@ namespace Stove.RabbitMQ
 
                           if (configuration.UseRetryMechanism)
                           {
-                              cfg.UseRetry(rtryConf =>
-                              {
-                                  rtryConf.Immediate(configuration.MaxRetryCount);
-                              });
+                              cfg.UseRetry(rtryConf => { rtryConf.Immediate(configuration.MaxRetryCount); });
                           }
 
                           cfg.ReceiveEndpoint(host, configuration.QueueName, ec => { ec.LoadFrom(ctx); });

@@ -1,8 +1,10 @@
-﻿namespace Stove.Configuration
+﻿using JetBrains.Annotations;
+
+namespace Stove.Configuration
 {
     public class ModuleConfigurations : IModuleConfigurations
     {
-        public ModuleConfigurations(IStoveStartupConfiguration stoveConfiguration)
+        public ModuleConfigurations([NotNull] IStoveStartupConfiguration stoveConfiguration)
         {
             StoveConfiguration = stoveConfiguration;
         }

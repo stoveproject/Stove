@@ -40,3 +40,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("1.0.0.0")]
 [assembly: InternalsVisibleTo("Stove.EntityFramework")]
 [assembly: InternalsVisibleTo("Stove.Tests")]
+[assembly: InternalsVisibleTo("Stove.RabbitMQ.Tests")]
+[assembly: InternalsVisibleTo("Stove.TestBase")]

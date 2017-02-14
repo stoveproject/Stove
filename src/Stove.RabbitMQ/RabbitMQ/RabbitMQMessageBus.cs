@@ -1,5 +1,7 @@
 ﻿using System;
 
+using JetBrains.Annotations;
+
 using MassTransit;
 
 using Stove.MQ;
@@ -8,9 +10,10 @@ namespace Stove.RabbitMQ.RabbitMQ
 {
     public class RabbitMQMessageBus : IMessageBus
     {
+        [NotNull]
         private readonly IBus _bus;
 
-        public RabbitMQMessageBus(IBus bus)
+        public RabbitMQMessageBus([NotNull] IBus bus)
         {
             _bus = bus;
         }

@@ -1,0 +1,17 @@
+{
+  "version" : "1.0.0-*",
+
+  "testRunner" : "xunit",
+
+  "dependencies": {
+    "Stove": "0.0.9",
+    "Stove.RabbitMQ": "0.0.9-*",
+    "Stove.TestBase": "0.0.1-*"
+  },
+
+  "frameworks" : {
+    "net461" : {
+    
+    }
+  }
+}
