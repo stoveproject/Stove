@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 
+using JetBrains.Annotations;
+
 using StackExchange.Redis;
 using StackExchange.Redis.Extensions.Core;
 
@@ -19,7 +21,7 @@ namespace Stove.Redis.Redis
         /// <summary>
         ///     Constructor.
         /// </summary>
-        public StoveRedisCache(string name, IStoveRedisCacheClientProvider redisCacheClientProvider) : base(name)
+        public StoveRedisCache([NotNull] string name, [NotNull] IStoveRedisCacheClientProvider redisCacheClientProvider) : base(name)
         {
             _cacheClient = redisCacheClientProvider.GetClient();
             _database = _cacheClient.Database;
@@ -41,7 +43,7 @@ namespace Stove.Redis.Redis
             {
                 throw new StoveException("Can not insert null values to the cache!");
             }
-           
+
             _cacheClient.Add(GetLocalizedKey(key), value, absoluteExpireTime ?? slidingExpireTime ?? DefaultAbsoluteExpireTime ?? DefaultSlidingExpireTime);
         }
 
@@ -65,7 +67,8 @@ namespace Stove.Redis.Redis
             _database.KeyDeleteWithPrefix(GetLocalizedKey("*"));
         }
 
-        protected virtual string GetLocalizedKey(string key)
+        [NotNull]
+        protected virtual string GetLocalizedKey([NotNull] string key)
         {
             return "n:" + Name + ",c:" + key;
         }

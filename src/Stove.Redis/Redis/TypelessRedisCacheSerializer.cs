@@ -4,13 +4,14 @@ using JetBrains.Annotations;
 
 using StackExchange.Redis;
 
+using Stove.Json;
+
 namespace Stove.Redis.Redis
 {
     /// <summary>
-    ///     Interface to be implemented by all custom (de)serialization methods used when persisting and retrieving
-    ///     objects from the Redis cache.
+    ///     Typeless implementation uses JSON as the underlying persistence mechanism.
     /// </summary>
-    public interface IRedisCacheSerializer
+    public class TypelessRedisCacheSerializer : IRedisCacheSerializer
     {
         /// <summary>
         ///     Creates an instance of the object from its serialized string representation.
@@ -19,18 +20,24 @@ namespace Stove.Redis.Redis
         /// <returns>
         ///     Returns a newly constructed object.
         /// </returns>
-        [NotNull]
-        object Deserialize(RedisValue objbyte);
+        public object Deserialize(RedisValue objbyte)
+        {
+            return JsonSerializationHelper.Deserialize(objbyte);
+        }
 
         /// <summary>
         ///     Produce a string representation of the supplied object.
         /// </summary>
         /// <param name="value">Instance to serialize.</param>
         /// <param name="type">Type of the object.</param>
-        /// <returns>Returns a string representing the object instance that can be placed into the Redis cache.</returns>
+        /// <returns>
+        ///     Returns a string representing the object instance that can be placed into the Redis cache.
+        /// </returns>
         /// <seealso cref="Deserialize" />
-        [NotNull]
-        string Serialize([NotNull] object value, [CanBeNull] Type type);
+        public string Serialize(object value, Type type)
+        {
+            return JsonSerializationHelper.Serialize(value);
+        }
 
         /// <summary>
         ///     Produce a string representation of the supplied object.
@@ -40,7 +47,9 @@ namespace Stove.Redis.Redis
         ///     Returns a string representing the object instance that can be placed into the Redis cache.
         /// </returns>
         /// <seealso cref="Deserialize" />
-        [NotNull]
-        string Serialize([NotNull] object value);
+        public string Serialize(object value)
+        {
+            return JsonSerializationHelper.Serialize(value);
+        }
     }
 }

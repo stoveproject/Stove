@@ -1,5 +1,7 @@
 ﻿using Autofac.Extras.IocManager;
 
+using JetBrains.Annotations;
+
 using Stove.Runtime.Caching;
 using Stove.Runtime.Caching.Configuration;
 
@@ -13,7 +15,7 @@ namespace Stove.Redis.Redis
         /// <summary>
         ///     Initializes a new instance of the <see cref="StoveRedisCacheManager" /> class.
         /// </summary>
-        public StoveRedisCacheManager(IScopeResolver scopeResolver, ICachingConfiguration configuration)
+        public StoveRedisCacheManager([NotNull] IScopeResolver scopeResolver, [NotNull] ICachingConfiguration configuration)
             : base(scopeResolver.BeginScope(), configuration)
         {
         }

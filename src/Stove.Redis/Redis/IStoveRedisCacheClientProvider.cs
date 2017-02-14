@@ -1,4 +1,6 @@
-﻿using StackExchange.Redis;
+﻿using JetBrains.Annotations;
+
+using StackExchange.Redis;
 using StackExchange.Redis.Extensions.Core;
 
 namespace Stove.Redis.Redis
@@ -12,6 +14,7 @@ namespace Stove.Redis.Redis
         ///     Gets the client.
         /// </summary>
         /// <returns></returns>
+        [NotNull]
         ICacheClient GetClient();
     }
 }

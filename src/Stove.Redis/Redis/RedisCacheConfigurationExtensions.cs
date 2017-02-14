@@ -1,4 +1,6 @@
-﻿using Stove.Configuration;
+﻿using JetBrains.Annotations;
+
+using Stove.Configuration;
 using Stove.Runtime.Caching.Configuration;
 
 namespace Stove.Redis.Redis
@@ -13,7 +15,8 @@ namespace Stove.Redis.Redis
         /// </summary>
         /// <param name="configurations">The configurations.</param>
         /// <returns></returns>
-        public static IStoveRedisCacheConfiguration StoveRedis(this IModuleConfigurations configurations)
+        [NotNull]
+        public static IStoveRedisCacheConfiguration StoveRedis([NotNull] this IModuleConfigurations configurations)
         {
             return configurations.StoveConfiguration.Get<IStoveRedisCacheConfiguration>();
         }
