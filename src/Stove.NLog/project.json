@@ -3,7 +3,7 @@
 
   "dependencies": {
     "Autofac": "4.3.0",
-    "NLog": "4.4.2",
+    "NLog": "4.4.3",
     "Stove": "0.0.9"
   },
 

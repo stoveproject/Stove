@@ -3,11 +3,11 @@
 
   "dependencies": {
     "dotnet-test-xunit": "2.2.0-preview2-build1029",
-    "xunit": "2.2.0-beta4-build3444",
     "NSubstitute": "1.10.0",
     "Shouldly": "2.8.2",
     "Stove": "0.0.9",
-    "FluentAssemblyScanner": "1.0.7"
+    "FluentAssemblyScanner": "1.0.7",
+    "xunit": "2.2.0"
   },
 
   "frameworks": {
