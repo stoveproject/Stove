@@ -5,6 +5,8 @@ using System.Reflection;
 
 using Autofac.Extras.IocManager;
 
+using JetBrains.Annotations;
+
 using Stove.Collections.Extensions;
 using Stove.Configuration;
 using Stove.Log;
@@ -18,10 +20,13 @@ namespace Stove.Bootstrapping
             Logger = NullLogger.Instance;
         }
 
+        [NotNull]
         public IStoveStartupConfiguration Configuration { get; internal set; }
 
+        [NotNull]
         public IResolver Resolver { get; internal set; }
 
+        [NotNull]
         public ILogger Logger { get; internal set; }
 
         public virtual void PreStart()
@@ -74,7 +79,8 @@ namespace Stove.Bootstrapping
             return list;
         }
 
-        public static List<Type> FindDependedBootstrapperTypesRecursivelyIncludingGivenBootstrapper(Type bootstrapperType)
+        [NotNull]
+        public static List<Type> FindDependedBootstrapperTypesRecursivelyIncludingGivenBootstrapper([NotNull] Type bootstrapperType)
         {
             var list = new List<Type>();
             AddBootstrapperAndDependenciesResursively(list, bootstrapperType);
@@ -82,7 +88,7 @@ namespace Stove.Bootstrapping
             return list;
         }
 
-        private static void AddBootstrapperAndDependenciesResursively(List<Type> bootstrappers, Type bootstrapperType)
+        private static void AddBootstrapperAndDependenciesResursively([NotNull] List<Type> bootstrappers, [NotNull] Type bootstrapperType)
         {
             if (!IsStoveBootstrapper(bootstrapperType))
             {

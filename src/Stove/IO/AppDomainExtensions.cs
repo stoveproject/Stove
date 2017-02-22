@@ -1,10 +1,13 @@
 ﻿using System;
 
+using JetBrains.Annotations;
+
 namespace Stove.IO
 {
     public static class AppDomainExtensions
     {
-        public static string GetActualDomainPath(this AppDomain @this)
+        [NotNull]
+        public static string GetActualDomainPath([NotNull] this AppDomain @this)
         {
             return @this.RelativeSearchPath ?? @this.BaseDirectory;
         }

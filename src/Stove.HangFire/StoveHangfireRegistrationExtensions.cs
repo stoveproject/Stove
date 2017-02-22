@@ -3,13 +3,22 @@ using System.Reflection;
 
 using Autofac.Extras.IocManager;
 
+using JetBrains.Annotations;
+
 using Stove.Hangfire.Hangfire;
 
 namespace Stove.Hangfire
 {
     public static class StoveHangfireRegistrationExtensions
     {
-        public static IIocBuilder UseStoveHangfire(this IIocBuilder builder, Func<IStoveHangfireConfiguration, IStoveHangfireConfiguration> configureAction)
+        /// <summary>
+        ///     Uses the stove hangfire.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        /// <param name="configureAction">The configure action.</param>
+        /// <returns></returns>
+        [NotNull]
+        public static IIocBuilder UseStoveHangfire([NotNull] this IIocBuilder builder, [NotNull] Func<IStoveHangfireConfiguration, IStoveHangfireConfiguration> configureAction)
         {
             builder.RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
             builder.RegisterServices(r => r.Register(context => configureAction));

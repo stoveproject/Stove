@@ -2,7 +2,7 @@
   "version" : "0.0.9-*",
 
   "dependencies": {
-    "StackExchange.Redis": "1.2.0",
+    "StackExchange.Redis": "1.2.1",
     "StackExchange.Redis.Extensions.Core": "2.1.0",
     "Stove": "0.0.9"
   },

@@ -2,11 +2,20 @@
 
 using Autofac.Extras.IocManager;
 
+using JetBrains.Annotations;
+
 namespace Stove.Dependency
 {
     public static class ResolverExtensions
     {
-        public static bool ResolveIfExists<T>(this IResolver resolver, out T instance) where T : class
+        /// <summary>
+        ///     Resolves if exists.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="resolver">The resolver.</param>
+        /// <param name="instance">The instance.</param>
+        /// <returns></returns>
+        public static bool ResolveIfExists<T>([NotNull] this IResolver resolver, [CanBeNull] out T instance) where T : class
         {
             instance = null;
             if (resolver.IsRegistered<T>())
@@ -18,7 +27,14 @@ namespace Stove.Dependency
             return false;
         }
 
-        public static bool ResolveIfExists(this IResolver resolver, Type type, out object instance)
+        /// <summary>
+        ///     Resolves if exists.
+        /// </summary>
+        /// <param name="resolver">The resolver.</param>
+        /// <param name="type">The type.</param>
+        /// <param name="instance">The instance.</param>
+        /// <returns></returns>
+        public static bool ResolveIfExists([NotNull] this IResolver resolver, [NotNull] Type type, [CanBeNull] out object instance)
         {
             instance = null;
             if (resolver.IsRegistered(type))

@@ -1,4 +1,6 @@
-﻿using Stove.Runtime.Session;
+﻿using JetBrains.Annotations;
+
+using Stove.Runtime.Session;
 
 namespace Stove.Application.Services
 {
@@ -23,6 +25,7 @@ namespace Stove.Application.Services
         /// <value>
         ///     The stove session.
         /// </value>
+        [NotNull]
         public IStoveSession StoveSession { get; set; }
     }
 }

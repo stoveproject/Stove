@@ -27,6 +27,13 @@ namespace Stove
 {
     public static class StoveCoreRegistrationExtensions
     {
+        /// <summary>
+        ///     Uses the stove.
+        /// </summary>
+        /// <typeparam name="TStarterBootstrapper">The type of the starter bootstrapper.</typeparam>
+        /// <param name="builder">The builder.</param>
+        /// <param name="autoUnitOfWorkInterceptionEnabled">if set to <c>true</c> [automatic unit of work interception enabled].</param>
+        /// <returns></returns>
         [NotNull]
         public static IIocBuilder UseStove<TStarterBootstrapper>([NotNull] this IIocBuilder builder, bool autoUnitOfWorkInterceptionEnabled = false)
             where TStarterBootstrapper : StoveBootstrapper
@@ -34,6 +41,13 @@ namespace Stove
             return UseStove(builder, typeof(TStarterBootstrapper), autoUnitOfWorkInterceptionEnabled);
         }
 
+        /// <summary>
+        ///     Uses the stove.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        /// <param name="starterBootstrapperType">Type of the starter bootstrapper.</param>
+        /// <param name="autoUnitOfWorkInterceptionEnabled">if set to <c>true</c> [automatic unit of work interception enabled].</param>
+        /// <returns></returns>
         [NotNull]
         public static IIocBuilder UseStove([NotNull] this IIocBuilder builder, [NotNull] Type starterBootstrapperType, bool autoUnitOfWorkInterceptionEnabled = false)
         {
@@ -54,6 +68,11 @@ namespace Stove
             return builder;
         }
 
+        /// <summary>
+        ///     Uses the stove default connection string resolver.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        /// <returns></returns>
         [NotNull]
         public static IIocBuilder UseStoveDefaultConnectionStringResolver([NotNull] this IIocBuilder builder)
         {
@@ -61,6 +80,11 @@ namespace Stove
             return builder;
         }
 
+        /// <summary>
+        ///     Uses the stove default event bus.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        /// <returns></returns>
         [NotNull]
         public static IIocBuilder UseStoveDefaultEventBus([NotNull] this IIocBuilder builder)
         {
@@ -68,6 +92,11 @@ namespace Stove
             return builder;
         }
 
+        /// <summary>
+        ///     Uses the stove event bus.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        /// <returns></returns>
         [NotNull]
         public static IIocBuilder UseStoveEventBus([NotNull] this IIocBuilder builder)
         {
@@ -75,6 +104,11 @@ namespace Stove
             return builder;
         }
 
+        /// <summary>
+        ///     Uses the stove background jobs.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        /// <returns></returns>
         [NotNull]
         public static IIocBuilder UseStoveBackgroundJobs([NotNull] this IIocBuilder builder)
         {
@@ -88,6 +122,11 @@ namespace Stove
             return builder;
         }
 
+        /// <summary>
+        ///     Uses the stove null event bus.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        /// <returns></returns>
         [NotNull]
         public static IIocBuilder UseStoveNullEventBus([NotNull] this IIocBuilder builder)
         {
@@ -95,6 +134,11 @@ namespace Stove
             return builder;
         }
 
+        /// <summary>
+        ///     Uses the stove null object mapper.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        /// <returns></returns>
         [NotNull]
         public static IIocBuilder UseStoveNullObjectMapper([NotNull] this IIocBuilder builder)
         {
@@ -102,6 +146,11 @@ namespace Stove
             return builder;
         }
 
+        /// <summary>
+        ///     Uses the stove null unit of work.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        /// <returns></returns>
         [NotNull]
         public static IIocBuilder UseStoveNullUnitOfWork([NotNull] this IIocBuilder builder)
         {
@@ -109,6 +158,11 @@ namespace Stove
             return builder;
         }
 
+        /// <summary>
+        ///     Uses the stove null unit of work filter executer.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        /// <returns></returns>
         [NotNull]
         public static IIocBuilder UseStoveNullUnitOfWorkFilterExecuter([NotNull] this IIocBuilder builder)
         {
@@ -116,6 +170,11 @@ namespace Stove
             return builder;
         }
 
+        /// <summary>
+        ///     Uses the stove null entity changed event helper.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        /// <returns></returns>
         [NotNull]
         public static IIocBuilder UseStoveNullEntityChangedEventHelper([NotNull] this IIocBuilder builder)
         {
@@ -123,6 +182,11 @@ namespace Stove
             return builder;
         }
 
+        /// <summary>
+        ///     Uses the stove null asynchronous queryable executer.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        /// <returns></returns>
         [NotNull]
         public static IIocBuilder UseStoveNullAsyncQueryableExecuter([NotNull] this IIocBuilder builder)
         {
@@ -130,18 +194,33 @@ namespace Stove
             return builder;
         }
 
+        /// <summary>
+        ///     Uses the stove null message bus.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        /// <returns></returns>
         [NotNull]
         public static IIocBuilder UseStoveNullMessageBus([NotNull] this IIocBuilder builder)
         {
             return builder.RegisterServices(r => r.Register<IMessageBus>(ctx => NullMessageBus.Instance, keepDefault: true));
         }
 
+        /// <summary>
+        ///     Uses the stove null logger.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        /// <returns></returns>
         [NotNull]
         public static IIocBuilder UseStoveNullLogger([NotNull] this IIocBuilder builder)
         {
             return builder.RegisterServices(r => r.Register<ILogger, NullLogger>(keepDefault: true));
         }
 
+        /// <summary>
+        ///     Uses the stove memory caching.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        /// <returns></returns>
         [NotNull]
         public static IIocBuilder UseStoveMemoryCaching([NotNull] this IIocBuilder builder)
         {
@@ -152,8 +231,8 @@ namespace Stove
         ///     Uses the Stove with nullables, prefer when you writing unit tests.
         /// </summary>
         /// <param name="builder">The builder.</param>
-        /// <param name="starterBootstrapperType"></param>
-        /// <param name="autoUnitOfWorkInterceptionEnabled"></param>
+        /// <param name="starterBootstrapperType">Type of the starter bootstrapper.</param>
+        /// <param name="autoUnitOfWorkInterceptionEnabled">if set to <c>true</c> [automatic unit of work interception enabled].</param>
         /// <returns></returns>
         [NotNull]
         public static IIocBuilder UseStoveWithNullables([NotNull] this IIocBuilder builder, [NotNull] Type starterBootstrapperType, bool autoUnitOfWorkInterceptionEnabled = false)

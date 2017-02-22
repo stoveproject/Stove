@@ -18,6 +18,12 @@ namespace Stove.RabbitMQ
 {
     public static class StoveRabbitMQRegistrationExtensions
     {
+        /// <summary>
+        ///     Uses the stove rabbit mq.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        /// <param name="rabbitMQConfigurer">The rabbit mq configurer.</param>
+        /// <returns></returns>
         [NotNull]
         public static IIocBuilder UseStoveRabbitMQ([NotNull] this IIocBuilder builder, [CanBeNull] Func<IStoveRabbitMQConfiguration, IStoveRabbitMQConfiguration> rabbitMQConfigurer = null)
         {

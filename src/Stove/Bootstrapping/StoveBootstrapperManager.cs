@@ -5,6 +5,8 @@ using System.Linq;
 
 using Autofac.Extras.IocManager;
 
+using JetBrains.Annotations;
+
 using Stove.Configuration;
 using Stove.Log;
 
@@ -22,6 +24,7 @@ namespace Stove.Bootstrapping
             Logger = NullLogger.Instance;
         }
 
+        [NotNull]
         public ILogger Logger { get; set; }
 
         public IReadOnlyList<BootstrapperInfo> Bootstrappers => _bootstrappers.ToImmutableList();

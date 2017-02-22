@@ -1,5 +1,7 @@
 ﻿using System;
 
+using JetBrains.Annotations;
+
 namespace Stove
 {
     /// <summary>
@@ -18,7 +20,7 @@ namespace Stove
         /// <summary>
         ///     Creates a new <see cref="NameValue" />.
         /// </summary>
-        public NameValue(string name, string value)
+        public NameValue([NotNull] string name, [NotNull] string value)
         {
             Name = name;
             Value = value;
@@ -41,7 +43,7 @@ namespace Stove
         /// <summary>
         ///     Creates a new <see cref="NameValue" />.
         /// </summary>
-        public NameValue(string name, T value)
+        public NameValue([NotNull] string name, [NotNull] T value)
         {
             Name = name;
             Value = value;

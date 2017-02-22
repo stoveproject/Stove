@@ -12,6 +12,12 @@ namespace Stove.Redis
 {
     public static class StoveRedisRegistrationExtensions
     {
+        /// <summary>
+        ///     Uses the stove redis caching.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        /// <param name="redisCacheConfigurer">The redis cache configurer.</param>
+        /// <returns></returns>
         [NotNull]
         public static IIocBuilder UseStoveRedisCaching([NotNull] this IIocBuilder builder, [CanBeNull] Func<IStoveRedisCacheConfiguration, IStoveRedisCacheConfiguration> redisCacheConfigurer = null)
         {
@@ -28,6 +34,11 @@ namespace Stove.Redis
             return builder;
         }
 
+        /// <summary>
+        ///     Uses the typeless redis cache serializer. <seealso cref="DefaultRedisCacheSerializer"/>
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        /// <returns></returns>
         [NotNull]
         public static IIocBuilder UseTypelessRedisCacheSerializer([NotNull] this IIocBuilder builder)
         {
