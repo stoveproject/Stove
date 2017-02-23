@@ -24,13 +24,20 @@
 * EventBus for DDD use cases
 * EntityFramework
 * Generic Repository Pattern, DbContext, Multiple DbContext control in one unit of work, TransactionScope support
-
+* Dapper and EF both can use in one application.
+* Dapper and EF have their own repositories. `IDapperRepository<Product>`, `IRepository<Product>`
+* Dapper-EntityFramework works under same transaction and unit of work scope, if any exception appears in domain whole transaction will be rollback, including Dapper's insert/deletes and EF's.
+* RabbitMQ support
+* HangFire support
+* Redis support
+* A lot of extensions
+* Strictly **SOLID**
 
 ## Composition Root
 ```csharp
 IRootResolver resolver = IocBuilder.New
                                    .UseAutofacContainerBuilder()
-                                   .UseStove(starterBootstrapperType: typeof(StoveDemoBootstrapper), autoUnitOfWorkInterceptionEnabled: true)
+                                   .UseStove<StoveDemoBootstrapper>(autoUnitOfWorkInterceptionEnabled: true)
                                    .UseStoveEntityFramework()
                                    .UseStoveDapper()
                                    .UseStoveMapster()
@@ -40,6 +47,14 @@ IRootResolver resolver = IocBuilder.New
                                    .UseStoveNLog()
                                    .UseStoveBackgroundJobs()
                                    .UseStoveRedisCaching()
+                                   .UseStoveRabbitMQ(configuration =>
+                                   {
+                                       configuration.HostAddress = "rabbitmq://localhost/";
+                                       configuration.Username = "admin";
+                                       configuration.Password = "admin";
+                                       configuration.QueueName = "Default";
+                                       return configuration;
+                                   })
                                    .UseStoveHangfire(configuration =>
                                    {
                                        configuration.GlobalConfiguration
@@ -50,4 +65,9 @@ IRootResolver resolver = IocBuilder.New
                                    .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()))
                                    .CreateResolver();
 
+var someDomainService = resolver.Resolve<SomeDomainService>();
+someDomainService.DoSomeStuff();
+
 ```
+
+## It will be documented in detail!
