@@ -10,7 +10,7 @@ namespace Stove.Mapster.Mapster
         public StoveMapsterConfiguration()
         {
             Configurators = new List<Action<TypeAdapterConfig>>();
-            Configuration = new TypeAdapterConfig();
+            Configuration = TypeAdapterConfig.GlobalSettings;
             Adapter = new Adapter(Configuration);
         }
 
@@ -18,6 +18,6 @@ namespace Stove.Mapster.Mapster
 
         public List<Action<TypeAdapterConfig>> Configurators { get; }
 
-        public Adapter Adapter { get; }
+        public IAdapter  Adapter { get; }
     }
 }

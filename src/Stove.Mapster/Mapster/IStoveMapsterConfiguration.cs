@@ -11,6 +11,6 @@ namespace Stove.Mapster.Mapster
 
         List<Action<TypeAdapterConfig>> Configurators { get; }
 
-        Adapter Adapter { get; }
+        IAdapter Adapter { get; }
     }
 }
