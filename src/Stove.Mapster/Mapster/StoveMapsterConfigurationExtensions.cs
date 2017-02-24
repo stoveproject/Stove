@@ -1,12 +1,20 @@
-﻿using Stove.Configuration;
+﻿using JetBrains.Annotations;
+
+using Stove.Configuration;
 
 namespace Stove.Mapster.Mapster
 {
     public static class StoveMapsterConfigurationExtensions
     {
-        public static IStoveMapsterConfiguraiton StoveMapster(this IModuleConfigurations configurations)
+        /// <summary>
+        ///     Stove Mapster Configuration
+        /// </summary>
+        /// <param name="configurations">The configurations.</param>
+        /// <returns></returns>
+        [NotNull]
+        public static IStoveMapsterConfiguration StoveMapster([NotNull] this IModuleConfigurations configurations)
         {
-            return configurations.StoveConfiguration.Get<IStoveMapsterConfiguraiton>();
+            return configurations.StoveConfiguration.Get<IStoveMapsterConfiguration>();
         }
     }
 }

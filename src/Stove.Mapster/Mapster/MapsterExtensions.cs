@@ -1,4 +1,6 @@
-﻿using Mapster;
+﻿using JetBrains.Annotations;
+
+using Mapster;
 
 namespace Stove.Mapster.Mapster
 {
@@ -11,9 +13,9 @@ namespace Stove.Mapster.Mapster
         /// </summary>
         /// <typeparam name="TDestination">Type of the destination object</typeparam>
         /// <param name="source">Source object</param>
-        public static TDestination MapTo<TDestination>(this object source)
+        public static TDestination MapTo<TDestination>([NotNull] this object source)
         {
-            return source.Adapt<TDestination>();
+            return source.Adapt<TDestination>(TypeAdapterConfig.GlobalSettings);
         }
 
         /// <summary>
@@ -27,7 +29,7 @@ namespace Stove.Mapster.Mapster
         /// <returns></returns>
         public static TDestination MapTo<TSource, TDestination>(this TSource source, TDestination destination)
         {
-            return source.Adapt(destination);
+            return source.Adapt(destination, TypeAdapterConfig.GlobalSettings);
         }
     }
 }

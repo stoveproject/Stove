@@ -5,10 +5,12 @@ using Mapster;
 
 namespace Stove.Mapster.Mapster
 {
-    public interface IStoveMapsterConfiguraiton
+    public interface IStoveMapsterConfiguration
     {
         TypeAdapterConfig Configuration { get; }
 
         List<Action<TypeAdapterConfig>> Configurators { get; }
+
+        Adapter Adapter { get; }
     }
 }
