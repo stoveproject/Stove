@@ -21,7 +21,7 @@ namespace Stove.Mapster
         {
             return builder
                 .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()))
-                .RegisterServices(r => r.Register<IStoveMapsterConfiguraiton, StoveMapsterConfiguration>(Lifetime.Singleton))
+                .RegisterServices(r => r.Register<IStoveMapsterConfiguration, StoveMapsterConfiguration>(Lifetime.Singleton))
                 .RegisterServices(r => r.Register<IObjectMapper, MapsterObjectMapper>(Lifetime.Singleton));
         }
     }

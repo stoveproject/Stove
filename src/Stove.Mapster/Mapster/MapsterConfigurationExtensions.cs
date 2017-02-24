@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Reflection;
 
+using JetBrains.Annotations;
+
 using Mapster;
 
 namespace Stove.Mapster.Mapster
 {
-    internal static class AutoMapperConfigurationExtensions
+    internal static class MapsterConfigurationExtensions
     {
-        public static void CreateAutoAttributeMaps(this TypeAdapterConfig configuration, Type type)
+        public static void CreateAutoAttributeMaps([NotNull] this TypeAdapterConfig configuration, [NotNull] Type type)
         {
             foreach (AutoMapAttributeBase autoMapAttribute in type.GetCustomAttributes<AutoMapAttributeBase>())
             {
