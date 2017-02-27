@@ -1,8 +1,8 @@
 {
-  "version": "0.0.9-*",
+  "version": "0.0.10-*",
 
   "dependencies": {
-    "Stove": "0.0.9",
+    "Stove": "0.0.10",
     "Hangfire": "1.6.8",
     "Hangfire.Core": "1.6.8",
     "Hangfire.SqlServer": "1.6.8",

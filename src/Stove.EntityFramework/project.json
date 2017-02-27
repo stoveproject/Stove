@@ -1,8 +1,8 @@
 {
-  "version" : "0.0.9-*",
+  "version" : "0.0.10-*",
 
   "dependencies": {
-    "Stove": "0.0.9",
+    "Stove": "0.0.10",
     "EntityFramework": "6.1.3",
     "EntityFramework.DynamicFilters": "2.6.0",
     "System.Collections": "4.3.0",
