@@ -1,18 +1,21 @@
 ﻿using System;
 
+using JetBrains.Annotations;
+
 using Mapster;
 
 namespace Stove.Mapster.Mapster
 {
     public abstract class AutoMapAttributeBase : Attribute
     {
-        protected AutoMapAttributeBase(params Type[] targetTypes)
+        protected AutoMapAttributeBase([NotNull] params Type[] targetTypes)
         {
             TargetTypes = targetTypes;
         }
 
+        [NotNull]
         public Type[] TargetTypes { get; private set; }
 
-        public abstract void CreateMap(TypeAdapterConfig configuration, Type destination);
+        public abstract void CreateMap([NotNull] TypeAdapterConfig configuration, [NotNull] Type needstoMap);
     }
 }

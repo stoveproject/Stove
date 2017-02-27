@@ -34,6 +34,9 @@ namespace Stove.RabbitMQ.Tests
         [Fact]
         public void configuration_settings_should_work()
         {
+            //-----------------------------------------------------------------------------------------------------------
+            // Arrange
+            //-----------------------------------------------------------------------------------------------------------
             IStoveRabbitMQConfiguration configuration = LocalResolver.Resolve<IModuleConfigurations>().StoveRabbitMQ();
             configuration.HostAddress = "127.0.0.1";
             configuration.MaxRetryCount = 1;
@@ -41,6 +44,20 @@ namespace Stove.RabbitMQ.Tests
             configuration.QueueName = "Default";
             configuration.UseRetryMechanism = true;
             configuration.Username = "user";
+
+            //-----------------------------------------------------------------------------------------------------------
+            // Act
+            //-----------------------------------------------------------------------------------------------------------
+            var configurationFromIoc = LocalResolver.Resolve<IStoveRabbitMQConfiguration>();
+
+            //-----------------------------------------------------------------------------------------------------------
+            // Assert
+            //-----------------------------------------------------------------------------------------------------------
+            configurationFromIoc.HostAddress.ShouldBe("127.0.0.1");
+            configurationFromIoc.MaxRetryCount.ShouldBe(configuration.MaxRetryCount);
+            configurationFromIoc.Password.ShouldBe(configuration.Password);
+            configurationFromIoc.QueueName.ShouldBe(configuration.QueueName);
+            configurationFromIoc.UseRetryMechanism.ShouldBe(configuration.UseRetryMechanism);
         }
     }
 }
