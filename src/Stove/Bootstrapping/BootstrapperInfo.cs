@@ -8,7 +8,7 @@ namespace Stove.Bootstrapping
 {
     public class BootstrapperInfo
     {
-        public BootstrapperInfo([NotNull] Type type, StoveBootstrapper instance)
+        public BootstrapperInfo([NotNull] Type type, [NotNull] StoveBootstrapper instance)
         {
             Type = type;
             Assembly = Type.Assembly;
@@ -16,12 +16,16 @@ namespace Stove.Bootstrapping
             Dependencies = new List<BootstrapperInfo>();
         }
 
+        [NotNull]
         public StoveBootstrapper Instance { get; }
 
+        [NotNull]
         public Type Type { get; }
 
+        [NotNull]
         public List<BootstrapperInfo> Dependencies { get; }
 
+        [NotNull]
         public Assembly Assembly { get; }
     }
 }

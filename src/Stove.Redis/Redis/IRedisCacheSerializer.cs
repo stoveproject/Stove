@@ -1,5 +1,7 @@
 ﻿using System;
 
+using JetBrains.Annotations;
+
 using StackExchange.Redis;
 
 namespace Stove.Redis.Redis
@@ -17,6 +19,7 @@ namespace Stove.Redis.Redis
         /// <returns>
         ///     Returns a newly constructed object.
         /// </returns>
+        [NotNull]
         object Deserialize(RedisValue objbyte);
 
         /// <summary>
@@ -26,7 +29,8 @@ namespace Stove.Redis.Redis
         /// <param name="type">Type of the object.</param>
         /// <returns>Returns a string representing the object instance that can be placed into the Redis cache.</returns>
         /// <seealso cref="Deserialize" />
-        string Serialize(object value, Type type);
+        [NotNull]
+        string Serialize([NotNull] object value, [CanBeNull] Type type);
 
         /// <summary>
         ///     Produce a string representation of the supplied object.
@@ -36,6 +40,7 @@ namespace Stove.Redis.Redis
         ///     Returns a string representing the object instance that can be placed into the Redis cache.
         /// </returns>
         /// <seealso cref="Deserialize" />
-        string Serialize(object value);
+        [NotNull]
+        string Serialize([NotNull] object value);
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System;
 
+using JetBrains.Annotations;
+
 using StackExchange.Redis;
 
 namespace Stove.Redis.Redis
@@ -9,12 +11,10 @@ namespace Stove.Redis.Redis
     /// </summary>
     internal static class RedisDatabaseExtensions
     {
-        public static void KeyDeleteWithPrefix(this IDatabase database, string prefix)
+        public static void KeyDeleteWithPrefix([NotNull] this IDatabase database, [NotNull] string prefix)
         {
-            if (database == null)
-            {
-                throw new ArgumentException("Database cannot be null", nameof(database));
-            }
+            Check.NotNull(database, nameof(database));
+            Check.NotNull(prefix, nameof(prefix));
 
             if (string.IsNullOrWhiteSpace(prefix))
             {
@@ -28,17 +28,10 @@ namespace Stove.Redis.Redis
                 end", values: new RedisValue[] { prefix });
         }
 
-        public static int KeyCount(this IDatabase database, string prefix)
+        public static int KeyCount([NotNull] this IDatabase database, [NotNull] string prefix)
         {
-            if (database == null)
-            {
-                throw new ArgumentException("Database cannot be null", nameof(database));
-            }
-
-            if (string.IsNullOrWhiteSpace(prefix))
-            {
-                throw new ArgumentException("Prefix cannot be empty", nameof(database));
-            }
+            Check.NotNull(database, nameof(database));
+            Check.NotNull(prefix, nameof(prefix));
 
             RedisResult retVal = database.ScriptEvaluate("return table.getn(redis.call('keys', ARGV[1]))", values: new RedisValue[] { prefix });
 

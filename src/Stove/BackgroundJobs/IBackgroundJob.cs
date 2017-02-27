@@ -1,4 +1,6 @@
-﻿namespace Stove.BackgroundJobs
+﻿using JetBrains.Annotations;
+
+namespace Stove.BackgroundJobs
 {
     /// <summary>
     ///     Defines interface of a background job.
@@ -9,6 +11,6 @@
         ///     Executes the job with the <see cref="args" />.
         /// </summary>
         /// <param name="args">Job arguments.</param>
-        void Execute(TArgs args);
+        void Execute([NotNull] TArgs args);
     }
 }

@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 
 using Autofac.Extras.IocManager;
 
+using JetBrains.Annotations;
+
 using Stove.Domain.Uow;
 using Stove.EntityFramework.EntityFramework.Utils;
 using Stove.Extensions;
@@ -46,6 +48,7 @@ namespace Stove.EntityFramework.EntityFramework.Uow
             ActiveDbContexts = new Dictionary<string, DbContext>();
         }
 
+        [NotNull]
         protected IDictionary<string, DbContext> ActiveDbContexts { get; }
 
         protected override void BeginUow()
@@ -58,17 +61,18 @@ namespace Stove.EntityFramework.EntityFramework.Uow
 
         public override void SaveChanges()
         {
-            ActiveDbContexts.Values.ToList().ForEach(SaveChangesInDbContext);
+            GetAllActiveDbContexts().ForEach(SaveChangesInDbContext);
         }
 
         public override async Task SaveChangesAsync()
         {
-            foreach (DbContext dbContext in ActiveDbContexts.Values)
+            foreach (DbContext dbContext in GetAllActiveDbContexts())
             {
                 await SaveChangesInDbContextAsync(dbContext);
             }
         }
 
+        [NotNull]
         public IReadOnlyList<DbContext> GetAllActiveDbContexts()
         {
             return ActiveDbContexts.Values.ToImmutableList();
@@ -98,6 +102,7 @@ namespace Stove.EntityFramework.EntityFramework.Uow
             DisposeUow();
         }
 
+        [NotNull]
         public virtual TDbContext GetOrCreateDbContext<TDbContext>()
             where TDbContext : DbContext
         {
@@ -140,7 +145,7 @@ namespace Stove.EntityFramework.EntityFramework.Uow
             }
             else
             {
-                foreach (DbContext activeDbContext in ActiveDbContexts.Values)
+                foreach (DbContext activeDbContext in GetAllActiveDbContexts())
                 {
                     Release(activeDbContext);
                 }
@@ -149,22 +154,22 @@ namespace Stove.EntityFramework.EntityFramework.Uow
             ActiveDbContexts.Clear();
         }
 
-        protected virtual void SaveChangesInDbContext(DbContext dbContext)
+        protected virtual void SaveChangesInDbContext([NotNull] DbContext dbContext)
         {
             dbContext.SaveChanges();
         }
 
-        protected virtual async Task SaveChangesInDbContextAsync(DbContext dbContext)
+        protected virtual async Task SaveChangesInDbContextAsync([NotNull] DbContext dbContext)
         {
             await dbContext.SaveChangesAsync();
         }
 
-        protected virtual void Release(DbContext dbContext)
+        protected virtual void Release([NotNull] DbContext dbContext)
         {
             dbContext.Dispose();
         }
 
-        private static void ObjectContext_ObjectMaterialized(DbContext dbContext, ObjectMaterializedEventArgs e)
+        private void ObjectContext_ObjectMaterialized([NotNull] DbContext dbContext, ObjectMaterializedEventArgs e)
         {
             Type entityType = ObjectContext.GetObjectType(e.Entity.GetType());
 

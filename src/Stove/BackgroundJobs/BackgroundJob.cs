@@ -1,4 +1,6 @@
-﻿using Stove.Domain.Uow;
+﻿using JetBrains.Annotations;
+
+using Stove.Domain.Uow;
 using Stove.Log;
 
 namespace Stove.BackgroundJobs
@@ -21,6 +23,7 @@ namespace Stove.BackgroundJobs
         /// <summary>
         ///     Reference to <see cref="IUnitOfWorkManager" />.
         /// </summary>
+        [NotNull]
         public IUnitOfWorkManager UnitOfWorkManager
         {
             get
@@ -38,6 +41,7 @@ namespace Stove.BackgroundJobs
         /// <summary>
         ///     Gets current unit of work.
         /// </summary>
+        [CanBeNull]
         protected IActiveUnitOfWork CurrentUnitOfWork
         {
             get { return UnitOfWorkManager.Current; }
@@ -46,6 +50,7 @@ namespace Stove.BackgroundJobs
         /// <summary>
         ///     Reference to the logger to write logs.
         /// </summary>
+        [NotNull]
         public ILogger Logger { protected get; set; }
 
         public abstract void Execute(TArgs args);

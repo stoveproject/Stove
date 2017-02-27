@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
+using JetBrains.Annotations;
+
 namespace Stove
 {
     /// <summary>
@@ -19,7 +21,7 @@ namespace Stove
         /// <summary>
         ///     Constructor for serializing.
         /// </summary>
-        public StoveInitializationException(SerializationInfo serializationInfo, StreamingContext context)
+        public StoveInitializationException([NotNull] SerializationInfo serializationInfo, StreamingContext context)
             : base(serializationInfo, context)
         {
         }
@@ -28,7 +30,7 @@ namespace Stove
         ///     Constructor.
         /// </summary>
         /// <param name="message">Exception message</param>
-        public StoveInitializationException(string message)
+        public StoveInitializationException([NotNull] string message)
             : base(message)
         {
         }
@@ -38,7 +40,7 @@ namespace Stove
         /// </summary>
         /// <param name="message">Exception message</param>
         /// <param name="innerException">Inner exception</param>
-        public StoveInitializationException(string message, Exception innerException)
+        public StoveInitializationException([NotNull] string message, [CanBeNull] Exception innerException)
             : base(message, innerException)
         {
         }

@@ -1,20 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using JetBrains.Annotations;
+
 using Stove.Collections.Extensions;
 
 namespace Stove.Bootstrapping
 {
     public class BootstrapperCollection : List<BootstrapperInfo>
     {
-        public BootstrapperCollection(Type startupBootstrapperType)
+        public BootstrapperCollection([NotNull] Type startupBootstrapperType)
         {
             StartupBootstrapperType = startupBootstrapperType;
         }
 
+        [NotNull]
         public Type StartupBootstrapperType { get; }
 
-        public static void EnsureKernelBootstrapperToBeFirst(List<BootstrapperInfo> bootstrappers)
+        public static void EnsureKernelBootstrapperToBeFirst([NotNull] List<BootstrapperInfo> bootstrappers)
         {
             int kernelBootstrapperIndex = bootstrappers.FindIndex(m => m.Type == typeof(StoveKernelBootstrapper));
             if (kernelBootstrapperIndex <= 0)

@@ -1,4 +1,6 @@
-﻿using Stove.Configuration;
+﻿using JetBrains.Annotations;
+
+using Stove.Configuration;
 
 namespace Stove.RabbitMQ.RabbitMQ
 {
@@ -9,7 +11,8 @@ namespace Stove.RabbitMQ.RabbitMQ
         /// </summary>
         /// <param name="configurations">The configurations.</param>
         /// <returns></returns>
-        public static IStoveRabbitMQConfiguration StoveRabbitMQ(this IModuleConfigurations configurations)
+        [NotNull]
+        public static IStoveRabbitMQConfiguration StoveRabbitMQ([NotNull] this IModuleConfigurations configurations)
         {
             return configurations.StoveConfiguration.Get<IStoveRabbitMQConfiguration>();
         }

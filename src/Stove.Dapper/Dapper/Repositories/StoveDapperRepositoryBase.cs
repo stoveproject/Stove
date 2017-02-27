@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 using Stove.Domain.Entities;
 
-namespace Stove.Domain.Repositories
+namespace Stove.Dapper.Dapper.Repositories
 {
     public abstract class StoveDapperRepositoryBase<TEntity, TPrimaryKey> : IDapperRepository<TEntity, TPrimaryKey> where TEntity : class, IEntity<TPrimaryKey>
     {
@@ -98,6 +98,59 @@ namespace Stove.Domain.Repositories
         public virtual Task<IEnumerable<TEntity>> GetSetAsync(Expression<Func<TEntity, bool>> predicate, int firstResult, int maxResults, string sortingProperty, bool ascending = true)
         {
             return Task.FromResult(GetSet(predicate, firstResult, maxResults, sortingProperty, ascending));
+        }
+
+        public virtual Task<IEnumerable<TEntity>> GetListPagedAsync(Expression<Func<TEntity, bool>> predicate, int pageNumber, int itemsPerPage, bool ascending = true, params Expression<Func<TEntity, object>>[] sortingExpression)
+        {
+            return Task.FromResult(GetListPaged(predicate, pageNumber, itemsPerPage, ascending, sortingExpression));
+        }
+
+        public abstract IEnumerable<TEntity> GetListPaged(Expression<Func<TEntity, bool>> predicate, int pageNumber, int itemsPerPage, bool ascending = true, params Expression<Func<TEntity, object>>[] sortingExpression);
+
+        public abstract IEnumerable<TEntity> GetSet(Expression<Func<TEntity, bool>> predicate, int firstResult, int maxResults, bool ascending = true, params Expression<Func<TEntity, object>>[] sortingExpression);
+
+        public virtual Task<IEnumerable<TEntity>> GetSetAsync(Expression<Func<TEntity, bool>> predicate, int firstResult, int maxResults, bool ascending = true, params Expression<Func<TEntity, object>>[] sortingExpression)
+        {
+            return Task.FromResult(GetSet(predicate, firstResult, maxResults, ascending, sortingExpression));
+        }
+
+        public abstract void Insert(TEntity entity);
+
+        public virtual Task InsertAsync(TEntity entity)
+        {
+            Insert(entity);
+            return Task.FromResult(0);
+        }
+
+        public abstract void Update(TEntity entity);
+
+        public virtual Task UpdateAsync(TEntity entity)
+        {
+            Update(entity);
+            return Task.FromResult(0);
+        }
+
+        public abstract void Delete(TEntity entity);
+
+        public virtual Task DeleteAsync(TEntity entity)
+        {
+            Delete(entity);
+            return Task.FromResult(0);
+        }
+
+        public abstract void Delete(Expression<Func<TEntity, bool>> predicate);
+
+        public virtual Task DeleteAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            Delete(predicate);
+            return Task.FromResult(0);
+        }
+
+        public abstract TPrimaryKey InsertAndGetId(TEntity entity);
+
+        public virtual Task<TPrimaryKey> InsertAndGetIdAsync(TEntity entity)
+        {
+            return Task.FromResult(InsertAndGetId(entity));
         }
     }
 }

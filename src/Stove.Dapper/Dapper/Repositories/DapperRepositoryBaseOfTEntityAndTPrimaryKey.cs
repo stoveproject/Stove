@@ -11,8 +11,8 @@ using Dapper;
 using DapperExtensions;
 
 using Stove.Dapper.Dapper.Expressions;
+using Stove.Dapper.Dapper.Extensions;
 using Stove.Domain.Entities;
-using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
 using Stove.EntityFramework.EntityFramework;
 
@@ -231,6 +231,41 @@ namespace Stove.Dapper.Dapper.Repositories
         public override Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return Connection.CountAsync<TEntity>(predicate.ToPredicateGroup<TEntity, TPrimaryKey>(), ActiveTransaction);
+        }
+
+        public override IEnumerable<TEntity> GetListPaged(Expression<Func<TEntity, bool>> predicate, int pageNumber, int itemsPerPage, bool ascending = true, params Expression<Func<TEntity, object>>[] sortingExpression)
+        {
+            return Connection.GetPage<TEntity>(predicate.ToPredicateGroup<TEntity, TPrimaryKey>(), sortingExpression.ToSortable(ascending), pageNumber, itemsPerPage, ActiveTransaction);
+        }
+
+        public override IEnumerable<TEntity> GetSet(Expression<Func<TEntity, bool>> predicate, int firstResult, int maxResults, bool ascending = true, params Expression<Func<TEntity, object>>[] sortingExpression)
+        {
+            return Connection.GetSet<TEntity>(predicate.ToPredicateGroup<TEntity, TPrimaryKey>(), sortingExpression.ToSortable(ascending), firstResult, maxResults, ActiveTransaction);
+        }
+
+        public override void Insert(TEntity entity)
+        {
+            Connection.Insert(entity, ActiveTransaction);
+        }
+
+        public override void Update(TEntity entity)
+        {
+            Connection.Update(entity, ActiveTransaction);
+        }
+
+        public override void Delete(TEntity entity)
+        {
+            Connection.Delete(entity, ActiveTransaction);
+        }
+
+        public override void Delete(Expression<Func<TEntity, bool>> predicate)
+        {
+            Connection.Delete(predicate.ToPredicateGroup<TEntity, TPrimaryKey>(), ActiveTransaction);
+        }
+
+        public override TPrimaryKey InsertAndGetId(TEntity entity)
+        {
+            return Connection.Insert(entity, ActiveTransaction);
         }
     }
 }

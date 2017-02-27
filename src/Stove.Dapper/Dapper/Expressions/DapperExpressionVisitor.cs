@@ -193,7 +193,7 @@ namespace Stove.Dapper.Dapper.Expressions
                 }
 
                 // this is a PropertyExpression but as it's internal, to use, we cast to the base MemberExpression instead (see http://social.msdn.microsoft.com/Forums/en-US/ab528f6a-a60e-4af6-bf31-d58e3f373356/resolving-propertyexpressions-and-fieldexpressions-in-a-custom-linq-provider)
-                _processedProperty = node.Object; 
+                _processedProperty = node.Object;
                 var me = _processedProperty as MemberExpression;
 
                 AddField(me, op, arg, _unarySpecified);

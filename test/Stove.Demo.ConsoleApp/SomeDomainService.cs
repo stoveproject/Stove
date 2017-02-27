@@ -8,6 +8,7 @@ using LinqKit;
 using MassTransit;
 
 using Stove.BackgroundJobs;
+using Stove.Dapper.Dapper.Repositories;
 using Stove.Demo.ConsoleApp.BackgroundJobs;
 using Stove.Demo.ConsoleApp.DbContexes;
 using Stove.Demo.ConsoleApp.Dto;
@@ -112,6 +113,13 @@ namespace Stove.Demo.ConsoleApp
                 birdsSet.ToList();
 
                 IEnumerable<Person> person2FromDapper = _personDapperRepository.Query("select * from Person with(nolock) where name =@name", new { name = "Oğuzhan" });
+
+                _personDapperRepository.Insert(new Person("oğuzhan2"));
+                int id = _personDapperRepository.InsertAndGetId(new Person("oğuzhan3"));
+                Person person3 = _personDapperRepository.Get(id);
+                person3.Name = "oğuzhan4";
+                _personDapperRepository.Update(person3);
+                _personDapperRepository.Delete(person3);
 
                 #endregion
 

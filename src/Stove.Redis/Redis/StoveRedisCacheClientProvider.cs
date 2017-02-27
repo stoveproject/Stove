@@ -2,6 +2,8 @@
 
 using Autofac.Extras.IocManager;
 
+using JetBrains.Annotations;
+
 using StackExchange.Redis;
 using StackExchange.Redis.Extensions.Core;
 
@@ -19,7 +21,7 @@ namespace Stove.Redis.Redis
         /// <summary>
         ///     Initializes a new instance of the <see cref="StoveRedisCacheClientProvider" /> class.
         /// </summary>
-        public StoveRedisCacheClientProvider(IStoveRedisCacheConfiguration configuration, RedisSerializer redisSerializer)
+        public StoveRedisCacheClientProvider([NotNull] IStoveRedisCacheConfiguration configuration, [NotNull] RedisSerializer redisSerializer)
         {
             _configuration = configuration;
             _redisSerializer = redisSerializer;

@@ -1,5 +1,7 @@
 ﻿using System;
 
+using JetBrains.Annotations;
+
 using Stove.Threading;
 
 namespace Stove.BackgroundJobs
@@ -19,8 +21,8 @@ namespace Stove.BackgroundJobs
         /// <param name="priority">Job priority.</param>
         /// <param name="delay">Job delay (wait duration before first try).</param>
         public static void Enqueue<TJob, TArgs>(
-            this IBackgroundJobManager backgroundJobManager,
-            TArgs args,
+            [NotNull] this IBackgroundJobManager backgroundJobManager,
+            [NotNull] TArgs args,
             BackgroundJobPriority priority = BackgroundJobPriority.Normal,
             TimeSpan? delay = null)
             where TJob : IBackgroundJob<TArgs>

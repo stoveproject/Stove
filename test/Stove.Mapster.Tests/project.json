@@ -1,0 +1,16 @@
+﻿{
+  "version" : "1.0.0-*",
+
+  "testRunner" : "xunit",
+
+  "dependencies" : {
+    "Stove.Mapster" : "0.0.10-*",
+    "Stove.TestBase" : "0.0.1-*"
+  },
+
+  "frameworks" : {
+    "net461" : {
+    
+    }
+  }
+}

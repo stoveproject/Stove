@@ -1,7 +1,6 @@
 version: 1.0.{build}
-branches:
-      only:
-        - master
+pull_requests:  
+  do_not_increment_build_number: true
 before_build:
 - cmd: dotnet.exe restore
 assembly_info:
@@ -31,10 +30,16 @@ after_build:
  
 test:
   assemblies:
-  - test\Stove.EntityFramework.Tests\bin\Debug\net452\win7-x64\Stove.EntityFramework.Tests.dll
-  - test\Stove.Tests\bin\Debug\net452\win7-x64\Stove.Tests.dll
+  - test\Stove.EntityFramework.Tests\bin\Debug\net461\win7-x64\Stove.EntityFramework.Tests.dll
+  - test\Stove.Mapster.Tests\bin\Debug\net461\win7-x64\Stove.Mapster.Tests.dll
+  - test\Stove.RabbitMQ.Tests\bin\Debug\net461\win7-x64\Stove.RabbitMQ.Tests.dll
+  - test\Stove.Tests\bin\Debug\net461\win7-x64\Stove.Tests.dll
+  - test\Stove.Tests.SampleApplication\bin\Debug\net461\win7-x64\Stove.Tests.SampleApplication.dll
+  
 deploy:
 - provider: NuGet
+  on:
+    branch: master
   api_key:
     secure: liSTqN52OJQy9fZJk6gubSgYBAy4EXcEPCDSCLJ/3T9cZufzpTwvBlGPLX+iP2n9
 artifacts:

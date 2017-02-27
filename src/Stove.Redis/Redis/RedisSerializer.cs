@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 
 using Autofac.Extras.IocManager;
 
+using JetBrains.Annotations;
+
 using StackExchange.Redis.Extensions.Core;
 
 namespace Stove.Redis.Redis
@@ -11,7 +13,7 @@ namespace Stove.Redis.Redis
     {
         private readonly IRedisCacheSerializer _redisCacheSerializer;
 
-        public RedisSerializer(IRedisCacheSerializer redisCacheSerializer)
+        public RedisSerializer([NotNull] IRedisCacheSerializer redisCacheSerializer)
         {
             _redisCacheSerializer = redisCacheSerializer;
         }
