@@ -4,6 +4,7 @@ using Shouldly;
 
 using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
+using Stove.Events.Bus;
 using Stove.Events.Bus.Entities;
 using Stove.Events.Bus.Handlers;
 using Stove.Extensions;
@@ -61,6 +62,37 @@ namespace Stove.Tests.SampleApplication
 
         [Fact]
         public void uow_complete_handle_eventbus_should_work_with_repository_insert()
+        {
+            var uowManager = LocalResolver.Resolve<IUnitOfWorkManager>();
+            var userRepository = LocalResolver.Resolve<IRepository<User>>();
+
+            using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
+            {
+                for (var i = 0; i < 1000; i++)
+                {
+                    userRepository.Insert(new User
+                    {
+                        Email = "ouzsykn@hotmail.com",
+                        Surname = "Sykn",
+                        Name = "Oğuz"
+                    });
+                }
+
+                uow.Complete();
+            }
+
+            using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
+            {
+                userRepository.GetAll().ForEach(user => user.Surname = "Soykan");
+                userRepository.Count(x => x.Email == "ouzsykn@hotmail.com").ShouldBe(1000);
+                userRepository.FirstOrDefault(x => x.Email == "ouzsykn@hotmail.com").ShouldNotBeNull();
+
+                uow.Complete();
+            }
+        }
+
+        [Fact]
+        public void uow_complete_handle_eventbus_should_work_with_repository_insert2()
         {
             var uowManager = LocalResolver.Resolve<IUnitOfWorkManager>();
             var userRepository = LocalResolver.Resolve<IRepository<User>>();

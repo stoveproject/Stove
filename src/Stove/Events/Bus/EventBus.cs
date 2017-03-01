@@ -22,6 +22,11 @@ namespace Stove.Events.Bus
     public class EventBus : IEventBus
     {
         /// <summary>
+        ///     Gets the default <see cref="EventBus" /> instance.
+        /// </summary>
+        public static EventBus Default = new EventBus();
+
+        /// <summary>
         ///     All registered handler factories.
         ///     Key: Type of the event
         ///     Value: List of handler factories
