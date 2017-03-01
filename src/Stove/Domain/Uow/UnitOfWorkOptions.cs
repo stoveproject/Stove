@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Transactions;
 
 namespace Stove.Domain.Uow
@@ -73,6 +74,19 @@ namespace Stove.Domain.Uow
             if (!IsolationLevel.HasValue && defaultOptions.IsolationLevel.HasValue)
             {
                 IsolationLevel = defaultOptions.IsolationLevel.Value;
+            }
+        }
+
+        internal void FillOuterUowFiltersForNonProvidedOptions(List<DataFilterConfiguration> filterOverrides)
+        {
+            foreach (var filterOverride in filterOverrides)
+            {
+                if (FilterOverrides.Any(fo => fo.FilterName == filterOverride.FilterName))
+                {
+                    continue;
+                }
+
+                FilterOverrides.Add(filterOverride);
             }
         }
     }

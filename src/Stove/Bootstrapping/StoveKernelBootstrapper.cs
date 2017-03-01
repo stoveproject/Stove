@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using Autofac;
 using Autofac.Extras.IocManager;
 
 using Stove.BackgroundJobs;
@@ -68,7 +69,7 @@ namespace Stove.Bootstrapping
                 Type[] genericArgs = @interface.GetGenericArguments();
                 if (genericArgs.Length == 1)
                 {
-                    _eventBus.Register(genericArgs[0], new IocHandlerFactory(Resolver.Resolve<IScopeResolver>().BeginScope(), impl));
+                    _eventBus.Register(genericArgs[0], new IocHandlerFactory(Resolver.Resolve<IScopeResolver>(), impl));
                 }
             }
         }

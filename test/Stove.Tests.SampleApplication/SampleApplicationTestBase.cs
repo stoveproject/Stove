@@ -26,7 +26,7 @@ namespace Stove.Tests.SampleApplication
             {
                 builder
                     .UseStoveEntityFramework()
-                    .UseStoveDefaultEventBus()
+                    .UseStoveEventBus()
                     .UseStoveDefaultConnectionStringResolver()
                     .UseStoveDbContextEfTransactionStrategy()
                     .UseStoveMapster();
@@ -51,6 +51,30 @@ namespace Stove.Tests.SampleApplication
                     Name = "Oğuzhan",
                     Surname = "Soykan",
                     Email = "oguzhansoykan@outlook.com"
+                });
+
+                context.Users.Add(new User
+                {
+                    CreationTime = Clock.Now,
+                    Name = "Neşet",
+                    Surname = "Ertaş",
+                    Email = "nesetertas@hotmail.com"
+                });
+
+                context.Users.Add(new User
+                {
+                    CreationTime = Clock.Now,
+                    Name = "Muharrem",
+                    Surname = "Ertaş",
+                    Email = "muharremertas@gmail.com"
+                });
+
+                context.Users.Add(new User
+                {
+                    CreationTime = Clock.Now,
+                    Name = "Çekiç",
+                    Surname = "Ali",
+                    Email = "cekicali@hotmail.com"
                 });
             });
         }
