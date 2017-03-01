@@ -5,8 +5,8 @@
 
   "dependencies": {
     "Effort.EF6": "1.3.0",
-    "Stove.EntityFramework": "0.0.10-*",
-    "Stove.Mapster": "0.0.10-*",
+    "Stove.EntityFramework": "0.0.11-*",
+    "Stove.Mapster": "0.0.11-*",
     "Stove.TestBase": "0.0.1-*"
   },
 

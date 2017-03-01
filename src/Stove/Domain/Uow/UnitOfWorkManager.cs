@@ -1,4 +1,5 @@
-﻿using System.Transactions;
+﻿using System.Linq;
+using System.Transactions;
 
 using Autofac.Extras.IocManager;
 
@@ -45,7 +46,9 @@ namespace Stove.Domain.Uow
 
             options.FillDefaultsForNonProvidedOptions(_defaultOptions);
 
-            if (options.Scope == TransactionScopeOption.Required && _currentUnitOfWorkProvider.Current != null)
+            IUnitOfWork outerUow = _currentUnitOfWorkProvider.Current;
+
+            if (options.Scope == TransactionScopeOption.Required && outerUow != null)
             {
                 return new InnerUnitOfWorkCompleteHandle();
             }
@@ -57,6 +60,12 @@ namespace Stove.Domain.Uow
             uow.Failed += (sender, args) => { _currentUnitOfWorkProvider.Current = null; };
 
             uow.Disposed += (sender, args) => { _childScope.Dispose(); };
+
+            //Inherit filters from outer UOW
+            if (outerUow != null)
+            {
+                options.FillOuterUowFiltersForNonProvidedOptions(outerUow.Filters.ToList());
+            }
 
             uow.Begin(options);
 

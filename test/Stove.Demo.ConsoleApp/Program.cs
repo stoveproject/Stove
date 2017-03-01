@@ -34,7 +34,7 @@ namespace Stove.Demo.ConsoleApp
                                                .UseStoveEntityFramework()
                                                .UseStoveDapper()
                                                .UseStoveMapster()
-                                               .UseStoveDefaultEventBus()
+                                               .UseStoveEventBus()
                                                .UseStoveDbContextEfTransactionStrategy()
                                                .UseStoveTypedConnectionStringResolver()
                                                .UseStoveNLog()

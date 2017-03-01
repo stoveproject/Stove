@@ -81,18 +81,6 @@ namespace Stove
         }
 
         /// <summary>
-        ///     Uses the stove default event bus.
-        /// </summary>
-        /// <param name="builder">The builder.</param>
-        /// <returns></returns>
-        [NotNull]
-        public static IIocBuilder UseStoveDefaultEventBus([NotNull] this IIocBuilder builder)
-        {
-            builder.RegisterServices(r => r.Register<IEventBus>(context => EventBus.Default));
-            return builder;
-        }
-
-        /// <summary>
         ///     Uses the stove event bus.
         /// </summary>
         /// <param name="builder">The builder.</param>
@@ -100,7 +88,20 @@ namespace Stove
         [NotNull]
         public static IIocBuilder UseStoveEventBus([NotNull] this IIocBuilder builder)
         {
-            builder.RegisterServices(r => r.Register<IEventBus, EventBus>());
+            builder.RegisterServices(r => r.Register<IEventBus, EventBus>(Lifetime.Singleton));
+            return builder;
+        }
+
+
+        /// <summary>
+        ///     Uses the stove default event bus.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        /// <returns></returns>
+        [NotNull]
+        public static IIocBuilder UseStoveDefaultEventBus([NotNull] this IIocBuilder builder)
+        {
+            builder.RegisterServices(r => r.Register<IEventBus>(context => EventBus.Default, Lifetime.Singleton));
             return builder;
         }
 

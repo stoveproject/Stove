@@ -4,8 +4,8 @@
   "testRunner" : "xunit",
 
   "dependencies": {
-    "Stove": "0.0.10",
-    "Stove.RabbitMQ": "0.0.10-*",
+    "Stove": "0.0.11",
+    "Stove.RabbitMQ": "0.0.11-*",
     "Stove.TestBase": "0.0.1-*"
   },
 

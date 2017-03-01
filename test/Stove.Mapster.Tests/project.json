@@ -4,7 +4,7 @@
   "testRunner" : "xunit",
 
   "dependencies" : {
-    "Stove.Mapster" : "0.0.10-*",
+    "Stove.Mapster" : "0.0.11-*",
     "Stove.TestBase" : "0.0.1-*"
   },
 
