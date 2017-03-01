@@ -6,10 +6,10 @@
   },
 
   "dependencies": {
-    "Autofac": "4.3.0",
+    "Autofac": "4.4.0",
     "Autofac.Extras.IocManager": "2.0.7",
     "EntityFramework": "6.1.3",
-    "EntityFrameworkProfiler.Appender": "3.0.3105.0",
+    "EntityFrameworkProfiler.Appender": "4.0.4035",
     "FluentAssemblyScanner": "1.0.7",
     "Hangfire.Core": "1.6.8",
     "Hangfire.SqlServer": "1.6.8",

@@ -3,7 +3,7 @@
 
   "testRunner": "xunit",
   "dependencies": {
-    "Autofac": "4.3.0",
+    "Autofac": "4.4.0",
     "Stove.TestBase": "0.0.1-*"
   },
 
