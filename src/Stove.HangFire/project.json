@@ -3,16 +3,16 @@
 
   "dependencies": {
     "Stove": "0.0.11",
-    "Hangfire": "1.6.8",
-    "Hangfire.Core": "1.6.8",
-    "Hangfire.SqlServer": "1.6.8",
     "Microsoft.Owin": "3.0.1",
     "Microsoft.Owin.Host.SystemWeb": "3.0.1",
     "Newtonsoft.Json": "9.0.1",
     "Owin": "1.0",
-    "Autofac.Extras.IocManager": "2.0.7",
     "FluentAssemblyScanner": "1.0.7",
-    "Autofac": "4.4.0"
+    "Autofac": "4.4.0",
+    "Autofac.Extras.IocManager": "2.1.0",
+    "Hangfire": "1.6.9",
+    "Hangfire.Core": "1.6.9",
+    "Hangfire.SqlServer": "1.6.9"
   },
 
   "frameworks": {

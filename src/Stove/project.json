@@ -3,7 +3,7 @@
 
   "dependencies": {
     "Autofac": "4.4.0",
-    "Autofac.Extras.IocManager.DynamicProxy": "2.0.7",
+    "Autofac.Extras.IocManager.DynamicProxy": "2.1.0",
     "Castle.Core": "4.0.0",
     "FluentAssemblyScanner": "1.0.7",
     "JetBrains.Annotations": "10.3.0",
