@@ -9,7 +9,7 @@
     "Autofac": "4.4.0",
     "Autofac.Extras.IocManager": "2.1.0",
     "EntityFramework": "6.1.3",
-    "EntityFrameworkProfiler.Appender": "4.0.4035",
+    "EntityFrameworkProfiler.Appender": "4.0.4038",
     "FluentAssemblyScanner": "1.0.7",
     "Hangfire.Core": "1.6.9",
     "Hangfire.SqlServer": "1.6.9",
