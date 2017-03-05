@@ -1,6 +1,4 @@
-﻿using System;
-
-using StackExchange.Redis;
+﻿using StackExchange.Redis;
 using StackExchange.Redis.Extensions.Core.Configuration;
 
 using Stove.Bootstrapping;
@@ -15,7 +13,7 @@ namespace Stove.Redis
     {
         public override void PreStart()
         {
-            if (Resolver.IsRegistered(typeof(Func<IStoveRedisCacheConfiguration, IStoveRedisCacheConfiguration>)))
+            if (Configuration.IsConfigurerRegistered<IStoveRedisCacheConfiguration>())
             {
                 Configuration.GetConfigurerIfExists<IStoveRedisCacheConfiguration>().Invoke(Configuration.Modules.StoveRedis());
             }

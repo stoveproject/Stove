@@ -34,10 +34,7 @@ namespace Stove.Hangfire.Hangfire
         /// </param>
         public AutofacJobActivator([NotNull] ILifetimeScope lifetimeScope, bool useTaggedLifetimeScope = true)
         {
-            if (lifetimeScope == null)
-            {
-                throw new ArgumentNullException(nameof(lifetimeScope));
-            }
+            Check.NotNull(lifetimeScope, nameof(lifetimeScope));
 
             _lifetimeScope = lifetimeScope;
             _useTaggedLifetimeScope = useTaggedLifetimeScope;

@@ -25,8 +25,10 @@ namespace Stove.RabbitMQ
         /// <param name="rabbitMQConfigurer">The rabbit mq configurer.</param>
         /// <returns></returns>
         [NotNull]
-        public static IIocBuilder UseStoveRabbitMQ([NotNull] this IIocBuilder builder, [CanBeNull] Func<IStoveRabbitMQConfiguration, IStoveRabbitMQConfiguration> rabbitMQConfigurer = null)
+        public static IIocBuilder UseStoveRabbitMQ([NotNull] this IIocBuilder builder, [NotNull] Func<IStoveRabbitMQConfiguration, IStoveRabbitMQConfiguration> rabbitMQConfigurer = null)
         {
+            Check.NotNull(rabbitMQConfigurer, nameof(rabbitMQConfigurer));
+
             builder
                 .RegisterServices(r =>
                 {

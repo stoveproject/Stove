@@ -52,6 +52,11 @@ namespace Stove.Configuration
             });
         }
 
+        public bool IsConfigurerRegistered<T>()
+        {
+            return Resolver.IsRegistered<Func<T, T>>();
+        }
+
         public void Initialize()
         {
             Modules = Resolver.Resolve<IModuleConfigurations>();

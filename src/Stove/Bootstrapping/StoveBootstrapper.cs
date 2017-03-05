@@ -55,7 +55,8 @@ namespace Stove.Bootstrapping
                 typeof(StoveBootstrapper).IsAssignableFrom(type);
         }
 
-        public static List<Type> FindDependedBootstrapperTypes(Type bootstrapper)
+        [NotNull]
+        public static List<Type> FindDependedBootstrapperTypes([NotNull] Type bootstrapper)
         {
             if (!IsStoveBootstrapper(bootstrapper))
             {
