@@ -3,6 +3,8 @@ using System.Linq;
 
 using Autofac.Extras.IocManager;
 
+using Hangfire;
+
 using LinqKit;
 
 using MassTransit;
@@ -32,6 +34,7 @@ namespace Stove.Demo.ConsoleApp
         private readonly IRepository<Animal> _animalRepository;
         private readonly ICacheManager _cacheManager;
         private readonly IBackgroundJobManager _hangfireBackgroundJobManager;
+        private readonly IScheduleJobManager _hangfireScheduleJobManager;
         private readonly IMessageBus _messageBus;
         private readonly IDapperRepository<Person> _personDapperRepository;
         private readonly IRepository<Person> _personRepository;
@@ -46,7 +49,8 @@ namespace Stove.Demo.ConsoleApp
             IDapperRepository<Person> personDapperRepository,
             IDapperRepository<Animal> animalDapperRepository,
             ICacheManager cacheManager,
-            IMessageBus messageBus)
+            IMessageBus messageBus,
+            IScheduleJobManager hangfireScheduleJobManager)
         {
             _personRepository = personRepository;
             _animalRepository = animalRepository;
@@ -57,6 +61,8 @@ namespace Stove.Demo.ConsoleApp
             _animalDapperRepository = animalDapperRepository;
             _cacheManager = cacheManager;
             _messageBus = messageBus;
+            _hangfireScheduleJobManager = hangfireScheduleJobManager;
+
             Logger = NullLogger.Instance;
         }
 
@@ -137,10 +143,15 @@ namespace Stove.Demo.ConsoleApp
                     CorrelationId = NewId.NextGuid()
                 });
 
-                _hangfireBackgroundJobManager.EnqueueAsync<SimpleBackgroundJob, SimpleBackgroundJobArgs>(new SimpleBackgroundJobArgs
+                //_hangfireBackgroundJobManager.EnqueueAsync<SimpleBackgroundJob, SimpleBackgroundJobArgs>(new SimpleBackgroundJobArgs
+                //{
+                //    Message = "Oğuzhan"
+                //});
+
+                _hangfireScheduleJobManager.ScheduleAsync<SimpleBackgroundJob, SimpleBackgroundJobArgs>(new SimpleBackgroundJobArgs
                 {
                     Message = "Oğuzhan"
-                });
+                }, Cron.Minutely());
 
                 Logger.Debug("Uow End!");
             }
