@@ -1,6 +1,4 @@
-﻿using System;
-
-using Autofac;
+﻿using Autofac;
 
 using Hangfire;
 using Hangfire.Annotations;
@@ -13,14 +11,8 @@ namespace Stove.Hangfire.Hangfire
             [NotNull] this IGlobalConfiguration configuration,
             [NotNull] ILifetimeScope lifetimeScope, bool useTaggedLifetimeScope = true)
         {
-            if (configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
-            if (lifetimeScope == null)
-            {
-                throw new ArgumentNullException(nameof(lifetimeScope));
-            }
+            Check.NotNull(configuration, nameof(configuration));
+            Check.NotNull(lifetimeScope, nameof(lifetimeScope));
 
             return configuration.UseActivator(new AutofacJobActivator(lifetimeScope, useTaggedLifetimeScope));
         }

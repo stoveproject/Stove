@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Stove.MQ
 {
+    [ExcludeFromCodeCoverage]
     public class NullMessageBus : IMessageBus
     {
         public static readonly NullMessageBus Instance = new NullMessageBus();

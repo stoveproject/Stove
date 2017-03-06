@@ -1,0 +1,17 @@
+{
+  "version" : "1.0.0-*",
+
+  "testRunner" : "xunit",
+
+  "dependencies": {
+    "Hangfire.MemoryStorage": "1.5.0",
+    "Stove.HangFire": "0.0.11-*",
+    "Stove.TestBase": "0.0.1-*"
+  },
+
+  "frameworks" : {
+    "net461" : {
+    
+    }
+  }
+}
