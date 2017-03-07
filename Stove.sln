@@ -1,48 +1,45 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{4D2BAE52-1E23-4321-BBE6-2BAC28F7B389}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{23CB5044-8ECE-4DDC-89E0-FC1B8EC9DDDF}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Stove", "src\Stove\Stove.xproj", "{3E6ED7B7-031B-4BB0-9682-0B87189C16FD}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Stove.EntityFramework", "src\Stove.EntityFramework\Stove.EntityFramework.xproj", "{38240661-A269-4ED4-8CF0-249BF09BF52D}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Stove.HangFire", "src\Stove.HangFire\Stove.HangFire.xproj", "{3829D36D-C8DB-4571-9A57-1821A5AC0085}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Stove.NLog", "src\Stove.NLog\Stove.NLog.xproj", "{B780E514-6F9F-45A3-94B1-D1E83C6E20AC}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Stove.Tests", "test\Stove.Tests\Stove.Tests.xproj", "{DACA9BC4-BE8A-4FFE-9243-74FBBC70FA5B}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Stove.TestBase", "test\Stove.TestBase\Stove.TestBase.xproj", "{F14A49EE-4931-4A13-86E2-74DAACFEAB94}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Stove.EntityFramework.Tests", "test\Stove.EntityFramework.Tests\Stove.EntityFramework.Tests.xproj", "{A540038F-D692-41E6-9455-8D420E024A86}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5D8189AC-B744-4EE6-B590-8E09FA5E4759}"
-	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
-	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Stove.Demo.ConsoleApp", "test\Stove.Demo.ConsoleApp\Stove.Demo.ConsoleApp.xproj", "{7428E8F9-A34C-4B05-B4FF-D5A0E19F3BE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stove", "src\Stove\Stove.csproj", "{3E6ED7B7-031B-4BB0-9682-0B87189C16FD}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Stove.Tests.SampleApplication", "test\Stove.Tests.SampleApplication\Stove.Tests.SampleApplication.xproj", "{1A13425B-038F-4F76-86C1-F25E5F02991C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stove.EntityFramework", "src\Stove.EntityFramework\Stove.EntityFramework.csproj", "{38240661-A269-4ED4-8CF0-249BF09BF52D}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Stove.Dapper", "src\Stove.Dapper\Stove.Dapper.xproj", "{5D02A99B-2E08-44C5-83FB-F607AFA2B6FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stove.HangFire", "src\Stove.HangFire\Stove.HangFire.csproj", "{3829D36D-C8DB-4571-9A57-1821A5AC0085}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Stove.Mapster", "src\Stove.Mapster\Stove.Mapster.xproj", "{0213E41B-70C4-4E53-89ED-70A1753CAF4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stove.NLog", "src\Stove.NLog\Stove.NLog.csproj", "{B780E514-6F9F-45A3-94B1-D1E83C6E20AC}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Stove.Redis", "src\Stove.Redis\Stove.Redis.xproj", "{555DA8DA-3F03-4943-B6E3-C3ED8D258969}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stove.Tests", "test\Stove.Tests\Stove.Tests.csproj", "{DACA9BC4-BE8A-4FFE-9243-74FBBC70FA5B}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Stove.RabbitMQ", "src\Stove.RabbitMQ\Stove.RabbitMQ.xproj", "{C81A0EB0-6379-46C1-9BC5-A9CBBAC0069B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stove.TestBase", "test\Stove.TestBase\Stove.TestBase.csproj", "{F14A49EE-4931-4A13-86E2-74DAACFEAB94}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Stove.RabbitMQ.Tests", "test\Stove.RabbitMQ.Tests\Stove.RabbitMQ.Tests.xproj", "{F024076F-A7AA-4B54-9F01-D3691A8BC988}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stove.EntityFramework.Tests", "test\Stove.EntityFramework.Tests\Stove.EntityFramework.Tests.csproj", "{A540038F-D692-41E6-9455-8D420E024A86}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Stove.Mapster.Tests", "test\Stove.Mapster.Tests\Stove.Mapster.Tests.xproj", "{7182FAE3-631D-4485-AF40-69D60A8BD8B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stove.Demo.ConsoleApp", "test\Stove.Demo.ConsoleApp\Stove.Demo.ConsoleApp.csproj", "{7428E8F9-A34C-4B05-B4FF-D5A0E19F3BE1}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Stove.Hangfire.Tests", "test\Stove.Hangfire.Tests\Stove.Hangfire.Tests.xproj", "{44BFDB6A-ECAD-4B6C-8616-2EC182706FD1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stove.Tests.SampleApplication", "test\Stove.Tests.SampleApplication\Stove.Tests.SampleApplication.csproj", "{1A13425B-038F-4F76-86C1-F25E5F02991C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stove.Dapper", "src\Stove.Dapper\Stove.Dapper.csproj", "{5D02A99B-2E08-44C5-83FB-F607AFA2B6FF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stove.Mapster", "src\Stove.Mapster\Stove.Mapster.csproj", "{0213E41B-70C4-4E53-89ED-70A1753CAF4B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stove.Redis", "src\Stove.Redis\Stove.Redis.csproj", "{555DA8DA-3F03-4943-B6E3-C3ED8D258969}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stove.RabbitMQ", "src\Stove.RabbitMQ\Stove.RabbitMQ.csproj", "{C81A0EB0-6379-46C1-9BC5-A9CBBAC0069B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stove.RabbitMQ.Tests", "test\Stove.RabbitMQ.Tests\Stove.RabbitMQ.Tests.csproj", "{F024076F-A7AA-4B54-9F01-D3691A8BC988}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stove.Mapster.Tests", "test\Stove.Mapster.Tests\Stove.Mapster.Tests.csproj", "{7182FAE3-631D-4485-AF40-69D60A8BD8B7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stove.Hangfire.Tests", "test\Stove.Hangfire.Tests\Stove.Hangfire.Tests.csproj", "{44BFDB6A-ECAD-4B6C-8616-2EC182706FD1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

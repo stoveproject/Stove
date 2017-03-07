@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <VersionPrefix>0.0.1</VersionPrefix>
+    <TargetFramework>net461</TargetFramework>
+    <AssemblyName>Stove.Demo.ConsoleApp</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <PackageId>Stove.Demo.ConsoleApp</PackageId>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Stove\Stove.csproj" />
+    <ProjectReference Include="..\..\src\Stove.Dapper\Stove.Dapper.csproj" />
+    <ProjectReference Include="..\..\src\Stove.EntityFramework\Stove.EntityFramework.csproj" />
+    <ProjectReference Include="..\..\src\Stove.HangFire\Stove.HangFire.csproj" />
+    <ProjectReference Include="..\..\src\Stove.Mapster\Stove.Mapster.csproj" />
+    <ProjectReference Include="..\..\src\Stove.NLog\Stove.NLog.csproj" />
+    <ProjectReference Include="..\..\src\Stove.RabbitMQ\Stove.RabbitMQ.csproj" />
+    <ProjectReference Include="..\..\src\Stove.Redis\Stove.Redis.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.4.0" />
+    <PackageReference Include="Autofac.Extras.IocManager" Version="2.1.0" />
+    <PackageReference Include="EntityFramework" Version="6.1.3" />
+    <PackageReference Include="EntityFrameworkProfiler.Appender" Version="4.0.4038" />
+    <PackageReference Include="FluentAssemblyScanner" Version="1.0.7" />
+    <PackageReference Include="Hangfire.Core" Version="1.6.9" />
+    <PackageReference Include="Hangfire.SqlServer" Version="1.6.9" />
+    <PackageReference Include="LinqKit" Version="1.1.8" />
+    <PackageReference Include="MassTransit" Version="3.5.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    <PackageReference Include="Owin" Version="1.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+</Project>
