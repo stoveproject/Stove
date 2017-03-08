@@ -27,16 +27,6 @@ build:
   publish_nuget_symbols: true
   include_nuget_references: true
   verbosity: minimal
-  
-#after_build:
-#- cmd: dotnet pack "src\Stove" -c "Release" -o "nupkg/"
-#- cmd: dotnet pack "src\Stove.EntityFramework" -c "Release" -o "nupkg/"
-#- cmd: dotnet pack "src\Stove.Hangfire" -c "Release" -o "nupkg/"
-#- cmd: dotnet pack "src\Stove.NLog" -c "Release" -o "nupkg/"
-#- cmd: dotnet pack "src\Stove.Mapster" -c "Release" -o "nupkg/"
-#- cmd: dotnet pack "src\Stove.Redis" -c "Release" -o "nupkg/"
-#- cmd: dotnet pack "src\Stove.Dapper" -c "Release" -o "nupkg/"
-#- cmd: dotnet pack "src\Stove.RabbitMQ" -c "Release" -o "nupkg/"
  
 test:
   assemblies:
