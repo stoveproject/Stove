@@ -8,6 +8,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{23CB5044-8ECE-4DDC-89E0-FC1B8EC9DDDF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5D8189AC-B744-4EE6-B590-8E09FA5E4759}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		appveyor.yml = appveyor.yml
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stove", "src\Stove\Stove.csproj", "{3E6ED7B7-031B-4BB0-9682-0B87189C16FD}"
 EndProject
