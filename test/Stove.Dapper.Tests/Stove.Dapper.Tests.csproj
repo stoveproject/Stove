@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net461</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Effort.EF6" Version="1.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Stove.Dapper\Stove.Dapper.csproj" />
+    <ProjectReference Include="..\Stove.TestBase\Stove.TestBase.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Effort">
+      <HintPath>C:\Users\OSOYKAN\.nuget\packages\effort.ef6\1.3.0\lib\net45\Effort.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
