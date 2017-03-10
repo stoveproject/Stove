@@ -22,6 +22,7 @@ using Stove.Runtime;
 using Stove.Runtime.Caching.Configuration;
 using Stove.Runtime.Caching.Memory;
 using Stove.Runtime.Remoting;
+using Stove.Threading;
 
 namespace Stove
 {
@@ -277,6 +278,11 @@ namespace Stove
                    .RegisterServices(r => r.Register<ICachingConfiguration, CachingConfiguration>(Lifetime.Singleton))
                    .RegisterServices(r => r.Register<ITypeFinder, TypeFinder>(Lifetime.Singleton))
                    .RegisterServices(r => r.RegisterGeneric(typeof(IAmbientScopeProvider<>), typeof(DataContextAmbientScopeProvider<>)));
+
+            builder.RegisterServices(r => r.OnDisposing += (sender, args) =>
+            {
+                args.Context.Resolver.Resolve<IStoveBootstrapperManager>().ShutdownBootstrappers();
+            });
         }
     }
 }

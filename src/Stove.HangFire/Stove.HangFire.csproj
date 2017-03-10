@@ -36,11 +36,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Owin" Version="3.0.1" />
     <PackageReference Include="Microsoft.Owin.Host.SystemWeb" Version="3.0.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
     <PackageReference Include="Owin" Version="1.0" />
-    <PackageReference Include="FluentAssemblyScanner" Version="1.0.7" />
-    <PackageReference Include="Autofac" Version="4.4.0" />
-    <PackageReference Include="Autofac.Extras.IocManager" Version="2.1.0" />
     <PackageReference Include="Hangfire" Version="1.6.9" />
     <PackageReference Include="Hangfire.Core" Version="1.6.9" />
     <PackageReference Include="Hangfire.SqlServer" Version="1.6.9" />

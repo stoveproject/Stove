@@ -31,7 +31,7 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.4.0" />
-    <PackageReference Include="Autofac.Extras.IocManager.DynamicProxy" Version="2.1.0" />
+    <PackageReference Include="Autofac.Extras.IocManager.DynamicProxy" Version="2.2.0" />
     <PackageReference Include="Castle.Core" Version="4.0.0" />
     <PackageReference Include="FluentAssemblyScanner" Version="1.0.7" />
     <PackageReference Include="JetBrains.Annotations" Version="10.4.0" />

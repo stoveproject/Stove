@@ -15,12 +15,7 @@
     <ProjectReference Include="..\..\src\Stove.RabbitMQ\Stove.RabbitMQ.csproj" />
     <ProjectReference Include="..\Stove.TestBase\Stove.TestBase.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="xunit" Version="2.2.0" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
-  </ItemGroup>
-
+  
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />

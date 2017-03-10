@@ -41,6 +41,15 @@ namespace Stove.Bootstrapping
             sortedBootstrappers.ForEach(bootstrapper => bootstrapper.Instance.PostStart());
         }
 
+        public void ShutdownBootstrappers()
+        {
+            List<BootstrapperInfo> bootstrappers = _bootstrappers.GetSortedBootstrapperListByDependency().ToList();
+
+            bootstrappers.Reverse();
+
+            bootstrappers.ForEach(info => info.Instance.Shutdown());
+        }
+
         private void LoadAllBootstrappers()
         {
             List<Type> bootstrappers = FindAllBootstrapperTypes();

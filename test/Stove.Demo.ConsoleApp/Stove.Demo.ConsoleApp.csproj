@@ -27,17 +27,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="4.4.0" />
-    <PackageReference Include="Autofac.Extras.IocManager" Version="2.1.0" />
-    <PackageReference Include="EntityFramework" Version="6.1.3" />
     <PackageReference Include="EntityFrameworkProfiler.Appender" Version="4.0.4038" />
-    <PackageReference Include="FluentAssemblyScanner" Version="1.0.7" />
-    <PackageReference Include="Hangfire.Core" Version="1.6.9" />
-    <PackageReference Include="Hangfire.SqlServer" Version="1.6.9" />
     <PackageReference Include="LinqKit" Version="1.1.8" />
-    <PackageReference Include="MassTransit" Version="3.5.5" />
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
-    <PackageReference Include="Owin" Version="1.0" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">

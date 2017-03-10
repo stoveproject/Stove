@@ -10,6 +10,7 @@ using Stove.Domain.Uow;
 using Stove.Events.Bus;
 using Stove.Events.Bus.Factories;
 using Stove.Events.Bus.Handlers;
+using Stove.Threading;
 using Stove.Threading.BackgrodunWorkers;
 
 namespace Stove.Bootstrapping
@@ -34,6 +35,14 @@ namespace Stove.Bootstrapping
         {
             ConfigureEventBus();
             ConfigureBackgroundJobs();
+        }
+
+        public override void Shutdown()
+        {
+            if (Configuration.BackgroundJobs.IsJobExecutionEnabled)
+            {
+                _backgroundWorkerManager.StopAndWaitToStop();
+            }
         }
 
         private void ConfigureBackgroundJobs()

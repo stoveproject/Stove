@@ -41,6 +41,10 @@ namespace Stove.Bootstrapping
         {
         }
 
+        public virtual void Shutdown()
+        {
+        }
+
         public virtual Assembly[] GetAdditionalAssemblies()
         {
             return new Assembly[0];
