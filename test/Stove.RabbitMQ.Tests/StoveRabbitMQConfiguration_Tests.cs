@@ -28,7 +28,7 @@ namespace Stove.RabbitMQ.Tests
         [Fact]
         public void extension_should_be_instantiatable()
         {
-            LocalResolver.Resolve<IModuleConfigurations>().StoveRabbitMQ().ShouldNotBeNull();
+            The<IModuleConfigurations>().StoveRabbitMQ().ShouldNotBeNull();
         }
 
         [Fact]
@@ -37,7 +37,7 @@ namespace Stove.RabbitMQ.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
             //-----------------------------------------------------------------------------------------------------------
-            IStoveRabbitMQConfiguration configuration = LocalResolver.Resolve<IModuleConfigurations>().StoveRabbitMQ();
+            IStoveRabbitMQConfiguration configuration = The<IModuleConfigurations>().StoveRabbitMQ();
             configuration.HostAddress = "127.0.0.1";
             configuration.MaxRetryCount = 1;
             configuration.Password = "123456";
@@ -48,7 +48,7 @@ namespace Stove.RabbitMQ.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Act
             //-----------------------------------------------------------------------------------------------------------
-            var configurationFromIoc = LocalResolver.Resolve<IStoveRabbitMQConfiguration>();
+            var configurationFromIoc = The<IStoveRabbitMQConfiguration>();
 
             //-----------------------------------------------------------------------------------------------------------
             // Assert

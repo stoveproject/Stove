@@ -38,34 +38,34 @@ namespace Stove.EntityFramework.Tests
         public void Should_Resolve_Generic_Repositories()
         {
             //Entity 1 (with default PK)
-            var entity1Repository = LocalResolver.Resolve<IRepository<MyEntity1>>();
+            var entity1Repository = The<IRepository<MyEntity1>>();
             entity1Repository.ShouldNotBe(null);
             (entity1Repository is EfRepositoryBase<MyBaseDbContext, MyEntity1>).ShouldBe(true);
 
             //Entity 1 (with specified PK)
-            var entity1RepositoryWithPk = LocalResolver.Resolve<IRepository<MyEntity1, int>>();
+            var entity1RepositoryWithPk = The<IRepository<MyEntity1, int>>();
             entity1RepositoryWithPk.ShouldNotBe(null);
             (entity1RepositoryWithPk is EfRepositoryBase<MyBaseDbContext, MyEntity1, int>).ShouldBe(true);
 
             //Entity 1 (with specified Repository forIMyModuleRepository )
-            var entity1RepositoryWithModuleInterface = LocalResolver.Resolve<IMyModuleRepository<MyEntity1>>();
+            var entity1RepositoryWithModuleInterface = The<IMyModuleRepository<MyEntity1>>();
             entity1RepositoryWithModuleInterface.ShouldNotBe(null);
             (entity1RepositoryWithModuleInterface is MyModuleRepositoryBase<MyEntity1>).ShouldBe(true);
             (entity1RepositoryWithModuleInterface is EfRepositoryBase<MyModuleDbContext, MyEntity1, int>).ShouldBe(true);
 
             //Entity 1 (with specified Repository forIMyModuleRepository )
-            var entity1RepositoryWithModuleInterfaceWithPk = LocalResolver.Resolve<IMyModuleRepository<MyEntity1, int>>();
+            var entity1RepositoryWithModuleInterfaceWithPk = The<IMyModuleRepository<MyEntity1, int>>();
             entity1RepositoryWithModuleInterfaceWithPk.ShouldNotBe(null);
             (entity1RepositoryWithModuleInterfaceWithPk is MyModuleRepositoryBase<MyEntity1, int>).ShouldBe(true);
             (entity1RepositoryWithModuleInterfaceWithPk is EfRepositoryBase<MyModuleDbContext, MyEntity1, int>).ShouldBe(true);
 
             //Entity 2
-            var entity2Repository = LocalResolver.Resolve<IRepository<MyEntity2, long>>();
+            var entity2Repository = The<IRepository<MyEntity2, long>>();
             (entity2Repository is EfRepositoryBase<MyMainDbContext, MyEntity2, long>).ShouldBe(true);
             entity2Repository.ShouldNotBe(null);
 
             //Entity 3
-            var entity3Repository = LocalResolver.Resolve<IMyModuleRepository<MyEntity3, Guid>>();
+            var entity3Repository = The<IMyModuleRepository<MyEntity3, Guid>>();
             (entity3Repository is EfRepositoryBase<MyModuleDbContext, MyEntity3, Guid>).ShouldBe(true);
             entity3Repository.ShouldNotBe(null);
         }

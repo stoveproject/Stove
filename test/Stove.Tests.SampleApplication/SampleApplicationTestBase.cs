@@ -81,7 +81,7 @@ namespace Stove.Tests.SampleApplication
 
         public void UsingDbContext(Action<SampleApplicationDbContext> action)
         {
-            using (var context = LocalResolver.Resolve<SampleApplicationDbContext>())
+            using (var context = The<SampleApplicationDbContext>())
             {
                 context.DisableAllFilters();
                 action(context);
@@ -93,7 +93,7 @@ namespace Stove.Tests.SampleApplication
         {
             T result;
 
-            using (var context = LocalResolver.Resolve<SampleApplicationDbContext>())
+            using (var context = The<SampleApplicationDbContext>())
             {
                 context.DisableAllFilters();
                 result = func(context);
@@ -107,7 +107,7 @@ namespace Stove.Tests.SampleApplication
         {
             T result;
 
-            using (var context = LocalResolver.Resolve<SampleApplicationDbContext>())
+            using (var context = The<SampleApplicationDbContext>())
             {
                 context.DisableAllFilters();
                 result = await func(context);

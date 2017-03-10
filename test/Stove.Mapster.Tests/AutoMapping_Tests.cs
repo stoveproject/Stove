@@ -27,7 +27,7 @@ namespace Stove.Mapster.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
             //-----------------------------------------------------------------------------------------------------------
-            IStoveMapsterConfiguration mapsterConfiguration = LocalResolver.Resolve<IModuleConfigurations>().StoveMapster();
+            IStoveMapsterConfiguration mapsterConfiguration = The<IModuleConfigurations>().StoveMapster();
 
             //-----------------------------------------------------------------------------------------------------------
             // Act
@@ -46,7 +46,7 @@ namespace Stove.Mapster.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
             //-----------------------------------------------------------------------------------------------------------
-            var mapper = LocalResolver.Resolve<IObjectMapper>();
+            var mapper = The<IObjectMapper>();
 
             var myclass = new MyClass { TestProperty = "Oguzhan" };
 
@@ -68,7 +68,7 @@ namespace Stove.Mapster.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
             //-----------------------------------------------------------------------------------------------------------
-            var mapper = LocalResolver.Resolve<IObjectMapper>();
+            var mapper = The<IObjectMapper>();
 
             var myclass = new MyClass { TestProperty = "Oguzhan" };
 
@@ -90,7 +90,7 @@ namespace Stove.Mapster.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
             //-----------------------------------------------------------------------------------------------------------
-            var mapper = LocalResolver.Resolve<IObjectMapper>();
+            var mapper = The<IObjectMapper>();
 
             var myclass = new MyClass { TestProperty = "Oguzhan" };
 
@@ -112,7 +112,7 @@ namespace Stove.Mapster.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
             //-----------------------------------------------------------------------------------------------------------
-            var mapper = LocalResolver.Resolve<IObjectMapper>();
+            var mapper = The<IObjectMapper>();
 
             var myclass = new MyClassTargetTypeNull { TestProperty = "Oguzhan" };
 
@@ -133,7 +133,7 @@ namespace Stove.Mapster.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
             //-----------------------------------------------------------------------------------------------------------
-            var mapper = LocalResolver.Resolve<IObjectMapper>();
+            var mapper = The<IObjectMapper>();
 
             var myclass = new MyClassTargetTypeNullTwoWay { TestProperty = "Oguzhan" };
 
@@ -154,7 +154,7 @@ namespace Stove.Mapster.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
             //-----------------------------------------------------------------------------------------------------------
-            var mapper = LocalResolver.Resolve<IObjectMapper>();
+            var mapper = The<IObjectMapper>();
 
             var myclass = new MyClassWithMultipleAttribute { TestProperty = "Oguzhan" };
 
@@ -179,7 +179,7 @@ namespace Stove.Mapster.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
             //-----------------------------------------------------------------------------------------------------------
-            var mapper = LocalResolver.Resolve<IObjectMapper>();
+            var mapper = The<IObjectMapper>();
             var myclass = new MyClassTwoWay { TestProperty = "Oguzhan" };
 
             //-----------------------------------------------------------------------------------------------------------
@@ -203,7 +203,7 @@ namespace Stove.Mapster.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
             //-----------------------------------------------------------------------------------------------------------
-            var mapper = LocalResolver.Resolve<IObjectMapper>();
+            var mapper = The<IObjectMapper>();
             var myclass = new MyClassTwoWayMultipleTypes { TestProperty = "Oguzhan" };
 
             //-----------------------------------------------------------------------------------------------------------
@@ -233,7 +233,7 @@ namespace Stove.Mapster.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
             //-----------------------------------------------------------------------------------------------------------
-            var mapper = LocalResolver.Resolve<IObjectMapper>();
+            var mapper = The<IObjectMapper>();
             var myclassDto = new MyClassDto { TestProperty = "Oguzhan" };
 
             //-----------------------------------------------------------------------------------------------------------
@@ -257,7 +257,7 @@ namespace Stove.Mapster.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
             //-----------------------------------------------------------------------------------------------------------
-            var mapper = LocalResolver.Resolve<IObjectMapper>();
+            var mapper = The<IObjectMapper>();
             var myclassDto = new MyClassDtoNullTypes { TestProperty = "Oguzhan" };
 
             //-----------------------------------------------------------------------------------------------------------

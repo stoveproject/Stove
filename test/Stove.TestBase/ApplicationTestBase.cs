@@ -22,7 +22,7 @@ namespace Stove.TestBase
             });
         }
 
-        protected TestStoveSession TestStoveSession => LocalResolver.Resolve<TestStoveSession>();
+        protected TestStoveSession TestStoveSession => The<TestStoveSession>();
 
         protected override void PreBuild()
         {

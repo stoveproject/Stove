@@ -17,9 +17,9 @@ namespace Stove.Tests.SampleApplication.Application
         [Fact]
         public void ApplicationService_should_work_with_repository()
         {
-            using (IUnitOfWorkCompleteHandle uow = LocalResolver.Resolve<IUnitOfWorkManager>().Begin())
+            using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
             {
-                var userAppService = LocalResolver.Resolve<IUserAppService>();
+                var userAppService = The<IUserAppService>();
 
                 User user = userAppService.GetUserByName("Oğuzhan");
 

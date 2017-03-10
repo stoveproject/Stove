@@ -14,7 +14,7 @@ namespace Stove.Tests.SampleApplication.Session
         {
             Building(builder => { }).Ok();
 
-            _session = LocalResolver.Resolve<IStoveSession>();
+            _session = The<IStoveSession>();
         }
 
         [Fact]

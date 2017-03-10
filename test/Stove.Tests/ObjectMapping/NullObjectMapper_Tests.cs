@@ -22,7 +22,7 @@ namespace Stove.Tests.ObjectMapping
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
             //-----------------------------------------------------------------------------------------------------------
-            var mapper = LocalResolver.Resolve<IObjectMapper>();
+            var mapper = The<IObjectMapper>();
             var myObj = new MyClass2();
 
             //-----------------------------------------------------------------------------------------------------------
@@ -42,7 +42,7 @@ namespace Stove.Tests.ObjectMapping
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
             //-----------------------------------------------------------------------------------------------------------
-            var mapper = LocalResolver.Resolve<IObjectMapper>();
+            var mapper = The<IObjectMapper>();
             var source = new MyClass1();
             var destination = new MyClass2();
 
