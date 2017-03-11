@@ -7,5 +7,7 @@
         void Start();
 
         void PostStart();
+
+        void Shutdown();
     }
 }

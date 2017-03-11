@@ -1,32 +1,33 @@
 version: 1.0.{build}
+configuration: Release
+image: Visual Studio 2017 RC
 pull_requests:  
   do_not_increment_build_number: true
-before_build:
-- cmd: dotnet.exe restore
+
 assembly_info:
   patch: true
   file: '**\AssemblyInfo.*'
   assembly_version: '{version}'
   assembly_file_version: '{version}'
   assembly_informational_version: '{version}'
+  
 environment:
   nuget_user: oguzhansoykan@outlook.com
   nuget_password:
     secure: w73Xs1Is7iK/DtAOf0XTHg==
+    
+before_build:
+ - cmd: set PATH=C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin;C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\MSBuild\15.0\Bin;%PATH%
+ - cmd: nuget install nuget.commandline -source https://dotnet.myget.org/F/nuget-build -prerelease -excludeversion
+ - cmd: set PATH=%appveyor_build_folder%\NuGet.CommandLine\tools;%PATH%
+ - cmd: nuget restore Stove.sln 
+  
 build:
+  project: Stove.sln 
   publish_nuget: true
   publish_nuget_symbols: true
   include_nuget_references: true
   verbosity: minimal
-after_build:
-- cmd: dotnet pack "src\Stove" -c "Release" -o "nupkg/"
-- cmd: dotnet pack "src\Stove.EntityFramework" -c "Release" -o "nupkg/"
-- cmd: dotnet pack "src\Stove.Hangfire" -c "Release" -o "nupkg/"
-- cmd: dotnet pack "src\Stove.NLog" -c "Release" -o "nupkg/"
-- cmd: dotnet pack "src\Stove.Mapster" -c "Release" -o "nupkg/"
-- cmd: dotnet pack "src\Stove.Redis" -c "Release" -o "nupkg/"
-- cmd: dotnet pack "src\Stove.Dapper" -c "Release" -o "nupkg/"
-- cmd: dotnet pack "src\Stove.RabbitMQ" -c "Release" -o "nupkg/"
  
 test:
   assemblies:

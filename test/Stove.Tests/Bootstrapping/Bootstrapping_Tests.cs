@@ -14,18 +14,27 @@ namespace Stove.Tests.Bootstrapping
         [Fact]
         public void events_should_called_once()
         {
+            //-----------------------------------------------------------------------------------------------------------
+            // Arrange
+            //-----------------------------------------------------------------------------------------------------------
             Building(builder =>
-            {
-                builder
-                    .UseStoveWithNullables(typeof(MyTestBootstrapper))
-                    .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
-            })
-            .Ok();
+                {
+                    builder
+                        .UseStoveWithNullables(typeof(MyTestBootstrapper))
+                        .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
+                })
+                .Ok();
 
-            var testModule = LocalResolver.Resolve<MyTestBootstrapper>();
-            var otherModule = LocalResolver.Resolve<MyOtherBootstrapper>();
-            var anotherModule = LocalResolver.Resolve<MyAnotherBootstrapper>();
+            //-----------------------------------------------------------------------------------------------------------
+            // Act
+            //-----------------------------------------------------------------------------------------------------------
+            var testModule = The<MyTestBootstrapper>();
+            var otherModule = The<MyOtherBootstrapper>();
+            var anotherModule = The<MyAnotherBootstrapper>();
 
+            //-----------------------------------------------------------------------------------------------------------
+            // Assert
+            //-----------------------------------------------------------------------------------------------------------
             testModule.PreStartCount.ShouldBe(1);
             testModule.StartCount.ShouldBe(1);
             testModule.PostStartCount.ShouldBe(1);

@@ -26,7 +26,7 @@ namespace Stove.Tests.Domain.Uow
                 builder.RegisterServices(r => r.Register(context => fakeUow, Lifetime.Singleton));
             }).Ok();
 
-            var uowManager = LocalResolver.Resolve<IUnitOfWorkManager>();
+            var uowManager = The<IUnitOfWorkManager>();
 
             //Starting the first uow
             using (IUnitOfWorkCompleteHandle uow1 = uowManager.Begin())

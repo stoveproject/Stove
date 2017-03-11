@@ -17,6 +17,9 @@ namespace Stove.Tests.Bootstrapping
         [Fact]
         public void Should_Get_Bootstrapper_And_Additional_Assemblies()
         {
+            //-----------------------------------------------------------------------------------------------------------
+            // Arrange
+            //-----------------------------------------------------------------------------------------------------------
             Building(builder =>
                 {
                     builder
@@ -25,12 +28,17 @@ namespace Stove.Tests.Bootstrapping
                 })
                 .Ok();
 
-            //Act
-            List<Assembly> assemblies = LocalResolver.Resolve<StoveAssemblyFinder>().GetAllAssemblies();
+            //-----------------------------------------------------------------------------------------------------------
+            // Act
+            //-----------------------------------------------------------------------------------------------------------
+            var sut = The<StoveAssemblyFinder>();
 
-            //Assert
+            //-----------------------------------------------------------------------------------------------------------
+            // Assert
+            //-----------------------------------------------------------------------------------------------------------
+            List<Assembly> assemblies = sut.GetAllAssemblies();
+
             assemblies.Count.ShouldBe(3);
-
             assemblies.Any(a => a == typeof(MyStartupBootstrapper).Assembly).ShouldBeTrue();
             assemblies.Any(a => a == typeof(StoveKernelBootstrapper).Assembly).ShouldBeTrue();
             assemblies.Any(a => a == typeof(FactAttribute).Assembly).ShouldBeTrue();

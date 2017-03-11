@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 using Autofac.Extras.IocManager;
 
+using JetBrains.Annotations;
+
 using Stove.BackgroundJobs;
 using Stove.Domain.Uow;
 using Stove.Runtime.Caching.Configuration;
@@ -80,6 +82,16 @@ namespace Stove.Configuration
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
+        [NotNull]
         Func<T, T> GetConfigurerIfExists<T>();
+
+        /// <summary>
+        ///     Determines whether [is configurer registered].
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns>
+        ///     <c>true</c> if [is configurer registered]; otherwise, <c>false</c>.
+        /// </returns>
+        bool IsConfigurerRegistered<T>();
     }
 }

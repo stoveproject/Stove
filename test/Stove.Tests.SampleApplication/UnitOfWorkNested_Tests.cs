@@ -15,7 +15,7 @@ namespace Stove.Tests.SampleApplication
         public UnitOfWorkNested_Tests()
         {
             Building(builder => { }).Ok();
-            _unitOfWorkManager = LocalResolver.Resolve<IUnitOfWorkManager>();
+            _unitOfWorkManager = The<IUnitOfWorkManager>();
         }
 
         [Fact]

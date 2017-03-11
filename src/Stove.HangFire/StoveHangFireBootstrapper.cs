@@ -28,6 +28,7 @@ namespace Stove.Hangfire
             });
 
             _backgroundWorkerManager.Add(Configuration.Resolver.Resolve<HangfireBackgroundJobManager>());
+            _backgroundWorkerManager.Add(Configuration.Resolver.Resolve<HangfireScheduleJobManager>());
         }
     }
 }

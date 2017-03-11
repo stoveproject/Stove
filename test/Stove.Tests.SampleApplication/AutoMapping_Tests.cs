@@ -14,7 +14,7 @@ namespace Stove.Tests.SampleApplication
         {
             Building(builder => { }).Ok();
 
-            var mapper = LocalResolver.Resolve<IObjectMapper>();
+            var mapper = The<IObjectMapper>();
 
             var person = new Person { Name = "Oğuzhan" };
 

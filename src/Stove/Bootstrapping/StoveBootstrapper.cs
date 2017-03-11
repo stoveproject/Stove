@@ -41,6 +41,10 @@ namespace Stove.Bootstrapping
         {
         }
 
+        public virtual void Shutdown()
+        {
+        }
+
         public virtual Assembly[] GetAdditionalAssemblies()
         {
             return new Assembly[0];
@@ -55,7 +59,8 @@ namespace Stove.Bootstrapping
                 typeof(StoveBootstrapper).IsAssignableFrom(type);
         }
 
-        public static List<Type> FindDependedBootstrapperTypes(Type bootstrapper)
+        [NotNull]
+        public static List<Type> FindDependedBootstrapperTypes([NotNull] Type bootstrapper)
         {
             if (!IsStoveBootstrapper(bootstrapper))
             {

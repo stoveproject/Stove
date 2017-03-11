@@ -1,0 +1,16 @@
+﻿<SolutionConfiguration>
+  <Settings>
+    <AllowParallelTestExecution>True</AllowParallelTestExecution>
+    <MetricsExclusionList>
+      <Value>test\Stove.RabbitMQ.Tests\Stove.RabbitMQ.Tests.csproj</Value>
+      <Value>test\Stove.Mapster.Tests\Stove.Mapster.Tests.csproj</Value>
+      <Value>test\Stove.Tests\Stove.Tests.csproj</Value>
+      <Value>test\Stove.EntityFramework.Tests\Stove.EntityFramework.Tests.csproj</Value>
+      <Value>test\Stove.Hangfire.Tests\Stove.Hangfire.Tests.csproj</Value>
+      <Value>test\Stove.TestBase\Stove.TestBase.csproj</Value>
+      <Value>test\Stove.Tests.SampleApplication\Stove.Tests.SampleApplication.csproj</Value>
+      <Value>test\Stove.Dapper.Tests\Stove.Dapper.Tests.csproj</Value>
+    </MetricsExclusionList>
+    <SolutionConfigured>True</SolutionConfigured>
+  </Settings>
+</SolutionConfiguration>

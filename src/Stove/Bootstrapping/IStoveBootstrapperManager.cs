@@ -11,5 +11,7 @@ namespace Stove.Bootstrapping
         IReadOnlyList<BootstrapperInfo> Bootstrappers { get; }
 
         void StartBootstrappers([NotNull] Type starterBootStrapperType);
+
+        void ShutdownBootstrappers();
     }
 }

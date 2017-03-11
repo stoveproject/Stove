@@ -14,6 +14,11 @@ namespace Stove.TestBase
             IocBuilder = Autofac.Extras.IocManager.IocBuilder.New.UseAutofacContainerBuilder();
         }
 
+        public void Dispose()
+        {
+            LocalResolver?.Dispose();
+        }
+
         protected TestBaseWithLocalIocResolver Building(Action<IIocBuilder> builderAction)
         {
             builderAction(IocBuilder);
@@ -35,9 +40,9 @@ namespace Stove.TestBase
         {
         }
 
-        public void Dispose()
+        protected T The<T>()
         {
-            LocalResolver?.Dispose();
+            return LocalResolver.Resolve<T>();
         }
     }
 }

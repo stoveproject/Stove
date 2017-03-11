@@ -24,8 +24,8 @@ namespace Stove.Tests.SampleApplication
         [Fact]
         public void firstordefault_should_work()
         {
-            var uowManager = LocalResolver.Resolve<IUnitOfWorkManager>();
-            var userRepository = LocalResolver.Resolve<IRepository<User>>();
+            var uowManager = The<IUnitOfWorkManager>();
+            var userRepository = The<IRepository<User>>();
 
             using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
             {
@@ -39,8 +39,8 @@ namespace Stove.Tests.SampleApplication
         [Fact]
         public void uow_rollback_should_work_with_repository_insert()
         {
-            var uowManager = LocalResolver.Resolve<IUnitOfWorkManager>();
-            var userRepository = LocalResolver.Resolve<IRepository<User>>();
+            var uowManager = The<IUnitOfWorkManager>();
+            var userRepository = The<IRepository<User>>();
 
             using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
             {
@@ -63,8 +63,8 @@ namespace Stove.Tests.SampleApplication
         [Fact]
         public void uow_complete_handle_eventbus_should_work_with_repository_insert()
         {
-            var uowManager = LocalResolver.Resolve<IUnitOfWorkManager>();
-            var userRepository = LocalResolver.Resolve<IRepository<User>>();
+            var uowManager = The<IUnitOfWorkManager>();
+            var userRepository = The<IRepository<User>>();
 
             using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
             {
@@ -94,8 +94,8 @@ namespace Stove.Tests.SampleApplication
         [Fact]
         public void uow_complete_handle_eventbus_should_work_with_repository_insert2()
         {
-            var uowManager = LocalResolver.Resolve<IUnitOfWorkManager>();
-            var userRepository = LocalResolver.Resolve<IRepository<User>>();
+            var uowManager = The<IUnitOfWorkManager>();
+            var userRepository = The<IRepository<User>>();
 
             using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
             {
