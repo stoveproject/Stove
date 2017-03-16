@@ -13,8 +13,6 @@ namespace Stove.Dapper.Dapper.Repositories
 
         public abstract IEnumerable<TEntity> GetList();
 
-        public abstract IEnumerable<TEntity> GetList(object predicate);
-
         public virtual Task<TEntity> GetAsync(TPrimaryKey id)
         {
             return Task.FromResult(Get(id));
@@ -23,18 +21,6 @@ namespace Stove.Dapper.Dapper.Repositories
         public virtual Task<IEnumerable<TEntity>> GetListAsync()
         {
             return Task.FromResult(GetList());
-        }
-
-        public virtual Task<IEnumerable<TEntity>> GetListAsync(object predicate)
-        {
-            return Task.FromResult(GetList(predicate));
-        }
-
-        public abstract int Count(object predicate);
-
-        public virtual Task<int> CountAsync(object predicate)
-        {
-            return Task.FromResult(Count(predicate));
         }
 
         public abstract IEnumerable<TEntity> Query(string query, object parameters);
@@ -57,20 +43,6 @@ namespace Stove.Dapper.Dapper.Repositories
         {
             return Task.FromResult(Query<TAny>(query));
         }
-
-        public abstract IEnumerable<TEntity> GetSet(object predicate, int firstResult, int maxResults, string sortingProperty, bool ascending = true);
-
-        public virtual Task<IEnumerable<TEntity>> GetSetAsync(object predicate, int firstResult, int maxResults, string sortingProperty, bool ascending = true)
-        {
-            return Task.FromResult(GetSet(predicate, firstResult, maxResults, sortingProperty, ascending));
-        }
-
-        public virtual Task<IEnumerable<TEntity>> GetListPagedAsync(object predicate, int pageNumber, int itemsPerPage, string sortingProperty, bool ascending = true)
-        {
-            return Task.FromResult(GetListPaged(predicate, pageNumber, itemsPerPage, sortingProperty, ascending));
-        }
-
-        public abstract IEnumerable<TEntity> GetListPaged(object predicate, int pageNumber, int itemsPerPage, string sortingProperty, bool ascending = true);
 
         public abstract IEnumerable<TEntity> GetList(Expression<Func<TEntity, bool>> predicate);
 

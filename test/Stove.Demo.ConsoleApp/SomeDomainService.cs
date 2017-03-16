@@ -99,9 +99,9 @@ namespace Stove.Demo.ConsoleApp
                 ExpressionStarter<Animal> predicate = PredicateBuilder.New<Animal>();
                 predicate.And(x => x.Name == "Kuş");
 
-                IEnumerable<Animal> birdsSet = _animalDapperRepository.GetSet(new { Name = "Kuş" }, 0, 10, "Id");
+                IEnumerable<Animal> birdsSet = _animalDapperRepository.GetSet(x => x.Name == "Kuş", 0, 10, "Id");
 
-                IEnumerable<Person> personFromDapper = _personDapperRepository.GetList(new { Name = "Oğuzhan" });
+                IEnumerable<Person> personFromDapper = _personDapperRepository.GetList(x => x.Name == "Oğuzhan");
 
                 IEnumerable<Animal> birdsFromExpression = _animalDapperRepository.GetSet(predicate, 0, 10, "Id");
 

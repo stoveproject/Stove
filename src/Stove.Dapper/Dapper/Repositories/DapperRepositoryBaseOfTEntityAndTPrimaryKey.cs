@@ -15,6 +15,7 @@ using Stove.Dapper.Dapper.Extensions;
 using Stove.Domain.Entities;
 using Stove.Domain.Uow;
 using Stove.EntityFramework.EntityFramework;
+using Stove.Events.Bus.Entities;
 
 namespace Stove.Dapper.Dapper.Repositories
 {
@@ -24,9 +25,12 @@ namespace Stove.Dapper.Dapper.Repositories
     {
         private readonly IDbContextProvider<TDbContext> _dbContextProvider;
 
+        public IEntityChangeEventHelper EntityChangeEventHelper { get; set; }
+
         public DapperRepositoryBase(IDbContextProvider<TDbContext> dbContextProvider)
         {
             _dbContextProvider = dbContextProvider;
+            EntityChangeEventHelper = NullEntityChangeEventHelper.Instance;
         }
 
         public virtual TDbContext Context
@@ -66,59 +70,9 @@ namespace Stove.Dapper.Dapper.Repositories
             return Connection.GetList<TEntity>(transaction: ActiveTransaction);
         }
 
-        public override IEnumerable<TEntity> GetList(object predicate)
-        {
-            return Connection.GetList<TEntity>(predicate, transaction: ActiveTransaction);
-        }
-
         public override Task<IEnumerable<TEntity>> GetListAsync()
         {
             return Connection.GetListAsync<TEntity>(transaction: ActiveTransaction);
-        }
-
-        public override Task<IEnumerable<TEntity>> GetListAsync(object predicate)
-        {
-            return Connection.GetListAsync<TEntity>(predicate, transaction: ActiveTransaction);
-        }
-
-        public override IEnumerable<TEntity> GetListPaged(
-            object predicate,
-            int pageNumber,
-            int itemsPerPage,
-            string sortingProperty,
-            bool ascending = true)
-        {
-            return Connection.GetPage<TEntity>(
-                predicate,
-                new List<ISort> { new Sort { Ascending = ascending, PropertyName = sortingProperty } },
-                pageNumber,
-                itemsPerPage,
-                ActiveTransaction);
-        }
-
-        public override Task<IEnumerable<TEntity>> GetListPagedAsync(
-            object predicate,
-            int pageNumber,
-            int itemsPerPage,
-            string sortingProperty,
-            bool ascending = true)
-        {
-            return Connection.GetPageAsync<TEntity>(
-                predicate,
-                new List<ISort> { new Sort { Ascending = ascending, PropertyName = sortingProperty } },
-                pageNumber,
-                itemsPerPage,
-                ActiveTransaction);
-        }
-
-        public override int Count(object predicate)
-        {
-            return Connection.Count<TEntity>(predicate, ActiveTransaction);
-        }
-
-        public override Task<int> CountAsync(object predicate)
-        {
-            return Connection.CountAsync<TEntity>(predicate, ActiveTransaction);
         }
 
         public override IEnumerable<TEntity> Query(string query, object parameters)
@@ -149,26 +103,6 @@ namespace Stove.Dapper.Dapper.Repositories
         public override Task<IEnumerable<TAny>> QueryAsync<TAny>(string query, object parameters)
         {
             return Connection.QueryAsync<TAny>(query, parameters, ActiveTransaction);
-        }
-
-        public override IEnumerable<TEntity> GetSet(object predicate, int firstResult, int maxResults, string sortingProperty, bool ascending = true)
-        {
-            return Connection.GetSet<TEntity>(
-                predicate,
-                new List<ISort> { new Sort { Ascending = ascending, PropertyName = sortingProperty } },
-                firstResult,
-                maxResults,
-                ActiveTransaction);
-        }
-
-        public override Task<IEnumerable<TEntity>> GetSetAsync(object predicate, int firstResult, int maxResults, string sortingProperty, bool ascending = true)
-        {
-            return Connection.GetSetAsync<TEntity>(
-                predicate,
-                new List<ISort> { new Sort { Ascending = ascending, PropertyName = sortingProperty } },
-                firstResult,
-                maxResults,
-                ActiveTransaction);
         }
 
         public override IEnumerable<TEntity> GetListPaged(Expression<Func<TEntity, bool>> predicate, int pageNumber, int itemsPerPage, string sortingProperty, bool ascending = true)
@@ -245,27 +179,42 @@ namespace Stove.Dapper.Dapper.Repositories
 
         public override void Insert(TEntity entity)
         {
+            EntityChangeEventHelper.TriggerEntityCreatingEvent(entity);
             Connection.Insert(entity, ActiveTransaction);
+            EntityChangeEventHelper.TriggerEntityCreatedEventOnUowCompleted(entity);
         }
 
         public override void Update(TEntity entity)
         {
+            EntityChangeEventHelper.TriggerEntityUpdatingEvent(entity);
             Connection.Update(entity, ActiveTransaction);
+            EntityChangeEventHelper.TriggerEntityUpdatedEventOnUowCompleted(entity);
         }
 
         public override void Delete(TEntity entity)
         {
+            EntityChangeEventHelper.TriggerEntityDeletingEvent(entity);
             Connection.Delete(entity, ActiveTransaction);
+            EntityChangeEventHelper.TriggerEntityDeletedEventOnUowCompleted(entity);
         }
 
         public override void Delete(Expression<Func<TEntity, bool>> predicate)
         {
-            Connection.Delete(predicate.ToPredicateGroup<TEntity, TPrimaryKey>(), ActiveTransaction);
+            IEnumerable<TEntity> items = GetList(predicate);
+            foreach (TEntity entity in items)
+            {
+                EntityChangeEventHelper.TriggerEntityDeletingEvent(entity);
+                Connection.Delete(entity, ActiveTransaction);
+                EntityChangeEventHelper.TriggerEntityDeletedEventOnUowCompleted(entity);
+            }
         }
 
         public override TPrimaryKey InsertAndGetId(TEntity entity)
         {
-            return Connection.Insert(entity, ActiveTransaction);
+            EntityChangeEventHelper.TriggerEntityCreatingEvent(entity);
+            TPrimaryKey primaryKey = Connection.Insert(entity, ActiveTransaction);
+            EntityChangeEventHelper.TriggerEntityCreatedEventOnUowCompleted(entity);
+            return primaryKey;
         }
     }
 }
