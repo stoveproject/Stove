@@ -23,5 +23,7 @@ namespace Stove.Demo.ConsoleApp.DbContexes
         public virtual IDbSet<Person> Persons { get; set; }
 
         public virtual IDbSet<Product> Products { get; set; }
+
+        public virtual IDbSet<Mail> Mails { get; set; }
     }
 }

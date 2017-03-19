@@ -1,4 +1,8 @@
-﻿using Autofac.Extras.IocManager;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using Autofac.Extras.IocManager;
 
 using Stove.BackgroundJobs;
 using Stove.Dapper.Repositories;
@@ -22,6 +26,7 @@ namespace Stove.Demo.ConsoleApp
         private readonly ICacheManager _cacheManager;
         private readonly IBackgroundJobManager _hangfireBackgroundJobManager;
         private readonly IScheduleJobManager _hangfireScheduleJobManager;
+        private readonly IDapperRepository<Mail, Guid> _mailDapperRepository;
         private readonly IMessageBus _messageBus;
         private readonly IDapperRepository<Person> _personDapperRepository;
         private readonly IRepository<Person> _personRepository;
@@ -39,7 +44,8 @@ namespace Stove.Demo.ConsoleApp
             ICacheManager cacheManager,
             IMessageBus messageBus,
             IScheduleJobManager hangfireScheduleJobManager,
-            IDapperRepository<Product> productDapperRepository)
+            IDapperRepository<Product> productDapperRepository,
+            IDapperRepository<Mail, Guid> mailDapperRepository)
         {
             _personRepository = personRepository;
             _animalRepository = animalRepository;
@@ -52,6 +58,7 @@ namespace Stove.Demo.ConsoleApp
             _messageBus = messageBus;
             _hangfireScheduleJobManager = hangfireScheduleJobManager;
             _productDapperRepository = productDapperRepository;
+            _mailDapperRepository = mailDapperRepository;
 
             Logger = NullLogger.Instance;
         }
@@ -89,11 +96,22 @@ namespace Stove.Demo.ConsoleApp
                     int gomlekId = _productDapperRepository.InsertAndGetId(new Product("Gomlek"));
 
                     Product firstProduct = _productDapperRepository.Get(1);
-                    var products = _productDapperRepository.GetList();
+                    IEnumerable<Product> products = _productDapperRepository.GetList();
 
                     firstProduct.Name = "Something";
 
                     _productDapperRepository.Update(firstProduct);
+
+                    _mailDapperRepository.Insert(new Mail("New Product Added"));
+                    Guid mailId = _mailDapperRepository.InsertAndGetId(new Mail("Second Product Added"));
+
+                    IEnumerable<Mail> mails = _mailDapperRepository.GetList();
+
+                    Mail firstMail = mails.First();
+
+                    firstMail.Subject = "Sorry wrong email!";
+
+                    _mailDapperRepository.Update(firstMail);
                 }
 
                 //Animal oneAnimal = _animalDapperRepository.Get(1);

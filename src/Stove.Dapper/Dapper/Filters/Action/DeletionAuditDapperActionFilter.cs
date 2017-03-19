@@ -3,20 +3,12 @@
 using Stove.Domain.Entities;
 using Stove.Domain.Entities.Auditing;
 using Stove.Extensions;
-using Stove.Runtime.Session;
 using Stove.Timing;
 
 namespace Stove.Dapper.Filters.Action
 {
-    public class DeletionAuditDapperActionFilter : IDapperActionFilter, ITransientDependency
+    public class DeletionAuditDapperActionFilter : DapperActionFilterBase, IDapperActionFilter, ITransientDependency
     {
-        public DeletionAuditDapperActionFilter()
-        {
-            StoveSession = NullStoveSession.Instance;
-        }
-
-        public IStoveSession StoveSession { get; set; }
-
         public void ExecuteFilter<TEntity, TPrimaryKey>(TEntity entity) where TEntity : class, IEntity<TPrimaryKey>
         {
             if (entity is ISoftDelete)
@@ -36,7 +28,7 @@ namespace Stove.Dapper.Filters.Action
 
             if (entity is IDeletionAudited)
             {
-                long? userId = StoveSession.UserId;
+                long? userId = GetAuditUserId();
                 var record = entity.As<IDeletionAudited>();
 
                 if (record.DeleterUserId != null)

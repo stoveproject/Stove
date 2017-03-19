@@ -5,23 +5,16 @@ using Autofac.Extras.IocManager;
 using Stove.Domain.Entities;
 using Stove.Domain.Entities.Auditing;
 using Stove.Extensions;
-using Stove.Runtime.Session;
 using Stove.Timing;
 
 namespace Stove.Dapper.Filters.Action
 {
-    public class CreationAuditDapperActionFilter : IDapperActionFilter, ITransientDependency
+    public class CreationAuditDapperActionFilter : DapperActionFilterBase, IDapperActionFilter, ITransientDependency
     {
-        public CreationAuditDapperActionFilter()
-        {
-            StoveSession = NullStoveSession.Instance;
-        }
-
-        public IStoveSession StoveSession { get; set; }
-
         public void ExecuteFilter<TEntity, TPrimaryKey>(TEntity entity) where TEntity : class, IEntity<TPrimaryKey>
         {
-            long? userId = StoveSession.UserId;
+            long? userId = GetAuditUserId();
+            CheckAndSetId(entity);
             var entityWithCreationTime = entity as IHasCreationTime;
             if (entityWithCreationTime == null)
             {
