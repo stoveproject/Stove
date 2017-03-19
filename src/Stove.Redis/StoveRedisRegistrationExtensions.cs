@@ -5,10 +5,10 @@ using Autofac.Extras.IocManager;
 
 using JetBrains.Annotations;
 
-using Stove.Redis.Redis;
+using Stove.Redis;
 using Stove.Runtime.Caching;
 
-namespace Stove.Redis
+namespace Stove
 {
     public static class StoveRedisRegistrationExtensions
     {

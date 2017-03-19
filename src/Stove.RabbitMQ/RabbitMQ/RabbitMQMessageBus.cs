@@ -6,7 +6,7 @@ using MassTransit;
 
 using Stove.MQ;
 
-namespace Stove.RabbitMQ.RabbitMQ
+namespace Stove.RabbitMQ
 {
     public class RabbitMQMessageBus : IMessageBus
     {

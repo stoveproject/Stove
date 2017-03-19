@@ -2,9 +2,9 @@
 
 using JetBrains.Annotations;
 
-using Stove.EntityFramework.EntityFramework;
+using Stove.EntityFramework;
 
-namespace Stove.Dapper
+namespace Stove
 {
     public class DapperAutoRepositoryTypeAttribute : AutoRepositoryTypesAttribute
     {

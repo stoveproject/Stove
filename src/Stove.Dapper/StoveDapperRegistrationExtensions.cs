@@ -7,11 +7,11 @@ using Autofac.Extras.IocManager;
 
 using JetBrains.Annotations;
 
-using Stove.Dapper.Dapper;
-using Stove.EntityFramework.EntityFramework;
+using Stove.Dapper;
+using Stove.EntityFramework;
 using Stove.Reflection.Extensions;
 
-namespace Stove.Dapper
+namespace Stove
 {
     public static class StoveDapperRegistrationExtensions
     {

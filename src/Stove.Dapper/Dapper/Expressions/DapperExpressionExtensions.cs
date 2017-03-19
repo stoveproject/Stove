@@ -7,7 +7,7 @@ using JetBrains.Annotations;
 
 using Stove.Domain.Entities;
 
-namespace Stove.Dapper.Dapper.Expressions
+namespace Stove.Dapper.Expressions
 {
     /// <summary>
     ///     http://stackoverflow.com/questions/15154783/pulling-apart-expressionfunct-object

@@ -8,7 +8,7 @@ using DapperExtensions;
 
 using Stove.Domain.Entities;
 
-namespace Stove.Dapper.Dapper.Expressions
+namespace Stove.Dapper.Expressions
 {
     /// <summary>
     ///     This class converts an Expression{Func{TEntity, bool}} into an IPredicate group that can be used with

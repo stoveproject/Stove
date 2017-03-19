@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.Entity;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -10,13 +11,15 @@ using Dapper;
 
 using DapperExtensions;
 
-using Stove.Dapper.Dapper.Extensions;
+using Stove.Dapper.Extensions;
+using Stove.Dapper.Filters.Action;
+using Stove.Dapper.Filters.Query;
 using Stove.Domain.Entities;
 using Stove.Domain.Uow;
-using Stove.EntityFramework.EntityFramework;
+using Stove.EntityFramework;
 using Stove.Events.Bus.Entities;
 
-namespace Stove.Dapper.Dapper.Repositories
+namespace Stove.Dapper.Repositories
 {
     public class DapperRepositoryBase<TDbContext, TEntity, TPrimaryKey> : StoveDapperRepositoryBase<TEntity, TPrimaryKey>
         where TEntity : class, IEntity<TPrimaryKey>
@@ -29,11 +32,14 @@ namespace Stove.Dapper.Dapper.Repositories
             _dbContextProvider = dbContextProvider;
             EntityChangeEventHelper = NullEntityChangeEventHelper.Instance;
             DapperQueryFilterExecuter = NullDapperQueryFilterExecuter.Instance;
+            DapperActionFilterExecuter = NullDapperActionFilterExecuter.Instance;
         }
 
         public IDapperQueryFilterExecuter DapperQueryFilterExecuter { get; set; }
 
         public IEntityChangeEventHelper EntityChangeEventHelper { get; set; }
+
+        public IDapperActionFilterExecuter DapperActionFilterExecuter { get; set; }
 
         public virtual TDbContext Context
         {
@@ -59,12 +65,9 @@ namespace Stove.Dapper.Dapper.Repositories
 
         public override TEntity Get(TPrimaryKey id)
         {
-            return Connection.Get<TEntity>(id, ActiveTransaction);
-        }
-
-        public override Task<TEntity> GetAsync(TPrimaryKey id)
-        {
-            return Connection.GetAsync<TEntity>(id, ActiveTransaction);
+            Expression<Func<TEntity, bool>> predicate = CreateEqualityExpressionForId(id);
+            IPredicate pg = DapperQueryFilterExecuter.ExecuteFilter<TEntity, TPrimaryKey>(predicate);
+            return Connection.GetList<TEntity>(pg, transaction: ActiveTransaction).FirstOrDefault();
         }
 
         public override IEnumerable<TEntity> GetList()
@@ -194,14 +197,13 @@ namespace Stove.Dapper.Dapper.Repositories
 
         public override void Insert(TEntity entity)
         {
-            EntityChangeEventHelper.TriggerEntityCreatingEvent(entity);
-            Connection.Insert(entity, ActiveTransaction);
-            EntityChangeEventHelper.TriggerEntityCreatedEventOnUowCompleted(entity);
+            InsertAndGetId(entity);
         }
 
         public override void Update(TEntity entity)
         {
             EntityChangeEventHelper.TriggerEntityUpdatingEvent(entity);
+            DapperActionFilterExecuter.ExecuteModificationAuditFilter<TEntity, TPrimaryKey>(entity);
             Connection.Update(entity, ActiveTransaction);
             EntityChangeEventHelper.TriggerEntityUpdatedEventOnUowCompleted(entity);
         }
@@ -209,7 +211,15 @@ namespace Stove.Dapper.Dapper.Repositories
         public override void Delete(TEntity entity)
         {
             EntityChangeEventHelper.TriggerEntityDeletingEvent(entity);
-            Connection.Delete(entity, ActiveTransaction);
+            if (entity is ISoftDelete)
+            {
+                DapperActionFilterExecuter.ExecuteDeletionAuditFilter<TEntity, TPrimaryKey>(entity);
+                Connection.Update(entity, ActiveTransaction);
+            }
+            else
+            {
+                Connection.Delete(entity, ActiveTransaction);
+            }
             EntityChangeEventHelper.TriggerEntityDeletedEventOnUowCompleted(entity);
         }
 
@@ -218,15 +228,14 @@ namespace Stove.Dapper.Dapper.Repositories
             IEnumerable<TEntity> items = GetList(predicate);
             foreach (TEntity entity in items)
             {
-                EntityChangeEventHelper.TriggerEntityDeletingEvent(entity);
-                Connection.Delete(entity, ActiveTransaction);
-                EntityChangeEventHelper.TriggerEntityDeletedEventOnUowCompleted(entity);
+                Delete(entity);
             }
         }
 
         public override TPrimaryKey InsertAndGetId(TEntity entity)
         {
             EntityChangeEventHelper.TriggerEntityCreatingEvent(entity);
+            DapperActionFilterExecuter.ExecuteCreationAuditFilter<TEntity, TPrimaryKey>(entity);
             TPrimaryKey primaryKey = Connection.Insert(entity, ActiveTransaction);
             EntityChangeEventHelper.TriggerEntityCreatedEventOnUowCompleted(entity);
             return primaryKey;

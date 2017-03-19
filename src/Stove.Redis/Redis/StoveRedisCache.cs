@@ -8,7 +8,7 @@ using StackExchange.Redis.Extensions.Core;
 
 using Stove.Runtime.Caching;
 
-namespace Stove.Redis.Redis
+namespace Stove.Redis
 {
     /// <summary>
     ///     Used to store cache in a Redis server.

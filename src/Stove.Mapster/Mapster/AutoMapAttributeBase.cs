@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 
 using Mapster;
 
-namespace Stove.Mapster.Mapster
+namespace Stove.Mapster
 {
     public abstract class AutoMapAttributeBase : Attribute
     {

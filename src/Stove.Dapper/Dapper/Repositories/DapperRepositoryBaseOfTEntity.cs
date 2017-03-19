@@ -1,9 +1,9 @@
 ﻿using System.Data.Entity;
 
 using Stove.Domain.Entities;
-using Stove.EntityFramework.EntityFramework;
+using Stove.EntityFramework;
 
-namespace Stove.Dapper.Dapper.Repositories
+namespace Stove.Dapper.Repositories
 {
     public class DapperRepositoryBase<TDbContext, TEntity> : DapperRepositoryBase<TDbContext, TEntity, int>, IDapperRepository<TEntity>
         where TEntity : class, IEntity<int>

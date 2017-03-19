@@ -8,14 +8,7 @@ using Hangfire;
 
 using HibernatingRhinos.Profiler.Appender.EntityFramework;
 
-using Stove.Dapper;
 using Stove.Demo.ConsoleApp.DbContexes;
-using Stove.EntityFramework;
-using Stove.Hangfire;
-using Stove.Mapster;
-using Stove.NLog;
-using Stove.RabbitMQ;
-using Stove.Redis;
 
 namespace Stove.Demo.ConsoleApp
 {

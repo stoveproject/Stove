@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using Mapster;
 
-namespace Stove.Mapster.Mapster
+namespace Stove.Mapster
 {
     public class StoveMapsterConfiguration : IStoveMapsterConfiguration
     {

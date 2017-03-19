@@ -7,10 +7,10 @@ using Autofac.Extras.IocManager;
 
 using Stove.Domain.Entities;
 using Stove.Domain.Repositories;
-using Stove.EntityFramework.EntityFramework.Interceptors;
+using Stove.EntityFramework.Interceptors;
 using Stove.Extensions;
 
-namespace Stove.EntityFramework.EntityFramework.Extensions
+namespace Stove.EntityFramework.Extensions
 {
     /// <summary>
     ///     Extension methods for <see cref="IQueryable" /> and <see cref="IQueryable{T}" />.

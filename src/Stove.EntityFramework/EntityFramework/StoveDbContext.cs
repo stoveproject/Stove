@@ -30,7 +30,7 @@ using Stove.Reflection;
 using Stove.Runtime.Session;
 using Stove.Timing;
 
-namespace Stove.EntityFramework.EntityFramework
+namespace Stove.EntityFramework
 {
     /// <summary>
     ///     Base class for all DbContext classes in the application.

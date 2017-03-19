@@ -1,6 +1,6 @@
 ﻿using Stove.Bootstrapping;
 
-namespace Stove.NLog
+namespace Stove
 {
     [DependsOn(
         typeof(StoveKernelBootstrapper)

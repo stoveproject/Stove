@@ -10,7 +10,7 @@ using NLog;
 using ILogger = Stove.Log.ILogger;
 using Module = Autofac.Module;
 
-namespace Stove.NLog
+namespace Stove
 {
     public class NLogRegistrarModule : Module
     {

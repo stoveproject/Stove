@@ -3,7 +3,7 @@ using System.Data.Entity;
 
 using JetBrains.Annotations;
 
-using Stove.EntityFramework.EntityFramework;
+using Stove.EntityFramework;
 using Stove.Tests.SampleApplication.Domain.Entities;
 
 namespace Stove.Tests.SampleApplication.Domain

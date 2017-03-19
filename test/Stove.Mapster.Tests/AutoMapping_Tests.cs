@@ -7,7 +7,6 @@ using Mapster;
 using Shouldly;
 
 using Stove.Configuration;
-using Stove.Mapster.Mapster;
 using Stove.ObjectMapping;
 
 using Xunit;

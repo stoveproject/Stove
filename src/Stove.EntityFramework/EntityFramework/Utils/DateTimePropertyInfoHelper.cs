@@ -8,7 +8,7 @@ using System.Reflection;
 using Stove.Reflection;
 using Stove.Timing;
 
-namespace Stove.EntityFramework.EntityFramework.Utils
+namespace Stove.EntityFramework.Utils
 {
     internal static class DateTimePropertyInfoHelper
     {

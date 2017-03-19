@@ -3,7 +3,6 @@
 using NSubstitute;
 
 using Stove.MQ;
-using Stove.RabbitMQ.RabbitMQ;
 using Stove.TestBase;
 
 using Xunit;

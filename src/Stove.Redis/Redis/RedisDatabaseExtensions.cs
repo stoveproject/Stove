@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 
 using StackExchange.Redis;
 
-namespace Stove.Redis.Redis
+namespace Stove.Redis
 {
     /// <summary>
     ///     Extension methods for <see cref="IDatabase" />.

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -7,10 +7,10 @@ using Autofac.Extras.IocManager;
 
 using DapperExtensions;
 
-using Stove.Dapper.Dapper.Expressions;
+using Stove.Dapper.Expressions;
 using Stove.Domain.Entities;
 
-namespace Stove.Dapper.Dapper
+namespace Stove.Dapper.Filters.Query
 {
     public class DapperQueryFilterExecuter : IDapperQueryFilterExecuter, ITransientDependency
     {

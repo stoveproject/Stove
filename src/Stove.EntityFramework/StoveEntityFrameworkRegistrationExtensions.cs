@@ -8,11 +8,11 @@ using Autofac.Extras.IocManager;
 using JetBrains.Annotations;
 
 using Stove.Domain.Uow;
-using Stove.EntityFramework.EntityFramework;
-using Stove.EntityFramework.EntityFramework.Uow;
+using Stove.EntityFramework;
+using Stove.EntityFramework.Uow;
 using Stove.Reflection.Extensions;
 
-namespace Stove.EntityFramework
+namespace Stove
 {
     public static class StoveEntityFrameworkRegistrationExtensions
     {

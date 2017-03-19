@@ -9,7 +9,7 @@ using Stove.Collections.Extensions;
 using Stove.Domain.Entities;
 using Stove.Domain.Repositories;
 
-namespace Stove.EntityFramework.EntityFramework.Repositories
+namespace Stove.EntityFramework.Repositories
 {
     /// <summary>
     /// Implements IRepository for Entity Framework.

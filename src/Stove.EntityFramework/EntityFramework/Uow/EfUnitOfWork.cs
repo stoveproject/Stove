@@ -4,7 +4,6 @@ using System.Collections.Immutable;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
-using System.Linq;
 using System.Threading.Tasks;
 
 using Autofac.Extras.IocManager;
@@ -12,10 +11,10 @@ using Autofac.Extras.IocManager;
 using JetBrains.Annotations;
 
 using Stove.Domain.Uow;
-using Stove.EntityFramework.EntityFramework.Utils;
+using Stove.EntityFramework.Utils;
 using Stove.Extensions;
 
-namespace Stove.EntityFramework.EntityFramework.Uow
+namespace Stove.EntityFramework.Uow
 {
     /// <summary>
     ///     Implements Unit of work for Entity Framework.

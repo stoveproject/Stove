@@ -4,7 +4,7 @@ using System.Transactions;
 
 using Stove.Domain.Uow;
 
-namespace Stove.EntityFramework.EntityFramework.Uow
+namespace Stove.EntityFramework.Uow
 {
     public class TransactionScopeEfTransactionStrategy : IEfTransactionStrategy
     {

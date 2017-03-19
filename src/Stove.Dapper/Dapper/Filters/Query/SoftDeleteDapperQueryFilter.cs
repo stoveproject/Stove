@@ -13,7 +13,7 @@ using Stove.Domain.Uow;
 using Stove.Reflection.Extensions;
 using Stove.Utils;
 
-namespace Stove.Dapper.Dapper
+namespace Stove.Dapper.Filters.Query
 {
     public class SoftDeleteDapperQueryFilter : IDapperQueryFilter, ITransientDependency
     {
@@ -47,8 +47,8 @@ namespace Stove.Dapper.Dapper
             {
                 return source.Where(x =>
                 {
-                    var mustHaveTenant = x as ISoftDelete;
-                    return mustHaveTenant != null && mustHaveTenant.IsDeleted == IsDeleted;
+                    var entityAsSoftDelete = x as ISoftDelete;
+                    return entityAsSoftDelete != null && entityAsSoftDelete.IsDeleted == IsDeleted;
                 }).ToList();
             }
 

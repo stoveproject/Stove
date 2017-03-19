@@ -4,7 +4,7 @@ using NLog;
 
 using ILogger = Stove.Log.ILogger;
 
-namespace Stove.NLog
+namespace Stove
 {
     /// <summary>
     ///     Implementation of ILogger, deriving from NLog.Logger

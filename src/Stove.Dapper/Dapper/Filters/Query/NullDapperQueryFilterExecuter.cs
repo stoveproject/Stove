@@ -5,7 +5,7 @@ using DapperExtensions;
 
 using Stove.Domain.Entities;
 
-namespace Stove.Dapper.Dapper
+namespace Stove.Dapper.Filters.Query
 {
     public class NullDapperQueryFilterExecuter : IDapperQueryFilterExecuter
     {

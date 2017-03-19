@@ -2,7 +2,7 @@
 
 using Mapster;
 
-namespace Stove.Mapster.Mapster
+namespace Stove.Mapster
 {
     public static class MapsterExtensions
     {

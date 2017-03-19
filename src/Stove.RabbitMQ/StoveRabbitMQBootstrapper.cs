@@ -1,9 +1,9 @@
 ﻿using MassTransit;
 
 using Stove.Bootstrapping;
-using Stove.RabbitMQ.RabbitMQ;
+using Stove.RabbitMQ;
 
-namespace Stove.RabbitMQ
+namespace Stove
 {
     [DependsOn(
         typeof(StoveKernelBootstrapper)

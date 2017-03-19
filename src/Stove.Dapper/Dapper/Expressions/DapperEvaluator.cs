@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace Stove.Dapper.Dapper.Expressions
+namespace Stove.Dapper.Expressions
 {
     /// <summary>
     ///     Reference

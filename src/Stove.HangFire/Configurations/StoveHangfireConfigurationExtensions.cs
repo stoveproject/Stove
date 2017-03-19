@@ -3,9 +3,9 @@
 using JetBrains.Annotations;
 
 using Stove.Configuration;
-using Stove.Hangfire.Hangfire;
+using Stove.Hangfire;
 
-namespace Stove.Hangfire.Configurations
+namespace Stove.Configurations
 {
     public static class StoveHangfireConfigurationExtensions
     {

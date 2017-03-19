@@ -7,7 +7,7 @@ using Autofac.Extras.IocManager;
 
 using Stove.Runtime;
 
-namespace Stove.EntityFramework.EntityFramework.Interceptors
+namespace Stove.EntityFramework.Interceptors
 {
     public class WithNoLockInterceptor : DbCommandInterceptor, ITransientDependency
     {

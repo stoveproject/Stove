@@ -3,7 +3,7 @@ using System.Data.Common;
 
 using Autofac.Extras.IocManager;
 
-namespace Stove.EntityFramework.EntityFramework
+namespace Stove.EntityFramework
 {
     public class DefaultDbContextResolver : IDbContextResolver, ITransientDependency
     {
