@@ -1,27 +1,16 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-using Autofac.Extras.IocManager;
-
-using Hangfire;
-
-using MassTransit;
+﻿using Autofac.Extras.IocManager;
 
 using Stove.BackgroundJobs;
 using Stove.Dapper.Repositories;
-using Stove.Demo.ConsoleApp.BackgroundJobs;
 using Stove.Demo.ConsoleApp.DbContexes;
-using Stove.Demo.ConsoleApp.Dto;
 using Stove.Demo.ConsoleApp.Entities;
-using Stove.Demo.ConsoleApp.RabbitMQ.Messages;
 using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
 using Stove.EntityFramework;
-using Stove.EntityFramework.Extensions;
 using Stove.Log;
-using Stove.Mapster;
 using Stove.MQ;
 using Stove.Runtime.Caching;
+using Stove.Runtime.Session;
 
 namespace Stove.Demo.ConsoleApp
 {
@@ -36,6 +25,7 @@ namespace Stove.Demo.ConsoleApp
         private readonly IMessageBus _messageBus;
         private readonly IDapperRepository<Person> _personDapperRepository;
         private readonly IRepository<Person> _personRepository;
+        private readonly IDapperRepository<Product> _productDapperRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
 
         public SomeDomainService(
@@ -48,7 +38,8 @@ namespace Stove.Demo.ConsoleApp
             IDapperRepository<Animal> animalDapperRepository,
             ICacheManager cacheManager,
             IMessageBus messageBus,
-            IScheduleJobManager hangfireScheduleJobManager)
+            IScheduleJobManager hangfireScheduleJobManager,
+            IDapperRepository<Product> productDapperRepository)
         {
             _personRepository = personRepository;
             _animalRepository = animalRepository;
@@ -60,9 +51,12 @@ namespace Stove.Demo.ConsoleApp
             _cacheManager = cacheManager;
             _messageBus = messageBus;
             _hangfireScheduleJobManager = hangfireScheduleJobManager;
+            _productDapperRepository = productDapperRepository;
 
             Logger = NullLogger.Instance;
         }
+
+        public IStoveSession StoveSession { get; set; }
 
         public ILogger Logger { get; set; }
 
@@ -89,44 +83,57 @@ namespace Stove.Demo.ConsoleApp
 
                 #region DAPPER
 
-                Animal oneAnimal = _animalDapperRepository.Get(1);
-                Animal oneAnimalAsync = _animalDapperRepository.GetAsync(1).Result;
-
-                Person onePerson = _personDapperRepository.Get(1);
-                Person onePersonAsync = _personDapperRepository.GetAsync(1).Result;
-
-                IEnumerable<Animal> birdsSet = _animalDapperRepository.GetSet(x => x.Name == "Kuş", 0, 10, "Id");
-
-                using (_unitOfWorkManager.Current.DisableFilter(StoveDataFilters.SoftDelete))
+                using (StoveSession.Use(266))
                 {
-                    IEnumerable<Person> personFromDapperNotFiltered = _personDapperRepository.GetList(x => x.Name == "Oğuzhan");
+                    _productDapperRepository.Insert(new Product("TShirt"));
+                    int gomlekId = _productDapperRepository.InsertAndGetId(new Product("Gomlek"));
+
+                    Product firstProduct = _productDapperRepository.Get(1);
+                    var products = _productDapperRepository.GetList();
+
+                    firstProduct.Name = "Something";
+
+                    _productDapperRepository.Update(firstProduct);
                 }
 
-                IEnumerable<Person> personFromDapperFiltered = _personDapperRepository.GetList(x => x.Name == "Oğuzhan");
+                //Animal oneAnimal = _animalDapperRepository.Get(1);
+                //Animal oneAnimalAsync = _animalDapperRepository.GetAsync(1).Result;
 
-                IEnumerable<Animal> birdsFromExpression = _animalDapperRepository.GetSet(x => x.Name == "Kuş", 0, 10, "Id");
+                //Person onePerson = _personDapperRepository.Get(1);
+                //Person onePersonAsync = _personDapperRepository.GetAsync(1).Result;
 
-                IEnumerable<Animal> birdsPagedFromExpression = _animalDapperRepository.GetListPaged(x => x.Name == "Kuş", 0, 10, "Name");
+                //IEnumerable<Animal> birdsSet = _animalDapperRepository.GetSet(x => x.Name == "Kuş", 0, 10, "Id");
 
-                IEnumerable<Person> personFromDapperExpression = _personDapperRepository.GetList(x => x.Name.Contains("Oğuzhan"));
+                //using (_unitOfWorkManager.Current.DisableFilter(StoveDataFilters.SoftDelete))
+                //{
+                //    IEnumerable<Person> personFromDapperNotFiltered = _personDapperRepository.GetList(x => x.Name == "Oğuzhan");
+                //}
 
-                int birdCount = _animalDapperRepository.Count(x => x.Name == "Kuş");
+                //IEnumerable<Person> personFromDapperFiltered = _personDapperRepository.GetList(x => x.Name == "Oğuzhan");
 
-                var personAnimal = _animalDapperRepository.Query<PersonAnimal>("select Name as PersonName,'Zürafa' as AnimalName from Person with(nolock) where name=@name", new { name = "Oğuzhan" })
-                                                          .MapTo<List<PersonAnimalDto>>();
+                //IEnumerable<Animal> birdsFromExpression = _animalDapperRepository.GetSet(x => x.Name == "Kuş", 0, 10, "Id");
 
-                birdsFromExpression.ToList();
-                birdsPagedFromExpression.ToList();
-                birdsSet.ToList();
+                //IEnumerable<Animal> birdsPagedFromExpression = _animalDapperRepository.GetListPaged(x => x.Name == "Kuş", 0, 10, "Name");
 
-                IEnumerable<Person> person2FromDapper = _personDapperRepository.Query("select * from Person with(nolock) where name =@name", new { name = "Oğuzhan" });
+                //IEnumerable<Person> personFromDapperExpression = _personDapperRepository.GetList(x => x.Name.Contains("Oğuzhan"));
 
-                _personDapperRepository.Insert(new Person("oğuzhan2"));
-                int id = _personDapperRepository.InsertAndGetId(new Person("oğuzhan3"));
-                Person person3 = _personDapperRepository.Get(id);
-                person3.Name = "oğuzhan4";
-                _personDapperRepository.Update(person3);
-                _personDapperRepository.Delete(person3);
+                //int birdCount = _animalDapperRepository.Count(x => x.Name == "Kuş");
+
+                //var personAnimal = _animalDapperRepository.Query<PersonAnimal>("select Name as PersonName,'Zürafa' as AnimalName from Person with(nolock) where name=@name", new { name = "Oğuzhan" })
+                //                                          .MapTo<List<PersonAnimalDto>>();
+
+                //birdsFromExpression.ToList();
+                //birdsPagedFromExpression.ToList();
+                //birdsSet.ToList();
+
+                //IEnumerable<Person> person2FromDapper = _personDapperRepository.Query("select * from Person with(nolock) where name =@name", new { name = "Oğuzhan" });
+
+                //_personDapperRepository.Insert(new Person("oğuzhan2"));
+                //int id = _personDapperRepository.InsertAndGetId(new Person("oğuzhan3"));
+                //Person person3 = _personDapperRepository.Get(id);
+                //person3.Name = "oğuzhan4";
+                //_personDapperRepository.Update(person3);
+                //_personDapperRepository.Delete(person3);
 
                 #endregion
 
