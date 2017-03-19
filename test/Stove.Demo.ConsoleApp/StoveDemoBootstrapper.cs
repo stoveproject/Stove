@@ -2,6 +2,7 @@ using System;
 using System.Data.Entity.Infrastructure.Interception;
 
 using Stove.Bootstrapping;
+using Stove.Dapper;
 using Stove.Demo.ConsoleApp.DbContexes;
 using Stove.EntityFramework;
 using Stove.EntityFramework.EntityFramework.Interceptors;
@@ -17,7 +18,8 @@ namespace Stove.Demo.ConsoleApp
         typeof(StoveHangFireBootstrapper),
         typeof(StoveMapsterBootstrapper),
         typeof(StoveRabbitMQBootstrapper),
-        typeof(StoveRedisBootstrapper)
+        typeof(StoveRedisBootstrapper),
+        typeof(StoveDapperBootstrapper)
     )]
     public class StoveDemoBootstrapper : StoveBootstrapper
     {
