@@ -5,7 +5,7 @@ using Stove.Domain.Entities;
 namespace Stove.Demo.ConsoleApp.Entities
 {
     [Table("Person")]
-    public class Person : Entity
+    public class Person : Entity, ISoftDelete
     {
         private Person()
         {
@@ -17,5 +17,7 @@ namespace Stove.Demo.ConsoleApp.Entities
         }
 
         public virtual string Name { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

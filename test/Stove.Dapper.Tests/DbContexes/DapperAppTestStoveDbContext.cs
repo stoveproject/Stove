@@ -2,7 +2,7 @@
 using System.Data.Entity;
 
 using Stove.Dapper.Tests.Entities;
-using Stove.EntityFramework.EntityFramework;
+using Stove.EntityFramework;
 
 namespace Stove.Dapper.Tests.DbContexes
 {

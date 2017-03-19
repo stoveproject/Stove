@@ -2,7 +2,7 @@
 
 using Stove.Configuration;
 
-namespace Stove.RabbitMQ.RabbitMQ
+namespace Stove.RabbitMQ
 {
     public static class StoveRabbitMQConfigurationExtensions
     {

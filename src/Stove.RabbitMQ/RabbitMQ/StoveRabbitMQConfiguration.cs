@@ -1,4 +1,4 @@
-﻿namespace Stove.RabbitMQ.RabbitMQ
+﻿namespace Stove.RabbitMQ
 {
     public class StoveRabbitMQConfiguration : IStoveRabbitMQConfiguration
     {

@@ -3,7 +3,7 @@
 using Hangfire;
 using Hangfire.Annotations;
 
-namespace Stove.Hangfire.Hangfire
+namespace Stove.Hangfire
 {
     public static class GlobalConfigurationExtensions
     {

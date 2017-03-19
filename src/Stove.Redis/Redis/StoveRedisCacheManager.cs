@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 using Stove.Runtime.Caching;
 using Stove.Runtime.Caching.Configuration;
 
-namespace Stove.Redis.Redis
+namespace Stove.Redis
 {
     /// <summary>
     ///     Used to create <see cref="StoveRedisCache" /> instances.

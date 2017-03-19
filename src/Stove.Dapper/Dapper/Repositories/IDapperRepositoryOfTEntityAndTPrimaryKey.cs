@@ -8,7 +8,7 @@ using JetBrains.Annotations;
 using Stove.Domain.Entities;
 using Stove.Domain.Repositories;
 
-namespace Stove.Dapper.Dapper.Repositories
+namespace Stove.Dapper.Repositories
 {
     /// <summary>
     ///     Dapper repository abstraction interface.

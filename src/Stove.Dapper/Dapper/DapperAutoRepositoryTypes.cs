@@ -1,6 +1,6 @@
-﻿using Stove.Dapper.Dapper.Repositories;
+﻿using Stove.Dapper.Repositories;
 
-namespace Stove.Dapper.Dapper
+namespace Stove.Dapper
 {
     public static class DapperAutoRepositoryTypes
     {

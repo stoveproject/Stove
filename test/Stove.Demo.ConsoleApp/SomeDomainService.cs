@@ -5,12 +5,10 @@ using Autofac.Extras.IocManager;
 
 using Hangfire;
 
-using LinqKit;
-
 using MassTransit;
 
 using Stove.BackgroundJobs;
-using Stove.Dapper.Dapper.Repositories;
+using Stove.Dapper.Repositories;
 using Stove.Demo.ConsoleApp.BackgroundJobs;
 using Stove.Demo.ConsoleApp.DbContexes;
 using Stove.Demo.ConsoleApp.Dto;
@@ -18,10 +16,10 @@ using Stove.Demo.ConsoleApp.Entities;
 using Stove.Demo.ConsoleApp.RabbitMQ.Messages;
 using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
-using Stove.EntityFramework.EntityFramework;
-using Stove.EntityFramework.EntityFramework.Extensions;
+using Stove.EntityFramework;
+using Stove.EntityFramework.Extensions;
 using Stove.Log;
-using Stove.Mapster.Mapster;
+using Stove.Mapster;
 using Stove.MQ;
 using Stove.Runtime.Caching;
 
@@ -74,36 +72,39 @@ namespace Stove.Demo.ConsoleApp
             {
                 Logger.Debug("Uow Began!");
 
-                _personRepository.Insert(new Person("Oğuzhan"));
-                _personRepository.Insert(new Person("Ekmek"));
+                //_personRepository.Insert(new Person("Oğuzhan"));
+                //_personRepository.Insert(new Person("Ekmek"));
 
-                _animalRepository.Insert(new Animal("Kuş"));
-                _animalRepository.Insert(new Animal("Kedi"));
+                //_animalRepository.Insert(new Animal("Kuş"));
+                //_animalRepository.Insert(new Animal("Kedi"));
 
-                _animalDbContextProvider.GetDbContext().Animals.Add(new Animal("Kelebek"));
+                //_animalDbContextProvider.GetDbContext().Animals.Add(new Animal("Kelebek"));
 
-                _unitOfWorkManager.Current.SaveChanges();
+                //_unitOfWorkManager.Current.SaveChanges();
 
-                Person personCache = _cacheManager.GetCache(DemoCacheName.Demo).Get("person", () => _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan"));
+                //Person personCache = _cacheManager.GetCache(DemoCacheName.Demo).Get("person", () => _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan"));
 
-                Person person = _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan");
-                Animal animal = _animalRepository.FirstOrDefault(x => x.Name == "Kuş");
+                //Person person = _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan");
+                //Animal animal = _animalRepository.FirstOrDefault(x => x.Name == "Kuş");
 
                 #region DAPPER
 
-                var list = new List<string>
-                {
-                    "elma", "armut"
-                };
+                Animal oneAnimal = _animalDapperRepository.Get(1);
+                Animal oneAnimalAsync = _animalDapperRepository.GetAsync(1).Result;
 
-                ExpressionStarter<Animal> predicate = PredicateBuilder.New<Animal>();
-                predicate.And(x => x.Name == "Kuş");
+                Person onePerson = _personDapperRepository.Get(1);
+                Person onePersonAsync = _personDapperRepository.GetAsync(1).Result;
 
                 IEnumerable<Animal> birdsSet = _animalDapperRepository.GetSet(x => x.Name == "Kuş", 0, 10, "Id");
 
-                IEnumerable<Person> personFromDapper = _personDapperRepository.GetList(x => x.Name == "Oğuzhan");
+                using (_unitOfWorkManager.Current.DisableFilter(StoveDataFilters.SoftDelete))
+                {
+                    IEnumerable<Person> personFromDapperNotFiltered = _personDapperRepository.GetList(x => x.Name == "Oğuzhan");
+                }
 
-                IEnumerable<Animal> birdsFromExpression = _animalDapperRepository.GetSet(predicate, 0, 10, "Id");
+                IEnumerable<Person> personFromDapperFiltered = _personDapperRepository.GetList(x => x.Name == "Oğuzhan");
+
+                IEnumerable<Animal> birdsFromExpression = _animalDapperRepository.GetSet(x => x.Name == "Kuş", 0, 10, "Id");
 
                 IEnumerable<Animal> birdsPagedFromExpression = _animalDapperRepository.GetListPaged(x => x.Name == "Kuş", 0, 10, "Name");
 
@@ -129,29 +130,29 @@ namespace Stove.Demo.ConsoleApp
 
                 #endregion
 
-                Person person2Cache = _cacheManager.GetCache(DemoCacheName.Demo).Get("person", () => _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan"));
+                //Person person2Cache = _cacheManager.GetCache(DemoCacheName.Demo).Get("person", () => _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan"));
 
-                Person oguzhan = _personRepository.Nolocking(persons => persons.FirstOrDefault(x => x.Name == "Oğuzhan"));
+                //Person oguzhan = _personRepository.Nolocking(persons => persons.FirstOrDefault(x => x.Name == "Oğuzhan"));
 
-                Person oguzhan2 = _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan");
+                //Person oguzhan2 = _personRepository.FirstOrDefault(x => x.Name == "Oğuzhan");
 
                 uow.Complete();
 
-                _messageBus.Publish<IPersonAddedMessage>(new PersonAddedMessage
-                {
-                    Name = "Oğuzhan",
-                    CorrelationId = NewId.NextGuid()
-                });
+                //_messageBus.Publish<IPersonAddedMessage>(new PersonAddedMessage
+                //{
+                //    Name = "Oğuzhan",
+                //    CorrelationId = NewId.NextGuid()
+                //});
 
                 //_hangfireBackgroundJobManager.EnqueueAsync<SimpleBackgroundJob, SimpleBackgroundJobArgs>(new SimpleBackgroundJobArgs
                 //{
                 //    Message = "Oğuzhan"
                 //});
 
-                _hangfireScheduleJobManager.ScheduleAsync<SimpleBackgroundJob, SimpleBackgroundJobArgs>(new SimpleBackgroundJobArgs
-                {
-                    Message = "Oğuzhan"
-                }, Cron.Minutely());
+                //_hangfireScheduleJobManager.ScheduleAsync<SimpleBackgroundJob, SimpleBackgroundJobArgs>(new SimpleBackgroundJobArgs
+                //{
+                //    Message = "Oğuzhan"
+                //}, Cron.Minutely());
 
                 Logger.Debug("Uow End!");
             }

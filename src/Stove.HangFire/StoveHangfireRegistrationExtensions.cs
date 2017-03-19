@@ -5,9 +5,9 @@ using Autofac.Extras.IocManager;
 
 using JetBrains.Annotations;
 
-using Stove.Hangfire.Hangfire;
+using Stove.Hangfire;
 
-namespace Stove.Hangfire
+namespace Stove
 {
     public static class StoveHangfireRegistrationExtensions
     {

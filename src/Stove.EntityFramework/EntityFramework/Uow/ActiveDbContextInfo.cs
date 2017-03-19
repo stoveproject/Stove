@@ -1,6 +1,6 @@
 using System.Data.Entity;
 
-namespace Stove.EntityFramework.EntityFramework.Uow
+namespace Stove.EntityFramework.Uow
 {
     public class ActiveDbContextInfo
     {

@@ -8,14 +8,7 @@ using Hangfire;
 
 using HibernatingRhinos.Profiler.Appender.EntityFramework;
 
-using Stove.Dapper;
 using Stove.Demo.ConsoleApp.DbContexes;
-using Stove.EntityFramework;
-using Stove.Hangfire;
-using Stove.Mapster;
-using Stove.NLog;
-using Stove.RabbitMQ;
-using Stove.Redis;
 
 namespace Stove.Demo.ConsoleApp
 {
@@ -30,7 +23,7 @@ namespace Stove.Demo.ConsoleApp
 
             IRootResolver resolver = IocBuilder.New
                                                .UseAutofacContainerBuilder()
-                                               .UseStove<StoveDemoBootstrapper>(autoUnitOfWorkInterceptionEnabled: true)
+                                               .UseStove<StoveDemoBootstrapper>(autoUnitOfWorkInterceptionEnabled: false)
                                                .UseStoveEntityFramework()
                                                .UseStoveDapper()
                                                .UseStoveMapster()

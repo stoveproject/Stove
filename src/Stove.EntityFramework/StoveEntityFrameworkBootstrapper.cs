@@ -2,10 +2,10 @@
 using System.Linq;
 
 using Stove.Bootstrapping;
-using Stove.EntityFramework.EntityFramework;
+using Stove.EntityFramework;
 using Stove.Reflection.Extensions;
 
-namespace Stove.EntityFramework
+namespace Stove
 {
     [DependsOn(
         typeof(StoveKernelBootstrapper)

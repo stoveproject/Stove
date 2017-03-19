@@ -1,6 +1,6 @@
 using Stove.Domain.Repositories;
 
-namespace Stove.EntityFramework.EntityFramework.Repositories
+namespace Stove.EntityFramework.Repositories
 {
     public static class EfAutoRepositoryTypes
     {

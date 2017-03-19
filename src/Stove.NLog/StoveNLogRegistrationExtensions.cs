@@ -9,7 +9,7 @@ using NLog;
 
 using ILogger = Stove.Log.ILogger;
 
-namespace Stove.NLog
+namespace Stove
 {
     public static class StoveNLogRegistrationExtensions
     {

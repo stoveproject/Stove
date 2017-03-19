@@ -21,6 +21,7 @@
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Version>0.1.0</Version>
+    <RootNamespace>Stove</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

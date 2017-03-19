@@ -7,7 +7,7 @@ using Autofac.Extras.IocManager;
 
 using Stove.Linq;
 
-namespace Stove.EntityFramework.EntityFramework.Linq
+namespace Stove.EntityFramework.Linq
 {
     public class EfAsyncQueryableExecuter : IAsyncQueryableExecuter, ISingletonDependency
     {

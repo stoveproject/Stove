@@ -1,12 +1,10 @@
 ﻿using System;
 
-using JetBrains.Annotations;
-
 using StackExchange.Redis;
 
 using Stove.Json;
 
-namespace Stove.Redis.Redis
+namespace Stove.Redis
 {
     /// <summary>
     ///     Typeless implementation uses JSON as the underlying persistence mechanism.

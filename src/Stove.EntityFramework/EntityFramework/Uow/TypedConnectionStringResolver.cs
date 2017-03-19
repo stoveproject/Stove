@@ -5,7 +5,7 @@ using Autofac.Extras.IocManager;
 using Stove.Configuration;
 using Stove.Domain.Uow;
 
-namespace Stove.EntityFramework.EntityFramework.Uow
+namespace Stove.EntityFramework.Uow
 {
     public class TypedConnectionStringResolver : IConnectionStringResolver, ITransientDependency
     {

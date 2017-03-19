@@ -1,6 +1,6 @@
 ﻿using Shouldly;
 
-using Stove.Dapper.Dapper.Repositories;
+using Stove.Dapper.Repositories;
 using Stove.Dapper.Tests.Entities;
 using Stove.Domain.Uow;
 

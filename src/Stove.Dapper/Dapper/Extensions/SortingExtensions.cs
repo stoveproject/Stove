@@ -8,7 +8,7 @@ using DapperExtensions;
 
 using JetBrains.Annotations;
 
-namespace Stove.Dapper.Dapper.Extensions
+namespace Stove.Dapper.Extensions
 {
     internal static class SortingExtensions
     {

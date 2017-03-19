@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 using Stove.Domain.Entities;
 
-namespace Stove.Dapper.Dapper.Repositories
+namespace Stove.Dapper.Repositories
 {
     public abstract class StoveDapperRepositoryBase<TEntity, TPrimaryKey> : IDapperRepository<TEntity, TPrimaryKey> where TEntity : class, IEntity<TPrimaryKey>
     {
@@ -123,6 +123,18 @@ namespace Stove.Dapper.Dapper.Repositories
         public virtual Task<TPrimaryKey> InsertAndGetIdAsync(TEntity entity)
         {
             return Task.FromResult(InsertAndGetId(entity));
+        }
+
+        protected static Expression<Func<TEntity, bool>> CreateEqualityExpressionForId(TPrimaryKey id)
+        {
+            ParameterExpression lambdaParam = Expression.Parameter(typeof(TEntity));
+
+            BinaryExpression lambdaBody = Expression.Equal(
+                Expression.PropertyOrField(lambdaParam, "Id"),
+                Expression.Constant(id, typeof(TPrimaryKey))
+            );
+
+            return Expression.Lambda<Func<TEntity, bool>>(lambdaBody, lambdaParam);
         }
     }
 }

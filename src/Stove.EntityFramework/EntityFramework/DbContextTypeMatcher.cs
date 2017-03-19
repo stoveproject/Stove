@@ -7,7 +7,7 @@ using Autofac.Extras.IocManager;
 using Stove.Collections.Extensions;
 using Stove.Domain.Uow;
 
-namespace Stove.EntityFramework.EntityFramework
+namespace Stove.EntityFramework
 {
     public class DbContextTypeMatcher : DbContextTypeMatcher<StoveDbContext>
     {

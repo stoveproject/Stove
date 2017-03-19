@@ -1,4 +1,4 @@
-﻿using Stove.Mapster.Mapster;
+﻿using Stove.Mapster;
 
 namespace Stove.Tests.SampleApplication.Dtos
 {

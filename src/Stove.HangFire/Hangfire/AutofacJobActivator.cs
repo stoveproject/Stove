@@ -5,7 +5,7 @@ using Autofac;
 using Hangfire;
 using Hangfire.Annotations;
 
-namespace Stove.Hangfire.Hangfire
+namespace Stove.Hangfire
 {
     /// <summary>
     ///     Hangfire Job Activator based on Autofac IoC Container.

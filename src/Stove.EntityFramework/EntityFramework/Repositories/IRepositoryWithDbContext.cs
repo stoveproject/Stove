@@ -1,6 +1,6 @@
 using System.Data.Entity;
 
-namespace Stove.EntityFramework.EntityFramework.Repositories
+namespace Stove.EntityFramework.Repositories
 {
     public interface IRepositoryWithDbContext
     {

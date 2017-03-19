@@ -3,7 +3,7 @@
 using StackExchange.Redis;
 using StackExchange.Redis.Extensions.Core.Configuration;
 
-namespace Stove.Redis.Redis
+namespace Stove.Redis
 {
     public interface IStoveRedisCacheConfiguration
     {

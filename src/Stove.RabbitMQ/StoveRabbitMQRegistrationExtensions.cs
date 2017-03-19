@@ -12,9 +12,9 @@ using MassTransit;
 using MassTransit.RabbitMqTransport;
 
 using Stove.MQ;
-using Stove.RabbitMQ.RabbitMQ;
+using Stove.RabbitMQ;
 
-namespace Stove.RabbitMQ
+namespace Stove
 {
     public static class StoveRabbitMQRegistrationExtensions
     {

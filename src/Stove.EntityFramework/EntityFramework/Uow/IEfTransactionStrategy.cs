@@ -2,7 +2,7 @@ using System.Data.Entity;
 
 using Stove.Domain.Uow;
 
-namespace Stove.EntityFramework.EntityFramework.Uow
+namespace Stove.EntityFramework.Uow
 {
     public interface IEfTransactionStrategy
     {

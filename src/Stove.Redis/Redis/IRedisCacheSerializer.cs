@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 
 using StackExchange.Redis;
 
-namespace Stove.Redis.Redis
+namespace Stove.Redis
 {
     /// <summary>
     ///     Interface to be implemented by all custom (de)serialization methods used when persisting and retrieving

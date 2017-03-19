@@ -4,10 +4,10 @@ using Autofac.Extras.IocManager;
 
 using JetBrains.Annotations;
 
-using Stove.Mapster.Mapster;
+using Stove.Mapster;
 using Stove.ObjectMapping;
 
-namespace Stove.Mapster
+namespace Stove
 {
     public static class StoveMapsterRegistrationExtensions
     {

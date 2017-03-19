@@ -1,6 +1,6 @@
 using System;
 
-namespace Stove.EntityFramework.EntityFramework
+namespace Stove.EntityFramework
 {
     public interface IDbContextTypeMatcher
     {

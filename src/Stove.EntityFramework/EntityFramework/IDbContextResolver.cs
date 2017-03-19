@@ -1,6 +1,6 @@
 using System.Data.Common;
 
-namespace Stove.EntityFramework.EntityFramework
+namespace Stove.EntityFramework
 {
     public interface IDbContextResolver
     {

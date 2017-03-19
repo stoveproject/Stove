@@ -4,7 +4,6 @@ using Autofac.Extras.IocManager;
 
 using Effort;
 
-using Stove.EntityFramework;
 using Stove.TestBase;
 
 namespace Stove.Dapper.Tests

@@ -5,12 +5,12 @@ using Mapster;
 
 using Stove.Collections.Extensions;
 
-namespace Stove.Mapster.Mapster
+namespace Stove.Mapster
 {
     /// <summary>
     ///     Maps both, eneity and dto two-way.
     /// </summary>
-    /// <seealso cref="Stove.Mapster.Mapster.AutoMapAttributeBase" />
+    /// <seealso cref="AutoMapAttributeBase" />
     public class AutoMapAttribute : AutoMapAttributeBase
     {
         public AutoMapAttribute(params Type[] targetTypes)
