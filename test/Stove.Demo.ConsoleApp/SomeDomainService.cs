@@ -101,7 +101,12 @@ namespace Stove.Demo.ConsoleApp
 
                 IEnumerable<Animal> birdsSet = _animalDapperRepository.GetSet(x => x.Name == "Kuş", 0, 10, "Id");
 
-                IEnumerable<Person> personFromDapper = _personDapperRepository.GetList(x => x.Name == "Oğuzhan");
+                using (_unitOfWorkManager.Current.DisableFilter(StoveDataFilters.SoftDelete))
+                {
+                    IEnumerable<Person> personFromDapperNotFiltered = _personDapperRepository.GetList(x => x.Name == "Oğuzhan");
+                }
+
+                IEnumerable<Person> personFromDapperFiltered = _personDapperRepository.GetList(x => x.Name == "Oğuzhan");
 
                 IEnumerable<Animal> birdsFromExpression = _animalDapperRepository.GetSet(predicate, 0, 10, "Id");
 
