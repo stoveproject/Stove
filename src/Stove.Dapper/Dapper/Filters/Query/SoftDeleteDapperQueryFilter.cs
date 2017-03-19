@@ -24,7 +24,7 @@ namespace Stove.Dapper.Filters.Query
             _unitOfWorkManager = unitOfWorkManager;
         }
 
-        public bool IsDeleted => !IsEnabled;
+        public bool IsDeleted => false;
 
         public string FilterName { get; } = StoveDataFilters.SoftDelete;
 
@@ -33,7 +33,7 @@ namespace Stove.Dapper.Filters.Query
         public IFieldPredicate ExecuteFilter<TEntity, TPrimaryKey>() where TEntity : class, IEntity<TPrimaryKey>
         {
             IFieldPredicate predicate = null;
-            if (typeof(TEntity).IsInheritsOrImplements(typeof(ISoftDelete)) && IsEnabled)
+            if (IsFilterable<TEntity, TPrimaryKey>())
             {
                 predicate = Predicates.Field<TEntity>(f => (f as ISoftDelete).IsDeleted, Operator.Eq, IsDeleted);
             }
@@ -41,23 +41,9 @@ namespace Stove.Dapper.Filters.Query
             return predicate;
         }
 
-        public IList<TEntity> ExecuteFilter<TEntity, TPrimaryKey>(IList<TEntity> source) where TEntity : class, IEntity<TPrimaryKey>
-        {
-            if (typeof(TEntity).IsInheritsOrImplements(typeof(ISoftDelete)) && IsEnabled)
-            {
-                return source.Where(x =>
-                {
-                    var entityAsSoftDelete = x as ISoftDelete;
-                    return entityAsSoftDelete != null && entityAsSoftDelete.IsDeleted == IsDeleted;
-                }).ToList();
-            }
-
-            return source;
-        }
-
         public Expression<Func<TEntity, bool>> ExecuteFilter<TEntity, TPrimaryKey>(Expression<Func<TEntity, bool>> predicate) where TEntity : class, IEntity<TPrimaryKey>
         {
-            if (typeof(TEntity).IsInheritsOrImplements(typeof(ISoftDelete)) && IsEnabled)
+            if (IsFilterable<TEntity, TPrimaryKey>())
             {
                 PropertyInfo propType = typeof(TEntity).GetProperty(nameof(ISoftDelete.IsDeleted));
                 if (predicate == null)
@@ -75,6 +61,11 @@ namespace Stove.Dapper.Filters.Query
                 }
             }
             return predicate;
+        }
+
+        private bool IsFilterable<TEntity, TPrimaryKey>() where TEntity : class, IEntity<TPrimaryKey>
+        {
+            return typeof(TEntity).IsInheritsOrImplements(typeof(ISoftDelete)) && IsEnabled;
         }
     }
 }
