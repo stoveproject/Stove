@@ -4,17 +4,15 @@ using System.Reflection;
 
 using Autofac.Extras.IocManager;
 
-using Hangfire;
-
 using HibernatingRhinos.Profiler.Appender.EntityFramework;
 
 using Stove.Demo.ConsoleApp.DbContexes;
 
 namespace Stove.Demo.ConsoleApp
 {
-    internal class Program
+    public static class Program
     {
-        private static void Main(string[] args)
+        public static void Main(string[] args)
         {
             EntityFrameworkProfiler.Initialize();
 
@@ -23,7 +21,7 @@ namespace Stove.Demo.ConsoleApp
 
             IRootResolver resolver = IocBuilder.New
                                                .UseAutofacContainerBuilder()
-                                               .UseStove<StoveDemoBootstrapper>(autoUnitOfWorkInterceptionEnabled: false)
+                                               .UseStove<StoveDemoBootstrapper>(false)
                                                .UseStoveEntityFramework()
                                                .UseStoveDapper()
                                                .UseStoveMapster()
@@ -31,28 +29,35 @@ namespace Stove.Demo.ConsoleApp
                                                .UseStoveDbContextEfTransactionStrategy()
                                                .UseStoveTypedConnectionStringResolver()
                                                .UseStoveNLog()
-                                               .UseStoveBackgroundJobs()
-                                               .UseStoveRedisCaching()
-                                               .UseStoveRabbitMQ(configuration =>
-                                               {
-                                                   configuration.HostAddress = "rabbitmq://localhost/";
-                                                   configuration.Username = "admin";
-                                                   configuration.Password = "admin";
-                                                   configuration.QueueName = "Default";
-                                                   return configuration;
-                                               })
-                                               .UseStoveHangfire(configuration =>
-                                               {
-                                                   configuration.GlobalConfiguration
-                                                                .UseSqlServerStorage("Default")
-                                                                .UseNLogLogProvider();
-                                                   return configuration;
-                                               })
+
+                                               //.UseStoveBackgroundJobs()
+                                               //.UseStoveRedisCaching()
+                                               //.UseStoveRabbitMQ(configuration =>
+                                               //{
+                                               //    configuration.HostAddress = "rabbitmq://localhost/";
+                                               //    configuration.Username = "admin";
+                                               //    configuration.Password = "admin";
+                                               //    configuration.QueueName = "Default";
+                                               //    return configuration;
+                                               //})
+                                               //.UseStoveHangfire(configuration =>
+                                               //{
+                                               //    configuration.GlobalConfiguration
+                                               //                 .UseSqlServerStorage("Default")
+                                               //                 .UseNLogLogProvider();
+                                               //    return configuration;
+                                               //})
                                                .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()))
                                                .CreateResolver();
 
-            var someDomainService = resolver.Resolve<SomeDomainService>();
-            someDomainService.DoSomeStuff();
+            //var someDomainService = resolver.Resolve<SomeDomainService>();
+            //someDomainService.DoSomeStuff();
+
+            using (resolver)
+            {
+                var productDomainService = resolver.Resolve<ProductDomainService>();
+                productDomainService.DoSomeStuff();
+            }
 
             Console.ReadKey();
         }

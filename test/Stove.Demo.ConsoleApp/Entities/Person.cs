@@ -4,7 +4,7 @@ using Stove.Domain.Entities;
 
 namespace Stove.Demo.ConsoleApp.Entities
 {
-    [Table("Person")]
+    [Table("Persons")]
     public class Person : Entity, ISoftDelete
     {
         private Person()

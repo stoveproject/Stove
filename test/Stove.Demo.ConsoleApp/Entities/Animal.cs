@@ -4,7 +4,7 @@ using Stove.Domain.Entities;
 
 namespace Stove.Demo.ConsoleApp.Entities
 {
-    [Table("Animal")]
+    [Table("Animals")]
     public class Animal : Entity
     {
         private Animal()

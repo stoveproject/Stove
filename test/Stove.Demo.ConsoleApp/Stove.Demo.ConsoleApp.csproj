@@ -4,16 +4,30 @@
     <VersionPrefix>0.0.1</VersionPrefix>
     <TargetFramework>net461</TargetFramework>
     <AssemblyName>Stove.Demo.ConsoleApp</AssemblyName>
-    <OutputType>Exe</OutputType>
+    <OutputType>exe</OutputType>
     <PackageId>Stove.Demo.ConsoleApp</PackageId>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <RuntimeIdentifier>win7-x64</RuntimeIdentifier>
+    <ApplicationIcon />
+    <OutputTypeEx>exe</OutputTypeEx>
+    <StartupObject>Stove.Demo.ConsoleApp.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="App.config" />
+    <None Remove="Db\Stove_log.ldf" />
+    <None Remove="Scripts\DestroyDatabase.sql" />
+    <None Remove="Scripts\InitializeDatabase.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="App.config" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\DestroyDatabase.sql" />
+    <EmbeddedResource Include="Scripts\InitializeDatabase.sql" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,6 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="EntityFramework" Version="6.1.3" />
     <PackageReference Include="EntityFrameworkProfiler.Appender" Version="4.0.4039" />
     <PackageReference Include="LinqKit" Version="1.1.8" />
   </ItemGroup>
@@ -35,6 +50,10 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Configuration" />
   </ItemGroup>
 
 </Project>
