@@ -23,7 +23,7 @@ namespace Stove.Dapper.Repositories
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        [CanBeNull]
+        [NotNull]
         TEntity Get([NotNull] TPrimaryKey id);
 
         /// <summary>
@@ -31,21 +31,21 @@ namespace Stove.Dapper.Repositories
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        [CanBeNull]
+        [NotNull]
         Task<TEntity> GetAsync([NotNull] TPrimaryKey id);
 
         /// <summary>
         ///     Gets the list.
         /// </summary>
         /// <returns></returns>
-        [CanBeNull]
+        [NotNull]
         IEnumerable<TEntity> GetList();
 
         /// <summary>
         ///     Gets the list asynchronous.
         /// </summary>
         /// <returns></returns>
-        [CanBeNull]
+        [NotNull]
         Task<IEnumerable<TEntity>> GetListAsync();
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace Stove.Dapper.Repositories
         /// </summary>
         /// <param name="predicate">The predicate.</param>
         /// <returns></returns>
-        [CanBeNull]
+        [NotNull]
         IEnumerable<TEntity> GetList([CanBeNull] Expression<Func<TEntity, bool>> predicate);
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace Stove.Dapper.Repositories
         /// </summary>
         /// <param name="predicate">The predicate.</param>
         /// <returns></returns>
-        [CanBeNull]
+        [NotNull]
         Task<IEnumerable<TEntity>> GetListAsync([NotNull] Expression<Func<TEntity, bool>> predicate);
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace Stove.Dapper.Repositories
         /// <param name="sortingProperty">The sorting property.</param>
         /// <param name="ascending">if set to <c>true</c> [ascending].</param>
         /// <returns></returns>
-        [CanBeNull]
+        [NotNull]
         Task<IEnumerable<TEntity>> GetListPagedAsync([NotNull] Expression<Func<TEntity, bool>> predicate, int pageNumber, int itemsPerPage, [NotNull] string sortingProperty, bool ascending = true);
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Stove.Dapper.Repositories
         /// <param name="sortingExpression">The sorting expression.</param>
         /// <param name="ascending">if set to <c>true</c> [ascending].</param>
         /// <returns></returns>
-        [CanBeNull]
+        [NotNull]
         Task<IEnumerable<TEntity>> GetListPagedAsync([NotNull] Expression<Func<TEntity, bool>> predicate, int pageNumber, int itemsPerPage, bool ascending = true, [NotNull] params Expression<Func<TEntity, object>>[] sortingExpression);
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace Stove.Dapper.Repositories
         /// <param name="sortingProperty">The sorting property.</param>
         /// <param name="ascending">if set to <c>true</c> [ascending].</param>
         /// <returns></returns>
-        [CanBeNull]
+        [NotNull]
         IEnumerable<TEntity> GetListPaged([NotNull] Expression<Func<TEntity, bool>> predicate, int pageNumber, int itemsPerPage, [NotNull] string sortingProperty, bool ascending = true);
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace Stove.Dapper.Repositories
         /// <param name="sortingExpression">The sorting expression.</param>
         /// <param name="ascending">if set to <c>true</c> [ascending].</param>
         /// <returns></returns>
-        [CanBeNull]
+        [NotNull]
         IEnumerable<TEntity> GetListPaged([NotNull] Expression<Func<TEntity, bool>> predicate, int pageNumber, int itemsPerPage, bool ascending = true, [NotNull] params Expression<Func<TEntity, object>>[] sortingExpression);
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace Stove.Dapper.Repositories
         /// <param name="query">The query.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns></returns>
-        [CanBeNull]
+        [NotNull]
         IEnumerable<TAny> Query<TAny>([NotNull] string query, [CanBeNull] object parameters) where TAny : class;
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace Stove.Dapper.Repositories
         /// <param name="query">The query.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns></returns>
-        [CanBeNull]
+        [NotNull]
         Task<IEnumerable<TAny>> QueryAsync<TAny>([NotNull] string query, [CanBeNull] object parameters) where TAny : class;
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace Stove.Dapper.Repositories
         /// <typeparam name="TAny">The type of any.</typeparam>
         /// <param name="query">The query.</param>
         /// <returns></returns>
-        [CanBeNull]
+        [NotNull]
         Task<IEnumerable<TAny>> QueryAsync<TAny>([NotNull] string query) where TAny : class;
 
         /// <summary>
@@ -177,7 +177,7 @@ namespace Stove.Dapper.Repositories
         /// <param name="query">The query.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns></returns>
-        [CanBeNull]
+        [NotNull]
         Task<IEnumerable<TEntity>> QueryAsync([NotNull] string query, [CanBeNull] object parameters);
 
         /// <summary>
@@ -189,7 +189,7 @@ namespace Stove.Dapper.Repositories
         /// <param name="sortingProperty">The sorting property.</param>
         /// <param name="ascending">if set to <c>true</c> [ascending].</param>
         /// <returns></returns>
-        [CanBeNull]
+        [NotNull]
         IEnumerable<TEntity> GetSet([NotNull] Expression<Func<TEntity, bool>> predicate, int firstResult, int maxResults, [NotNull] string sortingProperty, bool ascending = true);
 
         /// <summary>
@@ -201,7 +201,7 @@ namespace Stove.Dapper.Repositories
         /// <param name="sortingExpression">The sorting expression.</param>
         /// <param name="ascending">if set to <c>true</c> [ascending].</param>
         /// <returns></returns>
-        [CanBeNull]
+        [NotNull]
         IEnumerable<TEntity> GetSet([NotNull] Expression<Func<TEntity, bool>> predicate, int firstResult, int maxResults, bool ascending = true, [NotNull] params Expression<Func<TEntity, object>>[] sortingExpression);
 
         /// <summary>
@@ -213,7 +213,7 @@ namespace Stove.Dapper.Repositories
         /// <param name="sortingProperty">The sorting property.</param>
         /// <param name="ascending">if set to <c>true</c> [ascending].</param>
         /// <returns></returns>
-        [CanBeNull]
+        [NotNull]
         Task<IEnumerable<TEntity>> GetSetAsync([NotNull] Expression<Func<TEntity, bool>> predicate, int firstResult, int maxResults, [NotNull] string sortingProperty, bool ascending = true);
 
         /// <summary>
@@ -225,7 +225,7 @@ namespace Stove.Dapper.Repositories
         /// <param name="ascending">if set to <c>true</c> [ascending].</param>
         /// <param name="sortingExpression">The sorting expression.</param>
         /// <returns></returns>
-        [CanBeNull]
+        [NotNull]
         Task<IEnumerable<TEntity>> GetSetAsync([NotNull] Expression<Func<TEntity, bool>> predicate, int firstResult, int maxResults, bool ascending = true, [NotNull] params Expression<Func<TEntity, object>>[] sortingExpression);
 
         /// <summary>

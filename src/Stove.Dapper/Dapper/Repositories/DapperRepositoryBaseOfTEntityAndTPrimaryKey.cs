@@ -67,7 +67,10 @@ namespace Stove.Dapper.Repositories
         {
             Expression<Func<TEntity, bool>> predicate = CreateEqualityExpressionForId(id);
             IPredicate pg = DapperQueryFilterExecuter.ExecuteFilter<TEntity, TPrimaryKey>(predicate);
-            return Connection.GetList<TEntity>(pg, transaction: ActiveTransaction).FirstOrDefault();
+            TEntity item = Connection.GetList<TEntity>(pg, transaction: ActiveTransaction).First();
+
+            if (item == null) { throw new EntityNotFoundException(typeof(TEntity), id); }
+            return item;
         }
 
         public override IEnumerable<TEntity> GetList()
