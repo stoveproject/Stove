@@ -17,6 +17,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Scripts\CreateInitialTables.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\DestroyScript.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\CreateInitialTables.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Effort.EF6" Version="1.3.0" />
   </ItemGroup>
 

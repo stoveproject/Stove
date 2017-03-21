@@ -252,6 +252,7 @@ namespace Stove.Domain.Uow
 
             DisposeUow();
             OnDisposed();
+            DisposeDelegates();
         }
 
         /// <summary>
@@ -394,6 +395,13 @@ namespace Stove.Domain.Uow
             }
 
             return filterIndex;
+        }
+
+        private void DisposeDelegates()
+        {
+            if (Failed != null) { Failed -= Failed; }
+            if (Completed != null) { Completed -= Completed; }
+            if (Disposed != null) { Disposed -= Disposed; }
         }
     }
 }

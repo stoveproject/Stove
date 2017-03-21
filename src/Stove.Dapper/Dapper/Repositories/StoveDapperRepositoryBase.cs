@@ -9,54 +9,19 @@ namespace Stove.Dapper.Repositories
 {
     public abstract class StoveDapperRepositoryBase<TEntity, TPrimaryKey> : IDapperRepository<TEntity, TPrimaryKey> where TEntity : class, IEntity<TPrimaryKey>
     {
-        public abstract TEntity Get(TPrimaryKey id);
+        public abstract IEnumerable<TEntity> Query(string query, object parameters = null);
 
-        public abstract IEnumerable<TEntity> GetList();
-
-        public virtual Task<TEntity> GetAsync(TPrimaryKey id)
-        {
-            return Task.FromResult(Get(id));
-        }
-
-        public virtual Task<IEnumerable<TEntity>> GetListAsync()
-        {
-            return Task.FromResult(GetList());
-        }
-
-        public abstract IEnumerable<TEntity> Query(string query, object parameters);
-
-        public virtual Task<IEnumerable<TEntity>> QueryAsync(string query, object parameters)
+        public virtual Task<IEnumerable<TEntity>> QueryAsync(string query, object parameters = null)
         {
             return Task.FromResult(Query(query, parameters));
         }
 
-        public abstract IEnumerable<TAny> Query<TAny>(string query, object parameters) where TAny : class;
+        public abstract IEnumerable<TAny> Query<TAny>(string query, object parameters = null) where TAny : class;
 
-        public virtual Task<IEnumerable<TAny>> QueryAsync<TAny>(string query, object parameters) where TAny : class
+        public virtual Task<IEnumerable<TAny>> QueryAsync<TAny>(string query, object parameters = null) where TAny : class
         {
             return Task.FromResult(Query<TAny>(query, parameters));
         }
-
-        public abstract IEnumerable<TAny> Query<TAny>(string query) where TAny : class;
-
-        public virtual Task<IEnumerable<TAny>> QueryAsync<TAny>(string query) where TAny : class
-        {
-            return Task.FromResult(Query<TAny>(query));
-        }
-
-        public abstract IEnumerable<TEntity> GetList(Expression<Func<TEntity, bool>> predicate);
-
-        public virtual Task<IEnumerable<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> predicate)
-        {
-            return Task.FromResult(GetList(predicate));
-        }
-
-        public virtual Task<IEnumerable<TEntity>> GetListPagedAsync(Expression<Func<TEntity, bool>> predicate, int pageNumber, int itemsPerPage, string sortingProperty, bool ascending = true)
-        {
-            return Task.FromResult(GetListPaged(predicate, pageNumber, itemsPerPage, sortingProperty, ascending));
-        }
-
-        public abstract IEnumerable<TEntity> GetListPaged(Expression<Func<TEntity, bool>> predicate, int pageNumber, int itemsPerPage, string sortingProperty, bool ascending = true);
 
         public abstract int Count(Expression<Func<TEntity, bool>> predicate);
 
@@ -71,13 +36,6 @@ namespace Stove.Dapper.Repositories
         {
             return Task.FromResult(GetSet(predicate, firstResult, maxResults, sortingProperty, ascending));
         }
-
-        public virtual Task<IEnumerable<TEntity>> GetListPagedAsync(Expression<Func<TEntity, bool>> predicate, int pageNumber, int itemsPerPage, bool ascending = true, params Expression<Func<TEntity, object>>[] sortingExpression)
-        {
-            return Task.FromResult(GetListPaged(predicate, pageNumber, itemsPerPage, ascending, sortingExpression));
-        }
-
-        public abstract IEnumerable<TEntity> GetListPaged(Expression<Func<TEntity, bool>> predicate, int pageNumber, int itemsPerPage, bool ascending = true, params Expression<Func<TEntity, object>>[] sortingExpression);
 
         public abstract IEnumerable<TEntity> GetSet(Expression<Func<TEntity, bool>> predicate, int firstResult, int maxResults, bool ascending = true, params Expression<Func<TEntity, object>>[] sortingExpression);
 
@@ -124,6 +82,69 @@ namespace Stove.Dapper.Repositories
         {
             return Task.FromResult(InsertAndGetId(entity));
         }
+
+        public abstract TEntity Get(TPrimaryKey id);
+
+        public virtual Task<TEntity> GetAsync(TPrimaryKey id)
+        {
+            return Task.FromResult(Get(id));
+        }
+
+        public abstract TEntity Single(TPrimaryKey id);
+
+        public abstract IEnumerable<TEntity> GetAll();
+
+        public virtual Task<TEntity> SingleAsync(TPrimaryKey id)
+        {
+            return Task.FromResult(Single(id));
+        }
+
+        public virtual Task<IEnumerable<TEntity>> GetAllAsync()
+        {
+            return Task.FromResult(GetAll());
+        }
+
+        public abstract IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate);
+
+        public virtual Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return Task.FromResult(GetAll(predicate));
+        }
+
+        public virtual Task<IEnumerable<TEntity>> GetAllPagedAsync(Expression<Func<TEntity, bool>> predicate, int pageNumber, int itemsPerPage, string sortingProperty, bool ascending = true)
+        {
+            return Task.FromResult(GetAllPaged(predicate, pageNumber, itemsPerPage, sortingProperty, ascending));
+        }
+
+        public abstract IEnumerable<TEntity> GetAllPaged(Expression<Func<TEntity, bool>> predicate, int pageNumber, int itemsPerPage, string sortingProperty, bool ascending = true);
+
+        public virtual Task<IEnumerable<TEntity>> GetAllPagedAsync(Expression<Func<TEntity, bool>> predicate, int pageNumber, int itemsPerPage, bool ascending = true, params Expression<Func<TEntity, object>>[] sortingExpression)
+        {
+            return Task.FromResult(GetAllPaged(predicate, pageNumber, itemsPerPage, ascending, sortingExpression));
+        }
+
+        public abstract IEnumerable<TEntity> GetAllPaged(Expression<Func<TEntity, bool>> predicate, int pageNumber, int itemsPerPage, bool ascending = true, params Expression<Func<TEntity, object>>[] sortingExpression);
+
+        public abstract TEntity Single(Expression<Func<TEntity, bool>> predicate);
+
+        public virtual Task<TEntity> SingleAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return Task.FromResult(Single(predicate));
+        }
+
+        public abstract TEntity FirstOrDefault(TPrimaryKey id);
+
+        public virtual Task<TEntity> FirstOrDefaultAsync(TPrimaryKey id)
+        {
+            return Task.FromResult(FirstOrDefault(id));
+        }
+
+        public virtual Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return Task.FromResult(FirstOrDefault(predicate));
+        }
+
+        public abstract TEntity FirstOrDefault(Expression<Func<TEntity, bool>> predicate);
 
         protected static Expression<Func<TEntity, bool>> CreateEqualityExpressionForId(TPrimaryKey id)
         {

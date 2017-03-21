@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Autofac.Extras.IocManager;
@@ -16,6 +17,13 @@ using Stove.Extensions;
 
 namespace Stove.EntityFramework.Uow
 {
+    public class EfUnitOfWorkDbContextContainer
+    {
+        public DbContext DbContext { get; set; }
+
+        public ObjectMaterializedEventHandler ObjectMaterializedDelegate { get; set; }
+    }
+
     /// <summary>
     ///     Implements Unit of work for Entity Framework.
     /// </summary>
@@ -44,11 +52,11 @@ namespace Stove.EntityFramework.Uow
             _dbContextTypeMatcher = dbContextTypeMatcher;
             _transactionStrategy = transactionStrategy;
 
-            ActiveDbContexts = new Dictionary<string, DbContext>();
+            ActiveDbContexts = new Dictionary<string, EfUnitOfWorkDbContextContainer>();
         }
 
         [NotNull]
-        protected IDictionary<string, DbContext> ActiveDbContexts { get; }
+        protected IDictionary<string, EfUnitOfWorkDbContextContainer> ActiveDbContexts { get; }
 
         protected override void BeginUow()
         {
@@ -74,7 +82,7 @@ namespace Stove.EntityFramework.Uow
         [NotNull]
         public IReadOnlyList<DbContext> GetAllActiveDbContexts()
         {
-            return ActiveDbContexts.Values.ToImmutableList();
+            return ActiveDbContexts.Values.Select(x=>x.DbContext).ToImmutableList();
         }
 
         protected override void CompleteUow()
@@ -114,44 +122,57 @@ namespace Stove.EntityFramework.Uow
 
             string dbContextKey = concreteDbContextType.FullName + "#" + connectionString;
 
-            DbContext dbContext;
-            if (!ActiveDbContexts.TryGetValue(dbContextKey, out dbContext))
+            EfUnitOfWorkDbContextContainer dbContextContainer;
+            if (!ActiveDbContexts.TryGetValue(dbContextKey, out dbContextContainer))
             {
+                dbContextContainer = new EfUnitOfWorkDbContextContainer();
                 if (Options.IsTransactional == true)
                 {
-                    dbContext = _transactionStrategy.CreateDbContext<TDbContext>(connectionString, _dbContextResolver);
+                    dbContextContainer.DbContext = _transactionStrategy.CreateDbContext<TDbContext>(connectionString, _dbContextResolver);
                 }
                 else
                 {
-                    dbContext = _dbContextResolver.Resolve<TDbContext>(connectionString);
+                    dbContextContainer.DbContext = _dbContextResolver.Resolve<TDbContext>(connectionString);
                 }
 
-                if (Options.Timeout.HasValue && !dbContext.Database.CommandTimeout.HasValue)
+                if (Options.Timeout.HasValue && !dbContextContainer.DbContext.Database.CommandTimeout.HasValue)
                 {
-                    dbContext.Database.CommandTimeout = Options.Timeout.Value.TotalSeconds.To<int>();
+                    dbContextContainer.DbContext.Database.CommandTimeout = Options.Timeout.Value.TotalSeconds.To<int>();
                 }
 
-                ((IObjectContextAdapter)dbContext).ObjectContext.ObjectMaterialized += (sender, args) => { ObjectContext_ObjectMaterialized(dbContext, args); };
+                ((IObjectContextAdapter)dbContextContainer.DbContext).ObjectContext.ObjectMaterialized += (sender, args) =>
+                {
+                    ObjectContext_ObjectMaterialized(dbContextContainer.DbContext, args);
+                };
 
-                FilterExecuter.As<IEfUnitOfWorkFilterExecuter>().ApplyCurrentFilters(this, dbContext);
+                FilterExecuter.As<IEfUnitOfWorkFilterExecuter>().ApplyCurrentFilters(this, dbContextContainer.DbContext);
 
-                ActiveDbContexts[dbContextKey] = dbContext;
+                ActiveDbContexts[dbContextKey] = dbContextContainer;
             }
 
-            return (TDbContext)dbContext;
+            return (TDbContext)dbContextContainer.DbContext;
         }
 
         protected override void DisposeUow()
         {
+            foreach (var dbContextContainer in ActiveDbContexts.Values)
+            {
+                if (dbContextContainer.ObjectMaterializedDelegate != null)
+                {
+                    ((IObjectContextAdapter)dbContextContainer.DbContext).ObjectContext.ObjectMaterialized -= dbContextContainer.ObjectMaterializedDelegate;
+                    dbContextContainer.ObjectMaterializedDelegate = null;
+                }
+            }
+
             if (Options.IsTransactional == true)
             {
                 _transactionStrategy.Dispose();
             }
             else
             {
-                foreach (DbContext activeDbContext in GetAllActiveDbContexts())
+                foreach (EfUnitOfWorkDbContextContainer dbContextContainer in ActiveDbContexts.Values)
                 {
-                    Release(activeDbContext);
+                    Release(dbContextContainer);
                 }
             }
 
@@ -168,9 +189,9 @@ namespace Stove.EntityFramework.Uow
             await dbContext.SaveChangesAsync();
         }
 
-        protected virtual void Release([NotNull] DbContext dbContext)
+        protected virtual void Release([NotNull] EfUnitOfWorkDbContextContainer dbContextContainer)
         {
-            dbContext.Dispose();
+            dbContextContainer.DbContext.Dispose();
         }
 
         private void ObjectContext_ObjectMaterialized([NotNull] DbContext dbContext, ObjectMaterializedEventArgs e)

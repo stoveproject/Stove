@@ -105,7 +105,7 @@ namespace Stove.Demo.ConsoleApp
                     int gomlekId = _productDapperRepository.InsertAndGetId(new Product("Gomlek"));
 
                     Product firstProduct = _productDapperRepository.Get(1);
-                    IEnumerable<Product> products = _productDapperRepository.GetList();
+                    IEnumerable<Product> products = _productDapperRepository.GetAll();
 
                     firstProduct.Name = "Something";
 
@@ -114,7 +114,7 @@ namespace Stove.Demo.ConsoleApp
                     _mailDapperRepository.Insert(new Mail("New Product Added"));
                     Guid mailId = _mailDapperRepository.InsertAndGetId(new Mail("Second Product Added"));
 
-                    IEnumerable<Mail> mails = _mailDapperRepository.GetList();
+                    IEnumerable<Mail> mails = _mailDapperRepository.GetAll();
 
                     Mail firstMail = mails.First();
 
@@ -133,16 +133,16 @@ namespace Stove.Demo.ConsoleApp
 
                 using (_unitOfWorkManager.Current.DisableFilter(StoveDataFilters.SoftDelete))
                 {
-                    IEnumerable<Person> personFromDapperNotFiltered = _personDapperRepository.GetList(x => x.Name == "Oğuzhan");
+                    IEnumerable<Person> personFromDapperNotFiltered = _personDapperRepository.GetAll(x => x.Name == "Oğuzhan");
                 }
 
-                IEnumerable<Person> personFromDapperFiltered = _personDapperRepository.GetList(x => x.Name == "Oğuzhan");
+                IEnumerable<Person> personFromDapperFiltered = _personDapperRepository.GetAll(x => x.Name == "Oğuzhan");
 
                 IEnumerable<Animal> birdsFromExpression = _animalDapperRepository.GetSet(x => x.Name == "Kuş", 0, 10, "Id");
 
-                IEnumerable<Animal> birdsPagedFromExpression = _animalDapperRepository.GetListPaged(x => x.Name == "Kuş", 0, 10, "Name");
+                IEnumerable<Animal> birdsPagedFromExpression = _animalDapperRepository.GetAllPaged(x => x.Name == "Kuş", 0, 10, "Name");
 
-                IEnumerable<Person> personFromDapperExpression = _personDapperRepository.GetList(x => x.Name.Contains("Oğuzhan"));
+                IEnumerable<Person> personFromDapperExpression = _personDapperRepository.GetAll(x => x.Name.Contains("Oğuzhan"));
 
                 int birdCount = _animalDapperRepository.Count(x => x.Name == "Kuş");
 

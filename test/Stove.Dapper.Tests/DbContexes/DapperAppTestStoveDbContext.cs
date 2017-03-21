@@ -1,26 +1,38 @@
 ﻿using System.Data.Common;
 using System.Data.Entity;
+using System.Data.Entity.SqlServer;
 
 using Stove.Dapper.Tests.Entities;
 using Stove.EntityFramework;
 
 namespace Stove.Dapper.Tests.DbContexes
 {
-    public class DapperAppTestStoveDbContext : StoveDbContext
+    [DbConfigurationType(typeof(DapperDbContextConfiguration))]
+    public class SampleDapperApplicationDbContext : StoveDbContext
     {
-        public DapperAppTestStoveDbContext()
-        {
-        }
-
-        public DapperAppTestStoveDbContext(DbConnection existingConnection, bool contextOwnsConnection) : base(existingConnection, contextOwnsConnection)
-        {
-        }
-
-        public DapperAppTestStoveDbContext(DbConnection connection)
+        public SampleDapperApplicationDbContext(DbConnection connection)
             : base(connection, false)
         {
         }
 
-        public virtual IDbSet<User> Users { get; set; }
+        public SampleDapperApplicationDbContext(DbConnection connection, bool contextOwnsConnection)
+            : base(connection, contextOwnsConnection)
+        {
+        }
+
+        public virtual IDbSet<Product> Products { get; set; }
+
+        public virtual IDbSet<ProductDetail> ProductDetails { get; set; }
+    }
+
+    public class DapperDbContextConfiguration : DbConfiguration
+    {
+        public DapperDbContextConfiguration()
+        {
+            SetProviderServices(
+                "System.Data.SqlClient",
+                SqlProviderServices.Instance
+            );
+        }
     }
 }

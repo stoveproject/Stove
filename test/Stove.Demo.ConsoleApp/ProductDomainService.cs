@@ -13,7 +13,6 @@ namespace Stove.Demo.ConsoleApp
     public class ProductDomainService : DomainService
     {
         private readonly IDapperRepository<Mail, Guid> _mailDapperRepository;
-
         private readonly IDapperRepository<Product> _productDapperRepository;
 
         public ProductDomainService(IDapperRepository<Product> productDapperRepository, IDapperRepository<Mail, Guid> mailDapperRepository)
@@ -34,7 +33,7 @@ namespace Stove.Demo.ConsoleApp
                     int gomlekId = _productDapperRepository.InsertAndGetId(new Product("Gomlek"));
 
                     Product firstProduct = _productDapperRepository.Get(1);
-                    IEnumerable<Product> products = _productDapperRepository.GetList();
+                    IEnumerable<Product> products = _productDapperRepository.GetAll();
 
                     firstProduct.Name = "Something";
 
@@ -43,7 +42,7 @@ namespace Stove.Demo.ConsoleApp
                     _mailDapperRepository.Insert(new Mail("New Product Added"));
                     Guid mailId = _mailDapperRepository.InsertAndGetId(new Mail("Second Product Added"));
 
-                    IEnumerable<Mail> mails = _mailDapperRepository.GetList();
+                    IEnumerable<Mail> mails = _mailDapperRepository.GetAll();
 
                     Mail firstMail = mails.First();
 
