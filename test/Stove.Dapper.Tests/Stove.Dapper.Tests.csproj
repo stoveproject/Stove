@@ -17,10 +17,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Db\StoveDapperTest.mdf" />
     <None Remove="Scripts\CreateInitialTables.sql" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Db\StoveDapperTest.mdf" />
     <EmbeddedResource Include="Scripts\DestroyScript.sql" />
   </ItemGroup>
 
