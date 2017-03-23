@@ -1,11 +1,13 @@
-﻿using NHibernate;
+﻿using Autofac.Extras.IocManager;
+
+using NHibernate;
 
 using Stove.Domain.Uow;
 using Stove.Extensions;
 
 namespace Stove.NHibernate.Uow
 {
-    public class NhUnitOfWorkFilterExecuter : IUnitOfWorkFilterExecuter
+    public class NhUnitOfWorkFilterExecuter : IUnitOfWorkFilterExecuter, ITransientDependency
     {
         public void ApplyDisableFilter(IUnitOfWork unitOfWork, string filterName)
         {

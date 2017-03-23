@@ -19,5 +19,10 @@ namespace Stove
         {
             Configuration.Resolver.Resolve<IBusControl>().Start();
         }
+
+        public override void Shutdown()
+        {
+            Configuration.Resolver.Resolve<IBusControl>().Stop();
+        }
     }
 }

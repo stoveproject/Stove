@@ -82,10 +82,10 @@ namespace Stove.Demo.ConsoleApp
             {
                 Logger.Debug("Uow Began!");
 
-                _personRepository.Insert(new Person("Oğuzhan"));
+                int persionId1 = _personRepository.InsertAndGetId(new Person("Oğuzhan"));
                 _personRepository.Insert(new Person("Ekmek"));
 
-                _animalRepository.Insert(new Animal("Kuş"));
+                int animalId1 = _animalRepository.InsertAndGetId(new Animal("Kuş"));
                 _animalRepository.Insert(new Animal("Kedi"));
 
                 _animalDbContextProvider.GetDbContext().Animals.Add(new Animal("Kelebek"));
@@ -101,10 +101,10 @@ namespace Stove.Demo.ConsoleApp
 
                 using (StoveSession.Use(266))
                 {
-                    _productDapperRepository.Insert(new Product("TShirt"));
-                    int gomlekId = _productDapperRepository.InsertAndGetId(new Product("Gomlek"));
+                    _productDapperRepository.Insert(new Product("TShirt1"));
+                    int gomlekId = _productDapperRepository.InsertAndGetId(new Product("Gomlek1"));
 
-                    Product firstProduct = _productDapperRepository.Get(1);
+                    Product firstProduct = _productDapperRepository.FirstOrDefault(x => x.Name == "TShirt1");
                     IEnumerable<Product> products = _productDapperRepository.GetAll();
 
                     firstProduct.Name = "Something";
@@ -123,11 +123,11 @@ namespace Stove.Demo.ConsoleApp
                     _mailDapperRepository.Update(firstMail);
                 }
 
-                Animal oneAnimal = _animalDapperRepository.Get(1);
-                Animal oneAnimalAsync = _animalDapperRepository.GetAsync(1).Result;
+                Animal oneAnimal = _animalDapperRepository.Get(animalId1);
+                Animal oneAnimalAsync = _animalDapperRepository.GetAsync(animalId1).Result;
 
-                Person onePerson = _personDapperRepository.Get(1);
-                Person onePersonAsync = _personDapperRepository.GetAsync(1).Result;
+                Person onePerson = _personDapperRepository.Get(persionId1);
+                Person onePersonAsync = _personDapperRepository.GetAsync(persionId1).Result;
 
                 IEnumerable<Animal> birdsSet = _animalDapperRepository.GetSet(x => x.Name == "Kuş", 0, 10, "Id");
 
@@ -146,14 +146,14 @@ namespace Stove.Demo.ConsoleApp
 
                 int birdCount = _animalDapperRepository.Count(x => x.Name == "Kuş");
 
-                var personAnimal = _animalDapperRepository.Query<PersonAnimal>("select Name as PersonName,'Zürafa' as AnimalName from Person with(nolock) where name=@name", new { name = "Oğuzhan" })
+                var personAnimal = _animalDapperRepository.Query<PersonAnimal>("select Name as PersonName,'Zürafa' as AnimalName from Persons with(nolock) where name=@name", new { name = "Oğuzhan" })
                                                           .MapTo<List<PersonAnimalDto>>();
 
                 birdsFromExpression.ToList();
                 birdsPagedFromExpression.ToList();
                 birdsSet.ToList();
 
-                IEnumerable<Person> person2FromDapper = _personDapperRepository.Query("select * from Person with(nolock) where name =@name", new { name = "Oğuzhan" });
+                IEnumerable<Person> person2FromDapper = _personDapperRepository.Query("select * from Persons with(nolock) where name =@name", new { name = "Oğuzhan" });
 
                 _personDapperRepository.Insert(new Person("oğuzhan2"));
                 int id = _personDapperRepository.InsertAndGetId(new Person("oğuzhan3"));
@@ -178,15 +178,15 @@ namespace Stove.Demo.ConsoleApp
                     CorrelationId = NewId.NextGuid()
                 });
 
-                _hangfireBackgroundJobManager.EnqueueAsync<SimpleBackgroundJob, SimpleBackgroundJobArgs>(new SimpleBackgroundJobArgs
-                {
-                    Message = "Oğuzhan"
-                });
+                //_hangfireBackgroundJobManager.EnqueueAsync<SimpleBackgroundJob, SimpleBackgroundJobArgs>(new SimpleBackgroundJobArgs
+                //{
+                //    Message = "Oğuzhan"
+                //});
 
-                _hangfireScheduleJobManager.ScheduleAsync<SimpleBackgroundJob, SimpleBackgroundJobArgs>(new SimpleBackgroundJobArgs
-                {
-                    Message = "Oğuzhan"
-                }, Cron.Minutely());
+                //_hangfireScheduleJobManager.ScheduleAsync<SimpleBackgroundJob, SimpleBackgroundJobArgs>(new SimpleBackgroundJobArgs
+                //{
+                //    Message = "Oğuzhan"
+                //}, Cron.Minutely());
 
                 Logger.Debug("Uow End!");
             }

@@ -18,7 +18,7 @@ using Stove.Timing;
 
 namespace Stove.NHibernate.Interceptors
 {
-    internal class StoveNHibernateInterceptor : EmptyInterceptor
+    internal class StoveNHibernateInterceptor : EmptyInterceptor, ITransientDependency
     {
         public IEntityChangeEventHelper EntityChangeEventHelper { get; set; }
 
