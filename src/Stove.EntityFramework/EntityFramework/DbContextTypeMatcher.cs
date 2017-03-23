@@ -5,6 +5,7 @@ using System.Linq;
 using Autofac.Extras.IocManager;
 
 using Stove.Collections.Extensions;
+using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
 
 namespace Stove.EntityFramework

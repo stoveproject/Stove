@@ -4,6 +4,7 @@ using System.Linq;
 
 using Stove.Dapper.Repositories;
 using Stove.Demo.ConsoleApp.Entities;
+using Stove.Domain.Repositories;
 using Stove.Domain.Services;
 using Stove.Domain.Uow;
 using Stove.Runtime.Session;
@@ -14,11 +15,16 @@ namespace Stove.Demo.ConsoleApp
     {
         private readonly IDapperRepository<Mail, Guid> _mailDapperRepository;
         private readonly IDapperRepository<Product> _productDapperRepository;
+        private readonly IRepository<Product> _productRepository;
 
-        public ProductDomainService(IDapperRepository<Product> productDapperRepository, IDapperRepository<Mail, Guid> mailDapperRepository)
+        public ProductDomainService(
+            IDapperRepository<Product> productDapperRepository,
+            IDapperRepository<Mail, Guid> mailDapperRepository,
+            IRepository<Product> productRepository)
         {
             _productDapperRepository = productDapperRepository;
             _mailDapperRepository = mailDapperRepository;
+            _productRepository = productRepository;
         }
 
         public IStoveSession StoveSession { get; set; }
@@ -31,6 +37,8 @@ namespace Stove.Demo.ConsoleApp
                 {
                     _productDapperRepository.Insert(new Product("TShirt"));
                     int gomlekId = _productDapperRepository.InsertAndGetId(new Product("Gomlek"));
+
+                    Product gomlekFromEf = _productRepository.FirstOrDefault(gomlekId);
 
                     Product firstProduct = _productDapperRepository.Get(1);
                     IEnumerable<Product> products = _productDapperRepository.GetAll();

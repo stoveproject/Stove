@@ -29,7 +29,6 @@ namespace Stove.Demo.ConsoleApp
                                                .UseStoveDbContextEfTransactionStrategy()
                                                .UseStoveTypedConnectionStringResolver()
                                                .UseStoveNLog()
-
                                                //.UseStoveBackgroundJobs()
                                                //.UseStoveRedisCaching()
                                                //.UseStoveRabbitMQ(configuration =>

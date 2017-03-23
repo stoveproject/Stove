@@ -44,6 +44,7 @@ namespace Stove.Demo.ConsoleApp
 
         public override void Shutdown()
         {
+
             ExecuteScript("DestroyDatabase");
         }
 

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Data;
+using System.Data.Common;
+using System.Data.SqlClient;
 
 using NHibernate.Transaction;
 
@@ -21,7 +23,7 @@ namespace Stove.NHibernate
         public IDbTransaction GetActiveTransaction(Type dbContextType = null)
         {
             var adoTransaction = _sessionProvider.Session.Transaction.As<AdoTransaction>();
-            var dbTransaction = TypeHelper.GetInstanceField(typeof(IDbTransaction), adoTransaction, "trans").As<IDbTransaction>();
+            var dbTransaction = TypeHelper.GetInstanceField(typeof(AdoTransaction), adoTransaction, "trans").As<IDbTransaction>();
             return dbTransaction;
         }
 

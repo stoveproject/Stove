@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -20,9 +19,7 @@ using Stove.Orm;
 
 namespace Stove.Dapper.Repositories
 {
-    public class DapperRepositoryBase<TDbContext, TEntity, TPrimaryKey> : StoveDapperRepositoryBase<TEntity, TPrimaryKey>
-        where TEntity : class, IEntity<TPrimaryKey>
-        where TDbContext : DbContext
+    public class DapperRepositoryBase<TEntity, TPrimaryKey> : StoveDapperRepositoryBase<TEntity, TPrimaryKey> where TEntity : class, IEntity<TPrimaryKey>
     {
         private readonly IActiveTransactionProvider _activeTransactionProvider;
 
@@ -42,7 +39,7 @@ namespace Stove.Dapper.Repositories
 
         public virtual IDbConnection Connection
         {
-            get { return _activeTransactionProvider.GetActiveConnection(typeof(TDbContext)); }
+            get { return _activeTransactionProvider.GetActiveConnection(); }
         }
 
         /// <summary>
@@ -54,7 +51,7 @@ namespace Stove.Dapper.Repositories
         /// </value>
         public virtual IDbTransaction ActiveTransaction
         {
-            get { return _activeTransactionProvider.GetActiveTransaction(typeof(TDbContext)); }
+            get { return _activeTransactionProvider.GetActiveTransaction(); }
         }
 
         public override TEntity Single(TPrimaryKey id)

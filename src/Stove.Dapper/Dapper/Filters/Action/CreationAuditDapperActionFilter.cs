@@ -14,7 +14,7 @@ namespace Stove.Dapper.Filters.Action
         public void ExecuteFilter<TEntity, TPrimaryKey>(TEntity entity) where TEntity : class, IEntity<TPrimaryKey>
         {
             long? userId = GetAuditUserId();
-            CheckAndSetId(entity);
+            //CheckAndSetId(entity);
             var entityWithCreationTime = entity as IHasCreationTime;
             if (entityWithCreationTime == null)
             {

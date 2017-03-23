@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <VersionPrefix>0.0.1</VersionPrefix>
+    <TargetFramework>net461</TargetFramework>
+    <AssemblyName>Stove.Demo.ConsoleApp.Nh</AssemblyName>
+    <OutputType>exe</OutputType>
+    <PackageId>Stove.Demo.ConsoleApp.Nh</PackageId>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <RuntimeIdentifier>win7-x64</RuntimeIdentifier>
+    <ApplicationIcon />
+    <OutputTypeEx>exe</OutputTypeEx>
+    <StartupObject>Stove.Demo.ConsoleApp.Nh.Program</StartupObject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="App.config" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NHibernateProfiler.Appender" Version="4.0.4039" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Stove.Dapper\Stove.Dapper.csproj" />
+    <ProjectReference Include="..\..\src\Stove.NHibernate\Stove.NHibernate.csproj" />
+    <ProjectReference Include="..\..\src\Stove\Stove.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
+</Project>

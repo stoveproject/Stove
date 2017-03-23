@@ -2,7 +2,7 @@
 
 using JetBrains.Annotations;
 
-using Stove.EntityFramework;
+using Stove.Domain.Repositories;
 
 namespace Stove
 {

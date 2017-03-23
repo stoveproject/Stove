@@ -10,6 +10,7 @@ using Stove.Bootstrapping;
 namespace Stove.Dapper.Tests
 {
     [DependsOn(
+        typeof(StoveEntityFrameworkBootstrapper),
         typeof(StoveDapperBootstrapper)
     )]
     public class StoveDapperTestBootstrapper : StoveBootstrapper

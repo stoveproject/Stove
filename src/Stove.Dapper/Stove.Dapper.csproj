@@ -27,7 +27,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Stove\Stove.csproj" />
-    <ProjectReference Include="..\Stove.EntityFramework\Stove.EntityFramework.csproj" />
   </ItemGroup>
 
   <ItemGroup>
