@@ -1,7 +1,9 @@
 ﻿using System.Data.Entity;
 
+using JetBrains.Annotations;
+
 using Stove.Domain.Entities;
-using Stove.EntityFramework;
+using Stove.Orm;
 
 namespace Stove.Dapper.Repositories
 {
@@ -9,7 +11,7 @@ namespace Stove.Dapper.Repositories
         where TEntity : class, IEntity<int>
         where TDbContext : DbContext
     {
-        public DapperRepositoryBase(IDbContextProvider<TDbContext> dbContextProvider) : base(dbContextProvider)
+        public DapperRepositoryBase([NotNull] IActiveTransactionProvider activeTransactionProvider) : base(activeTransactionProvider)
         {
         }
     }
