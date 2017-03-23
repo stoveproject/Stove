@@ -10,5 +10,7 @@ namespace Stove.Configuration
         ///     Do not call BuildSessionFactory on it.
         /// </summary>
         FluentConfiguration FluentConfiguration { get; }
+
+        IStoveStartupConfiguration Configuration { get; }
     }
 }

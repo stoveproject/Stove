@@ -1,4 +1,6 @@
-﻿using Stove.Bootstrapping;
+﻿using System.Configuration;
+
+using Stove.Bootstrapping;
 
 namespace Stove.Demo.ConsoleApp.Nh
 {
@@ -8,5 +10,9 @@ namespace Stove.Demo.ConsoleApp.Nh
     )]
     public class StoveDemoBootstrapper : StoveBootstrapper
     {
+        public override void PreStart()
+        {
+            Configuration.DefaultNameOrConnectionString = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
+        }
     }
 }

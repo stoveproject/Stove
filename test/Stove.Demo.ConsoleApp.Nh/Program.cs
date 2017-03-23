@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.Reflection;
 
 using Autofac.Extras.IocManager;
@@ -16,8 +15,6 @@ namespace Stove.Demo.ConsoleApp.Nh
         {
             NHibernateProfiler.Initialize();
 
-            string connString = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
-
             IRootResolver rootResolver = IocBuilder.New
                                                    .UseAutofacContainerBuilder()
                                                    .UseStove<StoveDemoBootstrapper>()
@@ -25,7 +22,7 @@ namespace Stove.Demo.ConsoleApp.Nh
                                                    .UseStoveNHibernate(nhCfg =>
                                                    {
                                                        nhCfg.FluentConfiguration
-                                                            .Database(MsSqlConfiguration.MsSql2012.ConnectionString(connString))
+                                                            .Database(MsSqlConfiguration.MsSql2012.ConnectionString(nhCfg.Configuration.DefaultNameOrConnectionString))
                                                             .Mappings(m => m.FluentMappings.AddFromAssembly(Assembly.GetExecutingAssembly()));
 
                                                        return nhCfg;

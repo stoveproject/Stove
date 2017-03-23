@@ -3,6 +3,7 @@ using Stove.Demo.ConsoleApp.Nh.Entities;
 using Stove.Domain.Repositories;
 using Stove.Domain.Services;
 using Stove.Domain.Uow;
+using Stove.Runtime.Session;
 
 namespace Stove.Demo.ConsoleApp.Nh
 {
@@ -22,15 +23,22 @@ namespace Stove.Demo.ConsoleApp.Nh
             _unitOfWorkManager = unitOfWorkManager;
         }
 
+        public IStoveSession StoveSession { get; set; }
+
         public void DoSomeCoolStuff()
         {
-            using (IUnitOfWorkCompleteHandle uow = _unitOfWorkManager.Begin())
+            using (StoveSession.Use(1))
             {
-                _productDapperRepository.Insert(new Product("Jean"));
+                using (IUnitOfWorkCompleteHandle uow = _unitOfWorkManager.Begin())
+                {
+                    _productDapperRepository.Insert(new Product("JeanFromDapper"));
 
-                _productRepository.FirstOrDefault(x => x.Name == "Jean");
+                    Product product = _productRepository.FirstOrDefault(x => x.Name == "JeanFromDapper");
 
-                uow.Complete();
+                    _productRepository.InsertAndGetId(new Product("JeanFromNH"));
+
+                    uow.Complete();
+                }
             }
         }
     }
