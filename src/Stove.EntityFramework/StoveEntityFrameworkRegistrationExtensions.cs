@@ -18,8 +18,6 @@ namespace Stove
 {
     public static class StoveEntityFrameworkRegistrationExtensions
     {
-        private const string OrmRegistrarContextKey = "OrmRegistrars";
-
         /// <summary>
         ///     Uses the stove entity framework.
         /// </summary>
@@ -41,7 +39,7 @@ namespace Stove
                 ormRegistrars.Add(new EfBasedAdditionalOrmRegistrar(builder, type, DbContextHelper.GetEntityTypeInfos, EntityHelper.GetPrimaryKeyType));
             });
 
-            builder.RegisterServices(r => r.UseBuilder(cb => { cb.Properties[OrmRegistrarContextKey] = ormRegistrars; }));
+            builder.RegisterServices(r => r.UseBuilder(cb => { cb.Properties[StoveConsts.OrmRegistrarContextKey] = ormRegistrars; }));
 
             return builder;
         }

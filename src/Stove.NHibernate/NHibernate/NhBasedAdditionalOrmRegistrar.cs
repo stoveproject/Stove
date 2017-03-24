@@ -23,7 +23,7 @@ namespace Stove.NHibernate
             });
         }
 
-        public string OrmKey
+        public string OrmContextKey
         {
             get { return StoveOrms.NHibernate; }
         }

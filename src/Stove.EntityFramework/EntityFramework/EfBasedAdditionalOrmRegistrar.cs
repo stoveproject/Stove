@@ -62,6 +62,6 @@ namespace Stove.EntityFramework
             }
         }
 
-        public string OrmKey { get { return StoveOrms.EntityFramework; } }
+        public string OrmContextKey { get { return StoveOrms.EntityFramework; } }
     }
 }

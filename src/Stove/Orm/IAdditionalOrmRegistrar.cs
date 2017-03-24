@@ -4,7 +4,7 @@ namespace Stove.Orm
 {
     public interface IAdditionalOrmRegistrar
     {
-        string OrmKey { get; }
+        string OrmContextKey { get; }
 
         void RegisterRepositories(AutoRepositoryTypesAttribute defaultRepositoryTypes);
     }

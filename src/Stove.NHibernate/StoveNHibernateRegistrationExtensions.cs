@@ -15,8 +15,6 @@ namespace Stove
 {
     public static class StoveNHibernateRegistrationExtensions
     {
-        private const string OrmRegistrarContextKey = "OrmRegistrars";
-
         public static IIocBuilder UseStoveNHibernate(this IIocBuilder builder, Func<IStoveNHibernateConfiguration, IStoveNHibernateConfiguration> stoveNhConfigurer)
         {
             return builder.RegisterServices(r =>
@@ -28,7 +26,7 @@ namespace Stove
                 r.Register(ctx =>
                 {
                     var configuration = ctx.Resolver.Resolve<IStoveNHibernateConfiguration>();
-                    var configurer = ctx.Resolver.Resolve<IStoveStartupConfiguration>().GetConfigurerIfExists<IStoveNHibernateConfiguration>();
+                    Func<IStoveNHibernateConfiguration, IStoveNHibernateConfiguration> configurer = ctx.Resolver.Resolve<IStoveStartupConfiguration>().GetConfigurerIfExists<IStoveNHibernateConfiguration>();
                     configuration = configurer(configuration);
 
                     return configuration
@@ -39,7 +37,7 @@ namespace Stove
 
                 var ormRegistrars = new List<IAdditionalOrmRegistrar>();
                 ormRegistrars.Add(new NhBasedAdditionalOrmRegistrar(builder));
-                r.UseBuilder(cb => { cb.Properties[OrmRegistrarContextKey] = ormRegistrars; });
+                r.UseBuilder(cb => { cb.Properties[StoveConsts.OrmRegistrarContextKey] = ormRegistrars; });
             });
         }
     }
