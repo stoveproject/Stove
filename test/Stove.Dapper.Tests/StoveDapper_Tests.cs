@@ -18,6 +18,8 @@ namespace Stove.Dapper.Tests
         private readonly IDapperRepository<Product> _productDapperRepository;
         private readonly IRepository<Product> _productRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
+        private readonly IRepository<Mail, Guid> _mailRepository;
+        private readonly IDapperRepository<Mail, Guid> _mailDapperRepository;
 
         public StoveDapper_Tests()
         {
@@ -26,6 +28,8 @@ namespace Stove.Dapper.Tests
             _productDapperRepository = The<IDapperRepository<Product>>();
             _productRepository = The<IRepository<Product>>();
             _unitOfWorkManager = The<IUnitOfWorkManager>();
+            _mailDapperRepository = The<IDapperRepository<Mail, Guid>>();
+            _mailRepository = The<IRepository<Mail, Guid>>();
         }
 
         [Fact]
@@ -36,6 +40,13 @@ namespace Stove.Dapper.Tests
                 //---Insert operation should work and tenant, creation audit properties must be set---------------------
                 _productDapperRepository.Insert(new Product("TShirt"));
                 Product insertedProduct = _productDapperRepository.GetAll(x => x.Name == "TShirt").FirstOrDefault();
+
+                Guid mailId = _mailRepository.InsertAndGetId(new Mail("Hi There !"));
+                _unitOfWorkManager.Current.SaveChanges();
+                Mail mail = _mailDapperRepository.Get(mailId);
+                mail.ShouldNotBeNull();
+                mail.CreatorUserId.ShouldNotBeNull();
+                mail.CreatorUserId.ShouldBe(TestStoveSession.UserId);
 
                 insertedProduct.ShouldNotBeNull();
                 insertedProduct.CreationTime.ShouldNotBeNull();

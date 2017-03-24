@@ -24,7 +24,7 @@ namespace Stove.Dapper.Tests
                     .UseStoveEntityFramework()
                     .UseStoveDapper()
                     .UseStoveEventBus()
-                    .UseStoveDefaultConnectionStringResolver()
+                    .UseStoveTypedConnectionStringResolver()
                     .UseStoveDbContextEfTransactionStrategy();
 
                 builder.RegisterServices(r => r.Register<DbConnection>(ctx =>
@@ -55,8 +55,6 @@ namespace Stove.Dapper.Tests
         protected override void PostBuild()
         {
             base.PostBuild();
-
-            The<IStoveStartupConfiguration>().DefaultNameOrConnectionString = _connectionString;
 
             TestStoveSession.UserId = 1;
         }
