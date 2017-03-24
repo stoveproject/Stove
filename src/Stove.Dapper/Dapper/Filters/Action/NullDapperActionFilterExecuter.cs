@@ -1,7 +1,10 @@
-﻿using Stove.Domain.Entities;
+﻿using System.Diagnostics.CodeAnalysis;
+
+using Stove.Domain.Entities;
 
 namespace Stove.Dapper.Filters.Action
 {
+    [ExcludeFromCodeCoverage]
     public class NullDapperActionFilterExecuter : IDapperActionFilterExecuter
     {
         public static readonly NullDapperActionFilterExecuter Instance = new NullDapperActionFilterExecuter();

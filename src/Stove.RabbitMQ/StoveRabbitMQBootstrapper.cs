@@ -1,4 +1,6 @@
-﻿using MassTransit;
+﻿using System;
+
+using MassTransit;
 
 using Stove.Bootstrapping;
 using Stove.RabbitMQ;
@@ -22,7 +24,14 @@ namespace Stove
 
         public override void Shutdown()
         {
-            Configuration.Resolver.Resolve<IBusControl>().Stop();
+            try
+            {
+                Configuration.Resolver.Resolve<IBusControl>().Stop();
+            }
+            catch (Exception exception)
+            {
+                Logger.Error($"An error occured while RabbitMQ stopping.", exception);
+            }
         }
     }
 }
