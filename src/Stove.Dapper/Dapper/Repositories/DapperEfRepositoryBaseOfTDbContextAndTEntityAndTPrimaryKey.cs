@@ -2,6 +2,7 @@
 
 using Stove.Domain.Entities;
 using Stove.Orm;
+using Stove.Transactions;
 
 namespace Stove.Dapper.Repositories
 {
@@ -9,18 +10,18 @@ namespace Stove.Dapper.Repositories
         where TEntity : class, IEntity<TPrimaryKey>
 
     {
-        private readonly IActiveTransactionOrConnectionProvider _activeTransactionOrConnectionProvider;
+        private readonly IActiveTransactionProvider _activeTransactionProvider;
 
-        public DapperEfRepositoryBase(IActiveTransactionOrConnectionProvider activeTransactionOrConnectionProvider) : base(activeTransactionOrConnectionProvider)
+        public DapperEfRepositoryBase(IActiveTransactionProvider activeTransactionProvider) : base(activeTransactionProvider)
         {
-            _activeTransactionOrConnectionProvider = activeTransactionOrConnectionProvider;
+            _activeTransactionProvider = activeTransactionProvider;
         }
 
-        public ActiveTransactionOrConnectionProviderArgs ActiveTransactionOrConnectionProviderArgs
+        public ActiveTransactionProviderArgs ActiveTransactionProviderArgs
         {
             get
             {
-                var args = new ActiveTransactionOrConnectionProviderArgs();
+                var args = new ActiveTransactionProviderArgs();
                 args["ContextType"] = typeof(TDbContext);
                 return args;
             }
@@ -28,12 +29,12 @@ namespace Stove.Dapper.Repositories
 
         public override IDbConnection Connection
         {
-            get { return _activeTransactionOrConnectionProvider.GetActiveConnection(ActiveTransactionOrConnectionProviderArgs); }
+            get { return _activeTransactionProvider.GetActiveConnection(ActiveTransactionProviderArgs); }
         }
 
         public override IDbTransaction ActiveTransaction
         {
-            get { return _activeTransactionOrConnectionProvider.GetActiveTransaction(ActiveTransactionOrConnectionProviderArgs); }
+            get { return _activeTransactionProvider.GetActiveTransaction(ActiveTransactionProviderArgs); }
         }
     }
 }

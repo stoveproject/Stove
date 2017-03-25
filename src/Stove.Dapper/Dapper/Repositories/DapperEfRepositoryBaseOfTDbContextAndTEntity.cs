@@ -1,5 +1,6 @@
 ﻿using Stove.Domain.Entities;
 using Stove.Orm;
+using Stove.Transactions;
 
 namespace Stove.Dapper.Repositories
 {
@@ -8,7 +9,7 @@ namespace Stove.Dapper.Repositories
         where TDbContext : class
 
     {
-        public DapperEfRepositoryBase(IActiveTransactionOrConnectionProvider activeTransactionOrConnectionProvider) : base(activeTransactionOrConnectionProvider)
+        public DapperEfRepositoryBase(IActiveTransactionProvider activeTransactionProvider) : base(activeTransactionProvider)
         {
         }
     }

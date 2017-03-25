@@ -6,12 +6,13 @@ using Stove.Dapper.Repositories;
 using Stove.Dapper.Tests.DbContexes;
 using Stove.Dapper.Tests.Entities;
 using Stove.Orm;
+using Stove.Transactions;
 
 namespace Stove.Dapper.Tests.CustomRepositories
 {
     public class MailRepository : DapperEfRepositoryBase<MailDbContext, Mail, Guid>, IMailRepository
     {
-        public MailRepository(IActiveTransactionOrConnectionProvider activeTransactionOrConnectionProvider) : base(activeTransactionOrConnectionProvider)
+        public MailRepository(IActiveTransactionProvider activeTransactionProvider) : base(activeTransactionProvider)
         {
         }
 

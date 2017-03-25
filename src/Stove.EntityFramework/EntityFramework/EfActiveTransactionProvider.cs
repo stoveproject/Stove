@@ -7,19 +7,20 @@ using Autofac.Extras.IocManager;
 
 using Stove.Extensions;
 using Stove.Orm;
+using Stove.Transactions;
 
 namespace Stove.EntityFramework
 {
-    public class EfActiveTransactionOrConnectionProvider : IActiveTransactionOrConnectionProvider, ISingletonDependency
+    public class EfActiveTransactionProvider : IActiveTransactionProvider, ITransientDependency
     {
         private readonly IScopeResolver _scopeResolver;
 
-        public EfActiveTransactionOrConnectionProvider(IScopeResolver scopeResolver)
+        public EfActiveTransactionProvider(IScopeResolver scopeResolver)
         {
             _scopeResolver = scopeResolver;
         }
 
-        public IDbTransaction GetActiveTransaction(ActiveTransactionOrConnectionProviderArgs args)
+        public IDbTransaction GetActiveTransaction(ActiveTransactionProviderArgs args)
         {
             var dbContextType = (Type)args["ContextType"];
             Type dbContextProviderType = typeof(IDbContextProvider<>).MakeGenericType(dbContextType);
@@ -30,7 +31,7 @@ namespace Stove.EntityFramework
             return dbContext.Database.CurrentTransaction.UnderlyingTransaction;
         }
 
-        public IDbConnection GetActiveConnection(ActiveTransactionOrConnectionProviderArgs args)
+        public IDbConnection GetActiveConnection(ActiveTransactionProviderArgs args)
         {
             var dbContextType = (Type)args["ContextType"];
             Type dbContextProviderType = typeof(IDbContextProvider<>).MakeGenericType(dbContextType);

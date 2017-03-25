@@ -16,16 +16,17 @@ using Stove.Domain.Entities;
 using Stove.Domain.Uow;
 using Stove.Events.Bus.Entities;
 using Stove.Orm;
+using Stove.Transactions;
 
 namespace Stove.Dapper.Repositories
 {
     public class DapperRepositoryBase<TEntity, TPrimaryKey> : StoveDapperRepositoryBase<TEntity, TPrimaryKey> where TEntity : class, IEntity<TPrimaryKey>
     {
-        private readonly IActiveTransactionOrConnectionProvider _activeTransactionOrConnectionProvider;
+        private readonly IActiveTransactionProvider _activeTransactionProvider;
 
-        public DapperRepositoryBase(IActiveTransactionOrConnectionProvider activeTransactionOrConnectionProvider)
+        public DapperRepositoryBase(IActiveTransactionProvider activeTransactionProvider)
         {
-            _activeTransactionOrConnectionProvider = activeTransactionOrConnectionProvider;
+            _activeTransactionProvider = activeTransactionProvider;
             EntityChangeEventHelper = NullEntityChangeEventHelper.Instance;
             DapperQueryFilterExecuter = NullDapperQueryFilterExecuter.Instance;
             DapperActionFilterExecuter = NullDapperActionFilterExecuter.Instance;
@@ -39,7 +40,7 @@ namespace Stove.Dapper.Repositories
 
         public virtual IDbConnection Connection
         {
-            get { return _activeTransactionOrConnectionProvider.GetActiveConnection(ActiveTransactionOrConnectionProviderArgs.Empty); }
+            get { return _activeTransactionProvider.GetActiveConnection(ActiveTransactionProviderArgs.Empty); }
         }
 
         /// <summary>
@@ -51,7 +52,7 @@ namespace Stove.Dapper.Repositories
         /// </value>
         public virtual IDbTransaction ActiveTransaction
         {
-            get { return _activeTransactionOrConnectionProvider.GetActiveTransaction(ActiveTransactionOrConnectionProviderArgs.Empty); }
+            get { return _activeTransactionProvider.GetActiveTransaction(ActiveTransactionProviderArgs.Empty); }
         }
 
         public override TEntity Single(TPrimaryKey id)
