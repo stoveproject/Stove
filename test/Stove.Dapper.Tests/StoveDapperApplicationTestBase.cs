@@ -7,7 +7,6 @@ using System.Reflection;
 
 using Dapper;
 
-using Stove.Configuration;
 using Stove.TestBase;
 
 namespace Stove.Dapper.Tests
@@ -56,7 +55,7 @@ namespace Stove.Dapper.Tests
         {
             base.PostBuild();
 
-            TestStoveSession.UserId = 1;
+            StoveSession.UserId = 1;
         }
 
         private string ReadScriptFile(string name)

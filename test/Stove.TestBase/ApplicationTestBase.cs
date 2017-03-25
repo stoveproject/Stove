@@ -22,7 +22,7 @@ namespace Stove.TestBase
             });
         }
 
-        protected TestStoveSession TestStoveSession => The<TestStoveSession>();
+        protected TestStoveSession StoveSession => The<TestStoveSession>();
 
         protected override void PreBuild()
         {
