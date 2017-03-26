@@ -5,9 +5,11 @@ using System.Linq;
 using Shouldly;
 
 using Stove.Dapper.Repositories;
+using Stove.Dapper.Tests.CustomRepositories;
 using Stove.Dapper.Tests.Entities;
 using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
+using Stove.Events.Bus;
 
 using Xunit;
 
@@ -15,6 +17,10 @@ namespace Stove.Dapper.Tests
 {
     public class StoveDapper_Tests : StoveDapperApplicationTestBase
     {
+        private readonly IEventBus _eventBus;
+        private readonly IMailRepository _mailCustomDapperRepository;
+        private readonly IDapperRepository<Mail, Guid> _mailDapperRepository;
+        private readonly IRepository<Mail, Guid> _mailRepository;
         private readonly IDapperRepository<Product> _productDapperRepository;
         private readonly IRepository<Product> _productRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
@@ -26,6 +32,10 @@ namespace Stove.Dapper.Tests
             _productDapperRepository = The<IDapperRepository<Product>>();
             _productRepository = The<IRepository<Product>>();
             _unitOfWorkManager = The<IUnitOfWorkManager>();
+            _mailDapperRepository = The<IDapperRepository<Mail, Guid>>();
+            _mailRepository = The<IRepository<Mail, Guid>>();
+            _mailCustomDapperRepository = The<IMailRepository>();
+            _eventBus = The<IEventBus>();
         }
 
         [Fact]
@@ -34,13 +44,24 @@ namespace Stove.Dapper.Tests
             using (IUnitOfWorkCompleteHandle uow = _unitOfWorkManager.Begin())
             {
                 //---Insert operation should work and tenant, creation audit properties must be set---------------------
+
                 _productDapperRepository.Insert(new Product("TShirt"));
                 Product insertedProduct = _productDapperRepository.GetAll(x => x.Name == "TShirt").FirstOrDefault();
+
+                Guid mailId = _mailRepository.InsertAndGetId(new Mail("Hi There !"));
+                _unitOfWorkManager.Current.SaveChanges();
+                Mail mail = _mailDapperRepository.Get(mailId);
+                mail.ShouldNotBeNull();
+                mail.CreatorUserId.ShouldNotBeNull();
+                mail.CreatorUserId.ShouldBe(StoveSession.UserId);
+
+                Mail mailFromCustomRepository = _mailCustomDapperRepository.GetMailById(mailId);
+                mailFromCustomRepository.ShouldNotBeNull();
 
                 insertedProduct.ShouldNotBeNull();
                 insertedProduct.CreationTime.ShouldNotBeNull();
                 insertedProduct.CreatorUserId.ShouldNotBeNull();
-                insertedProduct.CreatorUserId.ShouldBe(TestStoveSession.UserId);
+                insertedProduct.CreatorUserId.ShouldBe(StoveSession.UserId);
 
                 //----Update operation should work and Modification Audits should be set---------------------------
                 _productDapperRepository.Insert(new Product("TShirt"));
@@ -51,8 +72,8 @@ namespace Stove.Dapper.Tests
                 productToUpdate.ShouldNotBeNull();
 
                 productToUpdate.CreationTime.ShouldNotBeNull();
-                productToUpdate.LastModifierUserId.ShouldBe(TestStoveSession.UserId);
-                productToUpdate.CreatorUserId.ShouldBe(TestStoveSession.UserId);
+                productToUpdate.LastModifierUserId.ShouldBe(StoveSession.UserId);
+                productToUpdate.CreatorUserId.ShouldBe(StoveSession.UserId);
 
                 //---Get method should return single-------------------------------------------------------------------
                 _productDapperRepository.Insert(new Product("TShirt"));
@@ -79,7 +100,7 @@ namespace Stove.Dapper.Tests
                 _productDapperRepository.Delete(toSoftDeleteProduct);
 
                 toSoftDeleteProduct.IsDeleted.ShouldBe(true);
-                toSoftDeleteProduct.DeleterUserId.ShouldBe(TestStoveSession.UserId);
+                toSoftDeleteProduct.DeleterUserId.ShouldBe(StoveSession.UserId);
 
                 Product softDeletedProduct = _productRepository.FirstOrDefault(x => x.Name == "SoftDeletableProduct");
                 softDeletedProduct.ShouldBeNull();
@@ -96,7 +117,7 @@ namespace Stove.Dapper.Tests
                     softDeletedProductFromDapperWhenFilterDisabled.ShouldNotBeNull();
                 }
 
-                using (TestStoveSession.Use(266))
+                using (StoveSession.Use(266))
                 {
                     _productDapperRepository.Insert(new Product("InsertedProductWith266Id"));
                     Product InsertedProductWith266Id = _productDapperRepository.GetAll(x => x.Name == "InsertedProductWith266Id").FirstOrDefault();
@@ -104,7 +125,7 @@ namespace Stove.Dapper.Tests
                     InsertedProductWith266Id.ShouldNotBeNull();
                     InsertedProductWith266Id.CreationTime.ShouldNotBeNull();
                     InsertedProductWith266Id.CreatorUserId.ShouldNotBeNull();
-                    InsertedProductWith266Id.CreatorUserId.ShouldBe(TestStoveSession.UserId);
+                    InsertedProductWith266Id.CreatorUserId.ShouldBe(StoveSession.UserId);
                 }
 
                 _productDapperRepository.Insert(new Product("InsertedProductAfterSpecifiedUserId"));
@@ -113,10 +134,14 @@ namespace Stove.Dapper.Tests
                 InsertedProductAfterSpecifiedUserId.ShouldNotBeNull();
                 InsertedProductAfterSpecifiedUserId.CreationTime.ShouldNotBeNull();
                 InsertedProductAfterSpecifiedUserId.CreatorUserId.ShouldNotBeNull();
-                InsertedProductAfterSpecifiedUserId.CreatorUserId.ShouldBe(TestStoveSession.UserId);
+                InsertedProductAfterSpecifiedUserId.CreatorUserId.ShouldBe(StoveSession.UserId);
 
                 uow.Complete();
             }
         }
+    }
+
+    public class ProductCreatedEvent : EventData
+    {
     }
 }

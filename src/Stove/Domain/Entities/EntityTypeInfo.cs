@@ -1,8 +1,8 @@
 using System;
 
-namespace Stove.EntityFramework
+namespace Stove.Domain.Entities
 {
-    internal class EntityTypeInfo
+    public class EntityTypeInfo
     {
         /// <summary>
         /// Type of the entity.

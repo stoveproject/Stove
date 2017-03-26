@@ -10,6 +10,17 @@
       <Value>test\Stove.TestBase\Stove.TestBase.csproj</Value>
       <Value>test\Stove.Tests.SampleApplication\Stove.Tests.SampleApplication.csproj</Value>
       <Value>test\Stove.Dapper.Tests\Stove.Dapper.Tests.csproj</Value>
+      <Value>test\Stove.Hangfire.Tests\Stove.Hangfire.Tests.csproj:net461</Value>
+      <Value>test\Stove.Dapper.Tests\Stove.Dapper.Tests.csproj:net461</Value>
+      <Value>test\Stove.EntityFramework.Tests\Stove.EntityFramework.Tests.csproj:net461</Value>
+      <Value>test\Stove.Demo.ConsoleApp.Nh\Stove.Demo.ConsoleApp.Nh.csproj:net461</Value>
+      <Value>test\Stove.Demo.ConsoleApp\Stove.Demo.ConsoleApp.csproj:net461</Value>
+      <Value>test\Stove.TestBase\Stove.TestBase.csproj:net452</Value>
+      <Value>test\Stove.Tests\Stove.Tests.csproj:net461</Value>
+      <Value>test\Stove.Mapster.Tests\Stove.Mapster.Tests.csproj:net461</Value>
+      <Value>test\Stove.RabbitMQ.Tests\Stove.RabbitMQ.Tests.csproj:net461</Value>
+      <Value>test\Stove.Tests.SampleApplication\Stove.Tests.SampleApplication.csproj:net461</Value>
+      <Value>test\Stove.NHibernate.Tests\Stove.NHibernate.Tests.csproj:net461</Value>
     </MetricsExclusionList>
     <SolutionConfigured>True</SolutionConfigured>
   </Settings>

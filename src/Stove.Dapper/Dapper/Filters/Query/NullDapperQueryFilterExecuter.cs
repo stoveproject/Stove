@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
 using DapperExtensions;
@@ -7,6 +8,7 @@ using Stove.Domain.Entities;
 
 namespace Stove.Dapper.Filters.Query
 {
+    [ExcludeFromCodeCoverage]
     public class NullDapperQueryFilterExecuter : IDapperQueryFilterExecuter
     {
         public static readonly NullDapperQueryFilterExecuter Instance = new NullDapperQueryFilterExecuter();

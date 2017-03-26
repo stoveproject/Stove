@@ -2,15 +2,15 @@
 
 namespace Stove.Dapper
 {
-    public static class DapperAutoRepositoryTypes
+    public static class EfBasedDapperAutoRepositoryTypes
     {
-        static DapperAutoRepositoryTypes()
+        static EfBasedDapperAutoRepositoryTypes()
         {
             Default = new DapperAutoRepositoryTypeAttribute(
                 typeof(IDapperRepository<>),
                 typeof(IDapperRepository<,>),
-                typeof(DapperRepositoryBase<,>),
-                typeof(DapperRepositoryBase<,,>)
+                typeof(DapperEfRepositoryBase<,>),
+                typeof(DapperEfRepositoryBase<,,>)
             );
         }
 

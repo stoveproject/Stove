@@ -13,3 +13,12 @@ IF ( EXISTS ( SELECT    *
     BEGIN
         DROP TABLE dbo.ProductDetails
     END
+
+
+IF ( EXISTS ( SELECT    *
+              FROM      INFORMATION_SCHEMA.TABLES
+              WHERE     TABLE_SCHEMA = 'dbo'
+                        AND TABLE_NAME = 'Mails' ) )
+    BEGIN
+        DROP TABLE dbo.Mails
+    END

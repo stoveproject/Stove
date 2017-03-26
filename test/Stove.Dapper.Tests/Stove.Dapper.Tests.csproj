@@ -36,6 +36,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Stove.Dapper\Stove.Dapper.csproj" />
+    <ProjectReference Include="..\..\src\Stove.EntityFramework\Stove.EntityFramework.csproj" />
     <ProjectReference Include="..\Stove.TestBase\Stove.TestBase.csproj" />
   </ItemGroup>
   

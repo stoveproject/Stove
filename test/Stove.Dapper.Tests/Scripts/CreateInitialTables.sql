@@ -44,3 +44,28 @@ IF ( NOT EXISTS ( SELECT    *
     END
 
 
+	
+IF ( NOT EXISTS ( SELECT    *
+                  FROM      INFORMATION_SCHEMA.TABLES
+                  WHERE     TABLE_SCHEMA = 'dbo'
+                            AND TABLE_NAME = 'Mails' )
+   )
+    BEGIN
+        CREATE TABLE [dbo].Mails
+            (
+              [Id] UNIQUEIDENTIFIER NOT NULL
+                                    DEFAULT NEWSEQUENTIALID()
+            , Subject [NVARCHAR](50) NOT NULL
+            , [IsDeleted] [BIT] NOT NULL
+            , [DeleterUserId] BIGINT NULL
+            , [DeletionTime] [DATETIME] NULL
+            , [LastModificationTime] [DATETIME] NULL
+            , [LastModifierUserId] BIGINT NULL
+            , [CreationTime] [DATETIME] NOT NULL
+            , [CreatorUserId] BIGINT NULL
+            )
+        ON  [PRIMARY]
+    END
+
+
+

@@ -7,9 +7,11 @@ using Autofac.Extras.IocManager;
 
 using JetBrains.Annotations;
 
+using Stove.Domain.Entities;
 using Stove.Domain.Uow;
 using Stove.EntityFramework;
 using Stove.EntityFramework.Uow;
+using Stove.Orm;
 using Stove.Reflection.Extensions;
 
 namespace Stove
@@ -29,8 +31,15 @@ namespace Stove
             builder.RegisterServices(r => r.RegisterGeneric(typeof(IDbContextProvider<>), typeof(UnitOfWorkDbContextProvider<>)));
             builder.RegisterServices(r => r.Register<IUnitOfWorkDefaultOptions, UnitOfWorkDefaultOptions>(Lifetime.Singleton));
 
+            var ormRegistrars = new List<IAdditionalOrmRegistrar>();
             List<Type> dbContextTypes = typeof(StoveDbContext).AssignedTypes().ToList();
-            dbContextTypes.ForEach(type => EfRepositoryRegistrar.RegisterRepositories(type, builder));
+            dbContextTypes.ForEach(type =>
+            {
+                EfRepositoryRegistrar.RegisterRepositories(type, builder);
+                ormRegistrars.Add(new EfBasedAdditionalOrmRegistrar(builder, type, DbContextHelper.GetEntityTypeInfos, EntityHelper.GetPrimaryKeyType));
+            });
+
+            builder.RegisterServices(r => r.UseBuilder(cb => { cb.Properties[StoveConsts.OrmRegistrarContextKey] = ormRegistrars; }));
 
             return builder;
         }

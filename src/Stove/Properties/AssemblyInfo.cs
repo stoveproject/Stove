@@ -43,3 +43,4 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("Stove.RabbitMQ.Tests")]
 [assembly: InternalsVisibleTo("Stove.TestBase")]
 [assembly: InternalsVisibleTo("Stove.Dapper")]
+[assembly: InternalsVisibleTo("Stove.NHibernate")]

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Reflection;
 
 using Autofac.Extras.IocManager;
@@ -8,8 +6,8 @@ using Autofac.Extras.IocManager;
 using JetBrains.Annotations;
 
 using Stove.Dapper;
-using Stove.EntityFramework;
-using Stove.Reflection.Extensions;
+using Stove.Extensions;
+using Stove.Orm;
 
 namespace Stove
 {
@@ -33,8 +31,29 @@ namespace Stove
 
         private static void AutoRegisterRepositories(IIocBuilder builder)
         {
-            List<Type> dbContextTypes = typeof(StoveDbContext).AssignedTypes().ToList();
-            dbContextTypes.ForEach(type => DapperRepositoryRegistrar.RegisterRepositories(type, builder));
+            builder.RegisterServices(r => r.UseBuilder(cb =>
+            {
+                if (!cb.Properties.ContainsKey(StoveConsts.OrmRegistrarContextKey))
+                {
+                    throw new StoveInitializationException("Dapper registration should be after EntityFramework or NHibernate registration" +
+                                                           " use StoveEntityFramework() or StoveNHibernate() registration methods before use StoveDapper().");
+                }
+
+                var ormRegistrars = cb.Properties[StoveConsts.OrmRegistrarContextKey].As<IList<IAdditionalOrmRegistrar>>();
+
+                ormRegistrars.ForEach(registrar =>
+                {
+                    switch (registrar.OrmContextKey)
+                    {
+                        case StoveOrms.EntityFramework:
+                            registrar.RegisterRepositories(EfBasedDapperAutoRepositoryTypes.Default);
+                            break;
+                        case StoveOrms.NHibernate:
+                            registrar.RegisterRepositories(NhBasedDapperAutoRepositoryTypes.Default);
+                            break;
+                    }
+                });
+            }));
         }
     }
 }

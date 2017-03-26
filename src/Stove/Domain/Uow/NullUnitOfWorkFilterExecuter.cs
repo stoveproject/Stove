@@ -1,5 +1,8 @@
-﻿namespace Stove.Domain.Uow
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Stove.Domain.Uow
 {
+    [ExcludeFromCodeCoverage]
     public class NullUnitOfWorkFilterExecuter : IUnitOfWorkFilterExecuter
     {
         public void ApplyDisableFilter(IUnitOfWork unitOfWork, string filterName)

@@ -4,6 +4,7 @@ using Autofac;
 using Autofac.Extras.IocManager;
 
 using Stove.Domain.Entities;
+using Stove.Domain.Repositories;
 using Stove.EntityFramework.Repositories;
 using Stove.Reflection.Extensions;
 

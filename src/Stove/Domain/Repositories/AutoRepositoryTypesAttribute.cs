@@ -1,6 +1,6 @@
 using System;
 
-namespace Stove.EntityFramework
+namespace Stove.Domain.Repositories
 {
     /// <summary>
     ///     Used to define auto-repository types for entities.

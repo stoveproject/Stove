@@ -1,7 +1,10 @@
-﻿using Autofac.Extras.IocManager;
+﻿using System.Diagnostics.CodeAnalysis;
+
+using Autofac.Extras.IocManager;
 
 namespace Stove.ObjectMapping
 {
+    [ExcludeFromCodeCoverage]
     public sealed class NullObjectMapper : IObjectMapper, ISingletonDependency
     {
         /// <summary>

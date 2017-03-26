@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 
 namespace Stove.Domain.Uow
 {
@@ -7,6 +8,7 @@ namespace Stove.Domain.Uow
     ///     It's used if no component registered for <see cref="IUnitOfWork" />.
     ///     This ensures working Stove without a database.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public sealed class NullUnitOfWork : UnitOfWorkBase
     {
         public NullUnitOfWork(
