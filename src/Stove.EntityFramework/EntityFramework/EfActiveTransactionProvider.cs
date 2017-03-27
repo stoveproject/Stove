@@ -6,7 +6,6 @@ using System.Reflection;
 using Autofac.Extras.IocManager;
 
 using Stove.Extensions;
-using Stove.Orm;
 using Stove.Transactions;
 
 namespace Stove.EntityFramework
@@ -22,24 +21,22 @@ namespace Stove.EntityFramework
 
         public IDbTransaction GetActiveTransaction(ActiveTransactionProviderArgs args)
         {
-            var dbContextType = (Type)args["ContextType"];
-            Type dbContextProviderType = typeof(IDbContextProvider<>).MakeGenericType(dbContextType);
-            object dbContextProvider = _scopeResolver.Resolve(dbContextProviderType);
-            MethodInfo method = dbContextProvider.GetType().GetMethod("GetDbContext");
-            var dbContext = method.Invoke(dbContextProvider, null).As<DbContext>();
-
-            return dbContext.Database.CurrentTransaction.UnderlyingTransaction;
+            return GetDbContext(args).Database.CurrentTransaction.UnderlyingTransaction;
         }
 
         public IDbConnection GetActiveConnection(ActiveTransactionProviderArgs args)
+        {
+            return GetDbContext(args).Database.Connection;
+        }
+
+        private DbContext GetDbContext(ActiveTransactionProviderArgs args)
         {
             var dbContextType = (Type)args["ContextType"];
             Type dbContextProviderType = typeof(IDbContextProvider<>).MakeGenericType(dbContextType);
             object dbContextProvider = _scopeResolver.Resolve(dbContextProviderType);
             MethodInfo method = dbContextProvider.GetType().GetMethod("GetDbContext");
             var dbContext = method.Invoke(dbContextProvider, null).As<DbContext>();
-
-            return dbContext.Database.Connection;
+            return dbContext;
         }
     }
 }
