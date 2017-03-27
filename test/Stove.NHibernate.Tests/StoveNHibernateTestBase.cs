@@ -18,7 +18,7 @@ namespace Stove.NHibernate.Tests
     {
         private readonly SQLiteConnection _connection;
 
-        protected StoveNHibernateTestBase()
+        protected StoveNHibernateTestBase(bool autoUowInterceptionEnabled = false) : base(autoUowInterceptionEnabled)
         {
             _connection = new SQLiteConnection("data source=:memory:");
             _connection.Open();
