@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Data;
 using System.Data.Entity;
+using System.Reflection;
 
 using Autofac.Extras.IocManager;
 
+using Stove.Extensions;
 using Stove.Transactions;
 
 namespace Stove.EntityFramework
@@ -32,11 +34,9 @@ namespace Stove.EntityFramework
             var dbContextType = (Type)args["ContextType"];
             Type dbContextProviderType = typeof(IDbContextProvider<>).MakeGenericType(dbContextType);
             object dbContextProvider = _scopeResolver.Resolve(dbContextProviderType);
-
-            Type func = typeof(Func<>).MakeGenericType(dbContextType);
-            var getDbContextFunc = (Func<DbContext>)Delegate.CreateDelegate(func, dbContextProvider, "GetDbContext");
-
-            return getDbContextFunc();
+            MethodInfo method = dbContextProvider.GetType().GetMethod("GetDbContext");
+            var dbContext = method.Invoke(dbContextProvider, null).As<DbContext>();
+            return dbContext;
         }
     }
 }
