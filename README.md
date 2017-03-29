@@ -68,7 +68,7 @@ IRootResolver resolver = IocBuilder.New
 
 var someDomainService = resolver.Resolve<SomeDomainService>();
 someDomainService.DoSomeStuff();
-
+ 
 ```
 
 ## It will be documented in detail!
