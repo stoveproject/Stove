@@ -1,27 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="..\..\common.props"></Import>
+  
   <PropertyGroup>
-    <VersionPrefix>0.0.11</VersionPrefix>
     <TargetFramework>net452</TargetFramework>
     <AssemblyName>Stove.HangFire</AssemblyName>
     <PackageId>Stove.HangFire</PackageId>
-    <PackageTags>.net;framework;boilerplate</PackageTags>
-    <PackageIconUrl>https://raw.githubusercontent.com/osoykan/Stove/master/stove.png</PackageIconUrl>
-    <PackageProjectUrl>https://github.com/osoykan/Stove</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/osoykan/Stove/blob/master/LICENSE</PackageLicenseUrl>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/osoykan/Stove</RepositoryUrl>
-    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
-    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
-    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
-    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>0.1.0</Version>
     <RootNamespace>Stove</RootNamespace>
+    <Description>Hangfire integration for Stove.</Description>
+    <PackageTags>.net;framework;boilerplate;hangfire</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

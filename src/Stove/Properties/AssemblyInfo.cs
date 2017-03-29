@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 [assembly: AssemblyTitle("Stove")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A framework to provide solid infrastructure to your application.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Stove")]
