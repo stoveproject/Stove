@@ -35,7 +35,7 @@ after_build:
     
     Set-Location "nupkg"
     
-    .\pack.ps1 -versionSuffix "$versionSuffix"
+    .\packs.ps1 -versionSuffix "$versionSuffix"
  
 test:
   assemblies:
