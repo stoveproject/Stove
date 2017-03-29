@@ -41,6 +41,14 @@ namespace Stove.Demo.ConsoleApp
                     Product gomlekFromEf = _productRepository.FirstOrDefault(gomlekId);
 
                     Product firstProduct = _productDapperRepository.Get(1);
+
+                    _productDapperRepository.GetAll(x => x.Id == 1 || x.Name == "Gomlek" || x.CreationTime == DateTime.Now);
+
+                    _productDapperRepository.GetAll(x => (x.Id == 1 && x.Name == "Gomlek") || x.CreationTime == DateTime.Now);
+
+                    _productDapperRepository.GetAll(x => ((x.Id == 1 || x.Name == "Gomlek") && x.CreationTime == DateTime.Now) ||
+                     (x.Id == 1 || x.Name == "Gomlek") && x.CreationTime == DateTime.Now);
+
                     IEnumerable<Product> products = _productDapperRepository.GetAll();
 
                     firstProduct.Name = "Something";

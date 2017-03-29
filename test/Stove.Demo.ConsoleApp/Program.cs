@@ -54,12 +54,13 @@ namespace Stove.Demo.ConsoleApp
          
 
           
-                var someDomainService = resolver.Resolve<SomeDomainService>();
-                someDomainService.DoSomeStuff();
+                //var someDomainService = resolver.Resolve<SomeDomainService>();
+                //someDomainService.DoSomeStuff();
 
-                //var productDomainService = resolver.Resolve<ProductDomainService>();
-                //productDomainService.DoSomeStuff();
-           
+            var productDomainService = resolver.Resolve<ProductDomainService>();
+            productDomainService.DoSomeStuff();
+
+            EntityFrameworkProfiler.Shutdown();
 
             Console.ReadKey();
         }

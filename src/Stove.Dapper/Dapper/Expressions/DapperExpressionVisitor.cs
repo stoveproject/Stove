@@ -7,6 +7,7 @@ using System.Reflection;
 using DapperExtensions;
 
 using Stove.Domain.Entities;
+using Stove.Extensions;
 
 namespace Stove.Dapper.Expressions
 {
@@ -19,6 +20,7 @@ namespace Stove.Dapper.Expressions
     /// <seealso cref="System.Linq.Expressions.ExpressionVisitor" />
     internal class DapperExpressionVisitor<TEntity, TPrimaryKey> : ExpressionVisitor where TEntity : class, IEntity<TPrimaryKey>
     {
+        private readonly Stack<PredicateGroup> _predicateGroupStack;
         private PredicateGroup _pg;
         private Expression _processedProperty;
         private bool _unarySpecified;
@@ -26,7 +28,10 @@ namespace Stove.Dapper.Expressions
         public DapperExpressionVisitor()
         {
             Expressions = new HashSet<Expression>();
+            _predicateGroupStack = new Stack<PredicateGroup>();
         }
+
+        public PredicateGroup _currentGroup { get; set; }
 
         /// <summary>
         ///     Holds BinaryExpressions
@@ -36,6 +41,7 @@ namespace Stove.Dapper.Expressions
         public IPredicate Process(Expression exp)
         {
             _pg = new PredicateGroup { Predicates = new List<IPredicate>() };
+            _currentGroup = _pg;
             Visit(Evaluator.PartialEval(exp));
 
             // the 1st expression determines root group operator
@@ -66,13 +72,20 @@ namespace Stove.Dapper.Expressions
             return grp;
         }
 
-        private IFieldPredicate GetLastField()
+        private IFieldPredicate GetCurrentField()
         {
-            PredicateGroup lastGrp = GetLastPredicateGroup(_pg);
+            return GetCurrentField(_currentGroup);
+        }
 
-            IPredicate last = lastGrp.Predicates.Last();
+        private IFieldPredicate GetCurrentField(IPredicateGroup group)
+        {
+            IPredicate last = group.Predicates.Last();
+            if (last is IPredicateGroup)
+            {
+                return GetCurrentField(last as IPredicateGroup);
+            }
 
-            return last as IFieldPredicate;
+            return last.As<IFieldPredicate>();
         }
 
         private static Operator DetermineOperator(Expression binaryExpression)
@@ -96,7 +109,7 @@ namespace Stove.Dapper.Expressions
 
         private void AddField(MemberExpression exp, Operator op = Operator.Eq, object value = null, bool not = false)
         {
-            PredicateGroup pg = GetLastPredicateGroup(_pg);
+            PredicateGroup pg = _currentGroup;
 
             // need convert from Expression<Func<T, bool>> to Expression<Func<T, object>> as this is what Predicates.Field() requires
             Expression<Func<TEntity, object>> fieldExp = Expression.Lambda<Func<TEntity, object>>(Expression.Convert(exp, typeof(object)), exp.Expression as ParameterExpression);
@@ -118,15 +131,16 @@ namespace Stove.Dapper.Expressions
                     Predicates = new List<IPredicate>(),
                     Operator = nt == ExpressionType.OrElse ? GroupOperator.Or : GroupOperator.And
                 };
-
-                _pg.Predicates.Add(pg);
+                _currentGroup.Predicates.Add(pg);
+                _predicateGroupStack.Push(_currentGroup);
+                _currentGroup = pg;
             }
 
             Visit(node.Left);
 
             if (node.Left is MemberExpression)
             {
-                IFieldPredicate field = GetLastField();
+                IFieldPredicate field = GetCurrentField();
                 field.Operator = DetermineOperator(node);
 
                 if (nt == ExpressionType.NotEqual)
@@ -136,7 +150,10 @@ namespace Stove.Dapper.Expressions
             }
 
             Visit(node.Right);
-
+            if (nt == ExpressionType.OrElse || nt == ExpressionType.AndAlso)
+            {
+                _currentGroup = _predicateGroupStack.Pop();
+            }
             return node;
         }
 
@@ -161,9 +178,8 @@ namespace Stove.Dapper.Expressions
 
         protected override Expression VisitConstant(ConstantExpression node)
         {
-            IFieldPredicate field = GetLastField();
+            IFieldPredicate field = GetCurrentField();
             field.Value = node.Value;
-
             return node;
         }
 
