@@ -39,11 +39,14 @@ after_build:
  
 test:
   assemblies:
-  - test\Stove.EntityFramework.Tests\bin\Release\net461\win7-x64\Stove.EntityFramework.Tests.dll
-  - test\Stove.Mapster.Tests\bin\Release\net461\win7-x64\Stove.Mapster.Tests.dll
-  - test\Stove.RabbitMQ.Tests\bin\Release\net461\win7-x64\Stove.RabbitMQ.Tests.dll
-  - test\Stove.Tests\bin\Release\net461\win7-x64\Stove.Tests.dll
-  - test\Stove.Tests.SampleApplication\bin\Release\net461\win7-x64\Stove.Tests.SampleApplication.dll
+  - test\Stove.Tests\bin\Release\net461\Stove.Tests.dll
+  - test\Stove.Tests\bin\Release\net461\Stove.Dapper.Tests.dll
+  - test\Stove.EntityFramework.Tests\bin\Release\net461\Stove.EntityFramework.Tests.dll
+  - test\Stove.EntityFramework.Tests\bin\Release\net461\Stove.Hangfire.Tests.dll
+  - test\Stove.Mapster.Tests\bin\Release\net461\Stove.Mapster.Tests.dll
+  - test\Stove.Mapster.Tests\bin\Release\net461\Stove.NHibernate.Tests.dll
+  - test\Stove.RabbitMQ.Tests\bin\Release\net461\Stove.RabbitMQ.Tests.dll
+  - test\Stove.Tests.SampleApplication\bin\Release\net461\Stove.Tests.SampleApplication.dll
   
 deploy:
 - provider: NuGet
