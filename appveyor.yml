@@ -36,6 +36,8 @@ after_build:
     Set-Location "nupkg"
     
     .\packs.ps1 -versionSuffix "$versionSuffix"
+ - cmd: >- 
+    icacls "test\Stove.Dapper.Tests\Db\StoveDapperTest.mdf" /Grant Everyone:F
  
 test:
   assemblies:
