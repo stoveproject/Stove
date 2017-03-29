@@ -1,6 +1,6 @@
 using System.Data.Entity;
 
-namespace Stove.EntityFramework.EntityFramework
+namespace Stove.EntityFramework
 {
     /// <summary>
     /// </summary>

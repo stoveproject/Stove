@@ -1,10 +1,8 @@
 ﻿using Stove.Bootstrapping;
-using Stove.EntityFramework;
 
-namespace Stove.Dapper
+namespace Stove
 {
     [DependsOn(
-        typeof(StoveEntityFrameworkBootstrapper),
         typeof(StoveKernelBootstrapper)
     )]
     public class StoveDapperBootstrapper : StoveBootstrapper

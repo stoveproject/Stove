@@ -4,10 +4,11 @@ using Autofac;
 using Autofac.Extras.IocManager;
 
 using Stove.Domain.Entities;
-using Stove.EntityFramework.EntityFramework.Repositories;
+using Stove.Domain.Repositories;
+using Stove.EntityFramework.Repositories;
 using Stove.Reflection.Extensions;
 
-namespace Stove.EntityFramework.EntityFramework
+namespace Stove.EntityFramework
 {
     public static class EfRepositoryRegistrar
     {
@@ -28,7 +29,7 @@ namespace Stove.EntityFramework.EntityFramework
                         ? autoRepositoryAttr.RepositoryImplementation.MakeGenericType(entityTypeInfo.EntityType)
                         : autoRepositoryAttr.RepositoryImplementation.MakeGenericType(entityTypeInfo.DeclaringType, entityTypeInfo.EntityType);
 
-                    builder.RegisterServices(r => r.UseBuilder(cb => cb.RegisterType(implType).As(genericRepositoryType).AsImplementedInterfaces().InjectPropertiesAsAutowired()));
+                    builder.RegisterServices(r => r.UseBuilder(cb => cb.RegisterType(implType).As(genericRepositoryType).AsImplementedInterfaces().PropertiesAutowired()));
                 }
                 else
                 {
@@ -38,7 +39,7 @@ namespace Stove.EntityFramework.EntityFramework
                         ? autoRepositoryAttr.RepositoryImplementationWithPrimaryKey.MakeGenericType(entityTypeInfo.EntityType, primaryKeyType)
                         : autoRepositoryAttr.RepositoryImplementationWithPrimaryKey.MakeGenericType(entityTypeInfo.DeclaringType, entityTypeInfo.EntityType, primaryKeyType);
 
-                    builder.RegisterServices(r => r.UseBuilder(cb => cb.RegisterType(implType).As(genericRepositoryTypeWithPrimaryKey).AsImplementedInterfaces().InjectPropertiesAsAutowired()));
+                    builder.RegisterServices(r => r.UseBuilder(cb => cb.RegisterType(implType).As(genericRepositoryTypeWithPrimaryKey).AsImplementedInterfaces().PropertiesAutowired()));
                 }
             }
         }

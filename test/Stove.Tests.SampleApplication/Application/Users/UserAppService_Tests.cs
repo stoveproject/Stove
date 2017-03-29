@@ -5,7 +5,7 @@ using Stove.Tests.SampleApplication.Domain.Entities;
 
 using Xunit;
 
-namespace Stove.Tests.SampleApplication.Application
+namespace Stove.Tests.SampleApplication.Application.Users
 {
     public class UserAppService_Tests : SampleApplicationTestBase
     {

@@ -1,5 +1,4 @@
 ﻿using Stove.Bootstrapping;
-using Stove.Mapster.Mapster;
 
 namespace Stove.Mapster.Tests
 {

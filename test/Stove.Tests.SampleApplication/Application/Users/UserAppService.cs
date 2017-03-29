@@ -4,7 +4,7 @@ using Stove.Application.Services;
 using Stove.Domain.Repositories;
 using Stove.Tests.SampleApplication.Domain.Entities;
 
-namespace Stove.Tests.SampleApplication.Application
+namespace Stove.Tests.SampleApplication.Application.Users
 {
     public class UserAppService : ApplicationService, IUserAppService
     {

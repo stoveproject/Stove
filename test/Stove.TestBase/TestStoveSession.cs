@@ -18,8 +18,6 @@ namespace Stove.TestBase
             _sessionOverrideScopeProvider = sessionOverrideScopeProvider;
         }
 
-        public int? ImpersonatorTenantId { get; set; }
-
         public long? UserId
         {
             get

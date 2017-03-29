@@ -13,7 +13,7 @@ using System.Reflection;
 using Stove.Domain.Entities;
 using Stove.Reflection;
 
-namespace Stove.EntityFramework.EntityFramework
+namespace Stove.EntityFramework
 {
     internal static class DbContextHelper
     {

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Stove.Utils.Etc
 {
+    [ExcludeFromCodeCoverage]
     internal sealed class NullDisposable : IDisposable
     {
         private NullDisposable()

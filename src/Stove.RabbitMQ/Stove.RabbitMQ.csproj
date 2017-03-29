@@ -1,21 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="..\..\common.props"></Import>
+
   <PropertyGroup>
-    <VersionPrefix>0.0.11</VersionPrefix>
     <TargetFramework>net452</TargetFramework>
     <AssemblyName>Stove.RabbitMQ</AssemblyName>
     <PackageId>Stove.RabbitMQ</PackageId>
     <PackageTags>.net;framework;boilerplate;Queue;RabbitMQ</PackageTags>
-    <PackageIconUrl>https://raw.githubusercontent.com/osoykan/Stove/master/stove.png</PackageIconUrl>
-    <PackageProjectUrl>https://github.com/osoykan/Stove</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/osoykan/Stove/blob/master/LICENSE</PackageLicenseUrl>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/osoykan/Stove</RepositoryUrl>
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>0.1.0</Version>
+    <RootNamespace>Stove</RootNamespace>
+    <Description>RabbitMQ integration for Stove.</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,9 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MassTransit" Version="3.5.5" />
-    <PackageReference Include="MassTransit.Autofac" Version="3.5.5" />
-    <PackageReference Include="MassTransit.RabbitMQ" Version="3.5.5" />
+    <PackageReference Include="MassTransit" Version="3.5.6" />
+    <PackageReference Include="MassTransit.Autofac" Version="3.5.6" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="3.5.6" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">

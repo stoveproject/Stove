@@ -8,7 +8,7 @@ using JetBrains.Annotations;
 using Stove.Domain.Entities;
 using Stove.Domain.Repositories;
 
-namespace Stove.Dapper.Dapper.Repositories
+namespace Stove.Dapper.Repositories
 {
     /// <summary>
     ///     Dapper repository abstraction interface.
@@ -23,7 +23,38 @@ namespace Stove.Dapper.Dapper.Repositories
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        [CanBeNull]
+        [NotNull]
+        TEntity Single([NotNull] TPrimaryKey id);
+
+        /// <summary>
+        ///     Gets the Entity with specified predicate
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        [NotNull]
+        TEntity Single(Expression<Func<TEntity, bool>> predicate);
+
+        /// <summary>
+        ///     Gets the Entity with specified predicate
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        Task<TEntity> SingleAsync(Expression<Func<TEntity, bool>> predicate);
+
+        /// <summary>
+        ///     Gets the asynchronous.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        [NotNull]
+        Task<TEntity> SingleAsync([NotNull] TPrimaryKey id);
+
+        /// <summary>
+        ///     Gets the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        [NotNull]
         TEntity Get([NotNull] TPrimaryKey id);
 
         /// <summary>
@@ -31,54 +62,70 @@ namespace Stove.Dapper.Dapper.Repositories
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        [CanBeNull]
+        [NotNull]
         Task<TEntity> GetAsync([NotNull] TPrimaryKey id);
 
         /// <summary>
+        ///     Gets the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        [CanBeNull]
+        TEntity FirstOrDefault([NotNull] TPrimaryKey id);
+
+        /// <summary>
+        ///     Gets the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        [CanBeNull]
+        Task<TEntity> FirstOrDefaultAsync([NotNull] TPrimaryKey id);
+
+        /// <summary>
+        ///     Gets the Entity with specified predicate
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        [CanBeNull]
+        Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
+
+        /// <summary>
+        ///     Gets the Entity with specified predicate
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        [CanBeNull]
+        TEntity FirstOrDefault(Expression<Func<TEntity, bool>> predicate);
+
+        /// <summary>
         ///     Gets the list.
         /// </summary>
         /// <returns></returns>
-        [CanBeNull]
-        IEnumerable<TEntity> GetList();
+        [NotNull]
+        IEnumerable<TEntity> GetAll();
 
         /// <summary>
         ///     Gets the list asynchronous.
         /// </summary>
         /// <returns></returns>
-        [CanBeNull]
-        Task<IEnumerable<TEntity>> GetListAsync();
+        [NotNull]
+        Task<IEnumerable<TEntity>> GetAllAsync();
 
         /// <summary>
         ///     Gets the list.
         /// </summary>
         /// <param name="predicate">The predicate.</param>
         /// <returns></returns>
-        [CanBeNull]
-        IEnumerable<TEntity> GetList([CanBeNull] object predicate);
-
-        /// <summary>
-        ///     Gets the list.
-        /// </summary>
-        /// <param name="predicate">The predicate.</param>
-        /// <returns></returns>
-        [CanBeNull]
-        IEnumerable<TEntity> GetList([CanBeNull] Expression<Func<TEntity, bool>> predicate);
+        [NotNull]
+        IEnumerable<TEntity> GetAll([NotNull] Expression<Func<TEntity, bool>> predicate);
 
         /// <summary>
         ///     Gets the list asynchronous.
         /// </summary>
         /// <param name="predicate">The predicate.</param>
         /// <returns></returns>
-        [CanBeNull]
-        Task<IEnumerable<TEntity>> GetListAsync([NotNull] object predicate);
-
-        /// <summary>
-        ///     Gets the list asynchronous.
-        /// </summary>
-        /// <param name="predicate">The predicate.</param>
-        /// <returns></returns>
-        [CanBeNull]
-        Task<IEnumerable<TEntity>> GetListAsync([NotNull] Expression<Func<TEntity, bool>> predicate);
+        [NotNull]
+        Task<IEnumerable<TEntity>> GetAllAsync([NotNull] Expression<Func<TEntity, bool>> predicate);
 
         /// <summary>
         ///     Gets the list paged asynchronous.
@@ -89,20 +136,8 @@ namespace Stove.Dapper.Dapper.Repositories
         /// <param name="sortingProperty">The sorting property.</param>
         /// <param name="ascending">if set to <c>true</c> [ascending].</param>
         /// <returns></returns>
-        [CanBeNull]
-        Task<IEnumerable<TEntity>> GetListPagedAsync([NotNull] object predicate, int pageNumber, int itemsPerPage, [NotNull] string sortingProperty, bool ascending = true);
-
-        /// <summary>
-        ///     Gets the list paged asynchronous.
-        /// </summary>
-        /// <param name="predicate">The predicate.</param>
-        /// <param name="pageNumber">The page number.</param>
-        /// <param name="itemsPerPage">The items per page.</param>
-        /// <param name="sortingProperty">The sorting property.</param>
-        /// <param name="ascending">if set to <c>true</c> [ascending].</param>
-        /// <returns></returns>
-        [CanBeNull]
-        Task<IEnumerable<TEntity>> GetListPagedAsync([NotNull] Expression<Func<TEntity, bool>> predicate, int pageNumber, int itemsPerPage, [NotNull] string sortingProperty, bool ascending = true);
+        [NotNull]
+        Task<IEnumerable<TEntity>> GetAllPagedAsync([NotNull] Expression<Func<TEntity, bool>> predicate, int pageNumber, int itemsPerPage, [NotNull] string sortingProperty, bool ascending = true);
 
         /// <summary>
         ///     Gets the list paged asynchronous.
@@ -113,8 +148,8 @@ namespace Stove.Dapper.Dapper.Repositories
         /// <param name="sortingExpression">The sorting expression.</param>
         /// <param name="ascending">if set to <c>true</c> [ascending].</param>
         /// <returns></returns>
-        [CanBeNull]
-        Task<IEnumerable<TEntity>> GetListPagedAsync([NotNull] Expression<Func<TEntity, bool>> predicate, int pageNumber, int itemsPerPage, bool ascending = true, [NotNull] params Expression<Func<TEntity, object>>[] sortingExpression);
+        [NotNull]
+        Task<IEnumerable<TEntity>> GetAllPagedAsync([NotNull] Expression<Func<TEntity, bool>> predicate, int pageNumber, int itemsPerPage, bool ascending = true, [NotNull] params Expression<Func<TEntity, object>>[] sortingExpression);
 
         /// <summary>
         ///     Gets the list paged.
@@ -125,20 +160,8 @@ namespace Stove.Dapper.Dapper.Repositories
         /// <param name="sortingProperty">The sorting property.</param>
         /// <param name="ascending">if set to <c>true</c> [ascending].</param>
         /// <returns></returns>
-        [CanBeNull]
-        IEnumerable<TEntity> GetListPaged([NotNull] object predicate, int pageNumber, int itemsPerPage, [NotNull] string sortingProperty, bool ascending = true);
-
-        /// <summary>
-        ///     Gets the list paged.
-        /// </summary>
-        /// <param name="predicate">The predicate.</param>
-        /// <param name="pageNumber">The page number.</param>
-        /// <param name="itemsPerPage">The items per page.</param>
-        /// <param name="sortingProperty">The sorting property.</param>
-        /// <param name="ascending">if set to <c>true</c> [ascending].</param>
-        /// <returns></returns>
-        [CanBeNull]
-        IEnumerable<TEntity> GetListPaged([NotNull] Expression<Func<TEntity, bool>> predicate, int pageNumber, int itemsPerPage, [NotNull] string sortingProperty, bool ascending = true);
+        [NotNull]
+        IEnumerable<TEntity> GetAllPaged([NotNull] Expression<Func<TEntity, bool>> predicate, int pageNumber, int itemsPerPage, [NotNull] string sortingProperty, bool ascending = true);
 
         /// <summary>
         ///     Gets the list paged.
@@ -149,15 +172,8 @@ namespace Stove.Dapper.Dapper.Repositories
         /// <param name="sortingExpression">The sorting expression.</param>
         /// <param name="ascending">if set to <c>true</c> [ascending].</param>
         /// <returns></returns>
-        [CanBeNull]
-        IEnumerable<TEntity> GetListPaged([NotNull] Expression<Func<TEntity, bool>> predicate, int pageNumber, int itemsPerPage, bool ascending = true, [NotNull] params Expression<Func<TEntity, object>>[] sortingExpression);
-
-        /// <summary>
-        ///     Counts the specified predicate.
-        /// </summary>
-        /// <param name="predicate">The predicate.</param>
-        /// <returns></returns>
-        int Count([NotNull] object predicate);
+        [NotNull]
+        IEnumerable<TEntity> GetAllPaged([NotNull] Expression<Func<TEntity, bool>> predicate, int pageNumber, int itemsPerPage, bool ascending = true, [NotNull] params Expression<Func<TEntity, object>>[] sortingExpression);
 
         /// <summary>
         ///     Counts the specified predicate.
@@ -165,14 +181,6 @@ namespace Stove.Dapper.Dapper.Repositories
         /// <param name="predicate">The predicate.</param>
         /// <returns></returns>
         int Count([NotNull] Expression<Func<TEntity, bool>> predicate);
-
-        /// <summary>
-        ///     Counts the asynchronous.
-        /// </summary>
-        /// <param name="predicate">The predicate.</param>
-        /// <returns></returns>
-        [NotNull]
-        Task<int> CountAsync([NotNull] object predicate);
 
         /// <summary>
         ///     Counts the asynchronous.
@@ -188,43 +196,8 @@ namespace Stove.Dapper.Dapper.Repositories
         /// <param name="query">The query.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns></returns>
-        [CanBeNull]
-        IEnumerable<TEntity> Query([NotNull] string query, [CanBeNull] object parameters);
-
-        /// <summary>
-        ///     Queries the specified query.
-        /// </summary>
-        /// <param name="query">The query.</param>
-        /// <param name="parameters">The parameters.</param>
-        /// <returns></returns>
-        [CanBeNull]
-        IEnumerable<TAny> Query<TAny>([NotNull] string query, [CanBeNull] object parameters) where TAny : class;
-
-        /// <summary>
-        ///     Queries the specified query.
-        /// </summary>
-        /// <param name="query">The query.</param>
-        /// <param name="parameters">The parameters.</param>
-        /// <returns></returns>
-        [CanBeNull]
-        Task<IEnumerable<TAny>> QueryAsync<TAny>([NotNull] string query, [CanBeNull] object parameters) where TAny : class;
-
-        /// <summary>
-        ///     Queries the specified query.
-        /// </summary>
-        /// <typeparam name="TAny">The type of any.</typeparam>
-        /// <param name="query">The query.</param>
-        /// <returns></returns>
-        IEnumerable<TAny> Query<TAny>([NotNull] string query) where TAny : class;
-
-        /// <summary>
-        ///     Queries the specified query.
-        /// </summary>
-        /// <typeparam name="TAny">The type of any.</typeparam>
-        /// <param name="query">The query.</param>
-        /// <returns></returns>
-        [CanBeNull]
-        Task<IEnumerable<TAny>> QueryAsync<TAny>([NotNull] string query) where TAny : class;
+        [NotNull]
+        IEnumerable<TEntity> Query([NotNull] string query, [CanBeNull] object parameters = null);
 
         /// <summary>
         ///     Queries the asynchronous.
@@ -232,20 +205,26 @@ namespace Stove.Dapper.Dapper.Repositories
         /// <param name="query">The query.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns></returns>
-        [CanBeNull]
-        Task<IEnumerable<TEntity>> QueryAsync([NotNull] string query, [CanBeNull] object parameters);
+        [NotNull]
+        Task<IEnumerable<TEntity>> QueryAsync([NotNull] string query, [CanBeNull] object parameters = null);
 
         /// <summary>
-        ///     Gets the set.
+        ///     Queries the specified query.
         /// </summary>
-        /// <param name="predicate">The predicate.</param>
-        /// <param name="firstResult">The first result.</param>
-        /// <param name="maxResults">The maximum results.</param>
-        /// <param name="sortingProperty"></param>
-        /// <param name="ascending"></param>
+        /// <param name="query">The query.</param>
+        /// <param name="parameters">The parameters.</param>
         /// <returns></returns>
-        [CanBeNull]
-        IEnumerable<TEntity> GetSet([NotNull] object predicate, int firstResult, int maxResults, [NotNull] string sortingProperty, bool ascending = true);
+        [NotNull]
+        IEnumerable<TAny> Query<TAny>([NotNull] string query, [CanBeNull] object parameters = null) where TAny : class;
+
+        /// <summary>
+        ///     Queries the specified query.
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns></returns>
+        [NotNull]
+        Task<IEnumerable<TAny>> QueryAsync<TAny>([NotNull] string query, [CanBeNull] object parameters = null) where TAny : class;
 
         /// <summary>
         ///     Gets the set.
@@ -256,7 +235,7 @@ namespace Stove.Dapper.Dapper.Repositories
         /// <param name="sortingProperty">The sorting property.</param>
         /// <param name="ascending">if set to <c>true</c> [ascending].</param>
         /// <returns></returns>
-        [CanBeNull]
+        [NotNull]
         IEnumerable<TEntity> GetSet([NotNull] Expression<Func<TEntity, bool>> predicate, int firstResult, int maxResults, [NotNull] string sortingProperty, bool ascending = true);
 
         /// <summary>
@@ -268,7 +247,7 @@ namespace Stove.Dapper.Dapper.Repositories
         /// <param name="sortingExpression">The sorting expression.</param>
         /// <param name="ascending">if set to <c>true</c> [ascending].</param>
         /// <returns></returns>
-        [CanBeNull]
+        [NotNull]
         IEnumerable<TEntity> GetSet([NotNull] Expression<Func<TEntity, bool>> predicate, int firstResult, int maxResults, bool ascending = true, [NotNull] params Expression<Func<TEntity, object>>[] sortingExpression);
 
         /// <summary>
@@ -280,19 +259,7 @@ namespace Stove.Dapper.Dapper.Repositories
         /// <param name="sortingProperty">The sorting property.</param>
         /// <param name="ascending">if set to <c>true</c> [ascending].</param>
         /// <returns></returns>
-        [CanBeNull]
-        Task<IEnumerable<TEntity>> GetSetAsync([NotNull] object predicate, int firstResult, int maxResults, [NotNull] string sortingProperty, bool ascending = true);
-
-        /// <summary>
-        ///     Gets the set asynchronous.
-        /// </summary>
-        /// <param name="predicate">The predicate.</param>
-        /// <param name="firstResult">The first result.</param>
-        /// <param name="maxResults">The maximum results.</param>
-        /// <param name="sortingProperty">The sorting property.</param>
-        /// <param name="ascending">if set to <c>true</c> [ascending].</param>
-        /// <returns></returns>
-        [CanBeNull]
+        [NotNull]
         Task<IEnumerable<TEntity>> GetSetAsync([NotNull] Expression<Func<TEntity, bool>> predicate, int firstResult, int maxResults, [NotNull] string sortingProperty, bool ascending = true);
 
         /// <summary>
@@ -304,7 +271,7 @@ namespace Stove.Dapper.Dapper.Repositories
         /// <param name="ascending">if set to <c>true</c> [ascending].</param>
         /// <param name="sortingExpression">The sorting expression.</param>
         /// <returns></returns>
-        [CanBeNull]
+        [NotNull]
         Task<IEnumerable<TEntity>> GetSetAsync([NotNull] Expression<Func<TEntity, bool>> predicate, int firstResult, int maxResults, bool ascending = true, [NotNull] params Expression<Func<TEntity, object>>[] sortingExpression);
 
         /// <summary>

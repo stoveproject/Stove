@@ -1,14 +1,16 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 using NLog;
 
 using ILogger = Stove.Log.ILogger;
 
-namespace Stove.NLog
+namespace Stove
 {
     /// <summary>
     ///     Implementation of ILogger, deriving from NLog.Logger
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class LoggerAdapter : ILogger
     {
         private readonly Logger _logger;

@@ -10,19 +10,19 @@ namespace Stove.TestBase
     public abstract class ApplicationTestBase<TStarterBootstrapper> : TestBaseWithLocalIocResolver
         where TStarterBootstrapper : StoveBootstrapper
     {
-        protected ApplicationTestBase()
+        protected ApplicationTestBase(bool autoUnitOfWorkInterceptionEnabled = false)
         {
             Building(builder =>
             {
                 builder
-                    .UseStoveWithNullables(typeof(TStarterBootstrapper));
+                    .UseStoveWithNullables(typeof(TStarterBootstrapper), autoUnitOfWorkInterceptionEnabled);
 
                 builder.RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
                 builder.RegisterServices(r => r.Register<IStoveSession, TestStoveSession>(Lifetime.Singleton));
             });
         }
 
-        protected TestStoveSession TestStoveSession => The<TestStoveSession>();
+        protected TestStoveSession StoveSession => The<TestStoveSession>();
 
         protected override void PreBuild()
         {

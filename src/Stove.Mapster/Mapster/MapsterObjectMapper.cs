@@ -2,7 +2,7 @@
 
 using Stove.ObjectMapping;
 
-namespace Stove.Mapster.Mapster
+namespace Stove.Mapster
 {
     public class MapsterObjectMapper : IObjectMapper
     {

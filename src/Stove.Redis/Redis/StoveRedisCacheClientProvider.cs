@@ -7,7 +7,7 @@ using JetBrains.Annotations;
 using StackExchange.Redis;
 using StackExchange.Redis.Extensions.Core;
 
-namespace Stove.Redis.Redis
+namespace Stove.Redis
 {
     /// <summary>
     ///     Implements <see cref="IStoveRedisCacheClientProvider" />.

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Stove.EntityFramework.EntityFramework.Utils
+namespace Stove.EntityFramework.Utils
 {
     internal class EntityDateTimePropertiesInfo
     {

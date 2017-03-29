@@ -3,7 +3,6 @@
 using Shouldly;
 
 using Stove.Configuration;
-using Stove.RabbitMQ.RabbitMQ;
 using Stove.TestBase;
 
 using Xunit;

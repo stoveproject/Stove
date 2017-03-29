@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 
 using Mapster;
 
-namespace Stove.Mapster.Mapster
+namespace Stove.Mapster
 {
     internal static class MapsterConfigurationExtensions
     {

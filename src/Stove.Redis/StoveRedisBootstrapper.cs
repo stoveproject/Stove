@@ -2,9 +2,9 @@
 using StackExchange.Redis.Extensions.Core.Configuration;
 
 using Stove.Bootstrapping;
-using Stove.Redis.Redis;
+using Stove.Redis;
 
-namespace Stove.Redis
+namespace Stove
 {
     [DependsOn(
         typeof(StoveKernelBootstrapper)

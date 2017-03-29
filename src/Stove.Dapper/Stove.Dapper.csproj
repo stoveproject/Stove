@@ -1,20 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  
+  <Import Project="..\..\common.props"></Import>
 
   <PropertyGroup>
-    <VersionPrefix>0.1.0</VersionPrefix>
     <TargetFramework>net452</TargetFramework>
     <AssemblyName>Stove.Dapper</AssemblyName>
     <PackageId>Stove.Dapper</PackageId>
-    <PackageTags>.net;framework;boilerplate;entityframework;Dapper</PackageTags>
-    <PackageIconUrl>https://raw.githubusercontent.com/osoykan/Stove/master/stove.png</PackageIconUrl>
-    <PackageProjectUrl>https://github.com/osoykan/Stove</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/osoykan/Stove/blob/master/LICENSE</PackageLicenseUrl>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/osoykan/Stove</RepositoryUrl>
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageTags>.net;framework;boilerplate;Dapper</PackageTags>
+    <RootNamespace>Stove</RootNamespace>
+    <Description>Dapper integration for Stove.</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,7 +20,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Stove\Stove.csproj" />
-    <ProjectReference Include="..\Stove.EntityFramework\Stove.EntityFramework.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,6 +30,12 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.ComponentModel.DataAnnotations">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.ComponentModel.DataAnnotations.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

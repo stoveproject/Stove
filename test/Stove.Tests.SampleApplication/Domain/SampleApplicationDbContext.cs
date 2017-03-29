@@ -3,7 +3,7 @@ using System.Data.Entity;
 
 using JetBrains.Annotations;
 
-using Stove.EntityFramework.EntityFramework;
+using Stove.EntityFramework;
 using Stove.Tests.SampleApplication.Domain.Entities;
 
 namespace Stove.Tests.SampleApplication.Domain
@@ -45,5 +45,7 @@ namespace Stove.Tests.SampleApplication.Domain
 
         [NotNull]
         public virtual IDbSet<ProductDetail> ProductDetails { get; set; }
+
+        public virtual IDbSet<Message> Messages { get; set; }
     }
 }

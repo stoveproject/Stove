@@ -1,6 +1,6 @@
 using System.Data.Entity;
 
-namespace Stove.EntityFramework.EntityFramework
+namespace Stove.EntityFramework
 {
     public sealed class SimpleDbContextProvider<TDbContext> : IDbContextProvider<TDbContext>
         where TDbContext : DbContext

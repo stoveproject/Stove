@@ -6,7 +6,7 @@ using Stove.Collections.Extensions;
 using Stove.Domain.Uow;
 using Stove.Transactions.Extensions;
 
-namespace Stove.EntityFramework.EntityFramework.Uow
+namespace Stove.EntityFramework.Uow
 {
     public class DbContextEfTransactionStrategy : IEfTransactionStrategy
     {

@@ -39,6 +39,7 @@ namespace Stove.Collections.Extensions
         /// <typeparam name="TKey">Type of the key</typeparam>
         /// <typeparam name="TValue">Type of the value</typeparam>
         /// <returns>Value if found, default if can not found.</returns>
+        [CanBeNull]
         public static TValue GetOrDefault<TKey, TValue>([NotNull] this IDictionary<TKey, TValue> dictionary, TKey key)
         {
             TValue obj;

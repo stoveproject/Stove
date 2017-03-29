@@ -7,8 +7,7 @@ using Shouldly;
 
 using Stove.Domain.Entities;
 using Stove.Domain.Repositories;
-using Stove.EntityFramework.EntityFramework;
-using Stove.EntityFramework.EntityFramework.Repositories;
+using Stove.EntityFramework.Repositories;
 using Stove.TestBase;
 
 using Xunit;

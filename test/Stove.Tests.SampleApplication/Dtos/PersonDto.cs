@@ -1,6 +1,4 @@
-﻿using Stove.Mapster.Mapster;
-
-namespace Stove.Tests.SampleApplication.Dtos
+﻿namespace Stove.Tests.SampleApplication.Dtos
 {
     //[AutoMapTo(typeof(Person))]
     public class PersonDto

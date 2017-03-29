@@ -1,16 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using Autofac.Extras.IocManager;
 
 using Hangfire;
 
-using LinqKit;
-
 using MassTransit;
 
 using Stove.BackgroundJobs;
-using Stove.Dapper.Dapper.Repositories;
+using Stove.Dapper.Repositories;
 using Stove.Demo.ConsoleApp.BackgroundJobs;
 using Stove.Demo.ConsoleApp.DbContexes;
 using Stove.Demo.ConsoleApp.Dto;
@@ -18,12 +17,13 @@ using Stove.Demo.ConsoleApp.Entities;
 using Stove.Demo.ConsoleApp.RabbitMQ.Messages;
 using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
-using Stove.EntityFramework.EntityFramework;
-using Stove.EntityFramework.EntityFramework.Extensions;
+using Stove.EntityFramework;
+using Stove.EntityFramework.Extensions;
 using Stove.Log;
-using Stove.Mapster.Mapster;
+using Stove.Mapster;
 using Stove.MQ;
 using Stove.Runtime.Caching;
+using Stove.Runtime.Session;
 
 namespace Stove.Demo.ConsoleApp
 {
@@ -35,9 +35,11 @@ namespace Stove.Demo.ConsoleApp
         private readonly ICacheManager _cacheManager;
         private readonly IBackgroundJobManager _hangfireBackgroundJobManager;
         private readonly IScheduleJobManager _hangfireScheduleJobManager;
+        private readonly IDapperRepository<Mail, Guid> _mailDapperRepository;
         private readonly IMessageBus _messageBus;
         private readonly IDapperRepository<Person> _personDapperRepository;
         private readonly IRepository<Person> _personRepository;
+        private readonly IDapperRepository<Product> _productDapperRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
 
         public SomeDomainService(
@@ -50,7 +52,9 @@ namespace Stove.Demo.ConsoleApp
             IDapperRepository<Animal> animalDapperRepository,
             ICacheManager cacheManager,
             IMessageBus messageBus,
-            IScheduleJobManager hangfireScheduleJobManager)
+            IScheduleJobManager hangfireScheduleJobManager,
+            IDapperRepository<Product> productDapperRepository,
+            IDapperRepository<Mail, Guid> mailDapperRepository)
         {
             _personRepository = personRepository;
             _animalRepository = animalRepository;
@@ -62,9 +66,13 @@ namespace Stove.Demo.ConsoleApp
             _cacheManager = cacheManager;
             _messageBus = messageBus;
             _hangfireScheduleJobManager = hangfireScheduleJobManager;
+            _productDapperRepository = productDapperRepository;
+            _mailDapperRepository = mailDapperRepository;
 
             Logger = NullLogger.Instance;
         }
+
+        public IStoveSession StoveSession { get; set; }
 
         public ILogger Logger { get; set; }
 
@@ -74,10 +82,10 @@ namespace Stove.Demo.ConsoleApp
             {
                 Logger.Debug("Uow Began!");
 
-                _personRepository.Insert(new Person("Oğuzhan"));
+                int persionId1 = _personRepository.InsertAndGetId(new Person("Oğuzhan"));
                 _personRepository.Insert(new Person("Ekmek"));
 
-                _animalRepository.Insert(new Animal("Kuş"));
+                int animalId1 = _animalRepository.InsertAndGetId(new Animal("Kuş"));
                 _animalRepository.Insert(new Animal("Kedi"));
 
                 _animalDbContextProvider.GetDbContext().Animals.Add(new Animal("Kelebek"));
@@ -91,34 +99,61 @@ namespace Stove.Demo.ConsoleApp
 
                 #region DAPPER
 
-                var list = new List<string>
+                using (StoveSession.Use(266))
                 {
-                    "elma", "armut"
-                };
+                    _productDapperRepository.Insert(new Product("TShirt1"));
+                    int gomlekId = _productDapperRepository.InsertAndGetId(new Product("Gomlek1"));
 
-                ExpressionStarter<Animal> predicate = PredicateBuilder.New<Animal>();
-                predicate.And(x => x.Name == "Kuş");
+                    Product firstProduct = _productDapperRepository.FirstOrDefault(x => x.Name == "TShirt1");
+                    IEnumerable<Product> products = _productDapperRepository.GetAll();
 
-                IEnumerable<Animal> birdsSet = _animalDapperRepository.GetSet(new { Name = "Kuş" }, 0, 10, "Id");
+                    firstProduct.Name = "Something";
 
-                IEnumerable<Person> personFromDapper = _personDapperRepository.GetList(new { Name = "Oğuzhan" });
+                    _productDapperRepository.Update(firstProduct);
 
-                IEnumerable<Animal> birdsFromExpression = _animalDapperRepository.GetSet(predicate, 0, 10, "Id");
+                    _mailDapperRepository.Insert(new Mail("New Product Added"));
+                    Guid mailId = _mailDapperRepository.InsertAndGetId(new Mail("Second Product Added"));
 
-                IEnumerable<Animal> birdsPagedFromExpression = _animalDapperRepository.GetListPaged(x => x.Name == "Kuş", 0, 10, "Name");
+                    IEnumerable<Mail> mails = _mailDapperRepository.GetAll();
 
-                IEnumerable<Person> personFromDapperExpression = _personDapperRepository.GetList(x => x.Name.Contains("Oğuzhan"));
+                    Mail firstMail = mails.First();
+
+                    firstMail.Subject = "Sorry wrong email!";
+
+                    _mailDapperRepository.Update(firstMail);
+                }
+
+                Animal oneAnimal = _animalDapperRepository.Get(animalId1);
+                Animal oneAnimalAsync = _animalDapperRepository.GetAsync(animalId1).Result;
+
+                Person onePerson = _personDapperRepository.Get(persionId1);
+                Person onePersonAsync = _personDapperRepository.GetAsync(persionId1).Result;
+
+                IEnumerable<Animal> birdsSet = _animalDapperRepository.GetSet(x => x.Name == "Kuş", 0, 10, "Id");
+
+                using (_unitOfWorkManager.Current.DisableFilter(StoveDataFilters.SoftDelete))
+                {
+                    IEnumerable<Person> personFromDapperNotFiltered = _personDapperRepository.GetAll(x => x.Name == "Oğuzhan");
+                }
+
+                IEnumerable<Person> personFromDapperFiltered = _personDapperRepository.GetAll(x => x.Name == "Oğuzhan");
+
+                IEnumerable<Animal> birdsFromExpression = _animalDapperRepository.GetSet(x => x.Name == "Kuş", 0, 10, "Id");
+
+                IEnumerable<Animal> birdsPagedFromExpression = _animalDapperRepository.GetAllPaged(x => x.Name == "Kuş", 0, 10, "Name");
+
+                IEnumerable<Person> personFromDapperExpression = _personDapperRepository.GetAll(x => x.Name.Contains("Oğuzhan"));
 
                 int birdCount = _animalDapperRepository.Count(x => x.Name == "Kuş");
 
-                var personAnimal = _animalDapperRepository.Query<PersonAnimal>("select Name as PersonName,'Zürafa' as AnimalName from Person with(nolock) where name=@name", new { name = "Oğuzhan" })
+                var personAnimal = _animalDapperRepository.Query<PersonAnimal>("select Name as PersonName,'Zürafa' as AnimalName from Persons with(nolock) where name=@name", new { name = "Oğuzhan" })
                                                           .MapTo<List<PersonAnimalDto>>();
 
                 birdsFromExpression.ToList();
                 birdsPagedFromExpression.ToList();
                 birdsSet.ToList();
 
-                IEnumerable<Person> person2FromDapper = _personDapperRepository.Query("select * from Person with(nolock) where name =@name", new { name = "Oğuzhan" });
+                IEnumerable<Person> person2FromDapper = _personDapperRepository.Query("select * from Persons with(nolock) where name =@name", new { name = "Oğuzhan" });
 
                 _personDapperRepository.Insert(new Person("oğuzhan2"));
                 int id = _personDapperRepository.InsertAndGetId(new Person("oğuzhan3"));
@@ -148,10 +183,10 @@ namespace Stove.Demo.ConsoleApp
                 //    Message = "Oğuzhan"
                 //});
 
-                _hangfireScheduleJobManager.ScheduleAsync<SimpleBackgroundJob, SimpleBackgroundJobArgs>(new SimpleBackgroundJobArgs
-                {
-                    Message = "Oğuzhan"
-                }, Cron.Minutely());
+                //_hangfireScheduleJobManager.ScheduleAsync<SimpleBackgroundJob, SimpleBackgroundJobArgs>(new SimpleBackgroundJobArgs
+                //{
+                //    Message = "Oğuzhan"
+                //}, Cron.Minutely());
 
                 Logger.Debug("Uow End!");
             }

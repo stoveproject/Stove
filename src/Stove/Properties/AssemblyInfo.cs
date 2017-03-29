@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 [assembly: AssemblyTitle("Stove")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A framework to provide solid infrastructure to your application.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Stove")]
@@ -42,3 +42,5 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("Stove.Tests")]
 [assembly: InternalsVisibleTo("Stove.RabbitMQ.Tests")]
 [assembly: InternalsVisibleTo("Stove.TestBase")]
+[assembly: InternalsVisibleTo("Stove.Dapper")]
+[assembly: InternalsVisibleTo("Stove.NHibernate")]

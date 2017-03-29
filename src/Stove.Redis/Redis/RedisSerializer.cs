@@ -7,7 +7,7 @@ using JetBrains.Annotations;
 
 using StackExchange.Redis.Extensions.Core;
 
-namespace Stove.Redis.Redis
+namespace Stove.Redis
 {
     public class RedisSerializer : ISerializer, ITransientDependency
     {

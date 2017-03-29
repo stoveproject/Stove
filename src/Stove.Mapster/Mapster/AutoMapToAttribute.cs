@@ -5,12 +5,12 @@ using Mapster;
 
 using Stove.Collections.Extensions;
 
-namespace Stove.Mapster.Mapster
+namespace Stove.Mapster
 {
     /// <summary>
     ///     From Dto to Entity, Use on Dtos
     /// </summary>
-    /// <seealso cref="Stove.Mapster.Mapster.AutoMapAttributeBase" />
+    /// <seealso cref="AutoMapAttributeBase" />
     public class AutoMapToAttribute : AutoMapAttributeBase
     {
         public AutoMapToAttribute(params Type[] targetTypes)

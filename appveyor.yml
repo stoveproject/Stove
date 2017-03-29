@@ -1,6 +1,6 @@
 version: 1.0.{build}
 configuration: Release
-image: Visual Studio 2017 RC
+image: Visual Studio 2017
 pull_requests:  
   do_not_increment_build_number: true
 
@@ -17,10 +17,10 @@ environment:
     secure: w73Xs1Is7iK/DtAOf0XTHg==
     
 before_build:
- - cmd: set PATH=C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin;C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\MSBuild\15.0\Bin;%PATH%
- - cmd: nuget install nuget.commandline -source https://dotnet.myget.org/F/nuget-build -prerelease -excludeversion
- - cmd: set PATH=%appveyor_build_folder%\NuGet.CommandLine\tools;%PATH%
- - cmd: nuget restore Stove.sln 
+# - cmd: set PATH=C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin;C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\MSBuild\15.0\Bin;%PATH%
+# - cmd: nuget install nuget.commandline -source https://dotnet.myget.org/F/nuget-build -prerelease -excludeversion
+# - cmd: set PATH=%appveyor_build_folder%\NuGet.CommandLine\tools;%PATH%
+  - cmd: dotnet restore Stove.sln 
   
 build:
   project: Stove.sln 
@@ -28,14 +28,27 @@ build:
   publish_nuget_symbols: true
   include_nuget_references: true
   verbosity: minimal
+  
+after_build:
+ - ps: >-
+    $versionSuffix=(Get-Item Env:APPVEYOR_BUILD_NUMBER).Value
+    
+    Set-Location "nupkg"
+    
+    .\packs.ps1 -versionSuffix "$versionSuffix"
+# - cmd: >- 
+#   icacls "test\Stove.Dapper.Tests\Db\StoveDapperTest.mdf" /Grant Everyone:F
  
 test:
   assemblies:
-  - test\Stove.EntityFramework.Tests\bin\Debug\net461\win7-x64\Stove.EntityFramework.Tests.dll
-  - test\Stove.Mapster.Tests\bin\Debug\net461\win7-x64\Stove.Mapster.Tests.dll
-  - test\Stove.RabbitMQ.Tests\bin\Debug\net461\win7-x64\Stove.RabbitMQ.Tests.dll
-  - test\Stove.Tests\bin\Debug\net461\win7-x64\Stove.Tests.dll
-  - test\Stove.Tests.SampleApplication\bin\Debug\net461\win7-x64\Stove.Tests.SampleApplication.dll
+  - test\Stove.Tests\bin\Release\net461\Stove.Tests.dll
+  #- test\Stove.Dapper.Tests\bin\Release\net461\Stove.Dapper.Tests.dll
+  - test\Stove.EntityFramework.Tests\bin\Release\net461\Stove.EntityFramework.Tests.dll
+  #- test\Stove.Hangfire.Tests\bin\Release\net461\Stove.Hangfire.Tests.dll
+  - test\Stove.Mapster.Tests\bin\Release\net461\Stove.Mapster.Tests.dll
+  #- test\Stove.NHibernate.Tests\bin\Release\net461\Stove.NHibernate.Tests.dll
+  - test\Stove.RabbitMQ.Tests\bin\Release\net461\Stove.RabbitMQ.Tests.dll
+  - test\Stove.Tests.SampleApplication\bin\Release\net461\Stove.Tests.SampleApplication.dll
   
 deploy:
 - provider: NuGet
@@ -43,5 +56,7 @@ deploy:
     branch: master
   api_key:
     secure: liSTqN52OJQy9fZJk6gubSgYBAy4EXcEPCDSCLJ/3T9cZufzpTwvBlGPLX+iP2n9
+
 artifacts:
-- path: '**\.nupkg/'
+- path: nupkg\*.nupkg
+  name: nuget-packages

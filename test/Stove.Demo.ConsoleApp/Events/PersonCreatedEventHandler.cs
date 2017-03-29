@@ -1,4 +1,6 @@
-﻿using Autofac.Extras.IocManager;
+﻿using System;
+
+using Autofac.Extras.IocManager;
 
 using Stove.Demo.ConsoleApp.Entities;
 using Stove.Events.Bus.Entities;
@@ -10,7 +12,8 @@ namespace Stove.Demo.ConsoleApp.Events
     {
         public void HandleEvent(EntityCreatedEventData<Person> eventData)
         {
-            Person a = eventData.Entity;
+            Person person = eventData.Entity;
+            Console.WriteLine($"Person Entity Created Event, with Subject : {person.Name}");
         }
     }
 }

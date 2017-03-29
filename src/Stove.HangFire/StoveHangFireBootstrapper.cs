@@ -1,11 +1,11 @@
 ﻿using Autofac;
 
 using Stove.Bootstrapping;
-using Stove.Hangfire.Configurations;
-using Stove.Hangfire.Hangfire;
+using Stove.Configurations;
+using Stove.Hangfire;
 using Stove.Threading.BackgrodunWorkers;
 
-namespace Stove.Hangfire
+namespace Stove
 {
     [DependsOn(
         typeof(StoveKernelBootstrapper)

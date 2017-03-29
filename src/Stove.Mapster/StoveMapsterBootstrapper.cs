@@ -4,10 +4,10 @@ using System.Reflection;
 using Mapster;
 
 using Stove.Bootstrapping;
-using Stove.Mapster.Mapster;
+using Stove.Mapster;
 using Stove.Reflection;
 
-namespace Stove.Mapster
+namespace Stove
 {
     [DependsOn(
         typeof(StoveKernelBootstrapper)

@@ -8,7 +8,7 @@ using Stove.Domain.Uow;
 using Stove.Extensions;
 using Stove.Reflection;
 
-namespace Stove.EntityFramework.EntityFramework.Uow
+namespace Stove.EntityFramework.Uow
 {
     public class EfDynamicFiltersUnitOfWorkFilterExecuter : IEfUnitOfWorkFilterExecuter
     {

@@ -2,7 +2,7 @@
 using System.Data.Entity;
 
 using Stove.Demo.ConsoleApp.Entities;
-using Stove.EntityFramework.EntityFramework;
+using Stove.EntityFramework;
 
 namespace Stove.Demo.ConsoleApp.DbContexes
 {

@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 [assembly: AssemblyTitle("Stove.EntityFramework")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("EntityFramework integration for Stove.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Stove.EntityFramework")]

@@ -8,20 +8,13 @@ using Hangfire;
 
 using HibernatingRhinos.Profiler.Appender.EntityFramework;
 
-using Stove.Dapper;
 using Stove.Demo.ConsoleApp.DbContexes;
-using Stove.EntityFramework;
-using Stove.Hangfire;
-using Stove.Mapster;
-using Stove.NLog;
-using Stove.RabbitMQ;
-using Stove.Redis;
 
 namespace Stove.Demo.ConsoleApp
 {
-    internal class Program
+    public static class Program
     {
-        private static void Main(string[] args)
+        public static void Main(string[] args)
         {
             EntityFrameworkProfiler.Initialize();
 
@@ -30,7 +23,7 @@ namespace Stove.Demo.ConsoleApp
 
             IRootResolver resolver = IocBuilder.New
                                                .UseAutofacContainerBuilder()
-                                               .UseStove<StoveDemoBootstrapper>(autoUnitOfWorkInterceptionEnabled: true)
+                                               .UseStove<StoveDemoBootstrapper>(false)
                                                .UseStoveEntityFramework()
                                                .UseStoveDapper()
                                                .UseStoveMapster()
@@ -58,8 +51,16 @@ namespace Stove.Demo.ConsoleApp
                                                .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()))
                                                .CreateResolver();
 
-            var someDomainService = resolver.Resolve<SomeDomainService>();
-            someDomainService.DoSomeStuff();
+         
+
+          
+                //var someDomainService = resolver.Resolve<SomeDomainService>();
+                //someDomainService.DoSomeStuff();
+
+            var productDomainService = resolver.Resolve<ProductDomainService>();
+            productDomainService.DoSomeStuff();
+
+            EntityFrameworkProfiler.Shutdown();
 
             Console.ReadKey();
         }

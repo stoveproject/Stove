@@ -27,6 +27,7 @@
 * Dapper and EF both can use in one application.
 * Dapper and EF have their own repositories. `IDapperRepository<Product>`, `IRepository<Product>`
 * Dapper-EntityFramework works under same transaction and unit of work scope, if any exception appears in domain whole transaction will be rollback, including Dapper's insert/deletes and EF's.
+* Stove.Dapper supports *Dynamic Filters* to filter automatically and default ISoftDelete or other user defined filters.
 * RabbitMQ support
 * HangFire support
 * Redis support
@@ -67,7 +68,7 @@ IRootResolver resolver = IocBuilder.New
 
 var someDomainService = resolver.Resolve<SomeDomainService>();
 someDomainService.DoSomeStuff();
-
+ 
 ```
 
 ## It will be documented in detail!

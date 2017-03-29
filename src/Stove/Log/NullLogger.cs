@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Stove.Log
 {
+    [ExcludeFromCodeCoverage]
     public class NullLogger : ILogger
     {
         public static readonly NullLogger Instance = new NullLogger();

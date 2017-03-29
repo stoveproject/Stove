@@ -1,5 +1,5 @@
 ﻿using Stove.Demo.ConsoleApp.Entities;
-using Stove.Mapster.Mapster;
+using Stove.Mapster;
 
 namespace Stove.Demo.ConsoleApp.Dto
 {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
 using Stove.Events.Bus.Factories;
@@ -10,6 +11,7 @@ namespace Stove.Events.Bus
     /// <summary>
     /// An event bus that implements Null object pattern.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public sealed class NullEventBus : IEventBus
     {
         /// <summary>

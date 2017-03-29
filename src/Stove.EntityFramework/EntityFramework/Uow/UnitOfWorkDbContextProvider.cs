@@ -2,7 +2,7 @@ using System.Data.Entity;
 
 using Stove.Domain.Uow;
 
-namespace Stove.EntityFramework.EntityFramework.Uow
+namespace Stove.EntityFramework.Uow
 {
     /// <summary>
     ///     Implements <see cref="IDbContextProvider{TDbContext}" /> that gets DbContext from
