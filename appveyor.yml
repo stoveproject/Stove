@@ -16,7 +16,7 @@ environment:
   nuget_password:
     secure: w73Xs1Is7iK/DtAOf0XTHg==
     
-#before_build:
+before_build:
 # - cmd: set PATH=C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin;C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\MSBuild\15.0\Bin;%PATH%
 # - cmd: nuget install nuget.commandline -source https://dotnet.myget.org/F/nuget-build -prerelease -excludeversion
 # - cmd: set PATH=%appveyor_build_folder%\NuGet.CommandLine\tools;%PATH%
