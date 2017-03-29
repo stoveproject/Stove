@@ -28,6 +28,14 @@ build:
   publish_nuget_symbols: true
   include_nuget_references: true
   verbosity: minimal
+  
+after_build:
+- ps: >-
+    $versionSuffix=(Get-Item Env:APPVEYOR_BUILD_NUMBER).Value
+    
+    Set-Location "nupkg"
+    
+    .\pack.ps1 -versionSuffix "$versionSuffix"
  
 test:
   assemblies:
@@ -43,5 +51,7 @@ deploy:
     branch: master
   api_key:
     secure: liSTqN52OJQy9fZJk6gubSgYBAy4EXcEPCDSCLJ/3T9cZufzpTwvBlGPLX+iP2n9
+
 artifacts:
-- path: '**\.nupkg/'
+- path: nupkg\*.nupkg
+  name: nuget-packages
