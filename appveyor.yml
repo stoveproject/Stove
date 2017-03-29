@@ -44,7 +44,7 @@ test:
   - test\Stove.Tests\bin\Release\net461\Stove.Tests.dll
   #- test\Stove.Dapper.Tests\bin\Release\net461\Stove.Dapper.Tests.dll
   - test\Stove.EntityFramework.Tests\bin\Release\net461\Stove.EntityFramework.Tests.dll
-  - test\Stove.Hangfire.Tests\bin\Release\net461\Stove.Hangfire.Tests.dll
+  #- test\Stove.Hangfire.Tests\bin\Release\net461\Stove.Hangfire.Tests.dll
   - test\Stove.Mapster.Tests\bin\Release\net461\Stove.Mapster.Tests.dll
   - test\Stove.NHibernate.Tests\bin\Release\net461\Stove.NHibernate.Tests.dll
   - test\Stove.RabbitMQ.Tests\bin\Release\net461\Stove.RabbitMQ.Tests.dll
