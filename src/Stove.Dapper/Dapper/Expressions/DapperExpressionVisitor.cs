@@ -53,25 +53,6 @@ namespace Stove.Dapper.Expressions
             return _pg.Predicates.Count == 1 ? _pg.Predicates[0] : _pg;
         }
 
-        private static PredicateGroup GetLastPredicateGroup(PredicateGroup grp)
-        {
-            IList<IPredicate> groups = grp.Predicates;
-
-            if (!groups.Any())
-            {
-                return grp;
-            }
-
-            IPredicate last = groups.Last();
-
-            if (last is PredicateGroup)
-            {
-                return GetLastPredicateGroup(last as PredicateGroup);
-            }
-
-            return grp;
-        }
-
         private IFieldPredicate GetCurrentField()
         {
             return GetCurrentField(_currentGroup);
