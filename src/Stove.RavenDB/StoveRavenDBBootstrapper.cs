@@ -19,5 +19,10 @@ namespace Stove
         {
             Configuration.Resolver.Resolve<IDocumentStore>().Initialize();
         }
+
+        public override void Shutdown()
+        {
+            Configuration.Resolver.Resolve<IDocumentStore>().Dispose();
+        }
     }
 }

@@ -7,10 +7,8 @@ using Raven.Client;
 using Raven.Client.Document;
 
 using Stove.Domain.Repositories;
-using Stove.Domain.Uow;
 using Stove.RavenDB.Configuration;
 using Stove.RavenDB.Repositories;
-using Stove.RavenDB.Uow;
 
 namespace Stove
 {
@@ -21,7 +19,6 @@ namespace Stove
             return builder.RegisterServices(r =>
             {
                 r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly());
-                r.Register<IUnitOfWorkFilterExecuter, NullUnitOfWorkFilterExecuter>();
                 r.RegisterGeneric(typeof(IRepository<>), typeof(RavenDBRepositoryBase<>));
                 r.RegisterGeneric(typeof(IRepository<,>), typeof(RavenDBRepositoryBase<,>));
                 r.Register(ctx => configurer);
