@@ -4,18 +4,23 @@ using Raven.Client;
 
 using Stove.Domain.Entities;
 using Stove.Domain.Repositories;
+using Stove.Events.Bus.Entities;
 
 namespace Stove.RavenDB.Repositories
 {
     public class RavenDBRepositoryBase<TEntity, TPrimaryKey> : StoveRepositoryBase<TEntity, TPrimaryKey> where TEntity : class, IEntity<TPrimaryKey>
     {
-        public IDocumentSession Session { get { return _sessionProvider.Session; } }
+        public IDocumentSession Session => _sessionProvider.Session;
         private readonly ISessionProvider _sessionProvider;
 
         public RavenDBRepositoryBase(ISessionProvider sessionProvider)
         {
             _sessionProvider = sessionProvider;
+
+            EntityChangeEventHelper = NullEntityChangeEventHelper.Instance;
         }
+        
+        public IEntityChangeEventHelper EntityChangeEventHelper { get; set; }
 
         /// <summary>
         ///     Gets all.
@@ -33,7 +38,9 @@ namespace Stove.RavenDB.Repositories
         /// <returns></returns>
         public override TEntity Insert(TEntity entity)
         {
+            EntityChangeEventHelper.TriggerEntityCreatingEvent(entity);
             Session.Store(entity);
+            EntityChangeEventHelper.TriggerEntityCreatedEventOnUowCompleted(entity);
             return entity;
         }
 
@@ -44,7 +51,9 @@ namespace Stove.RavenDB.Repositories
         /// <returns></returns>
         public override TEntity Update(TEntity entity)
         {
+            EntityChangeEventHelper.TriggerEntityUpdatingEvent(entity);
             Session.Store(entity);
+            EntityChangeEventHelper.TriggerEntityUpdatedEventOnUowCompleted(entity);
             return entity;
         }
 
@@ -54,7 +63,9 @@ namespace Stove.RavenDB.Repositories
         /// <param name="entity">The entity.</param>
         public override void Delete(TEntity entity)
         {
+            EntityChangeEventHelper.TriggerEntityDeletingEvent(entity);
             Session.Delete(entity);
+            EntityChangeEventHelper.TriggerEntityDeletedEventOnUowCompleted(entity);
         }
 
         /// <summary>
@@ -63,7 +74,8 @@ namespace Stove.RavenDB.Repositories
         /// <param name="id">The identifier.</param>
         public override void Delete(TPrimaryKey id)
         {
-            Session.Delete(id);
+            TEntity entity = Get(id);
+            Delete(entity);
         }
     }
 }

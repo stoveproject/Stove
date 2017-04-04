@@ -66,6 +66,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stove.RavenDB", "src\Stove.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stove.Demo.ConsoleApp.RavenDB", "test\Stove.Demo.ConsoleApp.RavenDB\Stove.Demo.ConsoleApp.RavenDB.csproj", "{89C69C73-1510-43A1-8700-384908DCE6C8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stove.RavenDB.Tests", "test\Stove.RavenDB.Tests\Stove.RavenDB.Tests.csproj", "{87D24787-42A4-4D66-AE8C-663F37DDD18A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -168,6 +170,10 @@ Global
 		{89C69C73-1510-43A1-8700-384908DCE6C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89C69C73-1510-43A1-8700-384908DCE6C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89C69C73-1510-43A1-8700-384908DCE6C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87D24787-42A4-4D66-AE8C-663F37DDD18A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87D24787-42A4-4D66-AE8C-663F37DDD18A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87D24787-42A4-4D66-AE8C-663F37DDD18A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87D24787-42A4-4D66-AE8C-663F37DDD18A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -198,5 +204,6 @@ Global
 		{715448AE-F428-4F5C-9F18-B040FE7121FE} = {4D2BAE52-1E23-4321-BBE6-2BAC28F7B389}
 		{0E50F3D8-23FD-4A02-AF9B-CEB99A9FA8F8} = {23CB5044-8ECE-4DDC-89E0-FC1B8EC9DDDF}
 		{89C69C73-1510-43A1-8700-384908DCE6C8} = {25A21354-76A5-4B85-90B2-55B51187A217}
+		{87D24787-42A4-4D66-AE8C-663F37DDD18A} = {4D2BAE52-1E23-4321-BBE6-2BAC28F7B389}
 	EndGlobalSection
 EndGlobal

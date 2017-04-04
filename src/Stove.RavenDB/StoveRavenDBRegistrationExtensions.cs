@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
+using Autofac;
 using Autofac.Extras.IocManager;
 
 using Raven.Client;
@@ -19,8 +20,11 @@ namespace Stove
             return builder.RegisterServices(r =>
             {
                 r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly());
-                r.RegisterGeneric(typeof(IRepository<>), typeof(RavenDBRepositoryBase<>));
-                r.RegisterGeneric(typeof(IRepository<,>), typeof(RavenDBRepositoryBase<,>));
+                r.UseBuilder(cb =>
+                {
+                    cb.RegisterGeneric(typeof(RavenDBRepositoryBase<>)).As(typeof(IRepository<>)).PropertiesAutowired(new DoNotInjectAttributePropertySelector());
+                    cb.RegisterGeneric(typeof(RavenDBRepositoryBase<,>)).As(typeof(IRepository<,>)).PropertiesAutowired(new DoNotInjectAttributePropertySelector());
+                });
                 r.Register(ctx => configurer);
                 r.Register<IDocumentStore>(ctx =>
                 {
