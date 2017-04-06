@@ -22,7 +22,6 @@ using Stove.Runtime;
 using Stove.Runtime.Caching.Configuration;
 using Stove.Runtime.Caching.Memory;
 using Stove.Runtime.Remoting;
-using Stove.Threading;
 
 namespace Stove
 {
@@ -92,7 +91,6 @@ namespace Stove
             builder.RegisterServices(r => r.Register<IEventBus, EventBus>(Lifetime.Singleton));
             return builder;
         }
-
 
         /// <summary>
         ///     Uses the stove default event bus.
@@ -247,7 +245,21 @@ namespace Stove
                           .UseStoveNullUnitOfWorkFilterExecuter()
                           .UseStoveNullEntityChangedEventHelper()
                           .UseStoveNullAsyncQueryableExecuter()
-                          .UseStoveNullMessageBus();
+                          .UseStoveNullMessageBus()
+                          .UseStoveDefaultConnectionStringResolver();
+        }
+
+        /// <summary>
+        ///     Uses the Stove with nullables, prefer when you writing unit tests.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        /// <param name="starterBootstrapperType">Type of the starter bootstrapper.</param>
+        /// <param name="autoUnitOfWorkInterceptionEnabled">if set to <c>true</c> [automatic unit of work interception enabled].</param>
+        /// <returns></returns>
+        [NotNull]
+        public static IIocBuilder UseStoveWithNullables<TStarterBootstrapper>([NotNull] this IIocBuilder builder, bool autoUnitOfWorkInterceptionEnabled = false)
+        {
+            return UseStoveWithNullables(builder, typeof(TStarterBootstrapper), autoUnitOfWorkInterceptionEnabled);
         }
 
         private static void RegistryOnRegistered([CanBeNull] object sender, [NotNull] ComponentRegisteredEventArgs args)
@@ -279,10 +291,7 @@ namespace Stove
                    .RegisterServices(r => r.Register<ITypeFinder, TypeFinder>(Lifetime.Singleton))
                    .RegisterServices(r => r.RegisterGeneric(typeof(IAmbientScopeProvider<>), typeof(DataContextAmbientScopeProvider<>)));
 
-            builder.RegisterServices(r => r.OnDisposing += (sender, args) =>
-            {
-                args.Context.Resolver.Resolve<IStoveBootstrapperManager>().ShutdownBootstrappers();
-            });
+            builder.RegisterServices(r => r.OnDisposing += (sender, args) => { args.Context.Resolver.Resolve<IStoveBootstrapperManager>().ShutdownBootstrappers(); });
         }
     }
 }

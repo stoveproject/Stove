@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net461</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="RavenDB.Database" Version="3.5.3" />
+    <PackageReference Include="RavenDB.Embedded" Version="3.5.3" />
+    <PackageReference Include="RavenDB.Tests.Helpers" Version="3.5.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Stove.RavenDB\Stove.RavenDB.csproj" />
+    <ProjectReference Include="..\Stove.TestBase\Stove.TestBase.csproj" />
+  </ItemGroup>
+
+</Project>
