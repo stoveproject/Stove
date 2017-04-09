@@ -1,13 +1,11 @@
 ﻿using System;
 
-using Autofac.Extras.IocManager;
-
 using Stove.Configuration;
 using Stove.Domain.Uow;
 
 namespace Stove.EntityFramework.Uow
 {
-    public class TypedConnectionStringResolver : IConnectionStringResolver, ITransientDependency
+    public class TypedConnectionStringResolver : IConnectionStringResolver
     {
         private readonly IStoveStartupConfiguration _configuration;
 

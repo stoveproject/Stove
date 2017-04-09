@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.10
+VisualStudioVersion = 15.0.26403.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{4D2BAE52-1E23-4321-BBE6-2BAC28F7B389}"
 EndProject
@@ -67,6 +67,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stove.Demo.ConsoleApp.RavenDB", "test\Stove.Demo.ConsoleApp.RavenDB\Stove.Demo.ConsoleApp.RavenDB.csproj", "{89C69C73-1510-43A1-8700-384908DCE6C8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stove.RavenDB.Tests", "test\Stove.RavenDB.Tests\Stove.RavenDB.Tests.csproj", "{87D24787-42A4-4D66-AE8C-663F37DDD18A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stove.Demo.WebApi", "test\Stove.Demo.WebApi\Stove.Demo.WebApi.csproj", "{07F94965-03E9-46C8-B4CA-647722D21C21}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -174,6 +176,10 @@ Global
 		{87D24787-42A4-4D66-AE8C-663F37DDD18A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87D24787-42A4-4D66-AE8C-663F37DDD18A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87D24787-42A4-4D66-AE8C-663F37DDD18A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07F94965-03E9-46C8-B4CA-647722D21C21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07F94965-03E9-46C8-B4CA-647722D21C21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07F94965-03E9-46C8-B4CA-647722D21C21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07F94965-03E9-46C8-B4CA-647722D21C21}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -205,5 +211,6 @@ Global
 		{0E50F3D8-23FD-4A02-AF9B-CEB99A9FA8F8} = {23CB5044-8ECE-4DDC-89E0-FC1B8EC9DDDF}
 		{89C69C73-1510-43A1-8700-384908DCE6C8} = {25A21354-76A5-4B85-90B2-55B51187A217}
 		{87D24787-42A4-4D66-AE8C-663F37DDD18A} = {4D2BAE52-1E23-4321-BBE6-2BAC28F7B389}
+		{07F94965-03E9-46C8-B4CA-647722D21C21} = {25A21354-76A5-4B85-90B2-55B51187A217}
 	EndGlobalSection
 EndGlobal

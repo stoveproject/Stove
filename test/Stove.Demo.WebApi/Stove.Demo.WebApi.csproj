@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net462</TargetFramework>
+    <AssemblyName>Stove.Demo.WebApi</AssemblyName>
+    <OutputType>exe</OutputType>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <RuntimeIdentifier>win7-x64</RuntimeIdentifier>
+    <OutputTypeEx>exe</OutputTypeEx>
+    <StartupObject>Stove.Demo.WebApi.Program</StartupObject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="NLog.config" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="App.config" />
+    <Content Include="NLog.config" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac.WebApi2.Owin" Version="4.0.0" />
+    <PackageReference Include="EntityFrameworkProfiler.Appender" Version="4.0.4039" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Cors" Version="5.2.3" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Owin" Version="5.2.3" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.OwinSelfHost" Version="5.2.3" />
+    <PackageReference Include="Swashbuckle" Version="6.0.0-beta902" />
+    <PackageReference Include="Swashbuckle.Core" Version="5.5.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Stove.Dapper\Stove.Dapper.csproj" />
+    <ProjectReference Include="..\..\src\Stove.EntityFramework\Stove.EntityFramework.csproj" />
+    <ProjectReference Include="..\..\src\Stove.NLog\Stove.NLog.csproj" />
+    <ProjectReference Include="..\..\src\Stove\Stove.csproj" />
+  </ItemGroup>
+
+</Project>
