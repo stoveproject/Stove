@@ -12,7 +12,7 @@ namespace Stove.Demo.WebApi
         {
             const string localhost = "http://localhost:9000";
 
-            EntityFrameworkProfiler.Initialize();
+            //EntityFrameworkProfiler.Initialize();
 
             using (WebApp.Start<Startup>(localhost))
             {
