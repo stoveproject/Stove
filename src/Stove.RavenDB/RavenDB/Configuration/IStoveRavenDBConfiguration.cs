@@ -5,5 +5,7 @@
         string Url { get; set; }
 
         string DefaultDatabase { get; set; }
+
+        bool AllowQueriesOnId { get; set; }
     }
 }

@@ -1,8 +1,8 @@
-﻿using Stove.Domain.Entities;
+﻿using Stove.Domain.Entities.Auditing;
 
 namespace Stove.Demo.ConsoleApp.RavenDB
 {
-    public class Product : Entity
+    public class Product : FullAuditedEntity
     {
         protected Product()
         {

@@ -1,6 +1,9 @@
-﻿using Shouldly;
+﻿using System;
+
+using Shouldly;
 
 using Stove.Domain.Repositories;
+using Stove.Domain.Uow;
 using Stove.RavenDB.Tests.Entities;
 
 using Xunit;
@@ -20,7 +23,8 @@ namespace Stove.RavenDB.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
             //-----------------------------------------------------------------------------------------------------------
-            var product = new Product("TShirt");
+            string productName = Guid.NewGuid().ToString("N");
+            var product = new Product(productName);
 
             //-----------------------------------------------------------------------------------------------------------
             // Act
@@ -30,8 +34,63 @@ namespace Stove.RavenDB.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Assert
             //-----------------------------------------------------------------------------------------------------------
+            Product item = The<IRepository<Product>>().FirstOrDefault(x => x.Name == productName);
+            item.ShouldNotBeNull();
+        }
 
-            The<IRepository<Product>>().Count().ShouldBe(1);
+        [Fact]
+        public void Update_should_work()
+        {
+            //-----------------------------------------------------------------------------------------------------------
+            // Arrange
+            //-----------------------------------------------------------------------------------------------------------
+            string productName = Guid.NewGuid().ToString("N");
+            var product = new Product(productName);
+
+            //-----------------------------------------------------------------------------------------------------------
+            // Act
+            //-----------------------------------------------------------------------------------------------------------
+            The<IRepository<Product>>().Insert(product);
+
+            Product item = The<IRepository<Product>>().FirstOrDefault(x => x.Name == productName);
+            item.Name = "Pant";
+            The<IRepository<Product>>().Update(item);
+            
+            //-----------------------------------------------------------------------------------------------------------
+            // Assert
+            //-----------------------------------------------------------------------------------------------------------
+            Product pant = The<IRepository<Product>>().FirstOrDefault(x => x.Name == "Pant");
+            pant.Name.ShouldBe("Pant");
+            pant.ShouldNotBeNull();
+        }
+
+        [Fact]
+        public void Update_should_work_with_object_tracking_mechanism()
+        {
+            using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
+            {
+                //-----------------------------------------------------------------------------------------------------------
+                // Arrange
+                //-----------------------------------------------------------------------------------------------------------
+                var product = new Product("ThreeTShirt");
+
+                //-----------------------------------------------------------------------------------------------------------
+                // Act
+                //-----------------------------------------------------------------------------------------------------------
+                int insertedId = The<IRepository<Product>>().InsertAndGetId(product);
+
+                //-----------------------------------------------------------------------------------------------------------
+                // Assert
+                //-----------------------------------------------------------------------------------------------------------
+                Product item = The<IRepository<Product>>().Get(insertedId);
+                item.Name = "Pant";
+
+                Product pant = The<IRepository<Product>>().FirstOrDefault(x => x.Id == item.Id);
+                pant.ShouldNotBeNull();
+                pant.Name.ShouldBe("Pant");
+
+                uow.Complete();
+            }
         }
     }
 }

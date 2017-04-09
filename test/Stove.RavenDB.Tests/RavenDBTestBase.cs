@@ -5,6 +5,7 @@ using Autofac.Extras.IocManager;
 using Raven.Client;
 using Raven.Client.Embedded;
 
+using Stove.RavenDB.Configuration;
 using Stove.TestBase;
 
 namespace Stove.RavenDB.Tests
@@ -16,11 +17,21 @@ namespace Stove.RavenDB.Tests
             Building(builder =>
             {
                 builder
-                    .UseStoveRavenDB(configuration => { return configuration; })
+                    .UseStoveRavenDB(configuration =>
+                    {
+                        configuration.AllowQueriesOnId = false;
+                        return configuration;
+                    })
                     .RegisterServices(r =>
                     {
                         r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly());
-                        r.Register<IDocumentStore>(ctx => new EmbeddableDocumentStore(), Lifetime.Singleton);
+                        r.Register<IDocumentStore>(ctx =>
+                        {
+                            var configuration = ctx.Resolver.Resolve<IStoveRavenDBConfiguration>();
+                            var store = new EmbeddableDocumentStore();
+                            store.Conventions.AllowQueriesOnId = configuration.AllowQueriesOnId;
+                            return store;
+                        }, Lifetime.Singleton);
                     });
             });
         }

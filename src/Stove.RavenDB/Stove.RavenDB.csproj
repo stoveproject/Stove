@@ -13,4 +13,8 @@
     <ProjectReference Include="..\Stove\Stove.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+  </ItemGroup>
+
 </Project>

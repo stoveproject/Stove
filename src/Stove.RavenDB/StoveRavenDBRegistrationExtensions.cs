@@ -32,7 +32,8 @@ namespace Stove
                     return new DocumentStore
                     {
                         Url = cfg.Url,
-                        DefaultDatabase = cfg.DefaultDatabase
+                        DefaultDatabase = cfg.DefaultDatabase,
+                        Conventions = { AllowQueriesOnId = cfg.AllowQueriesOnId }
                     };
                 }, Lifetime.Singleton);
             });
