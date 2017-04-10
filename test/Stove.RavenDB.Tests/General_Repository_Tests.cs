@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 using Shouldly;
 
@@ -55,7 +56,7 @@ namespace Stove.RavenDB.Tests
             Product item = The<IRepository<Product>>().FirstOrDefault(x => x.Name == productName);
             item.Name = "Pant";
             The<IRepository<Product>>().Update(item);
-            
+
             //-----------------------------------------------------------------------------------------------------------
             // Assert
             //-----------------------------------------------------------------------------------------------------------
@@ -72,20 +73,23 @@ namespace Stove.RavenDB.Tests
                 //-----------------------------------------------------------------------------------------------------------
                 // Arrange
                 //-----------------------------------------------------------------------------------------------------------
-                var product = new Product("ThreeTShirt");
+                string productName = Guid.NewGuid().ToString("N");
+                var product = new Product(productName);
 
                 //-----------------------------------------------------------------------------------------------------------
                 // Act
                 //-----------------------------------------------------------------------------------------------------------
-                int insertedId = The<IRepository<Product>>().InsertAndGetId(product);
+                The<IRepository<Product>>().Insert(product);
+                The<IUnitOfWorkManager>().Current.SaveChanges();
 
                 //-----------------------------------------------------------------------------------------------------------
                 // Assert
                 //-----------------------------------------------------------------------------------------------------------
-                Product item = The<IRepository<Product>>().Get(insertedId);
+                Product item = The<IRepository<Product>>().GetAllList(x => x.Name == productName).FirstOrDefault();
                 item.Name = "Pant";
+                The<IUnitOfWorkManager>().Current.SaveChanges();
 
-                Product pant = The<IRepository<Product>>().FirstOrDefault(x => x.Id == item.Id);
+                Product pant = The<IRepository<Product>>().FirstOrDefault(x => x.Name == item.Name);
                 pant.ShouldNotBeNull();
                 pant.Name.ShouldBe("Pant");
 

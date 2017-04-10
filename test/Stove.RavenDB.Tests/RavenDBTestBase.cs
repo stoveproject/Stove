@@ -12,7 +12,7 @@ namespace Stove.RavenDB.Tests
 {
     public abstract class RavenDBTestBase : ApplicationTestBase<RavenDBTestBootstrapper>
     {
-        protected RavenDBTestBase():base(true)
+        protected RavenDBTestBase() : base(true)
         {
             Building(builder =>
             {
@@ -28,7 +28,11 @@ namespace Stove.RavenDB.Tests
                         r.Register<IDocumentStore>(ctx =>
                         {
                             var configuration = ctx.Resolver.Resolve<IStoveRavenDBConfiguration>();
-                            var store = new EmbeddableDocumentStore();
+                            var store = new EmbeddableDocumentStore
+                            {
+                                RunInMemory = true
+                            };
+                            store.Configuration.Storage.Voron.AllowOn32Bits = true;
                             store.Conventions.AllowQueriesOnId = configuration.AllowQueriesOnId;
                             return store;
                         }, Lifetime.Singleton);
