@@ -22,8 +22,8 @@ namespace Stove
                 r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly());
                 r.UseBuilder(cb =>
                 {
-                    cb.RegisterGeneric(typeof(RavenDBRepositoryBase<>)).As(typeof(IRepository<>)).PropertiesAutowired(new DoNotInjectAttributePropertySelector());
-                    cb.RegisterGeneric(typeof(RavenDBRepositoryBase<,>)).As(typeof(IRepository<,>)).PropertiesAutowired(new DoNotInjectAttributePropertySelector());
+                    cb.RegisterGeneric(typeof(RavenDBRepositoryBase<>)).As(typeof(IRepository<>)).WithPropertyInjection(false);
+                    cb.RegisterGeneric(typeof(RavenDBRepositoryBase<,>)).As(typeof(IRepository<,>)).WithPropertyInjection(false);
                 });
                 r.Register(ctx => configurer);
                 r.Register<IDocumentStore>(ctx =>
@@ -32,7 +32,8 @@ namespace Stove
                     return new DocumentStore
                     {
                         Url = cfg.Url,
-                        DefaultDatabase = cfg.DefaultDatabase
+                        DefaultDatabase = cfg.DefaultDatabase,
+                        Conventions = { AllowQueriesOnId = cfg.AllowQueriesOnId }
                     };
                 }, Lifetime.Singleton);
             });

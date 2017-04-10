@@ -23,6 +23,9 @@
       <Value>test\Stove.NHibernate.Tests\Stove.NHibernate.Tests.csproj:net461</Value>
       <Value>test\Stove.NLog.Tests\Stove.NLog.Tests.csproj:net461</Value>
       <Value>test\Stove.Redis.Tests\Stove.Redis.Tests.csproj:net461</Value>
+      <Value>test\Stove.RavenDB.Tests\Stove.RavenDB.Tests.csproj:net461</Value>
+      <Value>test\Stove.Demo.ConsoleApp.RavenDB\Stove.Demo.ConsoleApp.RavenDB.csproj:net461</Value>
+      <Value>test\Stove.Demo.WebApi\Stove.Demo.WebApi.csproj:net462</Value>
     </MetricsExclusionList>
     <SolutionConfigured>True</SolutionConfigured>
   </Settings>

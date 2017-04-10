@@ -17,12 +17,12 @@ namespace Stove
 
         public override void Start()
         {
-            Configuration.Resolver.Resolve<IDocumentStore>().Initialize();
+            Resolver.Resolve<IDocumentStore>().Initialize();
         }
 
         public override void Shutdown()
         {
-            Configuration.Resolver.Resolve<IDocumentStore>().Dispose();
+            Resolver.Resolve<IDocumentStore>().Dispose();
         }
     }
 }

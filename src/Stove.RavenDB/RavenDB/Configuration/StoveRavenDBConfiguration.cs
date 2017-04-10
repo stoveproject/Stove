@@ -7,5 +7,7 @@ namespace Stove.RavenDB.Configuration
         public string Url { get; set; }
 
         public string DefaultDatabase { get; set; }
+
+        public bool AllowQueriesOnId { get; set; }
     }
 }
