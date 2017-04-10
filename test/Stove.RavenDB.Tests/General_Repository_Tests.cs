@@ -96,5 +96,66 @@ namespace Stove.RavenDB.Tests
                 uow.Complete();
             }
         }
+
+        [Fact]
+        public void Delete_should_work_on_hard_deletable_entities()
+        {
+            using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
+            {
+                //-----------------------------------------------------------------------------------------------------------
+                // Arrange
+                //-----------------------------------------------------------------------------------------------------------
+                string productName = Guid.NewGuid().ToString("N");
+                var product = new Product(productName);
+
+                //-----------------------------------------------------------------------------------------------------------
+                // Act
+                //-----------------------------------------------------------------------------------------------------------
+                Product inserted = The<IRepository<Product>>().Insert(product);
+
+                //-----------------------------------------------------------------------------------------------------------
+                // Assert
+                //-----------------------------------------------------------------------------------------------------------
+                The<IRepository<Product>>().Delete(inserted);
+
+                Product deleted = The<IRepository<Product>>().FirstOrDefault(x => x.Name == productName);
+                deleted.ShouldBeNull();
+
+                uow.Complete();
+            }
+        }
+
+        [Fact]
+        public void Delete_should_work_soft_deletable_entities()
+        {
+            using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
+            {
+                //-----------------------------------------------------------------------------------------------------------
+                // Arrange
+                //-----------------------------------------------------------------------------------------------------------
+                string productName = Guid.NewGuid().ToString("N");
+                string address = Guid.NewGuid().ToString("N");
+                var product = new Product(productName);
+                var order = new Order(address, product);
+
+                //-----------------------------------------------------------------------------------------------------------
+                // Act
+                //-----------------------------------------------------------------------------------------------------------
+                Product insertedProduct = The<IRepository<Product>>().Insert(product);
+                Order insertedOrder = The<IRepository<Order>>().Insert(order);
+                The<IRepository<Order>>().Delete(insertedOrder);
+                
+                The<IUnitOfWorkManager>().Current.SaveChanges();
+
+                //-----------------------------------------------------------------------------------------------------------
+                // Assert
+                //-----------------------------------------------------------------------------------------------------------
+                Order deletedOrder = The<IRepository<Order>>().FirstOrDefault(x => x.Product == insertedProduct);
+                insertedOrder.IsDeleted.ShouldBe(true);
+                deletedOrder.ShouldBeNull();
+
+                uow.Complete();
+            }
+        }
     }
 }
