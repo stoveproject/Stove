@@ -1,4 +1,6 @@
-﻿namespace Stove.RavenDB.Configuration
+﻿using Stove.Configuration;
+
+namespace Stove.RavenDB.Configuration
 {
     public interface IStoveRavenDBConfiguration
     {
@@ -7,5 +9,7 @@
         string DefaultDatabase { get; set; }
 
         bool AllowQueriesOnId { get; set; }
+
+        IStoveStartupConfiguration Configuration { get; }
     }
 }

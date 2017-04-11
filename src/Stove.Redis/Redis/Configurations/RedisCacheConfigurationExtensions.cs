@@ -3,7 +3,7 @@
 using Stove.Configuration;
 using Stove.Runtime.Caching.Configuration;
 
-namespace Stove.Redis
+namespace Stove.Redis.Configurations
 {
     /// <summary>
     ///     Extension methods for <see cref="ICachingConfiguration" />.

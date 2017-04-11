@@ -5,6 +5,7 @@ using Autofac.Extras.IocManager;
 
 using JetBrains.Annotations;
 
+using Stove.Configurations;
 using Stove.Hangfire;
 
 namespace Stove

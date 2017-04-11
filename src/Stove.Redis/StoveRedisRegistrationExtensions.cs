@@ -6,6 +6,7 @@ using Autofac.Extras.IocManager;
 using JetBrains.Annotations;
 
 using Stove.Redis;
+using Stove.Redis.Configurations;
 using Stove.Runtime.Caching;
 
 namespace Stove

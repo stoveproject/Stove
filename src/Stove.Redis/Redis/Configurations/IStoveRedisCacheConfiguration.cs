@@ -3,14 +3,18 @@
 using StackExchange.Redis;
 using StackExchange.Redis.Extensions.Core.Configuration;
 
-namespace Stove.Redis
+using Stove.Configuration;
+
+namespace Stove.Redis.Configurations
 {
     public interface IStoveRedisCacheConfiguration
     {
         [CanBeNull]
-        IRedisCachingConfiguration Configuration { get; set; }
+        IRedisCachingConfiguration CachingConfiguration { get; set; }
 
         [CanBeNull]
         ConfigurationOptions ConfigurationOptions { get; set; }
+
+        IStoveStartupConfiguration Configuration { get; }
     }
 }
