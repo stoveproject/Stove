@@ -12,6 +12,12 @@
     <StartupObject>Stove.Demo.WebApi.Program</StartupObject>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>full</DebugType>
+    <DebugSymbols>True</DebugSymbols>
+    <DocumentationFile>bin\Debug\net462\win7-x64\Stove.Demo.WebApi.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove="NLog.config" />
   </ItemGroup>

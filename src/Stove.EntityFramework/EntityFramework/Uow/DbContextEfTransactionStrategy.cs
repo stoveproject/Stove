@@ -36,6 +36,11 @@ namespace Stove.EntityFramework.Uow
         {
             foreach (ActiveTransactionInfo activeTransaction in ActiveTransactions.Values)
             {
+                foreach (DbContext attendedDbContext in activeTransaction.AttendedDbContexts)
+                {
+                    attendedDbContext.Dispose();
+                }
+
                 activeTransaction.DbContextTransaction.Dispose();
                 activeTransaction.StarterDbContext.Dispose();
             }
