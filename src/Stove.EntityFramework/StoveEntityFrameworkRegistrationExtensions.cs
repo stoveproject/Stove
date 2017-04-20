@@ -26,22 +26,23 @@ namespace Stove
         [NotNull]
         public static IIocBuilder UseStoveEntityFramework([NotNull] this IIocBuilder builder)
         {
-            builder.RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
-            builder.RegisterServices(r => r.Register<IUnitOfWorkFilterExecuter, IEfUnitOfWorkFilterExecuter, EfDynamicFiltersUnitOfWorkFilterExecuter>());
-            builder.RegisterServices(r => r.RegisterGeneric(typeof(IDbContextProvider<>), typeof(UnitOfWorkDbContextProvider<>)));
-            builder.RegisterServices(r => r.Register<IUnitOfWorkDefaultOptions, UnitOfWorkDefaultOptions>(Lifetime.Singleton));
-
-            var ormRegistrars = new List<IAdditionalOrmRegistrar>();
-            List<Type> dbContextTypes = typeof(StoveDbContext).AssignedTypes().ToList();
-            dbContextTypes.ForEach(type =>
+            return builder.RegisterServices(r =>
             {
-                EfRepositoryRegistrar.RegisterRepositories(type, builder);
-                ormRegistrars.Add(new EfBasedAdditionalOrmRegistrar(builder, type, DbContextHelper.GetEntityTypeInfos, EntityHelper.GetPrimaryKeyType));
+                r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly());
+                r.Register<IUnitOfWorkFilterExecuter, IEfUnitOfWorkFilterExecuter, EfDynamicFiltersUnitOfWorkFilterExecuter>();
+                r.RegisterGeneric(typeof(IDbContextProvider<>), typeof(UnitOfWorkDbContextProvider<>));
+                r.Register<IUnitOfWorkDefaultOptions, UnitOfWorkDefaultOptions>(Lifetime.Singleton);
+
+                var ormRegistrars = new List<IAdditionalOrmRegistrar>();
+                List<Type> dbContextTypes = typeof(StoveDbContext).AssignedTypes().ToList();
+                dbContextTypes.ForEach(type =>
+                {
+                    EfRepositoryRegistrar.RegisterRepositories(type, builder);
+                    ormRegistrars.Add(new EfBasedAdditionalOrmRegistrar(builder, type, DbContextHelper.GetEntityTypeInfos, EntityHelper.GetPrimaryKeyType));
+                });
+
+                r.UseBuilder(cb => { cb.Properties[StoveConsts.OrmRegistrarContextKey] = ormRegistrars; });
             });
-
-            builder.RegisterServices(r => r.UseBuilder(cb => { cb.Properties[StoveConsts.OrmRegistrarContextKey] = ormRegistrars; }));
-
-            return builder;
         }
 
         /// <summary>
@@ -68,8 +69,7 @@ namespace Stove
         [NotNull]
         public static IIocBuilder UseStoveTypedConnectionStringResolver([NotNull] this IIocBuilder builder)
         {
-            builder.RegisterServices(r => r.Register<IConnectionStringResolver, TypedConnectionStringResolver>());
-            return builder;
+            return builder.RegisterServices(r => r.Register<IConnectionStringResolver, TypedConnectionStringResolver>());
         }
 
         /// <summary>
@@ -80,8 +80,7 @@ namespace Stove
         [NotNull]
         public static IIocBuilder UseStoveTransactionScopeEfTransactionStrategy([NotNull] this IIocBuilder builder)
         {
-            builder.RegisterServices(r => r.Register<IEfTransactionStrategy, TransactionScopeEfTransactionStrategy>());
-            return builder;
+            return builder.RegisterServices(r => r.Register<IEfTransactionStrategy, TransactionScopeEfTransactionStrategy>());
         }
 
         /// <summary>
@@ -92,8 +91,7 @@ namespace Stove
         [NotNull]
         public static IIocBuilder UseStoveDbContextEfTransactionStrategy([NotNull] this IIocBuilder builder)
         {
-            builder.RegisterServices(r => r.Register<IEfTransactionStrategy, DbContextEfTransactionStrategy>());
-            return builder;
+            return builder.RegisterServices(r => r.Register<IEfTransactionStrategy, DbContextEfTransactionStrategy>());
         }
     }
 }

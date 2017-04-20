@@ -19,10 +19,12 @@ namespace Stove
         [NotNull]
         public static IIocBuilder UseStoveMapster([NotNull] this IIocBuilder builder)
         {
-            return builder
-                .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()))
-                .RegisterServices(r => r.Register<IStoveMapsterConfiguration, StoveMapsterConfiguration>(Lifetime.Singleton))
-                .RegisterServices(r => r.Register<IObjectMapper, MapsterObjectMapper>(Lifetime.Singleton));
+            return builder.RegisterServices(r =>
+            {
+                r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly());
+                r.Register<IStoveMapsterConfiguration, StoveMapsterConfiguration>(Lifetime.Singleton);
+                r.Register<IObjectMapper, MapsterObjectMapper>(Lifetime.Singleton);
+            });
         }
     }
 }

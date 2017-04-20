@@ -22,29 +22,29 @@ namespace Stove
         [NotNull]
         public static IIocBuilder UseStoveRedisCaching([NotNull] this IIocBuilder builder, [CanBeNull] Func<IStoveRedisCacheConfiguration, IStoveRedisCacheConfiguration> redisCacheConfigurer = null)
         {
-            builder.RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
-            builder.RegisterServices(r => r.Register<IStoveRedisCacheConfiguration, StoveRedisCacheConfiguration>(Lifetime.Singleton));
-            builder.RegisterServices(r => r.RegisterType<StoveRedisCache>());
-            builder.RegisterServices(r => r.Register<ICacheManager, StoveRedisCacheManager>());
-
-            if (redisCacheConfigurer != null)
+            return builder.RegisterServices(r =>
             {
-                builder.RegisterServices(r => r.Register(ctx => redisCacheConfigurer));
-            }
+                r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly());
+                r.Register<IStoveRedisCacheConfiguration, StoveRedisCacheConfiguration>(Lifetime.Singleton);
+                r.RegisterType<StoveRedisCache>();
+                r.Register<ICacheManager, StoveRedisCacheManager>();
 
-            return builder;
+                if (redisCacheConfigurer != null)
+                {
+                    r.Register(ctx => redisCacheConfigurer);
+                }
+            });
         }
 
         /// <summary>
-        ///     Uses the typeless redis cache serializer. <seealso cref="DefaultRedisCacheSerializer"/>
+        ///     Uses the typeless redis cache serializer. <seealso cref="DefaultRedisCacheSerializer" />
         /// </summary>
         /// <param name="builder">The builder.</param>
         /// <returns></returns>
         [NotNull]
         public static IIocBuilder UseTypelessRedisCacheSerializer([NotNull] this IIocBuilder builder)
         {
-            builder.RegisterServices(r => { r.Register<IRedisCacheSerializer, TypelessRedisCacheSerializer>(); });
-            return builder;
+            return builder.RegisterServices(r => { r.Register<IRedisCacheSerializer, TypelessRedisCacheSerializer>(); });
         }
     }
 }
