@@ -34,7 +34,7 @@ namespace Stove.EntityFramework
             var dbContextType = (Type)args["ContextType"];
             Type dbContextProviderType = typeof(IDbContextProvider<>).MakeGenericType(dbContextType);
             object dbContextProvider = _scopeResolver.Resolve(dbContextProviderType);
-            MethodInfo method = dbContextProvider.GetType().GetMethod("GetDbContext");
+            MethodInfo method = dbContextProvider.GetType().GetMethod(nameof(IDbContextProvider<StoveDbContext>.GetDbContext));
             var dbContext = method.Invoke(dbContextProvider, null).As<DbContext>();
             return dbContext;
         }
