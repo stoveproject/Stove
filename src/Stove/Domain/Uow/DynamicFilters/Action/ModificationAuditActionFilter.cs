@@ -1,15 +1,12 @@
-﻿using Autofac.Extras.IocManager;
-
-using Stove.Domain.Entities;
-using Stove.Domain.Entities.Auditing;
+﻿using Stove.Domain.Entities.Auditing;
 using Stove.Extensions;
 using Stove.Timing;
 
-namespace Stove.Dapper.Filters.Action
+namespace Stove.Domain.Uow.DynamicFilters.Action
 {
-    public class ModificationAuditDapperActionFilter : DapperActionFilterBase, IDapperActionFilter, ITransientDependency
+    public class ModificationAuditActionFilter : ActionFilterBase
     {
-        public void ExecuteFilter<TEntity, TPrimaryKey>(TEntity entity) where TEntity : class, IEntity<TPrimaryKey>
+        public override void ExecuteFilter<TEntity, TPrimaryKey>(TEntity entity)
         {
             if (entity is IHasModificationTime)
             {

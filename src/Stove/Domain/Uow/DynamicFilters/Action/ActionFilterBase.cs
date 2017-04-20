@@ -2,16 +2,17 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
 
+using Autofac.Extras.IocManager;
+
 using Stove.Domain.Entities;
-using Stove.Domain.Uow;
 using Stove.Reflection;
 using Stove.Runtime.Session;
 
-namespace Stove.Dapper.Filters.Action
+namespace Stove.Domain.Uow.DynamicFilters.Action
 {
-    public abstract class DapperActionFilterBase
+    public abstract class ActionFilterBase : ITransientDependency
     {
-        protected DapperActionFilterBase()
+        protected ActionFilterBase()
         {
             StoveSession = NullStoveSession.Instance;
             GuidGenerator = SequentialGuidGenerator.Instance;
@@ -32,6 +33,8 @@ namespace Stove.Dapper.Filters.Action
 
             return null;
         }
+
+        public abstract void ExecuteFilter<TEntity, TPrimaryKey>(TEntity entity) where TEntity : class, IEntity<TPrimaryKey>;
 
         protected virtual void CheckAndSetId(object entityAsObj)
         {

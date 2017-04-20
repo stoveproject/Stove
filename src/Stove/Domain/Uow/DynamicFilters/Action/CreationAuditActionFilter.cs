@@ -1,17 +1,14 @@
 ﻿using System;
 
-using Autofac.Extras.IocManager;
-
-using Stove.Domain.Entities;
 using Stove.Domain.Entities.Auditing;
 using Stove.Extensions;
 using Stove.Timing;
 
-namespace Stove.RavenDB.Filters.Action
+namespace Stove.Domain.Uow.DynamicFilters.Action
 {
-    public class CreationAuditRavenActionFilter : RavenActionFilterBase, IRavenActionFilter, ITransientDependency
+    public class CreationAuditActionFilter : ActionFilterBase
     {
-        public void ExecuteFilter<TEntity, TPrimaryKey>(TEntity entity) where TEntity : class, IEntity<TPrimaryKey>
+        public override void ExecuteFilter<TEntity, TPrimaryKey>(TEntity entity)
         {
             long? userId = GetAuditUserId();
             CheckAndSetId(entity);
