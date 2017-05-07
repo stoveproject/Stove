@@ -173,6 +173,7 @@ _NCrunch_Stove/
 Artifacts/**
 *.v3.ncrunchsolution
 *.ncrunchsolution
+*.ncrunchproject
 
 # User-specific stuff:
 .idea
@@ -185,3 +186,4 @@ Tools/**
 /.vs
 *.dg
 *.config
+*.ncrunchproject
