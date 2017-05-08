@@ -13,7 +13,8 @@ $projects = (
 	 "Stove.NHibernate",
 	 "Stove.NLog",
 	 "Stove.RabbitMQ",
-	 "Stove.Redis"
+	 "Stove.Redis",
+	 "Stove.RavenDB"
 )
 
 # Rebuild solution
