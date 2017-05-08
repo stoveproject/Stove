@@ -1,4 +1,6 @@
-﻿namespace Stove.RabbitMQ
+﻿using Stove.Configuration;
+
+namespace Stove.RabbitMQ
 {
     public interface IStoveRabbitMQConfiguration
     {
@@ -13,5 +15,7 @@
         bool UseRetryMechanism { get; set; }
 
         int MaxRetryCount { get; set; }
+
+        IStoveStartupConfiguration Configuration { get; }
     }
 }

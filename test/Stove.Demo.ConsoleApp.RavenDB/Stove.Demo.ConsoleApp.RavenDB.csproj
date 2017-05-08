@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net461</TargetFramework>
+    <OutputType>exe</OutputType>
+    <OutputTypeEx>exe</OutputTypeEx>
+    <RuntimeIdentifier>win7-x64</RuntimeIdentifier>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Stove.RavenDB\Stove.RavenDB.csproj" />
+    <ProjectReference Include="..\..\src\Stove\Stove.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -5,7 +5,7 @@ using Autofac.Extras.IocManager;
 
 using JetBrains.Annotations;
 
-using Stove.Hangfire;
+using Stove.Configurations;
 
 namespace Stove
 {
@@ -20,9 +20,11 @@ namespace Stove
         [NotNull]
         public static IIocBuilder UseStoveHangfire([NotNull] this IIocBuilder builder, [NotNull] Func<IStoveHangfireConfiguration, IStoveHangfireConfiguration> configureAction)
         {
-            builder.RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
-            builder.RegisterServices(r => r.Register(context => configureAction));
-            return builder;
+            return builder.RegisterServices(r =>
+            {
+                r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly());
+                r.Register(context => configureAction);
+            });
         }
     }
 }

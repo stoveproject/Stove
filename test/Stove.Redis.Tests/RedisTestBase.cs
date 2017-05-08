@@ -17,7 +17,7 @@ namespace Stove.Redis.Tests
             {
                 builder.UseStoveRedisCaching(configuration =>
                        {
-                           configuration.Configuration = Substitute.For<IRedisCachingConfiguration>();
+                           configuration.CachingConfiguration = Substitute.For<IRedisCachingConfiguration>();
                            configuration.ConfigurationOptions = new ConfigurationOptions();
                            return configuration;
                        })

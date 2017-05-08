@@ -51,14 +51,13 @@ namespace Stove.Demo.ConsoleApp
                                                .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()))
                                                .CreateResolver();
 
-         
-
-          
-                //var someDomainService = resolver.Resolve<SomeDomainService>();
-                //someDomainService.DoSomeStuff();
+            //var someDomainService = resolver.Resolve<SomeDomainService>();
+            //someDomainService.DoSomeStuff();
 
             var productDomainService = resolver.Resolve<ProductDomainService>();
             productDomainService.DoSomeStuff();
+
+            resolver.Dispose();
 
             EntityFrameworkProfiler.Shutdown();
 

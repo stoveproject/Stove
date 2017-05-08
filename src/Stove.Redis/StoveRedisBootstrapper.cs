@@ -3,6 +3,7 @@ using StackExchange.Redis.Extensions.Core.Configuration;
 
 using Stove.Bootstrapping;
 using Stove.Redis;
+using Stove.Redis.Configurations;
 
 namespace Stove
 {
@@ -25,9 +26,9 @@ namespace Stove
 
         private void ConfigureRedis(IStoveRedisCacheConfiguration redisConfiguration)
         {
-            redisConfiguration.Configuration = RedisCachingSectionHandler.GetConfig();
+            redisConfiguration.CachingConfiguration = RedisCachingSectionHandler.GetConfig();
 
-            if (redisConfiguration.Configuration == null)
+            if (redisConfiguration.CachingConfiguration == null)
             {
                 throw new StoveException("There is no Redis connection string section in app.config or web.config file, " +
                                          "please define redisCacheClient section and configurations. " +
@@ -36,13 +37,13 @@ namespace Stove
 
             redisConfiguration.ConfigurationOptions = new ConfigurationOptions
             {
-                AllowAdmin = redisConfiguration.Configuration.AllowAdmin,
-                Ssl = redisConfiguration.Configuration.Ssl,
-                ConnectTimeout = redisConfiguration.Configuration.ConnectTimeout,
+                AllowAdmin = redisConfiguration.CachingConfiguration.AllowAdmin,
+                Ssl = redisConfiguration.CachingConfiguration.Ssl,
+                ConnectTimeout = redisConfiguration.CachingConfiguration.ConnectTimeout,
                 AbortOnConnectFail = false
             };
 
-            foreach (RedisHost redisHost in redisConfiguration.Configuration.RedisHosts)
+            foreach (RedisHost redisHost in redisConfiguration.CachingConfiguration.RedisHosts)
             {
                 redisConfiguration.ConfigurationOptions.EndPoints.Add(redisHost.Host, redisHost.CachePort);
             }

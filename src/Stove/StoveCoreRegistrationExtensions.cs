@@ -22,7 +22,6 @@ using Stove.Runtime;
 using Stove.Runtime.Caching.Configuration;
 using Stove.Runtime.Caching.Memory;
 using Stove.Runtime.Remoting;
-using Stove.Threading;
 
 namespace Stove
 {
@@ -89,10 +88,8 @@ namespace Stove
         [NotNull]
         public static IIocBuilder UseStoveEventBus([NotNull] this IIocBuilder builder)
         {
-            builder.RegisterServices(r => r.Register<IEventBus, EventBus>(Lifetime.Singleton));
-            return builder;
+            return builder.RegisterServices(r => r.Register<IEventBus, EventBus>(Lifetime.Singleton));
         }
-
 
         /// <summary>
         ///     Uses the stove default event bus.
@@ -102,8 +99,7 @@ namespace Stove
         [NotNull]
         public static IIocBuilder UseStoveDefaultEventBus([NotNull] this IIocBuilder builder)
         {
-            builder.RegisterServices(r => r.Register<IEventBus>(context => EventBus.Default, Lifetime.Singleton));
-            return builder;
+            return builder.RegisterServices(r => r.Register<IEventBus>(context => EventBus.Default, Lifetime.Singleton));
         }
 
         /// <summary>
@@ -132,8 +128,7 @@ namespace Stove
         [NotNull]
         public static IIocBuilder UseStoveNullEventBus([NotNull] this IIocBuilder builder)
         {
-            builder.RegisterServices(r => r.Register<IEventBus>(context => NullEventBus.Instance, keepDefault: true));
-            return builder;
+            return builder.RegisterServices(r => r.Register<IEventBus>(context => NullEventBus.Instance, keepDefault: true));
         }
 
         /// <summary>
@@ -144,8 +139,7 @@ namespace Stove
         [NotNull]
         public static IIocBuilder UseStoveNullObjectMapper([NotNull] this IIocBuilder builder)
         {
-            builder.RegisterServices(r => r.Register<IObjectMapper>(context => NullObjectMapper.Instance, keepDefault: true));
-            return builder;
+            return builder.RegisterServices(r => r.Register<IObjectMapper>(context => NullObjectMapper.Instance, keepDefault: true));
         }
 
         /// <summary>
@@ -156,8 +150,7 @@ namespace Stove
         [NotNull]
         public static IIocBuilder UseStoveNullUnitOfWork([NotNull] this IIocBuilder builder)
         {
-            builder.RegisterServices(r => r.Register<IUnitOfWork, NullUnitOfWork>(keepDefault: true));
-            return builder;
+            return builder.RegisterServices(r => r.Register<IUnitOfWork, NullUnitOfWork>(keepDefault: true));
         }
 
         /// <summary>
@@ -168,8 +161,7 @@ namespace Stove
         [NotNull]
         public static IIocBuilder UseStoveNullUnitOfWorkFilterExecuter([NotNull] this IIocBuilder builder)
         {
-            builder.RegisterServices(r => r.Register<IUnitOfWorkFilterExecuter, NullUnitOfWorkFilterExecuter>(keepDefault: true));
-            return builder;
+            return builder.RegisterServices(r => r.Register<IUnitOfWorkFilterExecuter, NullUnitOfWorkFilterExecuter>(keepDefault: true));
         }
 
         /// <summary>
@@ -180,8 +172,7 @@ namespace Stove
         [NotNull]
         public static IIocBuilder UseStoveNullEntityChangedEventHelper([NotNull] this IIocBuilder builder)
         {
-            builder.RegisterServices(r => r.Register<IEntityChangeEventHelper, NullEntityChangeEventHelper>(keepDefault: true));
-            return builder;
+            return builder.RegisterServices(r => r.Register<IEntityChangeEventHelper, NullEntityChangeEventHelper>(keepDefault: true));
         }
 
         /// <summary>
@@ -192,8 +183,7 @@ namespace Stove
         [NotNull]
         public static IIocBuilder UseStoveNullAsyncQueryableExecuter([NotNull] this IIocBuilder builder)
         {
-            builder.RegisterServices(r => r.Register<IAsyncQueryableExecuter, NullAsyncQueryableExecuter>(keepDefault: true));
-            return builder;
+            return builder.RegisterServices(r => r.Register<IAsyncQueryableExecuter, NullAsyncQueryableExecuter>(keepDefault: true));
         }
 
         /// <summary>
@@ -247,7 +237,21 @@ namespace Stove
                           .UseStoveNullUnitOfWorkFilterExecuter()
                           .UseStoveNullEntityChangedEventHelper()
                           .UseStoveNullAsyncQueryableExecuter()
-                          .UseStoveNullMessageBus();
+                          .UseStoveNullMessageBus()
+                          .UseStoveDefaultConnectionStringResolver();
+        }
+
+        /// <summary>
+        ///     Uses the Stove with nullables, prefer when you writing unit tests.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        /// <param name="starterBootstrapperType">Type of the starter bootstrapper.</param>
+        /// <param name="autoUnitOfWorkInterceptionEnabled">if set to <c>true</c> [automatic unit of work interception enabled].</param>
+        /// <returns></returns>
+        [NotNull]
+        public static IIocBuilder UseStoveWithNullables<TStarterBootstrapper>([NotNull] this IIocBuilder builder, bool autoUnitOfWorkInterceptionEnabled = false)
+        {
+            return UseStoveWithNullables(builder, typeof(TStarterBootstrapper), autoUnitOfWorkInterceptionEnabled);
         }
 
         private static void RegistryOnRegistered([CanBeNull] object sender, [NotNull] ComponentRegisteredEventArgs args)
@@ -279,10 +283,7 @@ namespace Stove
                    .RegisterServices(r => r.Register<ITypeFinder, TypeFinder>(Lifetime.Singleton))
                    .RegisterServices(r => r.RegisterGeneric(typeof(IAmbientScopeProvider<>), typeof(DataContextAmbientScopeProvider<>)));
 
-            builder.RegisterServices(r => r.OnDisposing += (sender, args) =>
-            {
-                args.Context.Resolver.Resolve<IStoveBootstrapperManager>().ShutdownBootstrappers();
-            });
+            builder.RegisterServices(r => r.OnDisposing += (sender, args) => { args.Context.Resolver.Resolve<IStoveBootstrapperManager>().ShutdownBootstrappers(); });
         }
     }
 }

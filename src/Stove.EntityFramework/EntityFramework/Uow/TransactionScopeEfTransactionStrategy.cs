@@ -39,6 +39,8 @@ namespace Stove.EntityFramework.Uow
 
         public virtual void Dispose()
         {
+            DbContexts.Clear();
+
             if (CurrentTransaction != null)
             {
                 CurrentTransaction.Dispose();

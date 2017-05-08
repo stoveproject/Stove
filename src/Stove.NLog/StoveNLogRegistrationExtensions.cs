@@ -14,17 +14,19 @@ namespace Stove
     public static class StoveNLogRegistrationExtensions
     {
         /// <summary>
-        ///     Uses the stove n log.
+        ///     Uses the StoveNLog.
         /// </summary>
         /// <param name="builder">The builder.</param>
         /// <returns></returns>
         [NotNull]
         public static IIocBuilder UseStoveNLog([NotNull] this IIocBuilder builder)
         {
-            builder.RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
-            builder.RegisterServices(r => r.Register<ILogger>(context => new LoggerAdapter(LogManager.GetCurrentClassLogger()), Lifetime.Singleton));
-            builder.RegisterServices(r => r.UseBuilder(containerBuilder => containerBuilder.RegisterModule<NLogRegistrarModule>()));
-            return builder;
+            return builder.RegisterServices(r =>
+            {
+                r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly());
+                r.Register<ILogger>(context => new LoggerAdapter(LogManager.GetCurrentClassLogger()), Lifetime.Singleton);
+                r.UseBuilder(containerBuilder => containerBuilder.RegisterModule<NLogRegistrarModule>());
+            });
         }
     }
 }

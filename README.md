@@ -17,17 +17,20 @@
 |Stove.Redis|[![NuGet version](https://badge.fury.io/nu/Stove.Redis.svg)](https://badge.fury.io/nu/Stove.Redis)|
 |Stove.Dapper|[![NuGet version](https://badge.fury.io/nu/Stove.Dapper.svg)](https://badge.fury.io/nu/Stove.Dapper)|
 |Stove.RabbitMQ|[![NuGet version](https://badge.fury.io/nu/Stove.RabbitMQ.svg)](https://badge.fury.io/nu/Stove.RabbitMQ)|
+|Stove.NHibernate|[![NuGet version](https://badge.fury.io/nu/Stove.NHibernate.svg)](https://badge.fury.io/nu/Stove.NHibernate)|
 
 * Autofac for Ioc
 * AmbientContext Unit Of Work pattern
 * Conventional Registration Mechanism with [Autofac.Extras.IocManager](https://github.com/osoykan/Autofac.Extras.IocManager) 
 * EventBus for DDD use cases
 * EntityFramework
+* NHibernate
 * Generic Repository Pattern, DbContext, Multiple DbContext control in one unit of work, TransactionScope support
 * Dapper and EF both can use in one application.
 * Dapper and EF have their own repositories. `IDapperRepository<Product>`, `IRepository<Product>`
 * Dapper-EntityFramework works under same transaction and unit of work scope, if any exception appears in domain whole transaction will be rollback, including Dapper's insert/deletes and EF's.
 * Stove.Dapper supports *Dynamic Filters* to filter automatically and default ISoftDelete or other user defined filters.
+* Stove.Dapper also works with NHibernate under same transaction. Like EF transaction sharing.
 * RabbitMQ support
 * HangFire support
 * Redis support

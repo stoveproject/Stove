@@ -16,15 +16,21 @@ namespace Stove.Demo.ConsoleApp
         private readonly IDapperRepository<Mail, Guid> _mailDapperRepository;
         private readonly IDapperRepository<Product> _productDapperRepository;
         private readonly IRepository<Product> _productRepository;
+        private readonly IRepository<Animal> _animalRepository;
+        private readonly IDapperRepository<Animal> _animalDapperRepository;
 
         public ProductDomainService(
             IDapperRepository<Product> productDapperRepository,
             IDapperRepository<Mail, Guid> mailDapperRepository,
-            IRepository<Product> productRepository)
+            IRepository<Product> productRepository,
+            IDapperRepository<Animal> animalDapperRepository,
+            IRepository<Animal> animalRepository)
         {
             _productDapperRepository = productDapperRepository;
             _mailDapperRepository = mailDapperRepository;
             _productRepository = productRepository;
+            _animalDapperRepository = animalDapperRepository;
+            _animalRepository = animalRepository;
         }
 
         public IStoveSession StoveSession { get; set; }
@@ -41,6 +47,10 @@ namespace Stove.Demo.ConsoleApp
                     Product gomlekFromEf = _productRepository.FirstOrDefault(gomlekId);
 
                     Product firstProduct = _productDapperRepository.Get(1);
+
+                    _animalRepository.InsertAndGetId(new Animal("Bird"));
+
+                    _animalDapperRepository.GetAll(x => x.Name == "Bird");
 
                     _productDapperRepository.GetAll(x => x.Id == 1 || x.Name == "Gomlek" || x.CreationTime == DateTime.Now);
 

@@ -15,7 +15,7 @@ namespace Stove.TestBase
             Building(builder =>
             {
                 builder
-                    .UseStoveWithNullables(typeof(TStarterBootstrapper), autoUnitOfWorkInterceptionEnabled);
+                    .UseStoveWithNullables<TStarterBootstrapper>(autoUnitOfWorkInterceptionEnabled);
 
                 builder.RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
                 builder.RegisterServices(r => r.Register<IStoveSession, TestStoveSession>(Lifetime.Singleton));

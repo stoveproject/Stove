@@ -7,6 +7,8 @@ using JetBrains.Annotations;
 using StackExchange.Redis;
 using StackExchange.Redis.Extensions.Core;
 
+using Stove.Redis.Configurations;
+
 namespace Stove.Redis
 {
     /// <summary>
@@ -34,7 +36,7 @@ namespace Stove.Redis
         /// <returns></returns>
         public ICacheClient GetClient()
         {
-            return new StackExchangeRedisCacheClient(_connectionMultiplexer.Value, _redisSerializer, _configuration.Configuration.Database);
+            return new StackExchangeRedisCacheClient(_connectionMultiplexer.Value, _redisSerializer, _configuration.CachingConfiguration.Database);
         }
 
         /// <summary>
