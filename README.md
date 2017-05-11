@@ -18,6 +18,7 @@
 |Stove.Dapper|[![NuGet version](https://badge.fury.io/nu/Stove.Dapper.svg)](https://badge.fury.io/nu/Stove.Dapper)|
 |Stove.RabbitMQ|[![NuGet version](https://badge.fury.io/nu/Stove.RabbitMQ.svg)](https://badge.fury.io/nu/Stove.RabbitMQ)|
 |Stove.NHibernate|[![NuGet version](https://badge.fury.io/nu/Stove.NHibernate.svg)](https://badge.fury.io/nu/Stove.NHibernate)|
+|Stove.RavenDB|[![NuGet version](https://badge.fury.io/nu/Stove.RavenDB.svg)](https://badge.fury.io/nu/Stove.RavenDB)|
 
 * Autofac for Ioc
 * AmbientContext Unit Of Work pattern
