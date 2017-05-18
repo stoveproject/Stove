@@ -24,7 +24,7 @@
     <PackageReference Include="FluentAssemblyScanner" Version="1.0.7" />
     <PackageReference Include="xunit" Version="2.2.0" />
     <PackageReference Include="NSubstitute" Version="2.0.3" />
-    <PackageReference Include="Autofac.Extras.IocManager" Version="3.0.0" />
+    <PackageReference Include="Autofac.Extras.IocManager" Version="3.0.1" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
