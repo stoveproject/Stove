@@ -16,7 +16,7 @@ $projects = (
 	 "Stove.Redis",
 	 "Stove.RavenDB"
 )
-
+ 
 # Rebuild solution
 Set-Location $slnPath
 & dotnet restore
