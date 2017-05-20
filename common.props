@@ -22,5 +22,4 @@
   <ItemGroup>
     <PackageReference Include="SourceLink.Create.CommandLine" Version="2.1.2" PrivateAssets="All" />
   </ItemGroup>
-
 </Project>
