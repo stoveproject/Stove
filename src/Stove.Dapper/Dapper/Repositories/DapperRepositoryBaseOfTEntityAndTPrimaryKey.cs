@@ -15,7 +15,6 @@ using Stove.Dapper.Filters.Query;
 using Stove.Domain.Entities;
 using Stove.Domain.Uow;
 using Stove.Events.Bus.Entities;
-using Stove.Orm;
 using Stove.Transactions;
 
 namespace Stove.Dapper.Repositories
@@ -38,10 +37,7 @@ namespace Stove.Dapper.Repositories
 
         public IDapperActionFilterExecuter DapperActionFilterExecuter { get; set; }
 
-        public virtual IDbConnection Connection
-        {
-            get { return _activeTransactionProvider.GetActiveConnection(ActiveTransactionProviderArgs.Empty); }
-        }
+        public virtual IDbConnection Connection => _activeTransactionProvider.GetActiveConnection(ActiveTransactionProviderArgs.Empty);
 
         /// <summary>
         ///     Gets the active transaction. If Dapper is active then <see cref="IUnitOfWork" /> should be started before
@@ -50,10 +46,7 @@ namespace Stove.Dapper.Repositories
         /// <value>
         ///     The active transaction.
         /// </value>
-        public virtual IDbTransaction ActiveTransaction
-        {
-            get { return _activeTransactionProvider.GetActiveTransaction(ActiveTransactionProviderArgs.Empty); }
-        }
+        public virtual IDbTransaction ActiveTransaction => _activeTransactionProvider.GetActiveTransaction(ActiveTransactionProviderArgs.Empty);
 
         public override TEntity Single(TPrimaryKey id)
         {
@@ -110,6 +103,16 @@ namespace Stove.Dapper.Repositories
         public override IEnumerable<TAny> Query<TAny>(string query, object parameters = null)
         {
             return Connection.Query<TAny>(query, parameters, ActiveTransaction);
+        }
+
+        public override void Execute(string query, object parameters = null)
+        {
+            Connection.Execute(query, parameters, ActiveTransaction);
+        }
+
+        public override Task ExecuteAsync(string query, object parameters = null)
+        {
+            return Connection.ExecuteAsync(query, parameters, ActiveTransaction);
         }
 
         public override Task<IEnumerable<TAny>> QueryAsync<TAny>(string query, object parameters = null)

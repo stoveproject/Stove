@@ -218,6 +218,20 @@ namespace Stove.Dapper.Repositories
         IEnumerable<TAny> Query<TAny>([NotNull] string query, [CanBeNull] object parameters = null) where TAny : class;
 
         /// <summary>
+        ///     Executes the specified query.
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <param name="parameters">The parameters.</param>
+        void Execute([NotNull] string query, object parameters = null);
+
+        /// <summary>
+        ///     Executes the specified query.
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <param name="parameters">The parameters.</param>
+        Task ExecuteAsync([NotNull] string query, object parameters = null);
+
+        /// <summary>
         ///     Queries the specified query.
         /// </summary>
         /// <param name="query">The query.</param>
