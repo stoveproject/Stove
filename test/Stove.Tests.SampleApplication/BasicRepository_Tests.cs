@@ -4,7 +4,6 @@ using Shouldly;
 
 using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
-using Stove.Events.Bus;
 using Stove.Events.Bus.Entities;
 using Stove.Events.Bus.Handlers;
 using Stove.Extensions;
