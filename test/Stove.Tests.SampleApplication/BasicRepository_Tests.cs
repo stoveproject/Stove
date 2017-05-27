@@ -1,9 +1,12 @@
-﻿using Autofac.Extras.IocManager;
+﻿using System;
+
+using Autofac.Extras.IocManager;
 
 using Shouldly;
 
 using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
+using Stove.Events.Bus;
 using Stove.Events.Bus.Entities;
 using Stove.Events.Bus.Handlers;
 using Stove.Extensions;
@@ -121,6 +124,48 @@ namespace Stove.Tests.SampleApplication
             }
         }
 
+        [Fact]
+        public void uow_completed_event_should_fire_when_uow_is_completed()
+        {
+            var uowManager = The<IUnitOfWorkManager>();
+            var userRepository = The<IRepository<User>>();
+
+            using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
+            {
+                userRepository.Insert(new User
+                {
+                    Email = "ouzsykn@hotmail.com",
+                    Surname = "Sykn",
+                    Name = "Oğuz"
+                });
+
+                The<IUnitOfWorkCompletedEventHelper>().Trigger(new UserCretedEventAfterUowCompleted() { Name = "Oğuz" });
+
+                uow.Complete();
+            }
+
+        }
+
+        [Fact]
+        public void uow_completed_event_should_not_fire_when_uow_is_not_completed()
+        {
+            var uowManager = The<IUnitOfWorkManager>();
+            var userRepository = The<IRepository<User>>();
+
+            using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
+            {
+                userRepository.Insert(new User
+                {
+                    Email = "ouzsykn@hotmail.com",
+                    Surname = "Sykn",
+                    Name = "Oğuz"
+                });
+
+                The<IUnitOfWorkCompletedEventHelper>().Trigger(new UserCretedEventAfterUowCompleted() { Name = "Oğuz" });
+            }
+
+        }
+
         public class UserCreatedEventHandler : IEventHandler<EntityCreatedEventData<User>>,
             IEventHandler<EntityUpdatedEventData<User>>,
             ITransientDependency
@@ -135,5 +180,19 @@ namespace Stove.Tests.SampleApplication
                 User a = eventData.Entity;
             }
         }
+
+        public class UserCretedEventAfterUowCompleted : EventData
+        {
+            public string Name { get; set; }
+        }
+
+        public class UserCretedEventAfterUowCompletedEventHandler : IEventHandler<UserCretedEventAfterUowCompleted>, ITransientDependency
+        {
+            public void HandleEvent(UserCretedEventAfterUowCompleted eventData)
+            {
+                eventData.Name.ShouldNotBe(String.Empty);
+            }
+        }
     }
 }
+
