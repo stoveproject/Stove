@@ -1,7 +1,7 @@
 ﻿using Stove.Demo.ConsoleApp.Nh.Entities;
 using Stove.NHibernate.EntityMappings;
 
-namespace Stove.Demo.ConsoleApp.Nh.Mappings
+namespace Stove.Demo.ConsoleApp.Nh.Mappings.Nh
 {
     public class ProductMap : EntityMap<Product>
     {
