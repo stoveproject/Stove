@@ -39,16 +39,16 @@ namespace Stove
                                                            " use StoveEntityFramework() or StoveNHibernate() registration methods before use StoveDapper().");
                 }
 
-                var ormRegistrars = cb.Properties[StoveConsts.OrmRegistrarContextKey].As<IList<IAdditionalOrmRegistrar>>();
+                var ormRegistrars = cb.Properties[StoveConsts.OrmRegistrarContextKey].As<IList<ISecondaryOrmRegistrar>>();
 
                 ormRegistrars.ForEach(registrar =>
                 {
                     switch (registrar.OrmContextKey)
                     {
-                        case StoveOrms.EntityFramework:
+                        case StoveConsts.Orms.EntityFramework:
                             registrar.RegisterRepositories(EfBasedDapperAutoRepositoryTypes.Default);
                             break;
-                        case StoveOrms.NHibernate:
+                        case StoveConsts.Orms.NHibernate:
                             registrar.RegisterRepositories(NhBasedDapperAutoRepositoryTypes.Default);
                             break;
                     }

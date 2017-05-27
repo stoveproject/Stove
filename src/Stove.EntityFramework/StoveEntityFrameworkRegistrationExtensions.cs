@@ -33,12 +33,12 @@ namespace Stove
                 r.RegisterGeneric(typeof(IDbContextProvider<>), typeof(UnitOfWorkDbContextProvider<>));
                 r.Register<IUnitOfWorkDefaultOptions, UnitOfWorkDefaultOptions>(Lifetime.Singleton);
 
-                var ormRegistrars = new List<IAdditionalOrmRegistrar>();
+                var ormRegistrars = new List<ISecondaryOrmRegistrar>();
                 List<Type> dbContextTypes = typeof(StoveDbContext).AssignedTypes().ToList();
                 dbContextTypes.ForEach(type =>
                 {
                     EfRepositoryRegistrar.RegisterRepositories(type, builder);
-                    ormRegistrars.Add(new EfBasedAdditionalOrmRegistrar(builder, type, DbContextHelper.GetEntityTypeInfos, EntityHelper.GetPrimaryKeyType));
+                    ormRegistrars.Add(new EfBasedSecondaryOrmRegistrar(builder, type, DbContextHelper.GetEntityTypeInfos, EntityHelper.GetPrimaryKeyType));
                 });
 
                 r.UseBuilder(cb => { cb.Properties[StoveConsts.OrmRegistrarContextKey] = ormRegistrars; });

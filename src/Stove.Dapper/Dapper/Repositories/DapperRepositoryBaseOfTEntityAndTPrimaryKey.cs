@@ -15,7 +15,7 @@ using Stove.Dapper.Filters.Query;
 using Stove.Domain.Entities;
 using Stove.Domain.Uow;
 using Stove.Events.Bus.Entities;
-using Stove.Transactions;
+using Stove.Data;
 
 namespace Stove.Dapper.Repositories
 {
