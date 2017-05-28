@@ -19,13 +19,25 @@ namespace Stove.Events.Bus
 
         public void Trigger<T>(T @event) where T : IEventData
         {
+            CheckCurrentUow();
+
             _unitOfWorkManager.Current.Completed += (sender, args) => { EventBus.Trigger(@event); };
         }
 
         public Task TriggerAsync<T>(T @event) where T : IEventData
         {
+            CheckCurrentUow();
+
             _unitOfWorkManager.Current.Completed += async (sender, args) => { await EventBus.TriggerAsync(@event); };
             return Task.FromResult(0);
+        }
+
+        private void CheckCurrentUow()
+        {
+            if (_unitOfWorkManager.Current == null)
+            {
+                throw new StoveException($"{nameof(IUnitOfWorkCompletedEventHelper.Trigger)} method should be called in a UOW.");
+            }
         }
     }
 }
