@@ -1,4 +1,7 @@
-﻿using Autofac.Extras.IocManager;
+﻿using System;
+using System.Threading.Tasks;
+
+using Autofac.Extras.IocManager;
 
 using Shouldly;
 
@@ -122,6 +125,90 @@ namespace Stove.Tests.SampleApplication
             }
         }
 
+        [Fact]
+        public void uow_completed_event_should_fire_when_uow_is_completed()
+        {
+            var executionCount = 0;
+            The<IEventBus>().Register<UserCretedEventAfterUowCompleted>(completed =>
+            {
+                executionCount++;
+            });
+
+            var uowManager = The<IUnitOfWorkManager>();
+            var userRepository = The<IRepository<User>>();
+
+            using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
+            {
+                userRepository.Insert(new User
+                {
+                    Email = "ouzsykn@hotmail.com",
+                    Surname = "Sykn",
+                    Name = "Oğuz"
+                });
+
+                The<IUnitOfWorkCompletedEventHelper>().Trigger(new UserCretedEventAfterUowCompleted() { Name = "Oğuz" });
+
+                uow.Complete();
+            }
+
+            executionCount.ShouldBe(1);
+
+        }
+
+        [Fact]
+        public async Task uow_completed_async_event_should_fire_when_uow_is_completed()
+        {
+            var executionCount = 0;
+            The<IEventBus>().Register<UserCretedEventAfterUowCompleted>(completed =>
+            {
+                executionCount++;
+            });
+            var uowManager = The<IUnitOfWorkManager>();
+            var userRepository = The<IRepository<User>>();
+
+            using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
+            {
+                userRepository.Insert(new User
+                {
+                    Email = "ouzsykn@hotmail.com",
+                    Surname = "Sykn",
+                    Name = "Oğuz"
+                });
+
+                await The<IUnitOfWorkCompletedEventHelper>().TriggerAsync(new UserCretedEventAfterUowCompleted() { Name = "Oğuz" });
+
+                uow.Complete();
+            }
+
+            executionCount.ShouldBe(1);
+        }
+
+        [Fact]
+        public void uow_completed_event_should_not_fire_when_uow_is_not_completed()
+        {
+            var executionCount = 0;
+            The<IEventBus>().Register<UserCretedEventAfterUowCompleted>(completed =>
+            {
+                executionCount++;
+            });
+            var uowManager = The<IUnitOfWorkManager>();
+            var userRepository = The<IRepository<User>>();
+
+            using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
+            {
+                userRepository.Insert(new User
+                {
+                    Email = "ouzsykn@hotmail.com",
+                    Surname = "Sykn",
+                    Name = "Oğuz"
+                });
+
+                The<IUnitOfWorkCompletedEventHelper>().Trigger(new UserCretedEventAfterUowCompleted() { Name = "Oğuz" });
+            }
+
+            executionCount.ShouldBe(0);
+        }
+
         public class UserCreatedEventHandler : IEventHandler<EntityCreatedEventData<User>>,
             IEventHandler<EntityUpdatedEventData<User>>,
             ITransientDependency
@@ -136,5 +223,11 @@ namespace Stove.Tests.SampleApplication
                 User a = eventData.Entity;
             }
         }
+
+        public class UserCretedEventAfterUowCompleted : EventData
+        {
+            public string Name { get; set; }
+        }
     }
 }
+

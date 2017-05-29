@@ -10,7 +10,7 @@ using Stove.Tests.SampleApplication.Dtos;
 namespace Stove.Tests.SampleApplication.Domain.Entities
 {
     [Table(nameof(User))]
-    [AutoMapFrom(typeof(UserDto))]
+    [AutoMapTo(typeof(UserDto))]
     public class User : AggregateRoot, IHasCreationTime
     {
         [Required]

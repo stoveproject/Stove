@@ -8,12 +8,12 @@ using Stove.MQ;
 
 namespace Stove.RabbitMQ
 {
-    public class RabbitMQMessageBus : IMessageBus
+    public class StoveRabbitMQMessageBus : IMessageBus
     {
         [NotNull]
         private readonly IBus _bus;
 
-        public RabbitMQMessageBus([NotNull] IBus bus)
+        public StoveRabbitMQMessageBus([NotNull] IBus bus)
         {
             _bus = bus;
         }

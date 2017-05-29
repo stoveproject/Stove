@@ -5,11 +5,11 @@ using Stove.Orm;
 
 namespace Stove.NHibernate
 {
-    public class NhBasedAdditionalOrmRegistrar : IAdditionalOrmRegistrar
+    public class NhBasedSecondaryOrmRegistrar : ISecondaryOrmRegistrar
     {
         private readonly IIocBuilder _iocBuilder;
 
-        public NhBasedAdditionalOrmRegistrar(IIocBuilder iocBuilder)
+        public NhBasedSecondaryOrmRegistrar(IIocBuilder iocBuilder)
         {
             _iocBuilder = iocBuilder;
         }
@@ -23,9 +23,6 @@ namespace Stove.NHibernate
             });
         }
 
-        public string OrmContextKey
-        {
-            get { return StoveOrms.NHibernate; }
-        }
+        public string OrmContextKey => StoveConsts.Orms.NHibernate;
     }
 }

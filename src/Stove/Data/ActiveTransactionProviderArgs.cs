@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Stove.Transactions
+namespace Stove.Data
 {
     public class ActiveTransactionProviderArgs : Dictionary<string, object>
     {

@@ -7,18 +7,17 @@ using Autofac.Extras.IocManager;
 using Stove.Domain.Entities;
 using Stove.Domain.Repositories;
 using Stove.Orm;
-using Stove.Reflection.Extensions;
 
 namespace Stove.EntityFramework
 {
-    public class EfBasedAdditionalOrmRegistrar : IAdditionalOrmRegistrar
+    public class EfBasedSecondaryOrmRegistrar : ISecondaryOrmRegistrar
     {
         private readonly Type _dbContextType;
         private readonly Func<Type, IEnumerable<EntityTypeInfo>> _entityTypeInfoFinder;
         private readonly IIocBuilder _iocBuilder;
         private readonly Func<Type, Type> _primaryKeyTypeFinder;
 
-        public EfBasedAdditionalOrmRegistrar(
+        public EfBasedSecondaryOrmRegistrar(
             IIocBuilder iocBuilder,
             Type dbContextType,
             Func<Type, IEnumerable<EntityTypeInfo>> entityTypeInfoFinder,
@@ -32,8 +31,7 @@ namespace Stove.EntityFramework
 
         public void RegisterRepositories(AutoRepositoryTypesAttribute defaultRepositoryTypes)
         {
-            AutoRepositoryTypesAttribute autoRepositoryAttr = _dbContextType.GetSingleAttributeOrNull<AutoRepositoryTypesAttribute>() ??
-                                                              defaultRepositoryTypes;
+            AutoRepositoryTypesAttribute autoRepositoryAttr = defaultRepositoryTypes;
 
             foreach (EntityTypeInfo entityTypeInfo in _entityTypeInfoFinder(_dbContextType))
             {
@@ -62,6 +60,6 @@ namespace Stove.EntityFramework
             }
         }
 
-        public string OrmContextKey { get { return StoveOrms.EntityFramework; } }
+        public string OrmContextKey => StoveConsts.Orms.EntityFramework;
     }
 }

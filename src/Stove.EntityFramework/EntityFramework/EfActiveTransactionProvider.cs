@@ -6,7 +6,7 @@ using System.Reflection;
 using Autofac.Extras.IocManager;
 
 using Stove.Extensions;
-using Stove.Transactions;
+using Stove.Data;
 
 namespace Stove.EntityFramework
 {

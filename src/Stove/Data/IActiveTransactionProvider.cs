@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace Stove.Transactions
+namespace Stove.Data
 {
     public interface IActiveTransactionProvider
     {

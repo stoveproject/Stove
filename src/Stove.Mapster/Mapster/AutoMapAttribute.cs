@@ -27,10 +27,8 @@ namespace Stove.Mapster
 
             foreach (Type source in TargetTypes)
             {
-                MethodInfo mapToDestination = configuration.GetType().GetMethod("NewConfig").MakeGenericMethod(source, needstoMap);
-                MethodInfo mapToSource = configuration.GetType().GetMethod("NewConfig").MakeGenericMethod(needstoMap, source);
-                mapToDestination.Invoke(configuration, null);
-                mapToSource.Invoke(configuration, null);
+                configuration.NewConfig(source, needstoMap);
+                configuration.NewConfig(needstoMap, source);
             }
         }
     }

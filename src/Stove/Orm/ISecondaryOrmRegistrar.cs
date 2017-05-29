@@ -2,7 +2,7 @@
 
 namespace Stove.Orm
 {
-    public interface IAdditionalOrmRegistrar
+    public interface ISecondaryOrmRegistrar
     {
         string OrmContextKey { get; }
 
