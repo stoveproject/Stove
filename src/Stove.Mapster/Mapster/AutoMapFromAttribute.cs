@@ -18,17 +18,16 @@ namespace Stove.Mapster
         {
         }
 
-        public override void CreateMap(TypeAdapterConfig configuration, Type source)
+        public override void CreateMap(TypeAdapterConfig configuration, Type destination)
         {
             if (TargetTypes.IsNullOrEmpty())
             {
                 return;
             }
 
-            foreach (Type destination in TargetTypes)
+            foreach (Type target in TargetTypes)
             {
-                MethodInfo mapperFunc = configuration.GetType().GetMethod("NewConfig").MakeGenericMethod(source, destination);
-                mapperFunc.Invoke(configuration, null);
+                configuration.NewConfig(target, destination);
             }
         }
     }

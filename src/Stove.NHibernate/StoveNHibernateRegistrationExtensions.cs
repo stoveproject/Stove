@@ -35,8 +35,8 @@ namespace Stove
                         .BuildSessionFactory();
                 }, Lifetime.Singleton);
 
-                var ormRegistrars = new List<IAdditionalOrmRegistrar>();
-                ormRegistrars.Add(new NhBasedAdditionalOrmRegistrar(builder));
+                var ormRegistrars = new List<ISecondaryOrmRegistrar>();
+                ormRegistrars.Add(new NhBasedSecondaryOrmRegistrar(builder));
                 r.UseBuilder(cb => { cb.Properties[StoveConsts.OrmRegistrarContextKey] = ormRegistrars; });
             });
         }

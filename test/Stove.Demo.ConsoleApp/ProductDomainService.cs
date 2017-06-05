@@ -46,7 +46,9 @@ namespace Stove.Demo.ConsoleApp
 
                     Product gomlekFromEf = _productRepository.FirstOrDefault(gomlekId);
 
-                    Product firstProduct = _productDapperRepository.Get(1);
+                    _productDapperRepository.Execute("update products set Name = @name where Id = @id", new { name = "TShirt_From_ExecuteQuery", @id = gomlekId });
+
+                    Product firstProduct = _productDapperRepository.Get(gomlekId);
 
                     _animalRepository.InsertAndGetId(new Animal("Bird"));
 

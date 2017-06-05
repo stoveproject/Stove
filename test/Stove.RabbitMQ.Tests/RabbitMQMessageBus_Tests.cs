@@ -1,4 +1,5 @@
 ﻿using MassTransit;
+using MassTransit.Testing;
 
 using NSubstitute;
 
@@ -21,7 +22,7 @@ namespace Stove.RabbitMQ.Tests
                 {
                     builder.RegisterServices(r =>
                     {
-                        r.Register<IMessageBus, RabbitMQMessageBus>();
+                        r.Register<IMessageBus, StoveRabbitMQMessageBus>();
                         r.Register(ctx => _bus);
                     });
                 })
@@ -60,12 +61,12 @@ namespace Stove.RabbitMQ.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Act
             //-----------------------------------------------------------------------------------------------------------
-            messageBus.Publish(message);
+            messageBus.Publish((object)message);
 
             //-----------------------------------------------------------------------------------------------------------
             // Assert
             //-----------------------------------------------------------------------------------------------------------
-            _bus.Received().Publish(message);
+            _bus.Received().Publish((object)message);
         }
 
         [Fact]

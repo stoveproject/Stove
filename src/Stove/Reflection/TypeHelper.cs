@@ -55,12 +55,5 @@ namespace Stove.Reflection
                    type == typeof(TimeSpan) ||
                    type == typeof(Guid);
         }
-
-        internal static object GetInstanceField(Type type, object instance, string fieldName)
-        {
-            BindingFlags bindFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
-            FieldInfo field = type.GetField(fieldName, bindFlags);
-            return field.GetValue(instance);
-        }
     }
 }

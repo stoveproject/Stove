@@ -6,7 +6,7 @@ using Stove.Dapper.Repositories;
 using Stove.Dapper.Tests.DbContexes;
 using Stove.Dapper.Tests.Entities;
 using Stove.Orm;
-using Stove.Transactions;
+using Stove.Data;
 
 namespace Stove.Dapper.Tests.CustomRepositories
 {

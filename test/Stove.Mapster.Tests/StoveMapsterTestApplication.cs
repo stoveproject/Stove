@@ -8,7 +8,12 @@ namespace Stove.Mapster.Tests
     {
         public StoveMapsterTestApplication()
         {
-            Building(builder => { builder.RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly())); });
+            Building(builder =>
+            {
+                builder
+                    .UseStoveMapster()
+                    .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
+            }).Ok();
         }
     }
 }

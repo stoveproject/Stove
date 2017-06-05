@@ -3,7 +3,7 @@ configuration: Release
 image: Visual Studio 2017
 pull_requests:  
   do_not_increment_build_number: true
-
+   
 assembly_info:
   patch: true
   file: '**\AssemblyInfo.*'

@@ -15,11 +15,6 @@ namespace Stove.Mapster.Tests
 {
     public class AutoMapping_Tests : StoveMapsterTestApplication
     {
-        public AutoMapping_Tests()
-        {
-            Building(builder => { builder.UseStoveMapster(); }).Ok();
-        }
-
         [Fact]
         public void adapter_should_not_be_null()
         {
@@ -283,7 +278,7 @@ namespace Stove.Mapster.Tests
             // Act
             //-----------------------------------------------------------------------------------------------------------
             var mappedObject = myclass.MapTo<MyClassDto>();
-            var mappedObject2 = myclass.MapTo(myclassDto);
+            MyClassDto mappedObject2 = myclass.MapTo(myclassDto);
 
             //-----------------------------------------------------------------------------------------------------------
             // Assert
@@ -295,13 +290,13 @@ namespace Stove.Mapster.Tests
         }
 
         [UsedImplicitly]
-        [AutoMapFrom(typeof(MyClassDto))]
+        [AutoMapTo(typeof(MyClassDto))]
         public class MyClass
         {
             public string TestProperty { get; set; }
         }
 
-        [AutoMapFrom(typeof(MyClassDto), typeof(MyClassDto2))]
+        [AutoMapTo(typeof(MyClassDto), typeof(MyClassDto2))]
         public class MyClassWithMultipleAttribute
         {
             public string TestProperty { get; set; }

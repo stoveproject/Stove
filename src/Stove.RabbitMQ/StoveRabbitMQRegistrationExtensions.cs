@@ -25,7 +25,7 @@ namespace Stove
         /// <param name="rabbitMQConfigurer">The rabbit mq configurer.</param>
         /// <returns></returns>
         [NotNull]
-        public static IIocBuilder UseStoveRabbitMQ([NotNull] this IIocBuilder builder, [NotNull] Func<IStoveRabbitMQConfiguration, IStoveRabbitMQConfiguration> rabbitMQConfigurer = null)
+        public static IIocBuilder UseStoveRabbitMQ([NotNull] this IIocBuilder builder, [NotNull] Func<IStoveRabbitMQConfiguration, IStoveRabbitMQConfiguration> rabbitMQConfigurer)
         {
             Check.NotNull(rabbitMQConfigurer, nameof(rabbitMQConfigurer));
 
@@ -34,12 +34,8 @@ namespace Stove
                 {
                     r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly());
                     r.Register<IStoveRabbitMQConfiguration, StoveRabbitMQConfiguration>(Lifetime.Singleton);
-                    r.Register<IMessageBus, RabbitMQMessageBus>();
-
-                    if (rabbitMQConfigurer != null)
-                    {
-                        r.Register(ctx => rabbitMQConfigurer);
-                    }
+                    r.Register<IMessageBus, StoveRabbitMQMessageBus>();
+                    r.Register(ctx => rabbitMQConfigurer);
                 });
 
             builder.RegisterServices(r => r.UseBuilder(cb =>
