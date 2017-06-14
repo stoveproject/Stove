@@ -11,44 +11,9 @@ assembly_info:
   assembly_file_version: '{version}'
   assembly_informational_version: '{version}'
   
-environment:
-  nuget_user: oguzhansoykan@outlook.com
-  nuget_password:
-    secure: w73Xs1Is7iK/DtAOf0XTHg==
-    
-before_build:
-# - cmd: set PATH=C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin;C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\MSBuild\15.0\Bin;%PATH%
-# - cmd: nuget install nuget.commandline -source https://dotnet.myget.org/F/nuget-build -prerelease -excludeversion
-# - cmd: set PATH=%appveyor_build_folder%\NuGet.CommandLine\tools;%PATH%
-  - cmd: dotnet restore Stove.sln 
-  
-build:
-  project: Stove.sln 
-  publish_nuget: true
-  publish_nuget_symbols: true
-  include_nuget_references: true
-  verbosity: minimal
-  
-after_build:
- - ps: >-
-    $versionSuffix=(Get-Item Env:APPVEYOR_BUILD_NUMBER).Value
-    
-    Set-Location "nupkg"
-    
-    .\packs.ps1 -versionSuffix "$versionSuffix"
-# - cmd: >- 
-#   icacls "test\Stove.Dapper.Tests\Db\StoveDapperTest.mdf" /Grant Everyone:F
  
-test:
-  assemblies:
-  - test\Stove.Tests\bin\Release\net461\Stove.Tests.dll
-  #- test\Stove.Dapper.Tests\bin\Release\net461\Stove.Dapper.Tests.dll
-  - test\Stove.EntityFramework.Tests\bin\Release\net461\Stove.EntityFramework.Tests.dll
-  #- test\Stove.Hangfire.Tests\bin\Release\net461\Stove.Hangfire.Tests.dll
-  - test\Stove.Mapster.Tests\bin\Release\net461\Stove.Mapster.Tests.dll
-  #- test\Stove.NHibernate.Tests\bin\Release\net461\Stove.NHibernate.Tests.dll
-  - test\Stove.RabbitMQ.Tests\bin\Release\net461\Stove.RabbitMQ.Tests.dll
-  - test\Stove.Tests.SampleApplication\bin\Release\net461\Stove.Tests.SampleApplication.dll
+build_script:
+ -ps: build.ps1 -experimental
   
 deploy:
 - provider: NuGet
