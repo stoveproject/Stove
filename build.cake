@@ -25,17 +25,17 @@ var targetTestFramework = "net461";
 var testFileRegex = $"**/bin/{configuration}/{targetTestFramework}/*Tests*.dll";
 var testProjectNames = new List<string>()
                       {
-                          //"Stove.Dapper.Tests",
                           "Stove.EntityFramework.Tests",
-                          //"Stove.Hangfire.Tests",
                           "Stove.Mapster.Tests",
-                          //"Stove.NHibernate.Tests",
                           "Stove.NLog.Tests",
                           "Stove.RabbitMQ.Tests",
                           "Stove.RavenDB.Tests",
                           "Stove.Redis.Tests",
                           "Stove.Tests",
                           "Stove.Tests.SampleApplication"
+                          //"Stove.Dapper.Tests",
+                          //"Stove.Hangfire.Tests",
+                          //"Stove.NHibernate.Tests",
                         };
 
 var nupkgPath = "nupkg";
@@ -91,7 +91,6 @@ Task("Run-Unit-Tests")
            Information(testFile);
            XUnit2(testFile.ToString(), new XUnit2Settings { });
         }
-        //  XUnit2("./test/One.Tests/**/bin/" + configuration + "/" + targetFramework + "/One.Tests.dll", new XUnit2Settings { });
     });
 
 Task("Coverage")
