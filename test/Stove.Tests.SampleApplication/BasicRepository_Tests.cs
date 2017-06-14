@@ -159,9 +159,10 @@ namespace Stove.Tests.SampleApplication
         public async Task uow_completed_async_event_should_fire_when_uow_is_completed()
         {
             var executionCount = 0;
-            The<IEventBus>().Register<UserCretedEventAfterUowCompleted>(completed =>
+            The<IEventBus>().Register<UserCretedEventAfterUowCompleted>(async completed =>
             {
                 executionCount++;
+                await Task.FromResult(0);
             });
             var uowManager = The<IUnitOfWorkManager>();
             var userRepository = The<IRepository<User>>();
