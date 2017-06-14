@@ -25,7 +25,7 @@ var targetTestFramework = "net461";
 var testFileRegex = $"**/bin/{configuration}/{targetTestFramework}/*Tests*.dll";
 var testProjectNames = new List<string>()
                       {
-                          "Stove.Dapper.Tests",
+                          //"Stove.Dapper.Tests",
                           "Stove.EntityFramework.Tests",
                           //"Stove.Hangfire.Tests",
                           "Stove.Mapster.Tests",
