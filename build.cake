@@ -27,8 +27,9 @@ var testProjectNames = new List<string>()
                       {
                           "Stove.Dapper.Tests",
                           "Stove.EntityFramework.Tests",
+                          //"Stove.Hangfire.Tests",
                           "Stove.Mapster.Tests",
-                          "Stove.NHibernate.Tests",
+                          //"Stove.NHibernate.Tests",
                           "Stove.NLog.Tests",
                           "Stove.RabbitMQ.Tests",
                           "Stove.RavenDB.Tests",

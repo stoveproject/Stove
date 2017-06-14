@@ -168,7 +168,7 @@ namespace Stove.Tests.SampleApplication
 
             using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
             {
-                userRepository.Insert(new User
+                await userRepository.InsertAsync(new User
                 {
                     Email = "ouzsykn@hotmail.com",
                     Surname = "Sykn",
@@ -177,7 +177,7 @@ namespace Stove.Tests.SampleApplication
 
                 await The<IUnitOfWorkCompletedEventHelper>().TriggerAsync(new UserCretedEventAfterUowCompleted() { Name = "Oğuz" });
 
-                uow.Complete();
+                await uow.CompleteAsync();
             }
 
             executionCount.ShouldBe(1);
