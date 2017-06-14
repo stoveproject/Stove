@@ -15,7 +15,7 @@
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
-var branch = Argument("branch","develop");
+var branch = Argument("branch","dev");
 var toolpath = Argument("toolpath", @"tools");
 
 var projectName = "Stove";
