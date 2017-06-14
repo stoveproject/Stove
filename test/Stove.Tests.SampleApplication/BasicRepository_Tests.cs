@@ -155,7 +155,7 @@ namespace Stove.Tests.SampleApplication
 
         }
 
-        [Fact]
+        //[Fact]
         public async Task uow_completed_async_event_should_fire_when_uow_is_completed()
         {
             var executionCount = 0;
