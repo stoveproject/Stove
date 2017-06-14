@@ -3,16 +3,11 @@ configuration: Release
 image: Visual Studio 2017
 pull_requests:
   do_not_increment_build_number: true
-
-assembly_info:
-  patch: true
-  file: '**\AssemblyInfo.*'
-  assembly_version: '{version}'
-  assembly_file_version: '{version}'
-  assembly_informational_version: '{version}'
-
+  
 build_script:
 - ps: .\build.ps1 -experimental
+
+test: off
 
 deploy:
 - provider: NuGet
