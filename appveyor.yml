@@ -12,7 +12,7 @@ assembly_info:
   assembly_informational_version: '{version}'
 
 build_script:
-- ps: .\build.ps1 -experimental -branch=\"APPVEYOR_REPO_BRANCH\"
+- ps: .\build.ps1 -experimental
 
 deploy:
 - provider: NuGet

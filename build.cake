@@ -15,7 +15,7 @@
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
-var branch = Argument("branch","dev");
+var branch = Argument("branch", EnvironmentVariable("APPVEYOR_REPO_BRANCH"));
 var toolpath = Argument("toolpath", @"tools");
 
 var projectName = "Stove";
@@ -56,6 +56,7 @@ var NUGET_PUSH_SETTINGS = new NuGetPushSettings
 Task("Clean")
     .Does(() =>
     {
+        Information("Current Branch is:" + EnvironmentVariable("APPVEYOR_REPO_BRANCH"));
         CleanDirectories("./src/**/bin");
         CleanDirectories("./src/**/obj");
         CleanDirectory(nupkgPath);
