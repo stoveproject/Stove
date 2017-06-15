@@ -187,3 +187,5 @@ Tools/**
 *.dg
 *.config
 *.ncrunchproject
+
+/.dotnet

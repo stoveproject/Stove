@@ -26,9 +26,9 @@
     <PackageReference Include="Microsoft.Owin" Version="3.1.0" />
     <PackageReference Include="Microsoft.Owin.Host.SystemWeb" Version="3.1.0" />
     <PackageReference Include="Owin" Version="1.0" />
-    <PackageReference Include="Hangfire" Version="1.6.12" />
-    <PackageReference Include="Hangfire.Core" Version="1.6.12" />
-    <PackageReference Include="Hangfire.SqlServer" Version="1.6.12" />
+    <PackageReference Include="Hangfire" Version="1.6.13" />
+    <PackageReference Include="Hangfire.Core" Version="1.6.13" />
+    <PackageReference Include="Hangfire.SqlServer" Version="1.6.13" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
