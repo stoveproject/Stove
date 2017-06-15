@@ -6,22 +6,27 @@
 
 #addin "Cake.Json"
 #addin "Cake.FileHelpers"
+#addin "nuget:?package=NuGet.Core"
+#addin "nuget:?package=Cake.ExtendedNuGet"
 
 #l "common.cake"
 
-///////////////////////////////////////////////////////////////////////
-// ARGUMENTS
-///////////////////////////////////////////////////////////////////////
+using NuGet;
 
-var target = Argument("target", "Default");
-var configuration = Argument("configuration", "Release");
-var branch = Argument("branch", EnvironmentVariable("APPVEYOR_REPO_BRANCH"));
-var toolpath = Argument("toolpath", @"tools");
+//////////////////////////////////////////////////////////////////////
+// ARGUMENTS
+//////////////////////////////////////////////////////////////////////
 
 var projectName = "Stove";
 var solution = "./" + projectName + ".sln";
-var targetTestFramework = "net461";
 
+var target = Argument("target", "Default");
+var configuration = Argument("configuration", "Release");
+var toolpath = Argument("toolpath", @"tools");
+var branch = Argument("branch", EnvironmentVariable("APPVEYOR_REPO_BRANCH"));
+var nugetApiKey = EnvironmentVariable("nugetApiKey");
+
+var targetTestFramework = "net461";
 var testFileRegex = $"**/bin/{configuration}/{targetTestFramework}/*Tests*.dll";
 var testProjectNames = new List<string>()
                       {
@@ -41,11 +46,12 @@ var testProjectNames = new List<string>()
 var nupkgPath = "nupkg";
 var nupkgRegex = $"**/{projectName}*.nupkg";
 var nugetPath = toolpath + "/NuGet.CommandLine/tools/nuget.exe";
-var nugetApiKey = EnvironmentVariable("nugetApiKey");
+var nugetQueryUrl = "https://www.nuget.org/api/v2/";
+var nugetPushUrl = "https://www.nuget.org/api/v2/package";
 var NUGET_PUSH_SETTINGS = new NuGetPushSettings
                           {
                               ToolPath = File(nugetPath),
-                              Source = "https://www.nuget.org/api/v2/package",
+                              Source = nugetPushUrl,
                               ApiKey = nugetApiKey
                           };
 
@@ -148,8 +154,15 @@ Task("NugetPublish")
     {
         foreach(var nupkgFile in GetFiles(nupkgRegex))
         {
-          Information("Publishing... " + nupkgFile);
-          NuGetPush(nupkgFile, NUGET_PUSH_SETTINGS);
+          if(!IsNuGetPublished(nupkgFile, nugetQueryUrl))
+          {
+             Information("Publishing... " + nupkgFile);
+             NuGetPush(nupkgFile, NUGET_PUSH_SETTINGS);
+          }
+          else
+          {
+             Information("Already published, skipping... " + nupkgFile);
+          }
         }
     });
 
