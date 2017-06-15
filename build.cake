@@ -45,7 +45,7 @@ var nugetApiKey = EnvironmentVariable("nugetApiKey");
 var NUGET_PUSH_SETTINGS = new NuGetPushSettings
                           {
                               ToolPath = File(nugetPath),
-                              Source = "https://www.nuget.org/api/v2/package",
+                              Source = "https://ci.appveyor.com/nuget/osoykan/api/v2/package",
                               ApiKey = nugetApiKey
                           };
 
