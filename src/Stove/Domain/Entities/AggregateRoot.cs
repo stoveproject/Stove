@@ -8,17 +8,21 @@ namespace Stove.Domain.Entities
 {
     public class AggregateRoot : AggregateRoot<int>, IAggregateRoot
     {
-
     }
 
     public class AggregateRoot<TPrimaryKey> : Entity<TPrimaryKey>, IAggregateRoot<TPrimaryKey>
     {
-        [NotMapped]
-        public virtual ICollection<IEventData> DomainEvents { get; }
-
         public AggregateRoot()
         {
             DomainEvents = new Collection<IEventData>();
+        }
+
+        [NotMapped]
+        public virtual ICollection<IEventData> DomainEvents { get; }
+
+        protected void Raise(IEventData @event)
+        {
+            DomainEvents.Add(@event);
         }
     }
 }
