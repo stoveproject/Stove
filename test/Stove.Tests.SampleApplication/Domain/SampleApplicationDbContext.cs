@@ -47,5 +47,7 @@ namespace Stove.Tests.SampleApplication.Domain
         public virtual IDbSet<ProductDetail> ProductDetails { get; set; }
 
         public virtual IDbSet<Message> Messages { get; set; }
+
+        public virtual IDbSet<Campaign> Campaigns { get; set; }
     }
 }

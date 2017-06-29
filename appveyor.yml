@@ -8,14 +8,3 @@ build_script:
 - ps: .\build.ps1 -experimental
 
 test: off
-
-deploy:
-- provider: NuGet
-  on:
-    branch: master
-  api_key:
-    secure: liSTqN52OJQy9fZJk6gubSgYBAy4EXcEPCDSCLJ/3T9cZufzpTwvBlGPLX+iP2n9
-
-artifacts:
-- path: nupkg\*.nupkg
-  name: nuget-packages
