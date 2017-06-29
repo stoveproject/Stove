@@ -104,21 +104,6 @@ Task("Coverage")
     .Does(()=>
     {
       Information("Coverage...");
-      /*var coverSettings = new DotCoverCoverSettings()
-                              .WithFilter("-:*Tests");
-
-      var coverageResultSsV4 = new FilePath("./dotcover/dotcoverSsV4.data");
-
-      DotCoverCover(ctx =>
-                    ctx.XUnit2("./SsV4Test/NodaTime.Serialization.ServiceStackText.UnitTests.dll"),
-                        coverageResultSsV4,
-                        coverSettings
-                   );
-
-      var htmlReportFile = new FilePath("./dotcover/dotcover.html");
-      var reportSettings = new DotCoverReportSettings { ReportType = DotCoverReportType.HTML};
-      DotCoverReport(mergedData, htmlReportFile, reportSettings);
-      StartProcess("powershell", "start file:///" + MakeAbsolute(htmlReportFile));*/
     });
 
 Task("Analyse")
@@ -126,17 +111,6 @@ Task("Analyse")
     .Does(()=>
     {
         Information("Sonar running!...");
-        /*var settings = new SonarBeginSettings()
-        {
-    			Url = sonarQubeServerUrl,
-    			Key = sonarQubeKey
-  		  };
-
-  		Sonar(
-  			ctx => {
-  				ctx.MSBuild(solution);
-  			}, settings
-  		);*/
     });
 
 Task("Pack")
