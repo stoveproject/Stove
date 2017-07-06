@@ -9,6 +9,7 @@ namespace Stove.Dapper.Tests.Mappings
         public ProductDetailMap()
         {
             Table("ProductDetails");
+            Map(x => x.Id).Key(KeyType.Identity);
             AutoMap();
         }
     }

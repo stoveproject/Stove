@@ -1,6 +1,8 @@
 ﻿using System.Data.Common;
 using System.Data.Entity;
-using System.Data.Entity.SqlServer;
+using System.Data.Entity.Core.Common;
+using System.Data.SQLite;
+using System.Data.SQLite.EF6;
 
 using Stove.Dapper.Tests.Entities;
 using Stove.EntityFramework;
@@ -8,14 +10,14 @@ using Stove.EntityFramework;
 namespace Stove.Dapper.Tests.DbContexes
 {
     [DbConfigurationType(typeof(DapperDbContextConfiguration))]
-    public class SampleDapperApplicationDbContext : StoveDbContext
+    public class DapperAppTestStoveDbContext : StoveDbContext
     {
-        public SampleDapperApplicationDbContext(DbConnection connection)
+        public DapperAppTestStoveDbContext(DbConnection connection)
             : base(connection, false)
         {
         }
 
-        public SampleDapperApplicationDbContext(DbConnection connection, bool contextOwnsConnection)
+        public DapperAppTestStoveDbContext(DbConnection connection, bool contextOwnsConnection)
             : base(connection, contextOwnsConnection)
         {
         }
@@ -29,10 +31,8 @@ namespace Stove.Dapper.Tests.DbContexes
     {
         public DapperDbContextConfiguration()
         {
-            SetProviderServices(
-                "System.Data.SqlClient",
-                SqlProviderServices.Instance
-            );
+            SetProviderFactory("System.Data.SQLite", SQLiteFactory.Instance);
+            SetProviderServices("System.Data.SQLite", (DbProviderServices)SQLiteProviderFactory.Instance.GetService(typeof(DbProviderServices)));
         }
     }
 }
