@@ -38,9 +38,9 @@ var testProjectNames = new List<string>()
                           "Stove.Redis.Tests",
                           "Stove.Tests",
                           "Stove.Tests.SampleApplication"
-                          //"Stove.Dapper.Tests",
-                          //"Stove.Hangfire.Tests",
-                          //"Stove.NHibernate.Tests",
+                          "Stove.Dapper.Tests",
+                          "Stove.Hangfire.Tests",
+                          "Stove.NHibernate.Tests",
                         };
 
 var nupkgPath = "nupkg";
