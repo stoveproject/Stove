@@ -26,4 +26,10 @@
     <ProjectReference Include="..\Stove.TestBase\Stove.TestBase.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="sqlite3.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
