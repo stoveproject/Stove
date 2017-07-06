@@ -52,13 +52,4 @@
     <Reference Include="System.Transactions" />
   </ItemGroup>
   
-  <ItemGroup>
-    <None Update="SQLite.Interop.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="sqlite3.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  
 </Project>

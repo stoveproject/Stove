@@ -7,16 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="SQLite.Interop.dll" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="SQLite.Interop.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="System.Data.SQLite" Version="1.0.105.2" />
   </ItemGroup>
 
@@ -24,12 +14,6 @@
     <ProjectReference Include="..\..\src\Stove.Dapper\Stove.Dapper.csproj" />
     <ProjectReference Include="..\..\src\Stove.NHibernate\Stove.NHibernate.csproj" />
     <ProjectReference Include="..\Stove.TestBase\Stove.TestBase.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="sqlite3.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>
