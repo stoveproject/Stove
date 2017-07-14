@@ -105,12 +105,12 @@ namespace Stove.Dapper.Repositories
             return Connection.Query<TAny>(query, parameters, ActiveTransaction);
         }
 
-        public override void Execute(string query, object parameters = null)
+        public override int Execute(string query, object parameters = null)
         {
-            Connection.Execute(query, parameters, ActiveTransaction);
+            return Connection.Execute(query, parameters, ActiveTransaction);
         }
 
-        public override Task ExecuteAsync(string query, object parameters = null)
+        public override Task<int> ExecuteAsync(string query, object parameters = null)
         {
             return Connection.ExecuteAsync(query, parameters, ActiveTransaction);
         }

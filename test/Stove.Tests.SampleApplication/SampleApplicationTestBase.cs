@@ -16,103 +16,103 @@ using Stove.Timing;
 
 namespace Stove.Tests.SampleApplication
 {
-    public class SampleApplicationTestBase : ApplicationTestBase<SampleApplicationBootstrapper>
-    {
-        public SampleApplicationTestBase()
-        {
-            Building(builder =>
-            {
-                builder
-                    .UseStoveEntityFramework()
-                    .UseStoveEventBus()
-                    .UseStoveDefaultConnectionStringResolver()
-                    .UseStoveDbContextEfTransactionStrategy()
-                    .UseStoveMapster();
+	public class SampleApplicationTestBase : ApplicationTestBase<SampleApplicationBootstrapper>
+	{
+		public SampleApplicationTestBase(bool autoUnitOfWorkInterceptionEnabled = false) : base(autoUnitOfWorkInterceptionEnabled)
+		{
+			Building(builder =>
+			{
+				builder
+					.UseStoveEntityFramework()
+					.UseStoveEventBus()
+					.UseStoveDefaultConnectionStringResolver()
+					.UseStoveDbContextEfTransactionStrategy()
+					.UseStoveMapster();
 
-                builder.RegisterServices(r => r.Register(context => DbConnectionFactory.CreateTransient(), Lifetime.Singleton));
-                builder.RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
-            });
-        }
+				builder.RegisterServices(r => r.Register(context => DbConnectionFactory.CreateTransient(), Lifetime.Singleton));
+				builder.RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
+			});
+		}
 
-        protected override void PostBuild()
-        {
-            CreateInitialData();
-        }
+		protected override void PostBuild()
+		{
+			CreateInitialData();
+		}
 
-        protected virtual void CreateInitialData()
-        {
-            UsingDbContext(context =>
-            {
-                context.Users.Add(new User
-                {
-                    CreationTime = Clock.Now,
-                    Name = "Oğuzhan",
-                    Surname = "Soykan",
-                    Email = "oguzhansoykan@outlook.com"
-                });
+		protected virtual void CreateInitialData()
+		{
+			UsingDbContext(context =>
+			{
+				context.Users.Add(new User
+				{
+					CreationTime = Clock.Now,
+					Name = "Oğuzhan",
+					Surname = "Soykan",
+					Email = "oguzhansoykan@outlook.com"
+				});
 
-                context.Users.Add(new User
-                {
-                    CreationTime = Clock.Now,
-                    Name = "Neşet",
-                    Surname = "Ertaş",
-                    Email = "nesetertas@hotmail.com"
-                });
+				context.Users.Add(new User
+				{
+					CreationTime = Clock.Now,
+					Name = "Neşet",
+					Surname = "Ertaş",
+					Email = "nesetertas@hotmail.com"
+				});
 
-                context.Users.Add(new User
-                {
-                    CreationTime = Clock.Now,
-                    Name = "Muharrem",
-                    Surname = "Ertaş",
-                    Email = "muharremertas@gmail.com"
-                });
+				context.Users.Add(new User
+				{
+					CreationTime = Clock.Now,
+					Name = "Muharrem",
+					Surname = "Ertaş",
+					Email = "muharremertas@gmail.com"
+				});
 
-                context.Users.Add(new User
-                {
-                    CreationTime = Clock.Now,
-                    Name = "Çekiç",
-                    Surname = "Ali",
-                    Email = "cekicali@hotmail.com"
-                });
-            });
-        }
+				context.Users.Add(new User
+				{
+					CreationTime = Clock.Now,
+					Name = "Çekiç",
+					Surname = "Ali",
+					Email = "cekicali@hotmail.com"
+				});
+			});
+		}
 
-        public void UsingDbContext(Action<SampleApplicationDbContext> action)
-        {
-            using (var context = The<SampleApplicationDbContext>())
-            {
-                context.DisableAllFilters();
-                action(context);
-                context.SaveChanges();
-            }
-        }
+		public void UsingDbContext(Action<SampleApplicationDbContext> action)
+		{
+			using (var context = The<SampleApplicationDbContext>())
+			{
+				context.DisableAllFilters();
+				action(context);
+				context.SaveChanges();
+			}
+		}
 
-        public T UsingDbContext<T>(Func<SampleApplicationDbContext, T> func)
-        {
-            T result;
+		public T UsingDbContext<T>(Func<SampleApplicationDbContext, T> func)
+		{
+			T result;
 
-            using (var context = The<SampleApplicationDbContext>())
-            {
-                context.DisableAllFilters();
-                result = func(context);
-                context.SaveChanges();
-            }
+			using (var context = The<SampleApplicationDbContext>())
+			{
+				context.DisableAllFilters();
+				result = func(context);
+				context.SaveChanges();
+			}
 
-            return result;
-        }
+			return result;
+		}
 
-        public async Task<T> UsingDbContextAsync<T>(Func<SampleApplicationDbContext, Task<T>> func)
-        {
-            T result;
+		public async Task<T> UsingDbContextAsync<T>(Func<SampleApplicationDbContext, Task<T>> func)
+		{
+			T result;
 
-            using (var context = The<SampleApplicationDbContext>())
-            {
-                context.DisableAllFilters();
-                result = await func(context);
-                context.SaveChanges();
-            }
+			using (var context = The<SampleApplicationDbContext>())
+			{
+				context.DisableAllFilters();
+				result = await func(context);
+				context.SaveChanges();
+			}
 
-            return result;
-        }
-    }
+			return result;
+		}
+	}
 }

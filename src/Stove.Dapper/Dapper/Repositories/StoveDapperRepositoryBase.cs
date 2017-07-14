@@ -18,12 +18,11 @@ namespace Stove.Dapper.Repositories
 
         public abstract IEnumerable<TAny> Query<TAny>(string query, object parameters = null) where TAny : class;
 
-        public abstract void Execute(string query, object parameters = null);
+        public abstract int Execute(string query, object parameters = null);
 
-        public virtual Task ExecuteAsync(string query, object parameters = null)
+        public virtual Task<int> ExecuteAsync(string query, object parameters = null)
         {
-            Execute(query, parameters);
-            return Task.FromResult(0);
+            return Task.FromResult(Execute(query, parameters));
         }
 
         public virtual Task<IEnumerable<TAny>> QueryAsync<TAny>(string query, object parameters = null) where TAny : class

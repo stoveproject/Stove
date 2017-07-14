@@ -44,7 +44,6 @@ namespace Stove.Dapper.Tests
             using (IUnitOfWorkCompleteHandle uow = _unitOfWorkManager.Begin())
             {
                 //---Insert operation should work and tenant, creation audit properties must be set---------------------
-
                 _productDapperRepository.Insert(new Product("TShirt"));
                 Product insertedProduct = _productDapperRepository.GetAll(x => x.Name == "TShirt").FirstOrDefault();
 

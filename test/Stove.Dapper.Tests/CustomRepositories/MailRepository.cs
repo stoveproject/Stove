@@ -18,7 +18,7 @@ namespace Stove.Dapper.Tests.CustomRepositories
 
         public Mail GetMailById(Guid id)
         {
-            return ActiveTransaction.Connection.QueryFirstOrDefault<Mail>("select top 1 * from Mails where Id = @id", new { id }, ActiveTransaction);
+            return ActiveTransaction.Connection.QueryFirstOrDefault<Mail>("select  * from Mails where Id = @id limit 1", new { id }, ActiveTransaction);
         }
     }
 }

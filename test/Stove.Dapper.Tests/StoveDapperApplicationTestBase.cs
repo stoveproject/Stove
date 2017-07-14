@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
-using System.Data.SqlClient;
+using System.Data.Entity;
+using System.Data.SQLite;
 using System.IO;
 using System.Reflection;
 
 using Dapper;
 
+using Stove.Dapper.Tests.DbContexes;
 using Stove.TestBase;
 
 namespace Stove.Dapper.Tests
 {
     public abstract class StoveDapperApplicationTestBase : ApplicationTestBase<StoveDapperTestBootstrapper>
     {
-        private readonly string _connectionString;
-
         protected StoveDapperApplicationTestBase()
         {
             Building(builder =>
@@ -28,8 +27,9 @@ namespace Stove.Dapper.Tests
 
                 builder.RegisterServices(r => r.Register<DbConnection>(ctx =>
                 {
-                    var connection = new SqlConnection(_connectionString);
-
+                    var connection = new SQLiteConnection("Data Source=:memory:");
+                    connection.Open();
+                    //connection.BeginTransaction();
                     var files = new List<string>
                     {
                         ReadScriptFile("CreateInitialTables")
@@ -45,10 +45,6 @@ namespace Stove.Dapper.Tests
 
                 builder.RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
             });
-
-            string executable = AppDomain.CurrentDomain.BaseDirectory;
-            string path = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(executable))) + @"\Db\StoveDapperTest.mdf";
-            _connectionString = $@"Data Source=(localdb)\MsSqlLocalDb;Integrated Security=SSPI;AttachDBFilename={path}";
         }
 
         protected override void PostBuild()

@@ -65,7 +65,7 @@ namespace Stove.Dapper.Filters.Query
 
         private bool IsFilterable<TEntity, TPrimaryKey>() where TEntity : class, IEntity<TPrimaryKey>
         {
-            return typeof(TEntity).IsInheritsOrImplements(typeof(ISoftDelete)) && IsEnabled;
+	        return typeof(ISoftDelete).IsAssignableFrom(typeof(TEntity)) && IsEnabled;
         }
     }
 }
