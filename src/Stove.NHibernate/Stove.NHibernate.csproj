@@ -25,4 +25,11 @@
     <Reference Include="System.Transactions" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="bin\Release\net452\Stove.NHibernate.pdb">
+      <PackagePath>lib/net452/</PackagePath>
+      <Pack>true</Pack>
+    </None>
+  </ItemGroup>
+
 </Project>

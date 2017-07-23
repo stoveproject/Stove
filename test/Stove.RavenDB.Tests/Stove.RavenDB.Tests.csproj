@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="RavenDB.Database" Version="3.5.3" />
-    <PackageReference Include="RavenDB.Embedded" Version="3.5.3" />
-    <PackageReference Include="RavenDB.Tests.Helpers" Version="3.5.3" />
+    <PackageReference Include="RavenDB.Database" Version="3.5.4" />
+    <PackageReference Include="RavenDB.Embedded" Version="3.5.4" />
+    <PackageReference Include="RavenDB.Tests.Helpers" Version="3.5.4" />
   </ItemGroup>
 
   <ItemGroup>

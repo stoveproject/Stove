@@ -84,7 +84,8 @@ Task("Build")
     .IsDependentOn("Restore-NuGet-Packages")
     .Does(() =>
     {
-        DotNetBuild(solution, c=> c.Configuration = configuration);
+        MSBuild(solution, new MSBuildSettings(){Configuration = configuration}
+                                               .WithProperty("SourceLinkCreate","true"));
     });
 
 Task("Run-Unit-Tests")
@@ -98,23 +99,9 @@ Task("Run-Unit-Tests")
            XUnit2(testFile.ToString(), new XUnit2Settings { });
         }
     });
-
-Task("Coverage")
-    .IsDependentOn("Run-Unit-Tests")
-    .Does(()=>
-    {
-      Information("Coverage...");
-    });
-
-Task("Analyse")
-    .IsDependentOn("Coverage")
-    .Does(()=>
-    {
-        Information("Sonar running!...");
-    });
-
+    
 Task("Pack")
-    .IsDependentOn("Analyse")
+    .IsDependentOn("Run-Unit-Tests")
     .Does(() =>
     {
         var nupkgFiles = GetFiles(nupkgRegex);
