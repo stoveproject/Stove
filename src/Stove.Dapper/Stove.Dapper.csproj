@@ -24,7 +24,7 @@
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="1.50.2" />
-    <PackageReference Include="DapperExtensions" Version="1.5.0" />
+    <PackageReference Include="DapperExtensions" Version="1.6.0" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
