@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="bin\Release\net452\Stove.Dapper.pdb">
+    <None Include="bin\Release\net452\Stove.Dapper.pdb">
       <PackagePath>lib/net452/</PackagePath>
       <Pack>true</Pack>
     </None>
@@ -27,15 +27,9 @@
     <PackageReference Include="DapperExtensions" Version="1.6.0" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
+  <ItemGroup>
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="System.ComponentModel.DataAnnotations">
-      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.ComponentModel.DataAnnotations.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

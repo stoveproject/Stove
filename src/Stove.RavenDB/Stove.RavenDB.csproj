@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="bin\Release\net452\Stove.RavenDB.pdb">
+    <None Include="bin\Release\net452\Stove.RavenDB.pdb">
       <PackagePath>lib/net452/</PackagePath>
       <Pack>true</Pack>
     </None>

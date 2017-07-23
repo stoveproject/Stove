@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="bin\Release\net452\Stove.EntityFramework.pdb">
+    <None Include="bin\Release\net452\Stove.EntityFramework.pdb">
       <PackagePath>lib/net452/</PackagePath>
       <Pack>true</Pack>
     </None>
@@ -27,13 +27,9 @@
     <PackageReference Include="EntityFramework.DynamicFilters" Version="2.9.0" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
+  <ItemGroup>
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="System.Transactions" />
   </ItemGroup>
-
 </Project>

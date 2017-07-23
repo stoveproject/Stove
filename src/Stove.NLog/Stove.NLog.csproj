@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="bin\Release\net452\Stove.NLog.pdb">
+    <None Include="bin\Release\net452\Stove.NLog.pdb">
       <PackagePath>lib/net452/</PackagePath>
       <Pack>true</Pack>
     </None>
@@ -26,7 +26,7 @@
     <PackageReference Include="NLog" Version="4.4.11" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
+  <ItemGroup>
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>

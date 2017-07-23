@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="bin\Release\net452\Stove.Hangfire.pdb">
+    <None Include="bin\Release\net452\Stove.Hangfire.pdb">
       <PackagePath>lib/net452/</PackagePath>
       <Pack>true</Pack>
     </None>
@@ -31,7 +31,7 @@
     <PackageReference Include="Hangfire.SqlServer" Version="1.6.14" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
+  <ItemGroup>
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
