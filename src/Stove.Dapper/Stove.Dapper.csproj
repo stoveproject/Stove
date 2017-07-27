@@ -18,6 +18,10 @@
     </None>
   </ItemGroup>
 
+  <PropertyGroup>
+    <DocumentationFile>bin\Release\net452\Stove.Dapper.xml</DocumentationFile>
+  </PropertyGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\Stove\Stove.csproj" />
   </ItemGroup>

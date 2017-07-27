@@ -11,6 +11,10 @@
     <Description>RavenDB integration for Stove.</Description>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <DocumentationFile>bin\Release\net452\Stove.RavenDB.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Include="bin\Release\net452\Stove.RavenDB.pdb">
       <PackagePath>lib/net452/</PackagePath>

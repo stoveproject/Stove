@@ -10,6 +10,10 @@
     <Description>A framework to provide solid infrastructure to your application.</Description>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <DocumentationFile>bin\Release\net452\Stove.xml</DocumentationFile>
+  </PropertyGroup>
+  
   <ItemGroup>
     <None Include="bin\Release\net452\Stove.pdb">
       <PackagePath>lib/net452/</PackagePath>
