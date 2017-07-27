@@ -11,6 +11,10 @@
     <PackageTags>.net;framework;boilerplate;hangfire</PackageTags>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <DocumentationFile>bin\Release\net452\Stove.HangFire.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Include="bin\Release\net452\Stove.Hangfire.pdb">
       <PackagePath>lib/net452/</PackagePath>

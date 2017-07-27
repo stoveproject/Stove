@@ -11,6 +11,10 @@
     <Description>NLog logging integration for Stove.</Description>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <DocumentationFile>bin\Release\net452\Stove.NLog.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Include="bin\Release\net452\Stove.NLog.pdb">
       <PackagePath>lib/net452/</PackagePath>
