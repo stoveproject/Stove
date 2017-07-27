@@ -32,7 +32,7 @@ namespace Stove
 
 		private static void AutoRegisterRepositories(IIocBuilder builder)
 		{
-			builder.RegisterServices(r => r.UseBuilder(cb => { r.BeforeRegistrationCompleted += (sender, args) => { LastChanceRegistration(cb); }; }));
+		    builder.RegisterServices(r => r.BeforeRegistrationCompleted += (sender, args) => LastChanceRegistration(args.ContainerBuilder));
 		}
 
 		private static void LastChanceRegistration(ContainerBuilder cb)
