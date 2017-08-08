@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using JetBrains.Annotations;
 
+using Stove.Dapper.TableValueParameters;
 using Stove.Domain.Entities;
 using Stove.Domain.Repositories;
 
@@ -199,6 +201,18 @@ namespace Stove.Dapper.Repositories
         [NotNull]
         IEnumerable<TEntity> Query([NotNull] string query, [CanBeNull] object parameters = null);
 
+
+        /// <summary>
+        /// Queries the specified query with Table Value Parameter
+        /// </summary>
+        /// <typeparam name="TAny"></typeparam>
+        /// <param name="query"></param>
+        /// <param name="tableValueParameter"></param>
+        /// <param name="commandType"></param>
+        /// <returns></returns>
+        [NotNull]
+        IEnumerable<TAny> Query<TAny, TTvp>([NotNull]string query, [NotNull]TableValueParameter<TTvp> tableValueParameter, CommandType commandType) where TAny : class;
+            
         /// <summary>
         ///     Queries the asynchronous.
         /// </summary>
@@ -207,6 +221,18 @@ namespace Stove.Dapper.Repositories
         /// <returns></returns>
         [NotNull]
         Task<IEnumerable<TEntity>> QueryAsync([NotNull] string query, [CanBeNull] object parameters = null);
+
+        /// <summary>
+        ///  Queries the asynchronous with Table Value Parameter.
+        /// </summary>
+        /// <typeparam name="TAny"></typeparam>
+        /// <typeparam name="TTvp"></typeparam>
+        /// <param name="query"></param>
+        /// <param name="tableValueParameter"></param>
+        /// <param name="commandType"></param>
+        /// <returns></returns>
+        [NotNull]
+        Task<IEnumerable<TAny>> QueryAsync<TAny, TTvp>([NotNull] string query, [NotNull] TableValueParameter<TTvp> tableValueParameter, CommandType commandType) where TAny : class;
 
         /// <summary>
         ///     Queries the specified query.
@@ -225,11 +251,29 @@ namespace Stove.Dapper.Repositories
         int Execute([NotNull] string query, object parameters = null);
 
         /// <summary>
+        /// Executes the specified query with TableValueParameter.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="tableValueParameter"></param>
+        /// <param name="commandType"></param>
+        /// <returns></returns>
+        int Execute<TTvp>([NotNull]string query, [NotNull]TableValueParameter<TTvp> tableValueParameter, CommandType commandType);
+
+        /// <summary>
         ///     Executes the specified query.
         /// </summary>
         /// <param name="query">The query.</param>
         /// <param name="parameters">The parameters.</param>
         Task<int> ExecuteAsync([NotNull] string query, object parameters = null);
+
+        /// <summary>
+        /// Executes the specified query with TableValueParameter.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="tableValueParameter"></param>
+        /// <param name="commandType"></param>
+        /// <returns></returns>
+        Task<int> ExecuteAsync<TTvp>(string query, TableValueParameter<TTvp> tableValueParameter, CommandType commandType);
 
         /// <summary>
         ///     Queries the specified query.

@@ -3,7 +3,7 @@ using Stove.Mapster;
 
 namespace Stove.Demo.ConsoleApp.Dto
 {
-    [AutoMapFrom(typeof(Person))]
+    //[AutoMapFrom(typeof(Person))]
     public class PersonDto
     {
     }
