@@ -16,7 +16,9 @@ namespace Stove.Demo.ConsoleApp
     {
         public static void Main(string[] args)
         {
+#if DEBUG
             EntityFrameworkProfiler.Initialize();
+#endif
 
             Database.SetInitializer(new NullDatabaseInitializer<AnimalStoveDbContext>());
             Database.SetInitializer(new NullDatabaseInitializer<PersonStoveDbContext>());
@@ -57,9 +59,14 @@ namespace Stove.Demo.ConsoleApp
             var productDomainService = resolver.Resolve<ProductDomainService>();
             productDomainService.DoSomeStuff();
 
+            //var priceDomainService = resolver.Resolve<PriceDomainService>();
+            //priceDomainService.DoSomeStuff();
+
             resolver.Dispose();
 
+#if DEBUG
             EntityFrameworkProfiler.Shutdown();
+#endif
 
             Console.ReadKey();
         }
