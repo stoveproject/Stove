@@ -17,7 +17,7 @@ namespace Stove.Demo.ConsoleApp
         public static void Main(string[] args)
         {
 #if DEBUG
-            EntityFrameworkProfiler.Initialize();
+            //EntityFrameworkProfiler.Initialize();
 #endif
 
             Database.SetInitializer(new NullDatabaseInitializer<AnimalStoveDbContext>());
@@ -35,37 +35,37 @@ namespace Stove.Demo.ConsoleApp
                                                .UseStoveNLog()
                                                .UseStoveBackgroundJobs()
                                                .UseStoveRedisCaching()
-                                               .UseStoveRabbitMQ(configuration =>
-                                               {
-                                                   configuration.HostAddress = "rabbitmq://localhost/";
-                                                   configuration.Username = "admin";
-                                                   configuration.Password = "admin";
-                                                   configuration.QueueName = "Default";
-                                                   return configuration;
-                                               })
-                                               .UseStoveHangfire(configuration =>
-                                               {
-                                                   configuration.GlobalConfiguration
-                                                                .UseSqlServerStorage("Default")
-                                                                .UseNLogLogProvider();
-                                                   return configuration;
-                                               })
+                                               //.UseStoveRabbitMQ(configuration =>
+                                               //{
+                                               //    configuration.HostAddress = "rabbitmq://localhost/";
+                                               //    configuration.Username = "admin";
+                                               //    configuration.Password = "admin";
+                                               //    configuration.QueueName = "Default";
+                                               //    return configuration;
+                                               //})
+                                               //.UseStoveHangfire(configuration =>
+                                               //{
+                                               //    configuration.GlobalConfiguration
+                                               //                 .UseSqlServerStorage("Default")
+                                               //                 .UseNLogLogProvider();
+                                               //    return configuration;
+                                               //})
                                                .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()))
                                                .CreateResolver();
 
             //var someDomainService = resolver.Resolve<SomeDomainService>();
             //someDomainService.DoSomeStuff();
 
-            var productDomainService = resolver.Resolve<ProductDomainService>();
-            productDomainService.DoSomeStuff();
+            //var productDomainService = resolver.Resolve<ProductDomainService>();
+            //productDomainService.DoSomeStuff();
 
-            //var priceDomainService = resolver.Resolve<PriceDomainService>();
-            //priceDomainService.DoSomeStuff();
+            var priceDomainService = resolver.Resolve<PriceDomainService>();
+            priceDomainService.DoSomeStuff();
 
             resolver.Dispose();
 
 #if DEBUG
-            EntityFrameworkProfiler.Shutdown();
+           // EntityFrameworkProfiler.Shutdown();
 #endif
 
             Console.ReadKey();

@@ -8,7 +8,7 @@ namespace Stove.Demo.ConsoleApp.DbContexes
 {
     public class PriceDbContext : StoveDbContext
     {
-        public PriceDbContext() : base("Price")
+        public PriceDbContext() : base("Default")
         {
         }
 

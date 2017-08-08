@@ -11,20 +11,18 @@ using Stove.Extensions;
 
 namespace Stove.Dapper.TableValueParameters
 {
-    public class TableValueParameter<T> : SqlMapper.IDynamicParameters
+    public class TableValueParameter : SqlMapper.IDynamicParameters
     {
         private readonly string _parameterName;
         private readonly IEnumerable<SqlDataRecord> _rows;
         private readonly string _typeName;
 
-        public TableValueParameter(string parameterName,
-            string typeName,
-            IEnumerable<T> rows)
+        public TableValueParameter(string parameterName, string typeName, IEnumerable<object> rows)
         {
             _parameterName = parameterName;
             _typeName = typeName;
 
-            var genericTvp = new GenericTableValueParameter<T>(rows);
+            var genericTvp = new GenericTableValueParameter(rows);
             _rows = genericTvp;
         }
 

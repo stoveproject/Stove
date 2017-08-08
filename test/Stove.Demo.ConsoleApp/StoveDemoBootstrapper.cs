@@ -28,6 +28,7 @@ namespace Stove.Demo.ConsoleApp
             Configuration.DefaultNameOrConnectionString = ConnectionStringHelper.GetConnectionString("Default");
             Configuration.TypedConnectionStrings.Add(typeof(AnimalStoveDbContext), "Default");
             Configuration.TypedConnectionStrings.Add(typeof(PersonStoveDbContext), "Default");
+            Configuration.TypedConnectionStrings.Add(typeof(PriceDbContext), "Default");
 
             ExecuteScript("InitializeDatabase");
         }

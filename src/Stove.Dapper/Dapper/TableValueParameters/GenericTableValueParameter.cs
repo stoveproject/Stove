@@ -11,18 +11,18 @@ using Microsoft.SqlServer.Server;
 
 namespace Stove.Dapper.TableValueParameters
 {
-    public class GenericTableValueParameter<T> : IEnumerable<SqlDataRecord>
+    internal class GenericTableValueParameter : IEnumerable<SqlDataRecord>
     {
-        private readonly IEnumerable<T> _tableValueList;
+        private readonly IEnumerable<object> _tableValueList;
 
-        public GenericTableValueParameter(IEnumerable<T> tableValueList)
+        public GenericTableValueParameter(IEnumerable<object> tableValueList)
         {
             _tableValueList = tableValueList;
         }
 
         public IEnumerator<SqlDataRecord> GetEnumerator()
         {
-            Type type = typeof(T);
+            Type type = _tableValueList.GetType().GetGenericArguments().Single();
             PropertyInfo[] properties = type.GetProperties();
             var metaData = new SqlMetaData[properties.Length];
 
@@ -50,7 +50,7 @@ namespace Stove.Dapper.TableValueParameters
                 }
             }
 
-            foreach (T item in _tableValueList)
+            foreach (object item in _tableValueList)
             {
                 var sqlDataRecord = new SqlDataRecord(metaData);
                 try

@@ -201,9 +201,8 @@ namespace Stove.Dapper.Repositories
         [NotNull]
         IEnumerable<TEntity> Query([NotNull] string query, [CanBeNull] object parameters = null);
 
-
         /// <summary>
-        /// Queries the specified query with Table Value Parameter
+        ///     Queries the specified query with Table Value Parameter
         /// </summary>
         /// <typeparam name="TAny"></typeparam>
         /// <param name="query"></param>
@@ -211,8 +210,8 @@ namespace Stove.Dapper.Repositories
         /// <param name="commandType"></param>
         /// <returns></returns>
         [NotNull]
-        IEnumerable<TAny> Query<TAny, TTvp>([NotNull]string query, [NotNull]TableValueParameter<TTvp> tableValueParameter, CommandType commandType) where TAny : class;
-            
+        IEnumerable<TAny> Query<TAny>([NotNull] string query, [NotNull] TableValueParameter tableValueParameter, CommandType commandType) where TAny : class;
+
         /// <summary>
         ///     Queries the asynchronous.
         /// </summary>
@@ -223,16 +222,15 @@ namespace Stove.Dapper.Repositories
         Task<IEnumerable<TEntity>> QueryAsync([NotNull] string query, [CanBeNull] object parameters = null);
 
         /// <summary>
-        ///  Queries the asynchronous with Table Value Parameter.
+        ///     Queries the asynchronous with Table Value Parameter.
         /// </summary>
-        /// <typeparam name="TAny"></typeparam>
-        /// <typeparam name="TTvp"></typeparam>
-        /// <param name="query"></param>
-        /// <param name="tableValueParameter"></param>
-        /// <param name="commandType"></param>
+        /// <typeparam name="TAny">The type of any.</typeparam>
+        /// <param name="query">The query.</param>
+        /// <param name="tableValueParameter">The table value parameter.</param>
+        /// <param name="commandType">Type of the command.</param>
         /// <returns></returns>
         [NotNull]
-        Task<IEnumerable<TAny>> QueryAsync<TAny, TTvp>([NotNull] string query, [NotNull] TableValueParameter<TTvp> tableValueParameter, CommandType commandType) where TAny : class;
+        Task<IEnumerable<TAny>> QueryAsync<TAny>([NotNull] string query, [NotNull] TableValueParameter tableValueParameter, CommandType commandType) where TAny : class;
 
         /// <summary>
         ///     Queries the specified query.
@@ -251,13 +249,13 @@ namespace Stove.Dapper.Repositories
         int Execute([NotNull] string query, object parameters = null);
 
         /// <summary>
-        /// Executes the specified query with TableValueParameter.
+        ///     Executes the specified query with TableValueParameter.
         /// </summary>
         /// <param name="query"></param>
         /// <param name="tableValueParameter"></param>
         /// <param name="commandType"></param>
         /// <returns></returns>
-        int Execute<TTvp>([NotNull]string query, [NotNull]TableValueParameter<TTvp> tableValueParameter, CommandType commandType);
+        int Execute([NotNull] string query, [NotNull] TableValueParameter tableValueParameter, CommandType commandType);
 
         /// <summary>
         ///     Executes the specified query.
@@ -267,13 +265,13 @@ namespace Stove.Dapper.Repositories
         Task<int> ExecuteAsync([NotNull] string query, object parameters = null);
 
         /// <summary>
-        /// Executes the specified query with TableValueParameter.
+        ///     Executes the specified query with TableValueParameter.
         /// </summary>
-        /// <param name="query"></param>
-        /// <param name="tableValueParameter"></param>
-        /// <param name="commandType"></param>
+        /// <param name="query">The query.</param>
+        /// <param name="tableValueParameter">The table value parameter.</param>
+        /// <param name="commandType">Type of the command.</param>
         /// <returns></returns>
-        Task<int> ExecuteAsync<TTvp>(string query, TableValueParameter<TTvp> tableValueParameter, CommandType commandType);
+        Task<int> ExecuteAsync(string query, TableValueParameter tableValueParameter, CommandType commandType);
 
         /// <summary>
         ///     Queries the specified query.

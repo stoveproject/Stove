@@ -33,7 +33,7 @@ namespace Stove.Demo.ConsoleApp
 
             using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin())
             {
-                IEnumerable<StorefrontProductPriceDto> test = _storefrontStorefrontProductPriceDapperRepository.Query<StorefrontProductPriceDto, StorefrontProductCurrencyDto>("dbo.[GetProductPrice]", new TableValueParameter<StorefrontProductCurrencyDto>("@ProductPrice", "ProductPrice", storefrontProductPriceDto), CommandType.StoredProcedure).ToList();
+                IEnumerable<StorefrontProductPriceDto> test = _storefrontStorefrontProductPriceDapperRepository.Query<StorefrontProductPriceDto>("dbo.[GetProductPrice]", new TableValueParameter("@ProductPrice", "ProductPrice", storefrontProductPriceDto), CommandType.StoredProcedure).ToList();
 
                 Console.WriteLine(test.Count());
 
