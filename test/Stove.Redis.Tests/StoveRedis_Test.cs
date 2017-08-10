@@ -12,7 +12,7 @@ namespace Stove.Redis.Tests
         {
             Building(builder =>
             {
-                var fakeCacheClientProvider = Substitute.For<IStoveRedisCacheClientProvider>();
+                var fakeCacheClientProvider = Substitute.For<IStoveRedisCacheDatabaseProvider>();
                 builder.RegisterServices(r => r.Register(ctx => fakeCacheClientProvider));
 
             }).Ok();
@@ -23,7 +23,7 @@ namespace Stove.Redis.Tests
         {
             The<ICacheManager>().GetCache("RedisTest").Get("apple", s => new { Name = "apple" });
 
-            The<IStoveRedisCacheClientProvider>().GetClient().Received();
+            The<IStoveRedisCacheDatabaseProvider>().GetDatabase().Received();
         }
     }
 }
