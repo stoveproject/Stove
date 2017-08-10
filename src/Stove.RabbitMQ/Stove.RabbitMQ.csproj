@@ -3,7 +3,7 @@
   <Import Project="..\..\common.props"></Import>
 
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFrameworks>net461;netstandard1.6</TargetFrameworks>
     <AssemblyName>Stove.RabbitMQ</AssemblyName>
     <PackageId>Stove.RabbitMQ</PackageId>
     <PackageTags>.net;framework;boilerplate;Queue;RabbitMQ</PackageTags>
@@ -13,11 +13,16 @@
 
   <PropertyGroup>
     <DocumentationFile>bin\Release\net461\Stove.RabbitMQ.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netstandard1.6\Stove.RabbitMQ.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
     <None Include="bin\Release\net461\Stove.RabbitMQ.pdb">
       <PackagePath>lib/net461/</PackagePath>
+      <Pack>true</Pack>
+    </None>
+    <None Include="bin\Release\netstandard1.6\Stove.RabbitMQ.pdb">
+      <PackagePath>lib/netstandard1.6/</PackagePath>
       <Pack>true</Pack>
     </None>
   </ItemGroup>
@@ -27,9 +32,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MassTransit" Version="3.5.7" />
-    <PackageReference Include="MassTransit.Autofac" Version="3.5.7" />
-    <PackageReference Include="MassTransit.RabbitMQ" Version="3.5.7" />
+    <PackageReference Include="MassTransit" Version="4.0.0.1216-develop" />
+    <PackageReference Include="MassTransit.Autofac" Version="4.0.0.1216-develop" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="4.0.0.1216-develop" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
