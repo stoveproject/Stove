@@ -3,7 +3,7 @@
   <Import Project="..\..\common.props"></Import>
   
   <PropertyGroup>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFramework>net461</TargetFramework>
     <AssemblyName>Stove.EntityFramework</AssemblyName>
     <PackageId>Stove.EntityFramework</PackageId>
     <PackageTags>.net;framework;boilerplate;entityframework</PackageTags>

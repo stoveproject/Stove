@@ -3,7 +3,7 @@
   <Import Project="..\..\common.props"></Import>
   
   <PropertyGroup>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFramework>net461</TargetFramework>
     <AssemblyName>Stove.Redis</AssemblyName>
     <PackageId>Stove.Redis</PackageId>
     <PackageTags>.net;framework;boilerplate;caching;redis</PackageTags>

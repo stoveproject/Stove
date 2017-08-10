@@ -1,0 +1,18 @@
+{
+    "version": "0.2.0",
+    "configurations": [{
+        "name": "Cake: Debug Script",
+        "type": "coreclr",
+        "request": "launch",
+        "program": "${workspaceRoot}/tools/Cake.0.19.5/Cake.exe",
+        "args": [
+            "${workspaceRoot}/build.cake",
+            "--debug",
+            "--verbosity=diagnostic",
+            "--experimental"
+        ],
+        "cwd": "${workspaceRoot}",
+        "stopAtEntry": true,
+        "externalConsole": false
+    }]
+}
