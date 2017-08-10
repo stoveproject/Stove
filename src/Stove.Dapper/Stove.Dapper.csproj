@@ -3,7 +3,7 @@
   <Import Project="..\..\common.props"></Import>
 
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFrameworks>net461;netstandard1.6</TargetFrameworks>
     <AssemblyName>Stove.Dapper</AssemblyName>
     <PackageId>Stove.Dapper</PackageId>
     <PackageTags>.net;framework;boilerplate;Dapper</PackageTags>
@@ -26,15 +26,17 @@
     <ProjectReference Include="..\Stove\Stove.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
     <PackageReference Include="Dapper" Version="1.50.2" />
     <PackageReference Include="DapperExtensions" Version="1.6.1" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.6'">
+    <PackageReference Include="NETStandard.Library" Version="1.6.1" />
+    <PackageReference Include="DapperExtensions.DotnetCore" Version="1.0.1" />
   </ItemGroup>
 
 </Project>

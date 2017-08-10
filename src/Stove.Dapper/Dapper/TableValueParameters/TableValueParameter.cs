@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Reflection;
 
 using Dapper;
 
@@ -29,7 +30,7 @@ namespace Stove.Dapper.TableValueParameters
         public void AddParameters(IDbCommand command, SqlMapper.Identity identity)
         {
             SqlCommand sqlCommand = null;
-            if (typeof(SqlCommand).IsAssignableFrom(command.GetType()))
+            if (typeof(SqlCommand).GetTypeInfo().IsInstanceOfType(command))
             {
                 sqlCommand = command.As<SqlCommand>();
             }
