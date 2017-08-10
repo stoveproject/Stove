@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 using Autofac;
 using Autofac.Extras.IocManager;
@@ -75,7 +76,7 @@ namespace Stove.Bootstrapping
 
                 Type impl = serviceTypes.ToList().FirstOrDefault(x => @interface.IsAssignableFrom(x));
 
-                Type[] genericArgs = @interface.GetGenericArguments();
+                Type[] genericArgs = @interface.GetTypeInfo().GetGenericArguments();
                 if (genericArgs.Length == 1)
                 {
                     _eventBus.Register(genericArgs[0], new IocHandlerFactory(Resolver.Resolve<IScopeResolver>(), impl));

@@ -52,14 +52,20 @@ namespace Stove.Domain.Uow
         /// <param name="methodInfo">Method info to check</param>
         public static UnitOfWorkAttribute GetUnitOfWorkAttributeOrNull(MemberInfo methodInfo)
         {
-            object[] attrs = methodInfo.GetCustomAttributes(typeof(UnitOfWorkAttribute), false);
-            if (attrs.Length <= 0)
-            {
-                return null;
-            }
+	        var attrs = methodInfo.GetCustomAttributes(true).OfType<UnitOfWorkAttribute>().ToArray();
+	        if (attrs.Length > 0)
+	        {
+		        return attrs[0];
+	        }
 
-            return (UnitOfWorkAttribute)attrs[0];
-        }
+	        attrs = methodInfo.DeclaringType.GetTypeInfo().GetCustomAttributes(true).OfType<UnitOfWorkAttribute>().ToArray();
+	        if (attrs.Length > 0)
+	        {
+		        return attrs[0];
+	        }
+
+	        return null;
+		}
 
         internal static List<TypedService> GetOrDefaultConventionalUowClassesAsTypedService(this IEnumerable<Service> services)
         {

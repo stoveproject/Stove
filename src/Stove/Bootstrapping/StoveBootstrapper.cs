@@ -53,9 +53,9 @@ namespace Stove.Bootstrapping
         public static bool IsStoveBootstrapper(Type type)
         {
             return
-                type.IsClass &&
-                !type.IsAbstract &&
-                !type.IsGenericType &&
+                type.GetTypeInfo().IsClass &&
+                !type.GetTypeInfo().IsAbstract &&
+                !type.GetTypeInfo().IsGenericType &&
                 typeof(StoveBootstrapper).IsAssignableFrom(type);
         }
 
@@ -69,9 +69,9 @@ namespace Stove.Bootstrapping
 
             var list = new List<Type>();
 
-            if (bootstrapper.IsDefined(typeof(DependsOnAttribute), true))
+            if (bootstrapper.GetTypeInfo().IsDefined(typeof(DependsOnAttribute), true))
             {
-                IEnumerable<DependsOnAttribute> dependsOnAttributes = bootstrapper.GetCustomAttributes(typeof(DependsOnAttribute), true).Cast<DependsOnAttribute>();
+                IEnumerable<DependsOnAttribute> dependsOnAttributes = bootstrapper.GetTypeInfo().GetCustomAttributes(typeof(DependsOnAttribute), true).Cast<DependsOnAttribute>();
                 foreach (DependsOnAttribute dependsOnAttribute in dependsOnAttributes)
                 {
                     foreach (Type dependedBootstrapperType in dependsOnAttribute.DependedBootstrapperTypes)

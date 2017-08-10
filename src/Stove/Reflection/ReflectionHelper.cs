@@ -17,25 +17,25 @@ namespace Stove.Reflection
         /// <param name="genericType">Generic type</param>
         public static bool IsAssignableToGenericType(Type givenType, Type genericType)
         {
-            if (givenType.IsGenericType && givenType.GetGenericTypeDefinition() == genericType)
+            if (givenType.GetTypeInfo().IsGenericType && givenType.GetGenericTypeDefinition() == genericType)
             {
                 return true;
             }
 
             foreach (Type interfaceType in givenType.GetInterfaces())
             {
-                if (interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == genericType)
+                if (interfaceType.GetTypeInfo().IsGenericType && interfaceType.GetGenericTypeDefinition() == genericType)
                 {
                     return true;
                 }
             }
 
-            if (givenType.BaseType == null)
+            if (givenType.GetTypeInfo().BaseType == null)
             {
                 return false;
             }
 
-            return IsAssignableToGenericType(givenType.BaseType, genericType);
+            return IsAssignableToGenericType(givenType.GetTypeInfo().BaseType, genericType);
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace Stove.Reflection
             //Add attributes on the class
             if (memberInfo.DeclaringType != null)
             {
-                attributeList.AddRange(memberInfo.DeclaringType.GetCustomAttributes(inherit));
+                attributeList.AddRange(memberInfo.DeclaringType.GetTypeInfo().GetCustomAttributes(inherit));
             }
 
             return attributeList;
@@ -76,9 +76,9 @@ namespace Stove.Reflection
             }
 
             //Add attributes on the class
-            if (memberInfo.DeclaringType != null && memberInfo.DeclaringType.IsDefined(typeof(TAttribute), inherit))
+            if (memberInfo.DeclaringType != null && memberInfo.DeclaringType.GetTypeInfo().IsDefined(typeof(TAttribute), inherit))
             {
-                attributeList.AddRange(memberInfo.DeclaringType.GetCustomAttributes(typeof(TAttribute), inherit).Cast<TAttribute>());
+                attributeList.AddRange(memberInfo.DeclaringType.GetTypeInfo().GetCustomAttributes(typeof(TAttribute), inherit).Cast<TAttribute>());
             }
 
             return attributeList;
@@ -102,9 +102,9 @@ namespace Stove.Reflection
             }
 
             //Get attribute from class
-            if (memberInfo.DeclaringType != null && memberInfo.DeclaringType.IsDefined(typeof(TAttribute), inherit))
+            if (memberInfo.DeclaringType != null && memberInfo.DeclaringType.GetTypeInfo().IsDefined(typeof(TAttribute), inherit))
             {
-                return memberInfo.DeclaringType.GetCustomAttributes(typeof(TAttribute), inherit).Cast<TAttribute>().First();
+                return memberInfo.DeclaringType.GetTypeInfo().GetCustomAttributes(typeof(TAttribute), inherit).Cast<TAttribute>().First();
             }
 
             return defaultValue;

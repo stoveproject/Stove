@@ -1,27 +1,31 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-using Stove.Runtime.Remoting;
+﻿using Stove.Runtime.Remoting;
 
 namespace Stove.Runtime.Session
 {
-    /// <summary>
-    ///     Implements null object pattern for <see cref="IStoveSession" />.
-    /// </summary>
-    [ExcludeFromCodeCoverage]
-    public class NullStoveSession : StoveSessionBase
-    {
-        private NullStoveSession() : base(new DataContextAmbientScopeProvider<SessionOverride>(new CallContextAmbientDataContext()))
-        {
-        }
+	/// <summary>
+	///     Implements null object pattern for <see cref="IStoveSession" />.
+	/// </summary>
+	public class NullStoveSession : StoveSessionBase
+	{
+		private NullStoveSession() : base(new DataContextAmbientScopeProvider<SessionOverride>(
 
-        /// <summary>
-        ///     Singleton instance.
-        /// </summary>
-        public static NullStoveSession Instance { get; } = new NullStoveSession();
+#if NET461
+                new CallContextAmbientDataContext()
+#else
+				new AsyncLocalAmbientDataContext()
+#endif
+			))
+		{
+		}
 
-        /// <inheritdoc />
-        public override long? UserId => null;
+		/// <summary>
+		///     Singleton instance.
+		/// </summary>
+		public static NullStoveSession Instance { get; } = new NullStoveSession();
 
-        public override long? ImpersonatorUserId => null;
-    }
+		/// <inheritdoc />
+		public override long? UserId => null;
+
+		public override long? ImpersonatorUserId => null;
+	}
 }

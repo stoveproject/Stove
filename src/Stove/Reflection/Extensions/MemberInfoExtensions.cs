@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 
 using JetBrains.Annotations;
+
+using Stove.Domain.Uow;
 
 namespace Stove.Reflection.Extensions
 {
@@ -18,36 +21,36 @@ namespace Stove.Reflection.Extensions
         public static TAttribute GetSingleAttributeOrNull<TAttribute>(this MemberInfo memberInfo, bool inherit = true)
             where TAttribute : Attribute
         {
-            if (memberInfo == null)
-            {
-                throw new ArgumentNullException(nameof(memberInfo));
-            }
+			if (memberInfo == null)
+	        {
+		        throw new ArgumentNullException(nameof(memberInfo));
+	        }
 
-            object[] attrs = memberInfo.GetCustomAttributes(typeof(TAttribute), inherit);
-            if (attrs.Length > 0)
-            {
-                return (TAttribute)attrs[0];
-            }
+	        var attrs = memberInfo.GetCustomAttributes(typeof(TAttribute), inherit).ToList();
+	        if (attrs.Count > 0)
+	        {
+		        return (TAttribute)attrs[0];
+	        }
 
-            return default(TAttribute);
-        }
+	        return default(TAttribute);
+		}
 
         [CanBeNull]
         public static TAttribute GetSingleAttributeOfTypeOrBaseTypesOrNull<TAttribute>(this Type type, bool inherit = true)
             where TAttribute : Attribute
         {
-            var attr = type.GetSingleAttributeOrNull<TAttribute>();
+            var attr = type.GetTypeInfo().GetSingleAttributeOrNull<TAttribute>();
             if (attr != null)
             {
                 return attr;
             }
 
-            if (type.BaseType == null)
+            if (type.GetTypeInfo().BaseType == null)
             {
                 return null;
             }
 
-            return type.BaseType.GetSingleAttributeOfTypeOrBaseTypesOrNull<TAttribute>(inherit);
+            return type.GetTypeInfo().BaseType.GetSingleAttributeOfTypeOrBaseTypesOrNull<TAttribute>(inherit);
         }
     }
 }

@@ -67,13 +67,20 @@ namespace Stove.Tests.Extensions
         [Fact]
         public void ToSentenceCase_Test()
         {
-            (null as string).ToSentenceCase().ShouldBe(null);
-            "HelloWorld".ToSentenceCase().ShouldBe("Hello world");
-            "HelloIsparta".ToSentenceCase().ShouldBe("Hello isparta");
-            "HelloIsparta".ToSentenceCase(new CultureInfo("tr-TR")).ShouldBe("Hello ısparta");
-        }
+			(null as string).ToSentenceCase().ShouldBe(null);
+	        "HelloWorld".ToSentenceCase().ShouldBe("Hello world");
 
-        [Fact]
+	        using (CultureInfoHelper.Use("en-US"))
+	        {
+		        "HelloIsparta".ToSentenceCase().ShouldBe("Hello isparta");
+	        }
+
+#if NET461
+            "HelloIsparta".ToSentenceCase(new CultureInfo("tr-TR")).ShouldBe("Hello ısparta");
+#endif
+		}
+
+		[Fact]
         public void Right_Test()
         {
             const string str = "This is a test string";

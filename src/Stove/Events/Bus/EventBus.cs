@@ -206,9 +206,11 @@ namespace Stove.Events.Bus
         /// <inheritdoc />
         public Task TriggerAsync<TEventData>(object eventSource, TEventData eventData) where TEventData : IEventData
         {
-            ExecutionContext.SuppressFlow();
+#if NET461
+	        ExecutionContext.SuppressFlow();
+#endif
 
-            Task task = Task.Factory.StartNew(
+			Task task = Task.Factory.StartNew(
                 () =>
                 {
                     try
@@ -221,9 +223,11 @@ namespace Stove.Events.Bus
                     }
                 });
 
-            ExecutionContext.RestoreFlow();
+#if NET461
+	        ExecutionContext.RestoreFlow();
+#endif
 
-            return task;
+			return task;
         }
 
         /// <inheritdoc />
@@ -235,9 +239,10 @@ namespace Stove.Events.Bus
         /// <inheritdoc />
         public Task TriggerAsync(Type eventType, object eventSource, IEventData eventData)
         {
+#if NET461
             ExecutionContext.SuppressFlow();
-
-            Task task = Task.Factory.StartNew(
+#endif
+			Task task = Task.Factory.StartNew(
                 () =>
                 {
                     try
@@ -249,10 +254,11 @@ namespace Stove.Events.Bus
                         Logger.Warn(ex.ToString(), ex);
                     }
                 });
+#if NET461
+			ExecutionContext.RestoreFlow();
+#endif
 
-            ExecutionContext.RestoreFlow();
-
-            return task;
+			return task;
         }
 
         private void TriggerHandlingException(Type eventType, object eventSource, IEventData eventData, List<Exception> exceptions)
@@ -276,15 +282,12 @@ namespace Stove.Events.Bus
 
                         Type handlerType = typeof(IEventHandler<>).MakeGenericType(handlerFactories.EventType);
 
-                        MethodInfo method = handlerType.GetMethod(
-                            "HandleEvent",
-                            BindingFlags.Public | BindingFlags.Instance,
-                            null,
-                            new[] { handlerFactories.EventType },
-                            null
-                        );
+						MethodInfo method = handlerType.GetMethod(
+							"HandleEvent",
+							new[] { handlerFactories.EventType }
+						);
 
-                        method.Invoke(eventHandler, new object[] { eventData });
+						method.Invoke(eventHandler, new object[] { eventData });
                     }
                     catch (TargetInvocationException ex)
                     {
@@ -302,12 +305,12 @@ namespace Stove.Events.Bus
             }
 
             //Implements generic argument inheritance. See IEventDataWithInheritableGenericArgument
-            if (eventType.IsGenericType &&
+            if (eventType.GetTypeInfo().IsGenericType &&
                 eventType.GetGenericArguments().Length == 1 &&
                 typeof(IEventDataWithInheritableGenericArgument).IsAssignableFrom(eventType))
             {
                 Type genericArg = eventType.GetGenericArguments()[0];
-                Type baseArg = genericArg.BaseType;
+                Type baseArg = genericArg.GetTypeInfo().BaseType;
                 if (baseArg != null)
                 {
                     Type baseEventType = eventType.GetGenericTypeDefinition().MakeGenericType(baseArg);

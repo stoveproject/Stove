@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NET461
+using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -99,3 +100,4 @@ namespace Stove.Runtime.Security
         }
     }
 }
+#endif

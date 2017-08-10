@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Stove.Collections
 {
@@ -133,7 +134,7 @@ namespace Stove.Collections
 
         private static void CheckType(Type item)
         {
-            if (!typeof(TBaseType).IsAssignableFrom(item))
+            if (!typeof(TBaseType).GetTypeInfo().IsAssignableFrom(item))
             {
                 throw new ArgumentException("Given item is not type of " + typeof(TBaseType).AssemblyQualifiedName, nameof(item));
             }

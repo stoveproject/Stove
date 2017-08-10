@@ -11,7 +11,7 @@ namespace Stove.Bootstrapping
         public BootstrapperInfo([NotNull] Type type, [NotNull] StoveBootstrapper instance)
         {
             Type = type;
-            Assembly = Type.Assembly;
+            Assembly = Type.GetTypeInfo().Assembly;
             Instance = instance;
             Dependencies = new List<BootstrapperInfo>();
         }

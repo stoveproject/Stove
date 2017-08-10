@@ -1,4 +1,5 @@
-﻿using System.Runtime.Remoting.Messaging;
+﻿#if NET461
+using System.Runtime.Remoting.Messaging;
 
 using Autofac.Extras.IocManager;
 
@@ -24,3 +25,4 @@ namespace Stove.Runtime.Remoting
         }
     }
 }
+#endif

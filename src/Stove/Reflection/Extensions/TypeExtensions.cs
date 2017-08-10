@@ -19,7 +19,7 @@ namespace Stove.Reflection.Extensions
 				return false;
 			}
 
-			if (child.IsSubclassOf(parent))
+			if (child.GetTypeInfo().IsSubclassOf(parent))
 			{
 				return true;
 			}
@@ -27,7 +27,7 @@ namespace Stove.Reflection.Extensions
 			Type[] parameters = parent.GetGenericArguments();
 
 			bool isParameterLessGeneric = !(parameters.Length > 0 &&
-			                                (parameters[0].Attributes & TypeAttributes.BeforeFieldInit) ==
+			                                (parameters[0].GetTypeInfo().Attributes & TypeAttributes.BeforeFieldInit) ==
 			                                TypeAttributes.BeforeFieldInit);
 
 			while (child != null && child != typeof(object))
@@ -42,7 +42,7 @@ namespace Stove.Reflection.Extensions
 
 				if (!isParameterLessGeneric)
 				{
-					if (GetFullTypeDefinition(parent) == cur && !cur.IsInterface)
+					if (GetFullTypeDefinition(parent) == cur && !cur.GetTypeInfo().IsInterface)
 					{
 						if (VerifyGenericArguments(GetFullTypeDefinition(parent), cur))
 						{
@@ -63,7 +63,7 @@ namespace Stove.Reflection.Extensions
 					}
 				}
 
-				child = child.BaseType;
+				child = child.GetTypeInfo().BaseType;
 			}
 
 			return false;
@@ -71,7 +71,7 @@ namespace Stove.Reflection.Extensions
 
 		private static Type GetFullTypeDefinition(Type type)
 		{
-			return type.IsGenericType ? type.GetGenericTypeDefinition() : type;
+			return type.GetTypeInfo().IsGenericType ? type.GetGenericTypeDefinition() : type;
 		}
 
 		private static bool VerifyGenericArguments(Type parent, Type child)
@@ -82,11 +82,11 @@ namespace Stove.Reflection.Extensions
 			{
 				for (var i = 0; i < childArguments.Length; i++)
 				{
-					if (childArguments[i].Assembly != parentArguments[i].Assembly ||
+					if (childArguments[i].GetTypeInfo().Assembly != parentArguments[i].GetTypeInfo().Assembly ||
 					    childArguments[i].Name != parentArguments[i].Name ||
 					    childArguments[i].Namespace != parentArguments[i].Namespace)
 					{
-						if (!childArguments[i].IsSubclassOf(parentArguments[i]))
+						if (!childArguments[i].GetTypeInfo().IsSubclassOf(parentArguments[i]))
 						{
 							return false;
 						}

@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NET461
+using System;
 using System.Runtime.Caching;
 
 namespace Stove.Runtime.Caching.Memory
@@ -72,3 +73,4 @@ namespace Stove.Runtime.Caching.Memory
         }
     }
 }
+#endif
