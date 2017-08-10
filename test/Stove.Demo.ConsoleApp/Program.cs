@@ -34,7 +34,7 @@ namespace Stove.Demo.ConsoleApp
                                                .UseStoveTypedConnectionStringResolver()
                                                .UseStoveNLog()
                                                .UseStoveBackgroundJobs()
-                                               .UseStoveRedisCaching()
+                                               .UseStoveRedisCaching(configuration => { return configuration; })
                                                //.UseStoveRabbitMQ(configuration =>
                                                //{
                                                //    configuration.HostAddress = "rabbitmq://localhost/";

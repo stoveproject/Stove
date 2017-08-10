@@ -22,7 +22,7 @@ namespace Stove
 		[NotNull]
 		public static IIocBuilder UseStoveRedisCaching(
 			[NotNull] this IIocBuilder builder,
-			[CanBeNull] Func<IStoveRedisCacheConfiguration, IStoveRedisCacheConfiguration> redisCacheConfigurer = null)
+			[CanBeNull] Func<IStoveRedisCacheConfiguration, IStoveRedisCacheConfiguration> redisCacheConfigurer)
 		{
 			return builder.RegisterServices(r =>
 			{
@@ -30,11 +30,7 @@ namespace Stove
 				r.Register<IStoveRedisCacheConfiguration, StoveRedisCacheConfiguration>(Lifetime.Singleton);
 				r.RegisterType<StoveRedisCache>();
 				r.Register<ICacheManager, StoveRedisCacheManager>();
-
-				if (redisCacheConfigurer != null)
-				{
-					r.Register(ctx => redisCacheConfigurer);
-				}
+				r.Register(ctx => redisCacheConfigurer);
 			});
 		}
 

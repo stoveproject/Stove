@@ -4,6 +4,7 @@ using NSubstitute;
 
 using StackExchange.Redis;
 
+using Stove.Reflection.Extensions;
 using Stove.TestBase;
 
 namespace Stove.Redis.Tests
@@ -19,7 +20,7 @@ namespace Stove.Redis.Tests
 					       configuration.ConfigurationOptions = new ConfigurationOptions();
 					       return configuration;
 				       })
-				       .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
+				       .RegisterServices(r => r.RegisterAssemblyByConvention(typeof(RedisTestBase).GetAssembly()));
 			});
 		}
 	}

@@ -6,6 +6,7 @@ using Autofac.Extras.IocManager;
 using MassTransit;
 
 using Stove.MQ;
+using Stove.Reflection.Extensions;
 using Stove.TestBase;
 
 namespace Stove.RabbitMQ.Tests
@@ -14,7 +15,7 @@ namespace Stove.RabbitMQ.Tests
     {
         protected RabbitMQApplicationTestBase()
         {
-            Building(builder => { UseStoveRabbitMQInMemory(builder).RegisterServices(r => { r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()); }); });
+            Building(builder => { UseStoveRabbitMQInMemory(builder).RegisterServices(r => { r.RegisterAssemblyByConvention(typeof(RabbitMQApplicationTestBase).GetAssembly()); }); });
         }
 
         private IIocBuilder UseStoveRabbitMQInMemory(IIocBuilder builder)

@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFrameworks>net461;netcoreapp1.0</TargetFrameworks>
   </PropertyGroup>
-
+  
   <ItemGroup>
     <ProjectReference Include="..\..\src\Stove.Redis\Stove.Redis.csproj" />
     <ProjectReference Include="..\Stove.TestBase\Stove.TestBase.csproj" />
