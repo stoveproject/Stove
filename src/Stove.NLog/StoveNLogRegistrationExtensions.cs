@@ -7,6 +7,8 @@ using JetBrains.Annotations;
 
 using NLog;
 
+using Stove.Reflection.Extensions;
+
 using ILogger = Stove.Log.ILogger;
 
 namespace Stove
@@ -23,7 +25,7 @@ namespace Stove
         {
             return builder.RegisterServices(r =>
             {
-                r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly());
+                r.RegisterAssemblyByConvention(typeof(StoveNLogRegistrationExtensions).GetAssembly());
                 r.Register<ILogger>(context => new LoggerAdapter(LogManager.GetCurrentClassLogger()), Lifetime.Singleton);
                 r.UseBuilder(containerBuilder => containerBuilder.RegisterModule<NLogRegistrarModule>());
             });

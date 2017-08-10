@@ -3,7 +3,7 @@
   <Import Project="..\..\common.props"></Import>
   
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFrameworks>net461;netstandard1.6</TargetFrameworks>
     <AssemblyName>Stove.NLog</AssemblyName>
     <PackageId>Stove.NLog</PackageId>
     <PackageTags>.net;framework;boilerplate;nlog</PackageTags>
@@ -20,6 +20,10 @@
       <PackagePath>lib/net461/</PackagePath>
       <Pack>true</Pack>
     </None>
+    <None Include="bin\Release\netstandard1.6\Stove.NLog.pdb">
+      <PackagePath>lib/netstandard1.6/</PackagePath>
+      <Pack>true</Pack>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -27,10 +31,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NLog" Version="4.4.11" />
+    <PackageReference Include="NLog" Version="5.0.0-beta09" />
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'(TargetFramework)' == 'net461'">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
