@@ -46,9 +46,9 @@ namespace Stove
         private void FindAndAutoMapTypes(TypeAdapterConfig configuration)
         {
             Type[] types = _typeFinder.Find(type =>
-                type.IsDefined(typeof(AutoMapAttribute)) ||
-                type.IsDefined(typeof(AutoMapFromAttribute)) ||
-                type.IsDefined(typeof(AutoMapToAttribute))
+                type.GetTypeInfo().IsDefined(typeof(AutoMapAttribute)) ||
+                type.GetTypeInfo().IsDefined(typeof(AutoMapFromAttribute)) ||
+                type.GetTypeInfo().IsDefined(typeof(AutoMapToAttribute))
             );
 
             Logger.Debug($"Found {types.Length} classes define auto mapping attributes");

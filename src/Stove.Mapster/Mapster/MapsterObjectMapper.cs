@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 
 using Mapster;
 
@@ -18,7 +19,7 @@ namespace Stove.Mapster
         public TDestination Map<TDestination>(object source)
         {
             Type sourceType = source.GetType().Namespace == "System.Data.Entity.DynamicProxies"
-                ? source.GetType().BaseType
+                ? source.GetType().GetTypeInfo().BaseType
                 : source.GetType();
 
             return (TDestination)source.Adapt(sourceType, typeof(TDestination), _mapsterConfiguration.Configuration);
