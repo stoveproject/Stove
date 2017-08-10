@@ -12,14 +12,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="bin\Release\net452\Stove.Dapper.pdb">
-      <PackagePath>lib/net452/</PackagePath>
+    <None Include="bin\Release\net461\Stove.Dapper.pdb">
+      <PackagePath>lib/net461/</PackagePath>
       <Pack>true</Pack>
     </None>
   </ItemGroup>
 
   <PropertyGroup>
-    <DocumentationFile>bin\Release\net452\Stove.Dapper.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\net461\Stove.Dapper.xml</DocumentationFile>
   </PropertyGroup>
   
   <ItemGroup>

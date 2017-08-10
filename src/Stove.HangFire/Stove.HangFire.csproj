@@ -12,12 +12,12 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <DocumentationFile>bin\Release\net452\Stove.HangFire.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\net461\Stove.HangFire.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="bin\Release\net452\Stove.Hangfire.pdb">
-      <PackagePath>lib/net452/</PackagePath>
+    <None Include="bin\Release\net461\Stove.Hangfire.pdb">
+      <PackagePath>lib/net461/</PackagePath>
       <Pack>true</Pack>
     </None>
   </ItemGroup>

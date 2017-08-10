@@ -12,12 +12,12 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <DocumentationFile>bin\Release\net452\Stove.Redis.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\net461\Stove.Redis.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="bin\Release\net452\Stove.Redis.pdb">
-      <PackagePath>lib/net452/</PackagePath>
+    <None Include="bin\Release\net461\Stove.Redis.pdb">
+      <PackagePath>lib/net461/</PackagePath>
       <Pack>true</Pack>
     </None>
   </ItemGroup>
