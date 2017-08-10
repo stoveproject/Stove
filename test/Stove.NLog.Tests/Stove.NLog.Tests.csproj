@@ -7,6 +7,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Stove.NLog\Stove.NLog.csproj" />
     <ProjectReference Include="..\Stove.TestBase\Stove.TestBase.csproj" />
+    <PackageReference Include="Shouldly" Version="2.8.3" />
+    <PackageReference Include="xunit" Version="2.2.0" />
+    <PackageReference Include="NSubstitute" Version="2.0.3" />
   </ItemGroup>
 
 </Project>

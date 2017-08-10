@@ -14,6 +14,9 @@
     <ProjectReference Include="..\..\src\Stove\Stove.csproj" />
     <ProjectReference Include="..\..\src\Stove.RabbitMQ\Stove.RabbitMQ.csproj" />
     <ProjectReference Include="..\Stove.TestBase\Stove.TestBase.csproj" />
+    <PackageReference Include="Shouldly" Version="2.8.3" />
+    <PackageReference Include="xunit" Version="2.2.0" />
+    <PackageReference Include="NSubstitute" Version="2.0.3" />
   </ItemGroup>
   
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">

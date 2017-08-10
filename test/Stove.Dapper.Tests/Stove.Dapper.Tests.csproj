@@ -35,6 +35,9 @@
     <ProjectReference Include="..\..\src\Stove.Dapper\Stove.Dapper.csproj" />
     <ProjectReference Include="..\..\src\Stove.EntityFramework\Stove.EntityFramework.csproj" />
     <ProjectReference Include="..\Stove.TestBase\Stove.TestBase.csproj" />
+    <PackageReference Include="Shouldly" Version="2.8.3" />
+    <PackageReference Include="xunit" Version="2.2.0" />
+    <PackageReference Include="NSubstitute" Version="2.0.3" />
   </ItemGroup>
   
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
@@ -43,12 +46,6 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Reference Include="System.Data.SQLite">
-      <HintPath>C:\Users\OSOYKAN\.nuget\packages\system.data.sqlite.core\1.0.105.2\lib\net46\System.Data.SQLite.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Data.SQLite.EF6">
-      <HintPath>C:\Users\OSOYKAN\.nuget\packages\system.data.sqlite.ef6\1.0.105.2\lib\net46\System.Data.SQLite.EF6.dll</HintPath>
-    </Reference>
     <Reference Include="System.Transactions" />
   </ItemGroup>
   

@@ -3,6 +3,7 @@
 using Autofac.Extras.IocManager;
 
 using Stove.Bootstrapping;
+using Stove.Reflection.Extensions;
 using Stove.Runtime.Session;
 
 namespace Stove.TestBase
@@ -17,7 +18,7 @@ namespace Stove.TestBase
                 builder
                     .UseStoveWithNullables<TStarterBootstrapper>(autoUnitOfWorkInterceptionEnabled);
 
-                builder.RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
+                builder.RegisterServices(r => r.RegisterAssemblyByConvention(typeof(TestBaseWithLocalIocResolver).GetAssembly()));
                 builder.RegisterServices(r => r.Register<IStoveSession, TestStoveSession>(Lifetime.Singleton));
             });
         }

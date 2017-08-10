@@ -3,6 +3,7 @@
 using Shouldly;
 
 using Stove.Bootstrapping;
+using Stove.Reflection.Extensions;
 using Stove.TestBase;
 
 using Xunit;
@@ -21,7 +22,7 @@ namespace Stove.Tests.Bootstrapping
                 {
                     builder
                         .UseStoveWithNullables(typeof(MyTestBootstrapper))
-                        .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
+                        .RegisterServices(r => r.RegisterAssemblyByConvention(typeof(Bootstrapping_Tests).GetAssembly()));
                 })
                 .Ok();
 
