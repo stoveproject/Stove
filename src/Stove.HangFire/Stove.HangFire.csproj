@@ -13,6 +13,7 @@
 
   <PropertyGroup>
     <DocumentationFile>bin\Release\net461\Stove.HangFire.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netstandard1.6\Stove.HangFire.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

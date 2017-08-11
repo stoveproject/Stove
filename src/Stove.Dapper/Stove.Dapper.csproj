@@ -24,6 +24,7 @@
 
   <PropertyGroup>
     <DocumentationFile>bin\Release\net461\Stove.Dapper.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netstandard1.6\Stove.Dapper.xml</DocumentationFile>
   </PropertyGroup>
   
   <ItemGroup>

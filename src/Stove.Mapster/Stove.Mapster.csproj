@@ -13,6 +13,7 @@
 
   <PropertyGroup>
     <DocumentationFile>bin\Release\net461\Stove.Mapster.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netstandard1.6\Stove.Mapster.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
