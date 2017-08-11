@@ -26,22 +26,21 @@ var toolpath = Argument("toolpath", @"tools");
 var branch = Argument("branch", EnvironmentVariable("APPVEYOR_REPO_BRANCH"));
 var nugetApiKey = EnvironmentVariable("nugetApiKey");
 
-var targetTestFramework = "net461";
-var testFileRegex = $"**/bin/{configuration}/{targetTestFramework}/*Tests*.dll";
-var testProjectNames = new List<string>()
-                      {
-                          "Stove.EntityFramework.Tests",
-                          "Stove.Mapster.Tests",
-                          "Stove.NLog.Tests",
-                          "Stove.RabbitMQ.Tests",
-                          "Stove.RavenDB.Tests",
-                          "Stove.Redis.Tests",
-                          "Stove.Tests",
-                          "Stove.Tests.SampleApplication",
-                          "Stove.Dapper.Tests",
-                          "Stove.Hangfire.Tests",
-                          "Stove.NHibernate.Tests"
-                        };
+var testProjects = new List<Tuple<string, string[]>>
+                {
+                    new Tuple<string, string[]>("Stove.EntityFramework.Tests", new[] { "net461" }),
+                    new Tuple<string, string[]>("Stove.Mapster.Tests", new[] { "net461", "netcoreapp1.0" }),
+                    new Tuple<string, string[]>("Stove.NLog.Tests", new[] { "net461", "netcoreapp1.0" }),
+                    new Tuple<string, string[]>("Stove.RabbitMQ.Tests", new[] { "net461", "netcoreapp1.0" }),
+                    new Tuple<string, string[]>("Stove.RavenDB.Tests", new[] { "net461" }),
+                    new Tuple<string, string[]>("Stove.Redis.Tests", new[] { "net461", "netcoreapp1.0" }),
+                    new Tuple<string, string[]>("Stove.Tests", new[] { "net461", "netcoreapp1.0" }),
+                    new Tuple<string, string[]>("Stove.Tests.SampleApplication", new[] { "net461" }),
+                    new Tuple<string, string[]>("Stove.Dapper.Tests", new[] { "net461" }),
+                    new Tuple<string, string[]>("Stove.Hangfire.Tests", new[] { "net461", "netcoreapp1.0" }),
+                    new Tuple<string, string[]>("Stove.NHibernate.Tests", new[] { "net461" })
+                };
+                      
 
 var nupkgPath = "nupkg";
 var nupkgRegex = $"**/{projectName}*.nupkg";
@@ -92,11 +91,23 @@ Task("Run-Unit-Tests")
     .IsDependentOn("Build")
     .Does(() =>
     {
-        foreach(var testProject in testProjectNames)
+        foreach (Tuple<string, string[]> testProject in testProjects)
         {
-           var testFile = GetFiles($"**/bin/{configuration}/{targetTestFramework}/{testProject}*.dll").First();
-           Information(testFile);
-           XUnit2(testFile.ToString(), new XUnit2Settings { });
+            foreach (string targetFramework in testProject.Item2)
+            {
+                 if(targetFramework == "net461")
+                 {
+                      var testFile = GetFiles($"**/bin/{configuration}/{targetFramework}/{testProject.Item1}*.dll").First();
+                      Information(testFile);
+                      XUnit2(testFile.ToString(), new XUnit2Settings { });
+                 }
+
+                 if(targetFramework == "netcoreapp1.0")
+                 {
+                    var testProj = GetFiles($"./test/**/*{testProject.Item1}.csproj").First();
+                    DotNetCoreTest(testProj.FullPath, new DotNetCoreTestSettings { Configuration = "Release", Framework = "netcoreapp1.0" });
+                 }                
+            }
         }
     });
     

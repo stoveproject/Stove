@@ -18,11 +18,16 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Stove.TestBase\Stove.TestBase.csproj" />
-    <PackageReference Include="Shouldly" Version="2.8.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
     <PackageReference Include="xunit" Version="2.2.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
+    <PackageReference Include="Shouldly" Version="2.8.3" />
     <PackageReference Include="NSubstitute" Version="2.0.3" />
   </ItemGroup>
-  
+
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
@@ -32,4 +37,5 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">
     <PackageReference Include="System.Runtime" Version="4.3.0" />
   </ItemGroup>
+  
 </Project>
