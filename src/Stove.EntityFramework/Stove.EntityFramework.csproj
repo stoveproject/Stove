@@ -13,6 +13,7 @@
 
   <PropertyGroup>
     <DocumentationFile>bin\Release\net461\Stove.EntityFramework.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netstandard1.6\Stove.EntityFramework.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
