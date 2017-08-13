@@ -3,6 +3,7 @@ using System.Linq;
 
 using Stove.Bootstrapping;
 using Stove.EntityFramework;
+using Stove.EntityFramework.Common;
 
 namespace Stove
 {

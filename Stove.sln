@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.26730.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{4D2BAE52-1E23-4321-BBE6-2BAC28F7B389}"
 EndProject
@@ -72,6 +72,12 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stove.Demo.WebApi", "test\Stove.Demo.WebApi\Stove.Demo.WebApi.csproj", "{07F94965-03E9-46C8-B4CA-647722D21C21}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "consoleapps", "consoleapps", "{0EDEEA26-64C8-4391-9991-96E25131D4C6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stove.EntityFrameworkCore", "src\Stove.EntityFrameworkCore\Stove.EntityFrameworkCore.csproj", "{6C565DF6-65AB-4389-98B0-F1F4EFF7C328}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stove.EntityFramework.Common", "src\Stove.EntityFramework.Common\Stove.EntityFramework.Common.csproj", "{23BA9240-03B5-4EA0-8354-819B27565A2A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stove.EntityFrameworkCore.Tests", "test\Stove.EntityFrameworkCore.Tests\Stove.EntityFrameworkCore.Tests.csproj", "{FE89B97B-6CBC-4F22-8366-78DE4C546BFC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -183,6 +189,18 @@ Global
 		{07F94965-03E9-46C8-B4CA-647722D21C21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07F94965-03E9-46C8-B4CA-647722D21C21}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07F94965-03E9-46C8-B4CA-647722D21C21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C565DF6-65AB-4389-98B0-F1F4EFF7C328}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C565DF6-65AB-4389-98B0-F1F4EFF7C328}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C565DF6-65AB-4389-98B0-F1F4EFF7C328}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C565DF6-65AB-4389-98B0-F1F4EFF7C328}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23BA9240-03B5-4EA0-8354-819B27565A2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23BA9240-03B5-4EA0-8354-819B27565A2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23BA9240-03B5-4EA0-8354-819B27565A2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23BA9240-03B5-4EA0-8354-819B27565A2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE89B97B-6CBC-4F22-8366-78DE4C546BFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE89B97B-6CBC-4F22-8366-78DE4C546BFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE89B97B-6CBC-4F22-8366-78DE4C546BFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE89B97B-6CBC-4F22-8366-78DE4C546BFC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -215,5 +233,11 @@ Global
 		{87D24787-42A4-4D66-AE8C-663F37DDD18A} = {4D2BAE52-1E23-4321-BBE6-2BAC28F7B389}
 		{07F94965-03E9-46C8-B4CA-647722D21C21} = {0EDEEA26-64C8-4391-9991-96E25131D4C6}
 		{0EDEEA26-64C8-4391-9991-96E25131D4C6} = {4D2BAE52-1E23-4321-BBE6-2BAC28F7B389}
+		{6C565DF6-65AB-4389-98B0-F1F4EFF7C328} = {23CB5044-8ECE-4DDC-89E0-FC1B8EC9DDDF}
+		{23BA9240-03B5-4EA0-8354-819B27565A2A} = {23CB5044-8ECE-4DDC-89E0-FC1B8EC9DDDF}
+		{FE89B97B-6CBC-4F22-8366-78DE4C546BFC} = {4D2BAE52-1E23-4321-BBE6-2BAC28F7B389}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FA9941D3-2A68-4501-B951-D2447D6EF432}
 	EndGlobalSection
 EndGlobal

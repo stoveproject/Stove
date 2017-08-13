@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFrameworks>net461;netstandard1.6</TargetFrameworks>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AssemblyName>Stove.EntityFrameworkCore</AssemblyName>
+    <PackageId>Stove.EntityFrameworkCore</PackageId>
+    <PackageTags>asp.net;asp.net mvc;boilerplate;application framework;web framework;framework;domain driven design;EntityFrameworkCore;ORM;Entity Framework Core</PackageTags>
+    <RootNamespace>Stove</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="bin\Release\net461\Stove.EntityFrameworkCore.pdb">
+      <PackagePath>lib/net461/</PackagePath>
+      <Pack>true</Pack>
+    </None>
+    <None Include="bin\Release\netstandard1.6\Stove.EntityFrameworkCore.pdb">
+      <PackagePath>lib/netstandard1.6/</PackagePath>
+      <Pack>true</Pack>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="1.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="1.1.2" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Stove.EntityFramework.Common\Stove.EntityFramework.Common.csproj" />
+    <ProjectReference Include="..\Stove\Stove.csproj" />
+  </ItemGroup>
+
+</Project>
