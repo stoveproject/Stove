@@ -90,10 +90,11 @@ namespace Stove.EntityFrameworkCore.Uow
 
 				foreach (DbContext attendedDbContext in activeTransaction.AttendedDbContexts)
 				{
-					//iocResolver.Release(attendedDbContext);
+					attendedDbContext.Dispose();
 				}
 
-				//iocResolver.Release(activeTransaction.StarterDbContext);
+				activeTransaction.DbContextTransaction.Dispose();
+				activeTransaction.StarterDbContext.Dispose();
 			}
 
 			ActiveTransactions.Clear();

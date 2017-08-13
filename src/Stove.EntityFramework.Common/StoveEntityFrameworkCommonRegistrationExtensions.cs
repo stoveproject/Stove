@@ -2,7 +2,7 @@
 
 using Stove.Reflection.Extensions;
 
-namespace Stove.EntityFramework.Common
+namespace Stove.EntityFramework
 {
 	public static class StoveEntityFrameworkCommonRegistrationExtensions
 	{

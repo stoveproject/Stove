@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 
 using Stove.Bootstrapping;
-using Stove.EntityFramework.Common;
+using Stove.EntityFramework;
 using Stove.EntityFrameworkCore;
 using Stove.EntityFrameworkCore.Configuration;
 

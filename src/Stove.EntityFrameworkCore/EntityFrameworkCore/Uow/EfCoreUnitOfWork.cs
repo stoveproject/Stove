@@ -8,7 +8,7 @@ using Autofac.Extras.IocManager;
 using Microsoft.EntityFrameworkCore;
 
 using Stove.Domain.Uow;
-using Stove.EntityFramework.Common;
+using Stove.EntityFramework;
 using Stove.Extensions;
 
 namespace Stove.EntityFrameworkCore.Uow

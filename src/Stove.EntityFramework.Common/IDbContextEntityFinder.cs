@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using Stove.Domain.Entities;
 
-namespace Stove.EntityFramework.Common
+namespace Stove.EntityFramework
 {
 	public interface IDbContextEntityFinder
 	{

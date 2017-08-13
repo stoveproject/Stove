@@ -1,6 +1,6 @@
 ﻿using Stove.Bootstrapping;
 
-namespace Stove.EntityFramework.Common
+namespace Stove.EntityFramework
 {
 	[DependsOn(
 		typeof(StoveKernelBootstrapper)

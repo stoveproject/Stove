@@ -10,6 +10,6 @@ namespace Stove.Configurations
 
         IGlobalConfiguration GlobalConfiguration { get; }
 
-        IStoveStartupConfiguration Configuration { get; }
+        IStoveStartupConfiguration StoveConfiguration { get; }
     }
 }

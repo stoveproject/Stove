@@ -4,9 +4,12 @@ using System.Reflection;
 
 using Autofac.Extras.IocManager;
 
+using JetBrains.Annotations;
+
 using Stove.Domain.Entities;
 using Stove.Domain.Uow;
-using Stove.EntityFramework.Common;
+using Stove.EntityFramework;
+using Stove.EntityFramework.Uow;
 using Stove.EntityFrameworkCore;
 using Stove.EntityFrameworkCore.Configuration;
 using Stove.EntityFrameworkCore.Uow;
@@ -31,7 +34,7 @@ namespace Stove
 					var ormRegistrars = new List<ISecondaryOrmRegistrar>();
 					r.OnRegistering += (sender, args) =>
 					{
-						if (typeof(StoveDbContext).IsAssignableFrom(args.ImplementationType))
+						if (typeof(StoveDbContext).GetTypeInfo().IsAssignableFrom(args.ImplementationType))
 						{
 							EfCoreRepositoryRegistrar.RegisterRepositories(args.ImplementationType, builder);
 							ormRegistrars.Add(new EfCoreBasedSecondaryOrmRegistrar(builder, args.ImplementationType, EfCoreDbContextEntityFinder.GetEntityTypeInfos, EntityHelper.GetPrimaryKeyType));
@@ -42,6 +45,7 @@ namespace Stove
 					r.RegisterAssemblyByConvention(typeof(StoveEntityFrameworkCoreRegistrationExtensions).GetAssembly());
 					r.RegisterGeneric(typeof(IDbContextProvider<>), typeof(UnitOfWorkDbContextProvider<>));
 					r.Register<IUnitOfWorkDefaultOptions, UnitOfWorkDefaultOptions>(Lifetime.Singleton);
+					r.Register<IUnitOfWorkFilterExecuter, NullUnitOfWorkFilterExecuter>();
 
 					if (configurerAction != null)
 					{
@@ -49,6 +53,17 @@ namespace Stove
 					}
 				})
 				.UseStoveEntityFrameworkCommon();
+		}
+
+		/// <summary>
+		///     Uses the stove typed connection string resolver.
+		/// </summary>
+		/// <param name="builder">The builder.</param>
+		/// <returns></returns>
+		[NotNull]
+		public static IIocBuilder UseStoveTypedConnectionStringResolver([NotNull] this IIocBuilder builder)
+		{
+			return builder.RegisterServices(r => r.Register<IConnectionStringResolver, TypedConnectionStringResolver>());
 		}
 	}
 }

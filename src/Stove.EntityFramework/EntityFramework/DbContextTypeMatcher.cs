@@ -1,5 +1,4 @@
 using Stove.Domain.Uow;
-using Stove.EntityFramework.Common;
 
 namespace Stove.EntityFramework
 {

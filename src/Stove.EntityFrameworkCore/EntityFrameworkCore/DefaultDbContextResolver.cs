@@ -9,7 +9,7 @@ using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
-using Stove.EntityFramework.Common;
+using Stove.EntityFramework;
 using Stove.EntityFrameworkCore.Configuration;
 
 namespace Stove.EntityFrameworkCore

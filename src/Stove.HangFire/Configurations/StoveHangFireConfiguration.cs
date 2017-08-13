@@ -10,13 +10,13 @@ namespace Stove.Configurations
     {
         public StoveHangfireConfiguration(IStoveStartupConfiguration configuration)
         {
-            Configuration = configuration;
+            StoveConfiguration = configuration;
         }
 
         public BackgroundJobServer Server { get; set; }
 
         public IGlobalConfiguration GlobalConfiguration => global::Hangfire.GlobalConfiguration.Configuration;
 
-        public IStoveStartupConfiguration Configuration { get; }
+        public IStoveStartupConfiguration StoveConfiguration { get; }
     }
 }
