@@ -29,6 +29,8 @@ var nugetApiKey = EnvironmentVariable("nugetApiKey");
 var testProjects = new List<Tuple<string, string[]>>
                 {
                     new Tuple<string, string[]>("Stove.EntityFramework.Tests", new[] { "net461" }),
+                    new Tuple<string, string[]>("Stove.EntityFrameworkCore.Tests", new[] { "netcoreapp1.0" }),
+                    new Tuple<string, string[]>("Stove.EntityFrameworkCore.Dapper.Tests", new[] { "netcoreapp1.0" }),
                     new Tuple<string, string[]>("Stove.Mapster.Tests", new[] { "net461", "netcoreapp1.0" }),
                     new Tuple<string, string[]>("Stove.NLog.Tests", new[] { "net461", "netcoreapp1.0" }),
                     new Tuple<string, string[]>("Stove.RabbitMQ.Tests", new[] { "net461", "netcoreapp1.0" }),
