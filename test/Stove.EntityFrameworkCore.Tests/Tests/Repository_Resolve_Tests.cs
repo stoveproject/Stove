@@ -15,7 +15,7 @@ using Xunit;
 
 namespace Stove.EntityFrameworkCore.Tests.Tests
 {
-	public class Repository_The_Tests : EntityFrameworkCoreModuleTestBase
+	public class Repository_The_Tests : EntityFrameworkCoreTestBase
 	{
 		public Repository_The_Tests()
 		{

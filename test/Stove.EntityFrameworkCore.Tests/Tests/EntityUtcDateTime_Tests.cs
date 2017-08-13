@@ -10,7 +10,7 @@ using Xunit;
 
 namespace Stove.EntityFrameworkCore.Tests.Tests
 {
-    public class EntityUtcDateTime_Tests : EntityFrameworkCoreModuleTestBase
+    public class EntityUtcDateTime_Tests : EntityFrameworkCoreTestBase
     {
         private readonly IRepository<Blog> _blogRepository;
 

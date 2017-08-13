@@ -14,9 +14,9 @@ using Stove.Timing;
 
 namespace Stove.EntityFrameworkCore.Tests
 {
-	public abstract class EntityFrameworkCoreModuleTestBase : ApplicationTestBase<EntityFrameworkCoreTestBootstrapper>
+	public abstract class EntityFrameworkCoreTestBase : ApplicationTestBase<EntityFrameworkCoreTestBootstrapper>
 	{
-		protected EntityFrameworkCoreModuleTestBase() : base(true)
+		protected EntityFrameworkCoreTestBase() : base(true)
 		{
 			Clock.Provider = ClockProviders.Utc;
 
@@ -56,7 +56,7 @@ namespace Stove.EntityFrameworkCore.Tests
 				builder.RegisterServices(r =>
 				{
 					r.Register<IRepository<Post, Guid>, IPostRepository, PostRepository>();
-					r.RegisterAssemblyByConvention(typeof(EntityFrameworkCoreModuleTestBase).GetAssembly());
+					r.RegisterAssemblyByConvention(typeof(EntityFrameworkCoreTestBase).GetAssembly());
 				});
 
 			});
@@ -85,8 +85,8 @@ namespace Stove.EntityFrameworkCore.Tests
 			using (var context = The<SupportDbContext>())
 			{
 				context.Tickets.AddRange(
-					new Ticket { EmailAddress = "john@aspnetboilerplate.com", Message = "an active message" },
-					new Ticket { EmailAddress = "david@aspnetboilerplate.com", Message = "an inactive message", IsActive = false }
+					new Ticket { EmailAddress = "john@stove.com", Message = "an active message" },
+					new Ticket { EmailAddress = "david@stove.com", Message = "an inactive message", IsActive = false }
 				);
 
 				context.SaveChanges();

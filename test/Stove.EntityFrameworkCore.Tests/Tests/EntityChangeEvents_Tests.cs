@@ -11,7 +11,7 @@ using Xunit;
 
 namespace Stove.EntityFrameworkCore.Tests.Tests
 {
-    public class EntityChangeEvents_Tests : EntityFrameworkCoreModuleTestBase
+    public class EntityChangeEvents_Tests : EntityFrameworkCoreTestBase
     {
         private readonly IRepository<Blog> _blogRepository;
         private readonly IEventBus _eventBus;
@@ -113,7 +113,7 @@ namespace Stove.EntityFrameworkCore.Tests.Tests
                 data.Blog.Url.ShouldStartWith("https://");
             });
 
-            _blogRepository.Insert(new Blog(blogName, "http://aspnetboilerplate.com"));
+            _blogRepository.Insert(new Blog(blogName, "http://stove.com"));
         }
     }
 }

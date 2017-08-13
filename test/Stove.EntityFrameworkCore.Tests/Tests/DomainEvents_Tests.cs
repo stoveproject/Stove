@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Stove.EntityFrameworkCore.Tests.Tests
 {
-	public class DomainEvents_Tests : EntityFrameworkCoreModuleTestBase
+	public class DomainEvents_Tests : EntityFrameworkCoreTestBase
 	{
 		private readonly IRepository<Blog> _blogRepository;
 		private readonly IEventBus _eventBus;

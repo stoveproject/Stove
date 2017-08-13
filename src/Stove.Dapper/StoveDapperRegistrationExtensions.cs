@@ -49,7 +49,10 @@ namespace Stove
                     case StoveConsts.Orms.EntityFramework:
                         registrar.RegisterRepositories(EfBasedDapperAutoRepositoryTypes.Default);
                         break;
-                    case StoveConsts.Orms.NHibernate:
+	                case StoveConsts.Orms.EntityFrameworkCore:
+		                registrar.RegisterRepositories(EfBasedDapperAutoRepositoryTypes.Default);
+		                break;
+					case StoveConsts.Orms.NHibernate:
                         registrar.RegisterRepositories(NhBasedDapperAutoRepositoryTypes.Default);
                         break;
                 }

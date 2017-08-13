@@ -12,7 +12,7 @@ using Stove.EntityFrameworkCore.Tests.Domain;
 namespace Stove.EntityFrameworkCore.Tests.Tests
 {
     //WE CAN NOT TEST TRANSACTIONS SINCE INMEMORY DB DOES NOT SUPPORT IT! TODO: Use SQLite
-    public class Transaction_Tests : EntityFrameworkCoreModuleTestBase
+    public class Transaction_Tests : EntityFrameworkCoreTestBase
     {
         private readonly IUnitOfWorkManager _uowManager;
         private readonly IRepository<Blog> _blogRepository;

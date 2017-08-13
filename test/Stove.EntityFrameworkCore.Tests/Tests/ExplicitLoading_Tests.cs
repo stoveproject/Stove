@@ -11,7 +11,7 @@ using Xunit;
 
 namespace Stove.EntityFrameworkCore.Tests.Tests
 {
-    public class ExplicitLoading_Tests : EntityFrameworkCoreModuleTestBase
+    public class ExplicitLoading_Tests : EntityFrameworkCoreTestBase
     {
         private readonly IRepository<Blog> _blogRepository;
         private readonly IRepository<Post, Guid> _postRepository;

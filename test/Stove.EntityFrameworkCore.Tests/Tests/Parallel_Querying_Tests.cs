@@ -16,7 +16,7 @@ using Xunit;
 
 namespace Stove.EntityFrameworkCore.Tests.Tests
 {
-	public class Parallel_Querying_Tests : EntityFrameworkCoreModuleTestBase
+	public class Parallel_Querying_Tests : EntityFrameworkCoreTestBase
 	{
 		private readonly IParallelQueryExecuteDemo _parallelQueryExecuteDemo;
 
