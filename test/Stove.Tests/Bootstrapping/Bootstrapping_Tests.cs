@@ -108,7 +108,7 @@ namespace Stove.Tests.Bootstrapping
         public override void PreStart()
         {
             Resolver.ShouldNotBe(null);
-            Configuration.ShouldNotBe(null);
+            StoveConfiguration.ShouldNotBe(null);
             PreStartCount++;
         }
 

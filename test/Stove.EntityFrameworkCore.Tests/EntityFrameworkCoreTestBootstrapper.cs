@@ -11,8 +11,8 @@ namespace Stove.EntityFrameworkCore.Tests
 	{
 		public override void PreStart()
 		{
-			Configuration.DefaultNameOrConnectionString = "Default";
-			Configuration.UnitOfWork.IsolationLevel = IsolationLevel.Unspecified;
+			StoveConfiguration.DefaultNameOrConnectionString = "Default";
+			StoveConfiguration.UnitOfWork.IsolationLevel = IsolationLevel.Unspecified;
 		}
 	}
 }

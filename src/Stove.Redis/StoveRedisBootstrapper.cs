@@ -10,9 +10,9 @@ namespace Stove
 	{
 		public override void PreStart()
 		{
-			if (Configuration.IsConfigurerRegistered<IStoveRedisCacheConfiguration>())
+			if (StoveConfiguration.IsConfigurerRegistered<IStoveRedisCacheConfiguration>())
 			{
-				Configuration.GetConfigurerIfExists<IStoveRedisCacheConfiguration>().Invoke(Configuration.Modules.StoveRedis());
+				StoveConfiguration.GetConfigurerIfExists<IStoveRedisCacheConfiguration>().Invoke(StoveConfiguration.Modules.StoveRedis());
 			}
 		}
 	}

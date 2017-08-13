@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 using Autofac.Extras.IocManager;
@@ -7,6 +8,7 @@ using Stove.Domain.Entities;
 using Stove.Domain.Uow;
 using Stove.EntityFramework.Common;
 using Stove.EntityFrameworkCore;
+using Stove.EntityFrameworkCore.Configuration;
 using Stove.EntityFrameworkCore.Uow;
 using Stove.Orm;
 using Stove.Reflection.Extensions;
@@ -15,7 +17,13 @@ namespace Stove
 {
 	public static class StoveEntityFrameworkCoreRegistrationExtensions
 	{
-		public static IIocBuilder UseStoveEntityFrameworkCore(this IIocBuilder builder)
+		/// <summary>
+		///     Uses the stove entity framework core.
+		/// </summary>
+		/// <param name="builder">The builder.</param>
+		/// <param name="configurerAction"></param>
+		/// <returns></returns>
+		public static IIocBuilder UseStoveEntityFrameworkCore(this IIocBuilder builder, Func<IStoveEfCoreConfiguration, IStoveEfCoreConfiguration> configurerAction = null)
 		{
 			return builder
 				.RegisterServices(r =>
@@ -34,6 +42,11 @@ namespace Stove
 					r.RegisterAssemblyByConvention(typeof(StoveEntityFrameworkCoreRegistrationExtensions).GetAssembly());
 					r.RegisterGeneric(typeof(IDbContextProvider<>), typeof(UnitOfWorkDbContextProvider<>));
 					r.Register<IUnitOfWorkDefaultOptions, UnitOfWorkDefaultOptions>(Lifetime.Singleton);
+
+					if (configurerAction != null)
+					{
+						r.Register(ctx => configurerAction);
+					}
 				})
 				.UseStoveEntityFrameworkCommon();
 		}

@@ -14,19 +14,19 @@ namespace Stove
     {
         public override void PreStart()
         {
-            Configuration.GetConfigurerIfExists<IStoveRabbitMQConfiguration>().Invoke(Configuration.Modules.StoveRabbitMQ());
+            StoveConfiguration.GetConfigurerIfExists<IStoveRabbitMQConfiguration>().Invoke(StoveConfiguration.Modules.StoveRabbitMQ());
         }
 
         public override void PostStart()
         {
-            Configuration.Resolver.Resolve<IBusControl>().Start();
+            StoveConfiguration.Resolver.Resolve<IBusControl>().Start();
         }
 
         public override void Shutdown()
         {
             try
             {
-                Configuration.Resolver.Resolve<IBusControl>().Stop();
+                StoveConfiguration.Resolver.Resolve<IBusControl>().Stop();
             }
             catch (Exception exception)
             {

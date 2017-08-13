@@ -9,7 +9,7 @@ namespace Stove.Mapster.Tests
     {
         public override void PreStart()
         {
-            Configuration.Modules.StoveMapster().Configurators.Add(config =>
+            StoveConfiguration.Modules.StoveMapster().Configurators.Add(config =>
             {
                 config.RequireExplicitMapping = true;
             });

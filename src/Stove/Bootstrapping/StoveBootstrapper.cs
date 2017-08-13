@@ -21,7 +21,7 @@ namespace Stove.Bootstrapping
         }
 
         [NotNull]
-        public IStoveStartupConfiguration Configuration { get; internal set; }
+        public IStoveStartupConfiguration StoveConfiguration { get; internal set; }
 
         [NotNull]
         public IResolver Resolver { get; internal set; }

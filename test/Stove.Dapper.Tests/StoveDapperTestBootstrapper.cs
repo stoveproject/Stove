@@ -18,11 +18,11 @@ namespace Stove.Dapper.Tests
         public override void PreStart()
         {
             var connectionString = "Data Source=:memory:";
-            Configuration.DefaultNameOrConnectionString = connectionString;
-            Configuration.TypedConnectionStrings.Add(typeof(DapperAppTestStoveDbContext), Configuration.DefaultNameOrConnectionString);
-            Configuration.TypedConnectionStrings.Add(typeof(MailDbContext), Configuration.DefaultNameOrConnectionString);
+            StoveConfiguration.DefaultNameOrConnectionString = connectionString;
+            StoveConfiguration.TypedConnectionStrings.Add(typeof(DapperAppTestStoveDbContext), StoveConfiguration.DefaultNameOrConnectionString);
+            StoveConfiguration.TypedConnectionStrings.Add(typeof(MailDbContext), StoveConfiguration.DefaultNameOrConnectionString);
 
-            Configuration.UnitOfWork.IsolationLevel = IsolationLevel.Unspecified;
+            StoveConfiguration.UnitOfWork.IsolationLevel = IsolationLevel.Unspecified;
         }
 
         public override void Start()

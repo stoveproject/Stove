@@ -25,19 +25,19 @@ namespace Stove.Demo.ConsoleApp
     {
         public override void PreStart()
         {
-            Configuration.DefaultNameOrConnectionString = ConnectionStringHelper.GetConnectionString("Default");
-            Configuration.TypedConnectionStrings.Add(typeof(AnimalStoveDbContext), "Default");
-            Configuration.TypedConnectionStrings.Add(typeof(PersonStoveDbContext), "Default");
-            Configuration.TypedConnectionStrings.Add(typeof(PriceDbContext), "Default");
+	        StoveConfiguration.DefaultNameOrConnectionString = ConnectionStringHelper.GetConnectionString("Default");
+	        StoveConfiguration.TypedConnectionStrings.Add(typeof(AnimalStoveDbContext), "Default");
+	        StoveConfiguration.TypedConnectionStrings.Add(typeof(PersonStoveDbContext), "Default");
+	        StoveConfiguration.TypedConnectionStrings.Add(typeof(PriceDbContext), "Default");
 
             ExecuteScript("InitializeDatabase");
         }
 
         public override void Start()
         {
-            Configuration.Caching.Configure(DemoCacheName.Demo, cache => { cache.DefaultSlidingExpireTime = TimeSpan.FromMinutes(1); });
+	        StoveConfiguration.Caching.Configure(DemoCacheName.Demo, cache => { cache.DefaultSlidingExpireTime = TimeSpan.FromMinutes(1); });
 
-            DbInterception.Add(Configuration.Resolver.Resolve<WithNoLockInterceptor>());
+            DbInterception.Add(StoveConfiguration.Resolver.Resolve<WithNoLockInterceptor>());
 
             DapperExtensions.DapperExtensions.SetMappingAssemblies(new List<Assembly> { Assembly.GetExecutingAssembly() });
         }
@@ -49,7 +49,7 @@ namespace Stove.Demo.ConsoleApp
 
         private void ExecuteScript(string scriptName)
         {
-            var connection = new SqlConnection(Configuration.DefaultNameOrConnectionString);
+            var connection = new SqlConnection(StoveConfiguration.DefaultNameOrConnectionString);
 
             var files = new List<string>
             {

@@ -29,7 +29,7 @@ namespace Stove.Bootstrapping
 
         public override void PreStart()
         {
-            Configuration.UnitOfWork.RegisterFilter(StoveDataFilters.SoftDelete, true);
+            StoveConfiguration.UnitOfWork.RegisterFilter(StoveDataFilters.SoftDelete, true);
         }
 
         public override void Start()
@@ -40,7 +40,7 @@ namespace Stove.Bootstrapping
 
         public override void Shutdown()
         {
-            if (Configuration.BackgroundJobs.IsJobExecutionEnabled)
+            if (StoveConfiguration.BackgroundJobs.IsJobExecutionEnabled)
             {
                 _backgroundWorkerManager.StopAndWaitToStop();
             }
@@ -48,9 +48,9 @@ namespace Stove.Bootstrapping
 
         private void ConfigureBackgroundJobs()
         {
-            Configuration.GetConfigurerIfExists<IBackgroundJobConfiguration>().Invoke(Configuration.BackgroundJobs);
+            StoveConfiguration.GetConfigurerIfExists<IBackgroundJobConfiguration>().Invoke(StoveConfiguration.BackgroundJobs);
 
-            if (Configuration.BackgroundJobs.IsJobExecutionEnabled)
+            if (StoveConfiguration.BackgroundJobs.IsJobExecutionEnabled)
             {
                 _backgroundWorkerManager.Start();
             }
