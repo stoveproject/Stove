@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
+using Autofac;
 using Autofac.Extras.IocManager;
 
 using Stove.Domain.Entities;
@@ -47,7 +48,7 @@ namespace Stove.EntityFrameworkCore
 						? autoRepositoryAttr.RepositoryImplementation.GetTypeInfo().MakeGenericType(entityTypeInfo.EntityType)
 						: autoRepositoryAttr.RepositoryImplementation.GetTypeInfo().MakeGenericType(entityTypeInfo.DeclaringType, entityTypeInfo.EntityType);
 
-					_iocBuilder.RegisterServices(r => r.Register(genericRepositoryType, implType));
+					_iocBuilder.RegisterServices(r => r.UseBuilder(cb => cb.RegisterType(implType).As(genericRepositoryType).AsImplementedInterfaces().WithPropertyInjection()));
 				}
 				else
 				{
@@ -57,7 +58,7 @@ namespace Stove.EntityFrameworkCore
 						? autoRepositoryAttr.RepositoryImplementationWithPrimaryKey.GetTypeInfo().MakeGenericType(entityTypeInfo.EntityType, primaryKeyType)
 						: autoRepositoryAttr.RepositoryImplementationWithPrimaryKey.GetTypeInfo().MakeGenericType(entityTypeInfo.DeclaringType, entityTypeInfo.EntityType, primaryKeyType);
 
-					_iocBuilder.RegisterServices(r => r.Register(genericRepositoryTypeWithPrimaryKey, implType));
+					_iocBuilder.RegisterServices(r => r.UseBuilder(cb => cb.RegisterType(implType).As(genericRepositoryTypeWithPrimaryKey).AsImplementedInterfaces().WithPropertyInjection()));
 				}
 			}
 		}

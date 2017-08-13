@@ -9,6 +9,7 @@ using Hangfire;
 using HibernatingRhinos.Profiler.Appender.EntityFramework;
 
 using Stove.Demo.ConsoleApp.DbContexes;
+using Stove.EntityFramework;
 using Stove.Redis.Configurations;
 
 namespace Stove.Demo.ConsoleApp

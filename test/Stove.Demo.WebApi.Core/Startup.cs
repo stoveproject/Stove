@@ -13,7 +13,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using Stove.Demo.WebApi.Core.Domain.DbContexts;
+using Stove.EntityFramework;
 using Stove.EntityFrameworkCore;
+using Stove.EntityFrameworkCore.Configuration;
 using Stove.Redis.Configurations;
 using Stove.Reflection.Extensions;
 
@@ -72,12 +74,11 @@ namespace Stove.Demo.WebApi.Core
 
 			services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info { Title = "Stove Web Api", Version = "v1" }); });
 
-			RootResolver = IocBuilder.New
-									 .UseStove<StoveWebApiCoreBootstrapper>()
+			IocBuilder builder = IocBuilder.New;
+
+			RootResolver = builder.UseStove<StoveWebApiCoreBootstrapper>()
 									 .UseStoveEntityFrameworkCore(configuration =>
 									 {
-
-
 										 return configuration;
 									 })
 									 .UseStoveDapper()

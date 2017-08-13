@@ -4,21 +4,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Stove.EntityFrameworkCore.Configuration
 {
-    public class StoveDbContextConfiguration<TDbContext>
-        where TDbContext : DbContext
-    {
-        public string ConnectionString {get; internal set; }
+	public class StoveDbContextConfiguration<TDbContext> where TDbContext : DbContext
+	{
+		public StoveDbContextConfiguration(string connectionString, DbConnection existingConnection)
+		{
+			ConnectionString = connectionString;
+			ExistingConnection = existingConnection;
+			DbContextOptions = new DbContextOptionsBuilder<TDbContext>();
+		}
 
-        public DbConnection ExistingConnection { get; internal set; }
+		public string ConnectionString { get; internal set; }
 
-        public DbContextOptionsBuilder<TDbContext> DbContextOptions { get; }
-        
-        public StoveDbContextConfiguration(string connectionString, DbConnection existingConnection)
-        {
-            ConnectionString = connectionString;
-            ExistingConnection = existingConnection;
+		public DbConnection ExistingConnection { get; internal set; }
 
-            DbContextOptions = new DbContextOptionsBuilder<TDbContext>();
-        }
-    }
+		public DbContextOptionsBuilder<TDbContext> DbContextOptions { get; }
+	}
 }

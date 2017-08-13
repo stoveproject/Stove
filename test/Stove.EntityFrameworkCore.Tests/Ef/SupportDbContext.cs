@@ -17,7 +17,6 @@ namespace Stove.EntityFrameworkCore.Tests.Ef
 		typeof(ISupportRepository<,>),
 		typeof(SupportRepositoryBase<>),
 		typeof(SupportRepositoryBase<,>)
-
 		//WithDefaultRepositoryInterfaces = true
 	)]
 	public class SupportDbContext : StoveDbContext
@@ -27,7 +26,7 @@ namespace Stove.EntityFrameworkCore.Tests.Ef
 		{
 		}
 
-		public DbSet<Ticket> Tickets { get; set; }
+		public virtual DbSet<Ticket> Tickets { get; set; }
 	}
 
 	public interface ISupportRepository<TEntity, TPrimaryKey> : IRepository<TEntity, TPrimaryKey>

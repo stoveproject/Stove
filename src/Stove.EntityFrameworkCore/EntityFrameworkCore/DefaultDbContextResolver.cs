@@ -18,7 +18,6 @@ namespace Stove.EntityFrameworkCore
 	{
 		private static readonly MethodInfo CreateOptionsMethod = typeof(DefaultDbContextResolver).GetMethod("CreateOptions", BindingFlags.NonPublic | BindingFlags.Instance);
 		private readonly IDbContextTypeMatcher _dbContextTypeMatcher;
-
 		private readonly IScopeResolver _scopeResolver;
 
 		public DefaultDbContextResolver(

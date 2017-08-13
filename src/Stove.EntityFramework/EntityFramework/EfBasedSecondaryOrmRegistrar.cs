@@ -45,7 +45,7 @@ namespace Stove.EntityFramework
                         ? autoRepositoryAttr.RepositoryImplementation.MakeGenericType(entityTypeInfo.EntityType)
                         : autoRepositoryAttr.RepositoryImplementation.MakeGenericType(entityTypeInfo.DeclaringType, entityTypeInfo.EntityType);
 
-	                _iocBuilder.RegisterServices(r => r.Register(genericRepositoryType, implType));
+	                _iocBuilder.RegisterServices(r => r.UseBuilder(cb => cb.RegisterType(implType).As(genericRepositoryType).AsSelf().AsImplementedInterfaces().WithPropertyInjection()));
                 }
                 else
                 {
@@ -55,7 +55,8 @@ namespace Stove.EntityFramework
                         ? autoRepositoryAttr.RepositoryImplementationWithPrimaryKey.MakeGenericType(entityTypeInfo.EntityType, primaryKeyType)
                         : autoRepositoryAttr.RepositoryImplementationWithPrimaryKey.MakeGenericType(entityTypeInfo.DeclaringType, entityTypeInfo.EntityType, primaryKeyType);
 
-	                _iocBuilder.RegisterServices(r => r.Register(genericRepositoryTypeWithPrimaryKey, implType));
+
+	                _iocBuilder.RegisterServices(r => r.UseBuilder(cb => cb.RegisterType(implType).As(genericRepositoryTypeWithPrimaryKey).AsSelf().AsImplementedInterfaces().WithPropertyInjection()));
                 }
             }
         }

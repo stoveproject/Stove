@@ -4,12 +4,9 @@ using System.Reflection;
 
 using Autofac.Extras.IocManager;
 
-using JetBrains.Annotations;
-
 using Stove.Domain.Entities;
 using Stove.Domain.Uow;
 using Stove.EntityFramework;
-using Stove.EntityFramework.Uow;
 using Stove.EntityFrameworkCore;
 using Stove.EntityFrameworkCore.Configuration;
 using Stove.EntityFrameworkCore.Uow;
@@ -26,7 +23,9 @@ namespace Stove
 		/// <param name="builder">The builder.</param>
 		/// <param name="configurerAction"></param>
 		/// <returns></returns>
-		public static IIocBuilder UseStoveEntityFrameworkCore(this IIocBuilder builder, Func<IStoveEfCoreConfiguration, IStoveEfCoreConfiguration> configurerAction = null)
+		public static IIocBuilder UseStoveEntityFrameworkCore(
+			this IIocBuilder builder, 
+			Func<IStoveEfCoreConfiguration, IStoveEfCoreConfiguration> configurerAction = null)
 		{
 			return builder
 				.RegisterServices(r =>
@@ -53,17 +52,6 @@ namespace Stove
 					}
 				})
 				.UseStoveEntityFrameworkCommon();
-		}
-
-		/// <summary>
-		///     Uses the stove typed connection string resolver.
-		/// </summary>
-		/// <param name="builder">The builder.</param>
-		/// <returns></returns>
-		[NotNull]
-		public static IIocBuilder UseStoveTypedConnectionStringResolver([NotNull] this IIocBuilder builder)
-		{
-			return builder.RegisterServices(r => r.Register<IConnectionStringResolver, TypedConnectionStringResolver>());
 		}
 	}
 }

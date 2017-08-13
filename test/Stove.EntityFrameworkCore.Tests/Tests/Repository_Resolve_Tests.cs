@@ -32,6 +32,7 @@ namespace Stove.EntityFrameworkCore.Tests.Tests
 			Assert.Throws<Exception>(() => postRepository.Count()).Message.ShouldBe("can not get count of posts");
 
 			//Should also The by custom interface and implementation
+			The<IRepository<Post, Guid>>();
 			The<IPostRepository>();
 			//The<PostRepository>();
 		}
