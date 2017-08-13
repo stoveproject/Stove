@@ -16,11 +16,11 @@ namespace Stove.Demo.ConsoleApp
     [DependsOn(
         typeof(StoveEntityFrameworkBootstrapper),
         typeof(StoveMapsterBootstrapper),
-        typeof(StoveDapperBootstrapper)
-        //typeof(StoveHangFireBootstrapper),
-        //typeof(StoveRabbitMQBootstrapper),
-        //typeof(StoveRedisBootstrapper)
-    )]
+        typeof(StoveDapperBootstrapper),
+		typeof(StoveHangFireBootstrapper),
+		typeof(StoveRabbitMQBootstrapper),
+		typeof(StoveRedisBootstrapper)
+	)]
     public class StoveDemoBootstrapper : StoveBootstrapper
     {
         public override void PreStart()

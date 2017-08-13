@@ -9,6 +9,7 @@ namespace Stove.Redis.Configurations
 		public StoveRedisCacheConfiguration(IStoveStartupConfiguration configuration)
 		{
 			StoveConfiguration = configuration;
+			ConfigurationOptions = new ConfigurationOptions();
 		}
 
 		public ConfigurationOptions ConfigurationOptions { get; set; }

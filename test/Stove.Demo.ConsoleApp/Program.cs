@@ -9,6 +9,7 @@ using Hangfire;
 using HibernatingRhinos.Profiler.Appender.EntityFramework;
 
 using Stove.Demo.ConsoleApp.DbContexes;
+using Stove.Redis.Configurations;
 
 namespace Stove.Demo.ConsoleApp
 {
@@ -34,35 +35,43 @@ namespace Stove.Demo.ConsoleApp
                                                .UseStoveTypedConnectionStringResolver()
                                                .UseStoveNLog()
                                                .UseStoveBackgroundJobs()
-                                               .UseStoveRedisCaching(configuration => { return configuration; })
-                                               //.UseStoveRabbitMQ(configuration =>
-                                               //{
-                                               //    configuration.HostAddress = "rabbitmq://localhost/";
-                                               //    configuration.Username = "admin";
-                                               //    configuration.Password = "admin";
-                                               //    configuration.QueueName = "Default";
-                                               //    return configuration;
-                                               //})
-                                               //.UseStoveHangfire(configuration =>
-                                               //{
-                                               //    configuration.GlobalConfiguration
-                                               //                 .UseSqlServerStorage("Default")
-                                               //                 .UseNLogLogProvider();
-                                               //    return configuration;
-                                               //})
-                                               .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()))
+                                               .UseStoveRedisCaching(configuration =>
+                                               {
+	                                                configuration.ConfigurationOptions
+	                                                            .AddEndpoint("127.0.0.1")
+	                                                            .SetDefaultDabase(0)
+																.SetConnectionTimeOut(TimeSpan.FromMinutes(5));
+
+	                                               return configuration;
+                                               })
+											   .UseStoveRabbitMQ(configuration =>
+											   {
+												   configuration.HostAddress = "rabbitmq://localhost/";
+												   configuration.Username = "admin";
+												   configuration.Password = "admin";
+												   configuration.QueueName = "Default";
+												   return configuration;
+											   })
+											   .UseStoveHangfire(configuration =>
+											   {
+												   configuration.GlobalConfiguration
+																.UseSqlServerStorage("Default")
+																.UseNLogLogProvider();
+												   return configuration;
+											   })
+											   .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()))
                                                .CreateResolver();
 
-            //var someDomainService = resolver.Resolve<SomeDomainService>();
-            //someDomainService.DoSomeStuff();
+			var someDomainService = resolver.Resolve<SomeDomainService>();
+			someDomainService.DoSomeStuff();
 
-            //var productDomainService = resolver.Resolve<ProductDomainService>();
-            //productDomainService.DoSomeStuff();
+			//var productDomainService = resolver.Resolve<ProductDomainService>();
+			//productDomainService.DoSomeStuff();
 
-            var priceDomainService = resolver.Resolve<PriceDomainService>();
-            priceDomainService.DoSomeStuff();
+			//var priceDomainService = resolver.Resolve<PriceDomainService>();
+			//priceDomainService.DoSomeStuff();
 
-            resolver.Dispose();
+			resolver.Dispose();
 
 #if DEBUG
            // EntityFrameworkProfiler.Shutdown();
