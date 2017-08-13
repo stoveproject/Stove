@@ -11,6 +11,7 @@ using Autofac.Extras.IocManager;
 using JetBrains.Annotations;
 
 using Stove.Domain.Uow;
+using Stove.EntityFramework.Common;
 using Stove.EntityFramework.Utils;
 using Stove.Extensions;
 

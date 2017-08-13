@@ -8,6 +8,7 @@ using JetBrains.Annotations;
 using Stove.Domain.Entities;
 using Stove.Domain.Uow;
 using Stove.EntityFramework;
+using Stove.EntityFramework.Common;
 using Stove.EntityFramework.Uow;
 using Stove.Orm;
 
@@ -40,7 +41,8 @@ namespace Stove
                 r.Register<IUnitOfWorkFilterExecuter, IEfUnitOfWorkFilterExecuter, EfDynamicFiltersUnitOfWorkFilterExecuter>();
                 r.RegisterGeneric(typeof(IDbContextProvider<>), typeof(UnitOfWorkDbContextProvider<>));
                 r.Register<IUnitOfWorkDefaultOptions, UnitOfWorkDefaultOptions>(Lifetime.Singleton);
-            });
+            })
+			.UseStoveEntityFrameworkCommon();
         }
 
         /// <summary>
