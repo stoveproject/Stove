@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.26730.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{4D2BAE52-1E23-4321-BBE6-2BAC28F7B389}"
 EndProject
@@ -81,9 +81,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stove.EntityFrameworkCore.T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stove.EntityFrameworkCore.Dapper.Tests", "test\Stove.EntityFrameworkCore.Dapper.Tests\Stove.EntityFrameworkCore.Dapper.Tests.csproj", "{F8845B47-7BA9-4EA6-8D4A-9CD0916C2ADA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stove.Demo.WebApi.Core", "test\Stove.Demo.WebApi.Core\Stove.Demo.WebApi.Core.csproj", "{03D9983F-C710-4765-8AE3-06C178E0C6BF}"
-EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{E0E10DDD-6596-4C95-9CEE-2E40D9FB0812}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stove.Demo.WebApi.Core", "test\Stove.Demo.WebApi.Core\Stove.Demo.WebApi.Core.csproj", "{03D9983F-C710-4765-8AE3-06C178E0C6BF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -215,10 +213,6 @@ Global
 		{03D9983F-C710-4765-8AE3-06C178E0C6BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03D9983F-C710-4765-8AE3-06C178E0C6BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03D9983F-C710-4765-8AE3-06C178E0C6BF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E0E10DDD-6596-4C95-9CEE-2E40D9FB0812}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E0E10DDD-6596-4C95-9CEE-2E40D9FB0812}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E0E10DDD-6596-4C95-9CEE-2E40D9FB0812}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E0E10DDD-6596-4C95-9CEE-2E40D9FB0812}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -256,7 +250,6 @@ Global
 		{FE89B97B-6CBC-4F22-8366-78DE4C546BFC} = {4D2BAE52-1E23-4321-BBE6-2BAC28F7B389}
 		{F8845B47-7BA9-4EA6-8D4A-9CD0916C2ADA} = {4D2BAE52-1E23-4321-BBE6-2BAC28F7B389}
 		{03D9983F-C710-4765-8AE3-06C178E0C6BF} = {0EDEEA26-64C8-4391-9991-96E25131D4C6}
-		{E0E10DDD-6596-4C95-9CEE-2E40D9FB0812} = {0EDEEA26-64C8-4391-9991-96E25131D4C6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FA9941D3-2A68-4501-B951-D2447D6EF432}
