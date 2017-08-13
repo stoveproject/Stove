@@ -103,12 +103,11 @@ Task("Run-Unit-Tests")
                       Information(testFile);
                       XUnit2(testFile.ToString(), new XUnit2Settings { });
                  }
-
-                 if(targetFramework == "netcoreapp1.0")
+                 else
                  {
                     var testProj = GetFiles($"./test/**/*{testProject.Item1}.csproj").First();
-                    DotNetCoreTest(testProj.FullPath, new DotNetCoreTestSettings { Configuration = "Release", Framework = "netcoreapp1.0" });
-                 }                
+                    DotNetCoreTest(testProj.FullPath, new DotNetCoreTestSettings { Configuration = "Release", Framework = targetFramework });
+                 }             
             }
         }
     });
