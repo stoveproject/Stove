@@ -29,7 +29,6 @@ var nugetApiKey = EnvironmentVariable("nugetApiKey");
 var testProjects = new List<Tuple<string, string[]>>
                 {
                     new Tuple<string, string[]>("Stove.EntityFramework.Tests", new[] { "net461" }),
-                    new Tuple<string, string[]>("Stove.EntityFrameworkCore.Tests", new[] { "netcoreapp2.0" }),
                     new Tuple<string, string[]>("Stove.EntityFrameworkCore.Dapper.Tests", new[] { "netcoreapp2.0" }),
                     new Tuple<string, string[]>("Stove.Mapster.Tests", new[] { "netcoreapp2.0" }),
                     new Tuple<string, string[]>("Stove.NLog.Tests", new[] { "netcoreapp2.0" }),
@@ -40,7 +39,8 @@ var testProjects = new List<Tuple<string, string[]>>
                     new Tuple<string, string[]>("Stove.Tests.SampleApplication", new[] { "net461" }),
                     new Tuple<string, string[]>("Stove.Dapper.Tests", new[] { "net461" }),
                     new Tuple<string, string[]>("Stove.Hangfire.Tests", new[] { "netcoreapp2.0" }),
-                    new Tuple<string, string[]>("Stove.NHibernate.Tests", new[] { "net461" })
+                    new Tuple<string, string[]>("Stove.NHibernate.Tests", new[] { "net461" }),
+                    new Tuple<string, string[]>("Stove.EntityFrameworkCore.Tests", new[] { "netcoreapp2.0" })
                 };
                       
 
@@ -74,12 +74,6 @@ Task("Restore-NuGet-Packages")
     .Does(() =>
     {
         DotNetCoreRestore(solution);
-        // NuGetRestore(solution, new NuGetRestoreSettings
-        //           	{
-        //           		NoCache = true,
-        //           		Verbosity = NuGetVerbosity.Detailed,
-        //           		ToolPath = nugetPath
-        //           	});
     });
 
 Task("Build")
