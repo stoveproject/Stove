@@ -3,7 +3,7 @@
   <Import Project="..\..\common.props"></Import>
   
   <PropertyGroup>
-    <TargetFrameworks>net461;netstandard1.6</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Stove.Mapster</AssemblyName>
     <PackageId>Stove.Mapster</PackageId>
     <PackageTags>.net;framework;boilerplate;mapster</PackageTags>
@@ -12,17 +12,12 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <DocumentationFile>bin\Release\net461\Stove.Mapster.xml</DocumentationFile>
-    <DocumentationFile>bin\Release\netstandard1.6\Stove.Mapster.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netstandard2.0\Stove.Mapster.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="bin\Release\net461\Stove.Mapster.pdb">
-      <PackagePath>lib/net461/</PackagePath>
-      <Pack>true</Pack>
-    </None>
-    <None Include="bin\Release\netstandard1.6\Stove.Mapster.pdb">
-      <PackagePath>lib/netstandard1.6/</PackagePath>
+    <None Include="bin\Release\netstandard2.0\Stove.Mapster.pdb">
+      <PackagePath>lib/netstandard2.0/</PackagePath>
       <Pack>true</Pack>
     </None>
   </ItemGroup>
@@ -34,9 +29,5 @@
   <ItemGroup>
     <PackageReference Include="Mapster" Version="3.1.1" />
   </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
+  
 </Project>

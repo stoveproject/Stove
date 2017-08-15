@@ -5,15 +5,10 @@ using Autofac.Extras.IocManager;
 
 namespace Stove.Runtime.Session
 {
-    public class DefaultPrincipalAccessor : IPrincipalAccessor, ISingletonDependency
-    {
-        public static DefaultPrincipalAccessor Instance => new DefaultPrincipalAccessor();
+	public class DefaultPrincipalAccessor : IPrincipalAccessor, ISingletonDependency
+	{
+		public static DefaultPrincipalAccessor Instance => new DefaultPrincipalAccessor();
 
-        public virtual ClaimsPrincipal Principal =>
-#if NET461
-            Thread.CurrentPrincipal as ClaimsPrincipal;
-#else
-		    null;
-#endif
+		public virtual ClaimsPrincipal Principal => Thread.CurrentPrincipal as ClaimsPrincipal;
 	}
 }

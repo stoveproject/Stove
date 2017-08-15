@@ -1,5 +1,4 @@
-﻿#if !NET461
-using System.Threading;
+﻿using System.Threading;
 
 using Autofac.Extras.IocManager;
 
@@ -8,26 +7,26 @@ using Stove.Log;
 namespace Stove.Domain.Uow
 {
 	/// <summary>
-	/// CallContext implementation of <see cref="ICurrentUnitOfWorkProvider"/>. 
-	/// This is the default implementation.
+	///     CallContext implementation of <see cref="ICurrentUnitOfWorkProvider" />.
+	///     This is the default implementation.
 	/// </summary>
 	public class AsyncLocalCurrentUnitOfWorkProvider : ICurrentUnitOfWorkProvider, ITransientDependency
 	{
+		private static readonly AsyncLocal<LocalUowWrapper> AsyncLocalUow = new AsyncLocal<LocalUowWrapper>();
+
+		public AsyncLocalCurrentUnitOfWorkProvider()
+		{
+			Logger = NullLogger.Instance;
+		}
+
+		public ILogger Logger { get; set; }
+
 		/// <inheritdoc />
 		[DoNotInject]
 		public IUnitOfWork Current
 		{
 			get { return GetCurrentUow(); }
 			set { SetCurrentUow(value); }
-		}
-
-		public ILogger Logger { get; set; }
-
-		private static readonly AsyncLocal<LocalUowWrapper> AsyncLocalUow = new AsyncLocal<LocalUowWrapper>();
-
-		public AsyncLocalCurrentUnitOfWorkProvider()
-		{
-			Logger = NullLogger.Instance;
 		}
 
 		private static IUnitOfWork GetCurrentUow()
@@ -88,13 +87,12 @@ namespace Stove.Domain.Uow
 
 		private class LocalUowWrapper
 		{
-			public IUnitOfWork UnitOfWork { get; set; }
-
 			public LocalUowWrapper(IUnitOfWork unitOfWork)
 			{
 				UnitOfWork = unitOfWork;
 			}
+
+			public IUnitOfWork UnitOfWork { get; set; }
 		}
 	}
 }
-#endif

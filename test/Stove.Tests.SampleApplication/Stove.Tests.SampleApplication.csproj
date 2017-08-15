@@ -14,8 +14,8 @@
     <ProjectReference Include="..\..\src\Stove.EntityFramework\Stove.EntityFramework.csproj" />
     <ProjectReference Include="..\..\src\Stove.Mapster\Stove.Mapster.csproj" />
     <ProjectReference Include="..\Stove.TestBase\Stove.TestBase.csproj" />
-    <PackageReference Include="Shouldly" Version="2.8.3" />
-    <PackageReference Include="xunit" Version="2.2.0" />
+    <PackageReference Include="Shouldly" Version="3.0.0-beta0003" />
+    <PackageReference Include="xunit" Version="2.3.0-beta4-build3742" />
     <PackageReference Include="NSubstitute" Version="2.0.3" />
   </ItemGroup>
 

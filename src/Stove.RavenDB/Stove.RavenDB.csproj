@@ -3,7 +3,7 @@
   <Import Project="..\..\common.props"></Import>
   
   <PropertyGroup>
-    <TargetFrameworks>net461;netstandard1.6</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Stove</RootNamespace>
     <AssemblyName>Stove.RavenDB</AssemblyName>
     <PackageId>Stove.RavenDB</PackageId>
@@ -12,32 +12,23 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <DocumentationFile>bin\Release\net461\Stove.RavenDB.xml</DocumentationFile>
-    <DocumentationFile>bin\Release\netstandard1.6\Stove.RavenDB.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netstandard2.0\Stove.RavenDB.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="bin\Release\net461\Stove.RavenDB.pdb">
-      <PackagePath>lib/net461/</PackagePath>
-      <Pack>true</Pack>
-    </None>
-    <None Include="bin\Release\netstandard1.6\Stove.RavenDB.pdb">
-      <PackagePath>lib/netstandard1.6/</PackagePath>
+    <None Include="bin\Release\netstandard2.0\Stove.RavenDB.pdb">
+      <PackagePath>lib/netstandard2.0/</PackagePath>
       <Pack>true</Pack>
     </None>
   </ItemGroup>
   
   <ItemGroup>
     <PackageReference Include="RavenDB.Client" Version="3.5.4" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Stove\Stove.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition="'(TargetFramework)' == 'net461'">
-   
-  </ItemGroup>
 
 </Project>

@@ -1,6 +1,6 @@
-﻿#if !NET461
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Threading;
+
 using Autofac.Extras.IocManager;
 
 namespace Stove.Runtime.Remoting
@@ -22,4 +22,3 @@ namespace Stove.Runtime.Remoting
 		}
 	}
 }
-#endif

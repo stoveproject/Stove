@@ -16,7 +16,6 @@ namespace Stove
 		{
 		}
 
-#if NET461
 		/// <summary>
 		///     Creates a new <see cref="StoveException" /> object.
 		/// </summary>
@@ -24,7 +23,7 @@ namespace Stove
 			: base(serializationInfo, context)
 		{
 		}
-#endif
+
 		/// <summary>
 		///     Creates a new <see cref="StoveException" /> object.
 		/// </summary>

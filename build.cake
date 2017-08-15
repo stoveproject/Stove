@@ -29,17 +29,17 @@ var nugetApiKey = EnvironmentVariable("nugetApiKey");
 var testProjects = new List<Tuple<string, string[]>>
                 {
                     new Tuple<string, string[]>("Stove.EntityFramework.Tests", new[] { "net461" }),
-                    new Tuple<string, string[]>("Stove.EntityFrameworkCore.Tests", new[] { "netcoreapp1.0" }),
-                    new Tuple<string, string[]>("Stove.EntityFrameworkCore.Dapper.Tests", new[] { "netcoreapp1.1" }),
-                    new Tuple<string, string[]>("Stove.Mapster.Tests", new[] { "net461", "netcoreapp1.0" }),
-                    new Tuple<string, string[]>("Stove.NLog.Tests", new[] { "net461", "netcoreapp1.0" }),
-                    new Tuple<string, string[]>("Stove.RabbitMQ.Tests", new[] { "net461", "netcoreapp1.0" }),
+                    new Tuple<string, string[]>("Stove.EntityFrameworkCore.Tests", new[] { "netcoreapp2.0" }),
+                    new Tuple<string, string[]>("Stove.EntityFrameworkCore.Dapper.Tests", new[] { "netcoreapp2.0" }),
+                    new Tuple<string, string[]>("Stove.Mapster.Tests", new[] { "netcoreapp2.0" }),
+                    new Tuple<string, string[]>("Stove.NLog.Tests", new[] { "netcoreapp2.0" }),
+                    new Tuple<string, string[]>("Stove.RabbitMQ.Tests", new[] { "netcoreapp2.0" }),
                     new Tuple<string, string[]>("Stove.RavenDB.Tests", new[] { "net461" }),
-                    new Tuple<string, string[]>("Stove.Redis.Tests", new[] { "net461", "netcoreapp1.0" }),
-                    new Tuple<string, string[]>("Stove.Tests", new[] { "net461", "netcoreapp1.0" }),
+                    new Tuple<string, string[]>("Stove.Redis.Tests", new[] { "netcoreapp2.0" }),
+                    new Tuple<string, string[]>("Stove.Tests", new[] { "netcoreapp2.0" }),
                     new Tuple<string, string[]>("Stove.Tests.SampleApplication", new[] { "net461" }),
                     new Tuple<string, string[]>("Stove.Dapper.Tests", new[] { "net461" }),
-                    new Tuple<string, string[]>("Stove.Hangfire.Tests", new[] { "net461", "netcoreapp1.0" }),
+                    new Tuple<string, string[]>("Stove.Hangfire.Tests", new[] { "netcoreapp2.0" }),
                     new Tuple<string, string[]>("Stove.NHibernate.Tests", new[] { "net461" })
                 };
                       
@@ -73,12 +73,13 @@ Task("Restore-NuGet-Packages")
     .IsDependentOn("Clean")
     .Does(() =>
     {
-        NuGetRestore(solution, new NuGetRestoreSettings
-                  	{
-                  		NoCache = true,
-                  		Verbosity = NuGetVerbosity.Detailed,
-                  		ToolPath = nugetPath
-                  	});
+        DotNetCoreRestore(solution);
+        // NuGetRestore(solution, new NuGetRestoreSettings
+        //           	{
+        //           		NoCache = true,
+        //           		Verbosity = NuGetVerbosity.Detailed,
+        //           		ToolPath = nugetPath
+        //           	});
     });
 
 Task("Build")

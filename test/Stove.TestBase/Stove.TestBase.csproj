@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <VersionPrefix>0.0.1</VersionPrefix>
-    <TargetFrameworks>net461;netstandard1.6</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <AssemblyName>Stove.TestBase</AssemblyName>
     <PackageId>Stove.TestBase</PackageId>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
@@ -20,8 +20,8 @@
       <PackagePath>lib/net461/</PackagePath>
       <Pack>true</Pack>
     </None>
-    <None Include="bin\Release\netstandard1.6\Stove.TestBase.pdb">
-      <PackagePath>lib/netstandard1.6/</PackagePath>
+    <None Include="bin\Release\netstandard2.0\Stove.TestBase.pdb">
+      <PackagePath>lib/netstandard2.0/</PackagePath>
       <Pack>true</Pack>
     </None>
   </ItemGroup>

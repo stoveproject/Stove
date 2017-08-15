@@ -16,7 +16,6 @@ namespace Stove.Domain.Entities
 		{
 		}
 
-#if NET461
 		/// <summary>
 		///     Creates a new <see cref="EntityNotFoundException" /> object.
 		/// </summary>
@@ -24,7 +23,7 @@ namespace Stove.Domain.Entities
 			: base(serializationInfo, context)
 		{
 		}
-#endif
+
 		/// <summary>
 		///     Creates a new <see cref="EntityNotFoundException" /> object.
 		/// </summary>

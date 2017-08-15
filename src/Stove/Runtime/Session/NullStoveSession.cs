@@ -7,14 +7,7 @@ namespace Stove.Runtime.Session
 	/// </summary>
 	public class NullStoveSession : StoveSessionBase
 	{
-		private NullStoveSession() : base(new DataContextAmbientScopeProvider<SessionOverride>(
-
-#if NET461
-                new CallContextAmbientDataContext()
-#else
-				new AsyncLocalAmbientDataContext()
-#endif
-			))
+		private NullStoveSession() : base(new DataContextAmbientScopeProvider<SessionOverride>(new AsyncLocalAmbientDataContext()))
 		{
 		}
 

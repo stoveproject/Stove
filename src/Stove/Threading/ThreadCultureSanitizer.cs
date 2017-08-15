@@ -30,14 +30,9 @@ namespace Stove.Threading
 				return;
 			}
 
-#if NET461
 			Thread thread = Thread.CurrentThread;
 			CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo(thread.CurrentCulture.Name);
 			CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo(thread.CurrentUICulture.Name);
-#else
-			CultureInfo.CurrentCulture = CultureInfoHelper.Get(CultureInfo.CurrentCulture.Name);
-			CultureInfo.CurrentUICulture = CultureInfoHelper.Get(CultureInfo.CurrentUICulture.Name);
-#endif
 		}
 	}
 }

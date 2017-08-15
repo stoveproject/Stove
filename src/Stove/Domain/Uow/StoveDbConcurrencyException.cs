@@ -12,7 +12,6 @@ namespace Stove.Domain.Uow
 		{
 		}
 
-#if NET461
 		/// <summary>
 		///     Creates a new <see cref="StoveException" /> object.
 		/// </summary>
@@ -20,7 +19,6 @@ namespace Stove.Domain.Uow
 			: base(serializationInfo, context)
 		{
 		}
-#endif
 
 		/// <summary>
 		///     Creates a new <see cref="StoveDbConcurrencyException" /> object.

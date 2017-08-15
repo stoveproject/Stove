@@ -3,7 +3,7 @@
   <Import Project="..\..\common.props"></Import>
 
   <PropertyGroup>
-    <TargetFrameworks>net461;netstandard1.6</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Stove.Dapper</AssemblyName>
     <PackageId>Stove.Dapper</PackageId>
     <PackageTags>.net;framework;boilerplate;Dapper</PackageTags>
@@ -12,35 +12,24 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="bin\Release\net461\Stove.Dapper.pdb">
-      <PackagePath>lib/net461/</PackagePath>
-      <Pack>true</Pack>
-    </None>
-    <None Include="bin\Release\netstandard1.6\Stove.Dapper.pdb">
-      <PackagePath>lib/netstandard1.6/</PackagePath>
+    <None Include="bin\Release\netstandard2.0\Stove.Dapper.pdb">
+      <PackagePath>lib/netstandard2.0/</PackagePath>
       <Pack>true</Pack>
     </None>
   </ItemGroup>
 
   <PropertyGroup>
-    <DocumentationFile>bin\Release\net461\Stove.Dapper.xml</DocumentationFile>
-    <DocumentationFile>bin\Release\netstandard1.6\Stove.Dapper.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netstandard2.0\Stove.Dapper.xml</DocumentationFile>
   </PropertyGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\Stove\Stove.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+  <ItemGroup>
     <PackageReference Include="Dapper" Version="1.50.2" />
-    <PackageReference Include="DapperExtensions" Version="1.6.1" />
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.6'">
     <PackageReference Include="DapperExtensions.DotnetCore" Version="1.0.1" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.4.0" />
   </ItemGroup>
 
 </Project>

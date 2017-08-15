@@ -1,7 +1,6 @@
 using System;
-#if NET461
 using System.Configuration;
-#endif
+
 using Stove.Configuration;
 
 namespace Stove.Domain.Uow
@@ -36,7 +35,7 @@ namespace Stove.Domain.Uow
 			{
 				return defaultConnectionString;
 			}
-#if NET461
+
 			if (ConfigurationManager.ConnectionStrings["Default"] != null)
 			{
 				return "Default";
@@ -46,7 +45,6 @@ namespace Stove.Domain.Uow
 			{
 				return ConfigurationManager.ConnectionStrings[0].ConnectionString;
 			}
-#endif
 
 			throw new StoveException("Could not find a connection string definition for the application. Set IStoveStartupConfiguration.DefaultNameOrConnectionString or add a 'Default' connection string to application .config file.");
 		}

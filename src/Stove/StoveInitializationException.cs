@@ -18,7 +18,6 @@ namespace Stove
 		{
 		}
 
-#if NET461
 		/// <summary>
 		///     Constructor for serializing.
 		/// </summary>
@@ -26,7 +25,7 @@ namespace Stove
 			: base(serializationInfo, context)
 		{
 		}
-#endif
+
 		/// <summary>
 		///     Constructor.
 		/// </summary>

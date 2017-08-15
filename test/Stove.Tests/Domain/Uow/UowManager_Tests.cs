@@ -21,11 +21,7 @@ namespace Stove.Tests.Domain.Uow
             Building(builder =>
             {
                 builder.RegisterServices(r => r.Register<IUnitOfWorkDefaultOptions, UnitOfWorkDefaultOptions>(Lifetime.Singleton));
-#if NET461
-	          	builder.RegisterServices(r => r.Register<ICurrentUnitOfWorkProvider, CallContextCurrentUnitOfWorkProvider>(Lifetime.Singleton));
-#else
 	            builder.RegisterServices(r => r.Register<ICurrentUnitOfWorkProvider, AsyncLocalCurrentUnitOfWorkProvider>(Lifetime.Singleton));
-#endif
 				builder.RegisterServices(r => r.Register<IUnitOfWorkManager, UnitOfWorkManager>(Lifetime.Singleton));
                 builder.RegisterServices(r => r.Register(context => fakeUow, Lifetime.Singleton));
             }).Ok();
