@@ -7,7 +7,8 @@ namespace Stove.Demo.WebApi.Core.Domain.Entities.Mappings.Dapper
         public MailMap()
         {
             Table("Mails");
-            AutoMap();
+			Map(x => x.Id).Key(KeyType.Guid);
+			AutoMap();
         }
     }
 }

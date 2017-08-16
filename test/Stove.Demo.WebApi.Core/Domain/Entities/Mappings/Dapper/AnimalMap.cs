@@ -7,7 +7,8 @@ namespace Stove.Demo.WebApi.Core.Domain.Entities.Mappings.Dapper
         public AnimalMap()
         {
             Table("Animals");
-            AutoMap();
+			Map(x => x.Id).Key(KeyType.Identity);
+			AutoMap();
         }
     }
 }

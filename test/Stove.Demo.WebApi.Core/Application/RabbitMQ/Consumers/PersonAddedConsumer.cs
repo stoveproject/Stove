@@ -25,7 +25,16 @@ namespace Stove.Demo.WebApi.Core.Application.RabbitMQ.Consumers
 
             using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin())
             {
-                Person foundedPerson = _personRepository.FirstOrDefault(x => x.Name == name);
+				try
+				{
+					Person foundedPerson = _personRepository.FirstOrDefault(x => x.Name == name);
+				}
+				catch (System.Exception ex)
+				{
+
+					throw ex;
+				}
+              
             }
 
             return Task.FromResult(0);

@@ -38,13 +38,13 @@ namespace Stove.Demo.WebApi.Core
 
 		public IConfigurationRoot Configuration { get; }
 
-		public IRootResolver RootResolver { get; set; }
+		public IRootResolver RootResolver { get; private set; }
 
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public IServiceProvider ConfigureServices(IServiceCollection services)
 		{
 			// Add framework services.
-			services.AddMvc();
+			services.AddMvc().AddControllersAsServices();
 
 			services.AddAutofac();
 
