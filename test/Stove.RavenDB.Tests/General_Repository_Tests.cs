@@ -18,7 +18,7 @@ namespace Stove.RavenDB.Tests
             Building(builder => { }).Ok();
         }
 
-        [Fact]
+        //[Fact]
         public void Insert_should_work()
         {
             //-----------------------------------------------------------------------------------------------------------
@@ -39,7 +39,7 @@ namespace Stove.RavenDB.Tests
             item.ShouldNotBeNull();
         }
 
-        [Fact]
+        //[Fact]
         public void Update_should_work()
         {
             //-----------------------------------------------------------------------------------------------------------
@@ -65,7 +65,7 @@ namespace Stove.RavenDB.Tests
             pant.ShouldNotBeNull();
         }
 
-        [Fact]
+        //[Fact]
         public void Update_should_work_with_object_tracking_mechanism()
         {
             using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
@@ -97,7 +97,7 @@ namespace Stove.RavenDB.Tests
             }
         }
 
-        [Fact]
+        //[Fact]
         public void Delete_should_work_on_hard_deletable_entities()
         {
             using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
@@ -125,7 +125,7 @@ namespace Stove.RavenDB.Tests
             }
         }
 
-        [Fact]
+        //[Fact]
         public void Delete_should_work_soft_deletable_entities()
         {
             using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
