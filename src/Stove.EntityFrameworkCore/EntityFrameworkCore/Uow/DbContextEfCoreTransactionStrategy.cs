@@ -93,7 +93,6 @@ namespace Stove.EntityFrameworkCore.Uow
 					attendedDbContext.Dispose();
 				}
 
-				activeTransaction.DbContextTransaction.Dispose();
 				activeTransaction.StarterDbContext.Dispose();
 			}
 
