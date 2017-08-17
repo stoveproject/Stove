@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NLog" Version="4.4.11" />
+    <PackageReference Include="NLog" Version="4.4.12" />
   </ItemGroup>
 
   <ItemGroup>
