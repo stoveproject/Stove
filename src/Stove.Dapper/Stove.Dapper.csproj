@@ -28,12 +28,13 @@
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="1.50.2" />
-    <PackageReference Include="DapperExtensions" Version="1.6.0" />
+    <PackageReference Include="DapperExtensions" Version="1.6.1" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
 
 </Project>

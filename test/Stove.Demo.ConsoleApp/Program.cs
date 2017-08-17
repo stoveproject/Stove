@@ -16,7 +16,9 @@ namespace Stove.Demo.ConsoleApp
     {
         public static void Main(string[] args)
         {
-            EntityFrameworkProfiler.Initialize();
+#if DEBUG
+            //EntityFrameworkProfiler.Initialize();
+#endif
 
             Database.SetInitializer(new NullDatabaseInitializer<AnimalStoveDbContext>());
             Database.SetInitializer(new NullDatabaseInitializer<PersonStoveDbContext>());
@@ -33,33 +35,38 @@ namespace Stove.Demo.ConsoleApp
                                                .UseStoveNLog()
                                                .UseStoveBackgroundJobs()
                                                .UseStoveRedisCaching()
-                                               .UseStoveRabbitMQ(configuration =>
-                                               {
-                                                   configuration.HostAddress = "rabbitmq://localhost/";
-                                                   configuration.Username = "admin";
-                                                   configuration.Password = "admin";
-                                                   configuration.QueueName = "Default";
-                                                   return configuration;
-                                               })
-                                               .UseStoveHangfire(configuration =>
-                                               {
-                                                   configuration.GlobalConfiguration
-                                                                .UseSqlServerStorage("Default")
-                                                                .UseNLogLogProvider();
-                                                   return configuration;
-                                               })
+                                               //.UseStoveRabbitMQ(configuration =>
+                                               //{
+                                               //    configuration.HostAddress = "rabbitmq://localhost/";
+                                               //    configuration.Username = "admin";
+                                               //    configuration.Password = "admin";
+                                               //    configuration.QueueName = "Default";
+                                               //    return configuration;
+                                               //})
+                                               //.UseStoveHangfire(configuration =>
+                                               //{
+                                               //    configuration.GlobalConfiguration
+                                               //                 .UseSqlServerStorage("Default")
+                                               //                 .UseNLogLogProvider();
+                                               //    return configuration;
+                                               //})
                                                .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()))
                                                .CreateResolver();
 
             //var someDomainService = resolver.Resolve<SomeDomainService>();
             //someDomainService.DoSomeStuff();
 
-            var productDomainService = resolver.Resolve<ProductDomainService>();
-            productDomainService.DoSomeStuff();
+            //var productDomainService = resolver.Resolve<ProductDomainService>();
+            //productDomainService.DoSomeStuff();
+
+            var priceDomainService = resolver.Resolve<PriceDomainService>();
+            priceDomainService.DoSomeStuff();
 
             resolver.Dispose();
 
-            EntityFrameworkProfiler.Shutdown();
+#if DEBUG
+           // EntityFrameworkProfiler.Shutdown();
+#endif
 
             Console.ReadKey();
         }

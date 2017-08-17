@@ -12,6 +12,7 @@ using DapperExtensions;
 using Stove.Dapper.Extensions;
 using Stove.Dapper.Filters.Action;
 using Stove.Dapper.Filters.Query;
+using Stove.Dapper.TableValueParameters;
 using Stove.Domain.Entities;
 using Stove.Domain.Uow;
 using Stove.Events.Bus.Entities;
@@ -95,14 +96,34 @@ namespace Stove.Dapper.Repositories
             return Connection.Query<TEntity>(query, parameters, ActiveTransaction);
         }
 
+        public override IEnumerable<TAny> Query<TAny>(string query, object parameters = null)
+        {
+            return Connection.Query<TAny>(query, parameters, ActiveTransaction);
+        }
+
+        public override IEnumerable<TAny> Query<TAny>(string query, TableValueParameter tableValueParameter, CommandType commandType)
+        {
+            return Connection.Query<TAny>(query, tableValueParameter, ActiveTransaction, commandType: commandType);
+        }
+
+        public override Task<IEnumerable<TAny>> QueryAsync<TAny>(string query, TableValueParameter tableValueParameter, CommandType commandType)
+        {
+            return Connection.QueryAsync<TAny>(query, tableValueParameter, ActiveTransaction, commandType: commandType);
+        }
+
         public override Task<IEnumerable<TEntity>> QueryAsync(string query, object parameters = null)
         {
             return Connection.QueryAsync<TEntity>(query, parameters, ActiveTransaction);
         }
 
-        public override IEnumerable<TAny> Query<TAny>(string query, object parameters = null)
+        public override Task<IEnumerable<TAny>> QueryAsync<TAny>(string query, object parameters = null)
         {
-            return Connection.Query<TAny>(query, parameters, ActiveTransaction);
+            return Connection.QueryAsync<TAny>(query, parameters, ActiveTransaction);
+        }
+
+        public override int Execute(string query, TableValueParameter tableValueParameter, CommandType commandType)
+        {
+            return Connection.Execute(query, tableValueParameter, ActiveTransaction, commandType: commandType);
         }
 
         public override int Execute(string query, object parameters = null)
@@ -115,9 +136,9 @@ namespace Stove.Dapper.Repositories
             return Connection.ExecuteAsync(query, parameters, ActiveTransaction);
         }
 
-        public override Task<IEnumerable<TAny>> QueryAsync<TAny>(string query, object parameters = null)
+        public override Task<int> ExecuteAsync(string query, TableValueParameter tableValueParameter, CommandType commandType)
         {
-            return Connection.QueryAsync<TAny>(query, parameters, ActiveTransaction);
+            return Connection.ExecuteAsync(query, tableValueParameter, ActiveTransaction, commandType: commandType);
         }
 
         public override IEnumerable<TEntity> GetAllPaged(Expression<Func<TEntity, bool>> predicate, int pageNumber, int itemsPerPage, string sortingProperty, bool ascending = true)

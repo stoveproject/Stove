@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using Stove.Dapper.TableValueParameters;
 using Stove.Domain.Entities;
 
 namespace Stove.Dapper.Repositories
@@ -152,6 +154,20 @@ namespace Stove.Dapper.Repositories
         }
 
         public abstract TEntity FirstOrDefault(Expression<Func<TEntity, bool>> predicate);
+
+        public abstract IEnumerable<TAny> Query<TAny>(string query, TableValueParameter tableValueParameter, CommandType commandType) where TAny : class;
+
+        public abstract int Execute(string query, TableValueParameter tableValueParameter, CommandType commandType);
+
+        public virtual Task<int> ExecuteAsync(string query, TableValueParameter tableValueParameter, CommandType commandType)
+        {
+            return Task.FromResult(Execute(query, tableValueParameter, commandType));
+        }
+
+        public virtual Task<IEnumerable<TAny>> QueryAsync<TAny>(string query, TableValueParameter tableValueParameter, CommandType commandType) where TAny : class
+        {
+            return Task.FromResult(Query<TAny>(query, tableValueParameter, commandType));
+        }
 
         protected static Expression<Func<TEntity, bool>> CreateEqualityExpressionForId(TPrimaryKey id)
         {
