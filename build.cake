@@ -1,5 +1,5 @@
 #tool "nuget:?package=Cake.CoreCLR";
-#tool "nuget:?package=xunit.runner.console"
+#tool "nuget:?package=xunit.runner.console&version=2.3.0-beta4-build3742"
 #tool "nuget:?package=MSBuild.SonarQube.Runner.Tool"
 #tool "nuget:?package=JetBrains.dotCover.CommandLineTools"
 #tool "nuget:?package=NuGet.CommandLine"
