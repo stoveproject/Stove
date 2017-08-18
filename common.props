@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <VersionPrefix>1.2.4</VersionPrefix>
+    <VersionPrefix>2.0.0-preview1</VersionPrefix>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
     <PackageIconUrl>https://raw.githubusercontent.com/osoykan/Stove/master/stove.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/osoykan/Stove</PackageProjectUrl>
