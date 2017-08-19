@@ -14,23 +14,11 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.0.0" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.0' ">
-    <PackageReference Include="System.Runtime" Version="4.3.0" />
-  </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\src\Stove.EntityFrameworkCore\Stove.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\..\src\Stove\Stove.csproj" />
     <ProjectReference Include="..\Stove.TestBase\Stove.TestBase.csproj" />
+    <PackageReference Include="System.Runtime" Version="4.3.0" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
-  </ItemGroup>
-
+ 
 </Project>
