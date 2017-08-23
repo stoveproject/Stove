@@ -57,7 +57,12 @@ namespace Stove
 							  cfg.UseRetry(rtryConf => { rtryConf.Immediate(configuration.MaxRetryCount); });
 						  }
 
-						  cfg.ReceiveEndpoint(host, configuration.QueueName, ec => { ec.LoadFrom(ctx); });
+						  cfg.ReceiveEndpoint(host, configuration.QueueName, configurator =>
+						  {
+							  configurator.LoadFrom(ctx.Resolve<ILifetimeScope>().BeginLifetimeScope(configuration.LifetimeScopeTag), configuration.LifetimeScopeTag);
+						  });
+
+						  //cfg.ReceiveEndpoint(host, configuration.QueueName, ec => { ec.LoadFrom(ctx, configuration.LifetimeScopeTag); });
 					  });
 
 					  return busControl;

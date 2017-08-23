@@ -28,7 +28,7 @@ namespace Stove
 			// Set the properties located.
 			foreach (PropertyInfo propToSet in properties)
 			{
-				propToSet.SetValue(instance, new LoggerAdapter(LogManager.GetLogger(instanceType.FullName)), null);
+				propToSet.SetValue(instance, new StoveNLogLogger(LogManager.GetLogger(instanceType.FullName)), null);
 			}
 		}
 
@@ -39,7 +39,7 @@ namespace Stove
 				new[]
 				{
 					new ResolvedParameter((p, i) => p.ParameterType == typeof(ILogger),
-						(p, i) => new LoggerAdapter(LogManager.GetLogger(t.FullName)))
+						(p, i) => new StoveNLogLogger(LogManager.GetLogger(t.FullName)))
 				});
 		}
 

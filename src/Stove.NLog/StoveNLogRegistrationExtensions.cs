@@ -24,7 +24,7 @@ namespace Stove
 			return builder.RegisterServices(r =>
 			{
 				r.RegisterAssemblyByConvention(typeof(StoveNLogRegistrationExtensions).GetAssembly());
-				r.Register<ILogger>(context => new LoggerAdapter(LogManager.GetCurrentClassLogger()), Lifetime.Singleton);
+				r.Register<ILogger>(context => new StoveNLogLogger(LogManager.GetCurrentClassLogger()), Lifetime.Singleton);
 				r.UseBuilder(containerBuilder => containerBuilder.RegisterModule<NLogRegistrarModule>());
 			});
 		}

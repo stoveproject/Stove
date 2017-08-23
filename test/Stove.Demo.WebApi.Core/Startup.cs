@@ -1,5 +1,6 @@
 ﻿using System;
 
+using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Autofac.Extras.IocManager;
 
@@ -15,7 +16,6 @@ using Microsoft.Extensions.Logging;
 using Stove.Demo.WebApi.Core.Domain.DbContexts;
 using Stove.EntityFramework;
 using Stove.EntityFrameworkCore;
-using Stove.EntityFrameworkCore.Configuration;
 using Stove.Redis.Configurations;
 using Stove.Reflection.Extensions;
 
@@ -25,6 +25,8 @@ namespace Stove.Demo.WebApi.Core
 {
 	public class Startup
 	{
+		private const string RootLifetimeTag = "root";
+
 		public Startup(IHostingEnvironment env)
 		{
 			IConfigurationBuilder builder = new ConfigurationBuilder()
@@ -39,6 +41,8 @@ namespace Stove.Demo.WebApi.Core
 		public IConfigurationRoot Configuration { get; }
 
 		public IRootResolver RootResolver { get; private set; }
+
+		public ILifetimeScope RootScope { get; private set; }
 
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public IServiceProvider ConfigureServices(IServiceCollection services)
@@ -77,47 +81,48 @@ namespace Stove.Demo.WebApi.Core
 			IocBuilder builder = IocBuilder.New;
 
 			RootResolver = builder.UseStove<StoveWebApiCoreBootstrapper>()
-									 .UseStoveEntityFrameworkCore(configuration =>
-									 {
-										 return configuration;
-									 })
-									 .UseStoveDapper()
-									 .UseStoveTypedConnectionStringResolver()
-									 .UseStoveEventBus()
-									 .UseStoveBackgroundJobs()
-									 .UseStoveMapster()
-									 .UseStoveHangfire(configuration =>
-									 {
-										 configuration.GlobalConfiguration
-													  .UseSqlServerStorage(Configuration.GetConnectionString("Default"))
-													  .UseNLogLogProvider();
+								  .UseStoveEntityFrameworkCore(configuration => { return configuration; })
+								  .UseStoveDapper()
+								  .UseStoveTypedConnectionStringResolver()
+								  .UseStoveEventBus()
+								  .UseStoveBackgroundJobs()
+								  .UseStoveMapster()
+								  .UseStoveHangfire(configuration =>
+								  {
+									  configuration.GlobalConfiguration
+												   .UseSqlServerStorage(Configuration.GetConnectionString("Default"))
+												   .UseNLogLogProvider();
 
-										 return configuration;
-									 })
-									 .UseStoveNLog()
-									 .UseStoveRabbitMQ(configuration =>
-									 {
-										 configuration.HostAddress = "rabbitmq://localhost/";
-										 configuration.Username = "admin";
-										 configuration.Password = "admin";
-										 configuration.QueueName = "Default";
-										 return configuration;
-									 })
-									 .UseStoveRedisCaching(configuration =>
-									 {
-										 configuration.ConfigurationOptions
-													  .AddEndpoint("127.0.0.1")
-													  .SetDefaultDabase(0)
-													  .SetConnectionTimeOut(TimeSpan.FromMinutes(5));
+									  return configuration;
+								  })
+								  .UseStoveNLog()
+								  .UseStoveRabbitMQ(configuration =>
+								  {
+									  configuration.HostAddress = "rabbitmq://localhost/";
+									  configuration.Username = "admin";
+									  configuration.Password = "admin";
+									  configuration.QueueName = "Default";
+									  configuration.LifetimeScopeTag = RootLifetimeTag;
+									  return configuration;
+								  })
+								  .UseStoveRedisCaching(configuration =>
+								  {
+									  configuration.ConfigurationOptions
+												   .AddEndpoint("127.0.0.1")
+												   .SetDefaultDabase(0)
+												   .SetConnectionTimeOut(TimeSpan.FromMinutes(5));
 
-										 return configuration;
-									 })
-									 .RegisterServices(r =>
-									 {
-										 r.RegisterAssemblyByConvention(typeof(Startup).GetAssembly());
-										 r.UseBuilder(cb => { cb.Populate(services); });
-									 })
-									 .CreateResolver();
+									  return configuration;
+								  })
+								  .RegisterServices(r =>
+								  {
+									  r.RegisterAssemblyByConvention(typeof(Startup).GetAssembly());
+									  r.BeforeRegistrationCompleted += (sender, args) =>
+									  {
+										  args.ContainerBuilder.Populate(services);
+									  };
+								  })
+								  .CreateResolver();
 
 			return new AutofacServiceProvider(RootResolver.Container);
 		}
@@ -134,7 +139,11 @@ namespace Stove.Demo.WebApi.Core
 
 			app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Stove WebApi Core"); });
 
-			applicationLifetime.ApplicationStopped.Register(() => RootResolver.Dispose());
+			applicationLifetime.ApplicationStopped.Register(() =>
+			{
+				RootScope.Dispose();
+				RootResolver.Dispose();
+			});
 		}
 	}
 }

@@ -1,118 +1,104 @@
 ﻿using System;
 
-using NLog;
+using Serilog.Events;
 
-using ILogger = Stove.Log.ILogger;
+using Stove.Log;
 
-namespace Stove
+namespace Stove.Serilog
 {
-	/// <summary>
-	///     Implementation of ILogger, deriving from NLog.Logger
-	/// </summary>
-	public class LoggerAdapter : ILogger
+	public class StoveSerilogLogger : ILogger
 	{
-		private readonly Logger _logger;
+		private readonly global::Serilog.ILogger _logger;
 
-		/// <summary>
-		///     Create an adapter class using a Logger instance
-		/// </summary>
-		/// <param name="logger"></param>
-		public LoggerAdapter(Logger logger)
+		public StoveSerilogLogger(global::Serilog.ILogger logger)
 		{
 			_logger = logger;
 		}
 
-		/// <summary>
-		///     Occurs when logger configuration changes.
-		/// </summary>
-		public event EventHandler<EventArgs> LoggerReconfigured
-		{
-			add { _logger.LoggerReconfigured += value; }
-			remove { _logger.LoggerReconfigured -= value; }
-		}
+		public string Name { get; }
 
-		public string Name => _logger.Name;
+		public bool IsTraceEnabled => _logger.IsEnabled(LogEventLevel.Verbose);
 
-		public bool IsTraceEnabled => _logger.IsTraceEnabled;
+		public bool IsDebugEnabled => _logger.IsEnabled(LogEventLevel.Debug);
 
-		public bool IsDebugEnabled => _logger.IsDebugEnabled;
+		public bool IsInfoEnabled => _logger.IsEnabled(LogEventLevel.Information);
 
-		public bool IsInfoEnabled => _logger.IsInfoEnabled;
+		public bool IsWarnEnabled => _logger.IsEnabled(LogEventLevel.Warning);
 
-		public bool IsWarnEnabled => _logger.IsWarnEnabled;
+		public bool IsErrorEnabled => _logger.IsEnabled(LogEventLevel.Error);
 
-		public bool IsErrorEnabled => _logger.IsErrorEnabled;
+		public bool IsFatalEnabled => _logger.IsEnabled(LogEventLevel.Fatal);
 
-		public bool IsFatalEnabled => _logger.IsErrorEnabled;
+		public event EventHandler<EventArgs> LoggerReconfigured;
 
 		public void Trace<T>(T value)
 		{
-			_logger.Trace(value);
+			_logger.Verbose(value.ToString());
 		}
 
 		public void Trace<T>(IFormatProvider formatProvider, T value)
 		{
-			_logger.Trace(formatProvider, value);
+			_logger.Verbose(value.ToString());
 		}
 
 		public void Trace(string message, Exception exception)
 		{
-			_logger.Trace(exception, message);
+			_logger.Verbose(exception, message);
 		}
 
 		public void Trace(IFormatProvider formatProvider, string message, params object[] args)
 		{
-			_logger.Trace(formatProvider, message, args);
+			_logger.Verbose(message.ToString(formatProvider), args);
 		}
 
 		public void Trace(string message)
 		{
-			_logger.Trace(message);
+			_logger.Verbose(message);
 		}
 
 		public void Trace(string message, params object[] args)
 		{
-			_logger.Trace(message, args);
+			_logger.Verbose(message, args);
 		}
 
 		public void Trace<TArgument>(IFormatProvider formatProvider, string message, TArgument argument)
 		{
-			_logger.Trace(formatProvider, message, argument);
+			_logger.Verbose(message.ToString(formatProvider), argument);
 		}
 
 		public void Trace<TArgument>(string message, TArgument argument)
 		{
-			_logger.Trace(message, argument);
+			_logger.Verbose(message, argument);
 		}
 
 		public void Trace<TArgument1, TArgument2>(IFormatProvider formatProvider, string message, TArgument1 argument1, TArgument2 argument2)
 		{
-			_logger.Trace(formatProvider, message, argument1, argument2);
+			_logger.Verbose(message.ToString(formatProvider), argument1, argument2);
 		}
 
 		public void Trace<TArgument1, TArgument2>(string message, TArgument1 argument1, TArgument2 argument2)
 		{
-			_logger.Trace(message, argument1, argument2);
+			_logger.Verbose(message, argument1, argument2);
 		}
 
 		public void Trace<TArgument1, TArgument2, TArgument3>(IFormatProvider formatProvider, string message, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3)
 		{
-			_logger.Trace(formatProvider, message, argument1, argument2, argument3);
+			_logger.Verbose(message.ToString(formatProvider), argument1, argument2, argument3);
 		}
 
 		public void Trace<TArgument1, TArgument2, TArgument3>(string message, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3)
 		{
-			_logger.Trace(message, argument1, argument2, argument3);
+			_logger.Verbose(message, argument1, argument2, argument3);
 		}
 
 		public void Debug<T>(T value)
 		{
-			_logger.Debug(value);
+			_logger.Debug(value.ToString());
 		}
 
 		public void Debug<T>(IFormatProvider formatProvider, T value)
 		{
-			_logger.Debug(formatProvider, value);
+			_logger.Debug(value.ToString());
 		}
 
 		public void Debug(string message, Exception exception)
@@ -122,7 +108,7 @@ namespace Stove
 
 		public void Debug(IFormatProvider formatProvider, string message, params object[] args)
 		{
-			_logger.Debug(formatProvider, message, args);
+			_logger.Debug(message.ToString(formatProvider), args);
 		}
 
 		public void Debug(string message)
@@ -137,7 +123,7 @@ namespace Stove
 
 		public void Debug<TArgument>(IFormatProvider formatProvider, string message, TArgument argument)
 		{
-			_logger.Debug(formatProvider, message, argument);
+			_logger.Debug(message.ToString(formatProvider), argument);
 		}
 
 		public void Debug<TArgument>(string message, TArgument argument)
@@ -147,7 +133,7 @@ namespace Stove
 
 		public void Debug<TArgument1, TArgument2>(IFormatProvider formatProvider, string message, TArgument1 argument1, TArgument2 argument2)
 		{
-			_logger.Debug(formatProvider, message, argument1, argument2);
+			_logger.Debug(message.ToString(formatProvider), argument1, argument2);
 		}
 
 		public void Debug<TArgument1, TArgument2>(string message, TArgument1 argument1, TArgument2 argument2)
@@ -157,7 +143,7 @@ namespace Stove
 
 		public void Debug<TArgument1, TArgument2, TArgument3>(IFormatProvider formatProvider, string message, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3)
 		{
-			_logger.Debug(formatProvider, message, argument1, argument2, argument3);
+			_logger.Debug(message.ToString(formatProvider), argument1, argument2, argument3);
 		}
 
 		public void Debug<TArgument1, TArgument2, TArgument3>(string message, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3)
@@ -167,132 +153,132 @@ namespace Stove
 
 		public void Info<T>(T value)
 		{
-			_logger.Info(value);
+			_logger.Information(value.ToString());
 		}
 
 		public void Info<T>(IFormatProvider formatProvider, T value)
 		{
-			_logger.Info(formatProvider, value);
+			_logger.Information(value.ToString());
 		}
 
 		public void Info(string message, Exception exception)
 		{
-			_logger.Info(exception, message);
+			_logger.Information(exception, message);
 		}
 
 		public void Info(IFormatProvider formatProvider, string message, params object[] args)
 		{
-			_logger.Info(formatProvider, message, args);
+			_logger.Information(message.ToString(formatProvider), args);
 		}
 
 		public void Info(string message)
 		{
-			_logger.Info(message);
+			_logger.Information(message);
 		}
 
 		public void Info(string message, params object[] args)
 		{
-			_logger.Info(message, args);
+			_logger.Information(message, args);
 		}
 
 		public void Info<TArgument>(IFormatProvider formatProvider, string message, TArgument argument)
 		{
-			_logger.Info(formatProvider, message, argument);
+			_logger.Information(message.ToString(formatProvider), argument);
 		}
 
 		public void Info<TArgument>(string message, TArgument argument)
 		{
-			_logger.Info(message, argument);
+			_logger.Information(message, argument);
 		}
 
 		public void Info<TArgument1, TArgument2>(IFormatProvider formatProvider, string message, TArgument1 argument1, TArgument2 argument2)
 		{
-			_logger.Info(formatProvider, message, argument1, argument2);
+			_logger.Information(message.ToString(formatProvider), argument1, argument2);
 		}
 
 		public void Info<TArgument1, TArgument2>(string message, TArgument1 argument1, TArgument2 argument2)
 		{
-			_logger.Info(message, argument1, argument2);
+			_logger.Information(message, argument1, argument2);
 		}
 
 		public void Info<TArgument1, TArgument2, TArgument3>(IFormatProvider formatProvider, string message, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3)
 		{
-			_logger.Info(formatProvider, message, argument1, argument2, argument3);
+			_logger.Information(message.ToString(formatProvider), argument1, argument2, argument3);
 		}
 
 		public void Info<TArgument1, TArgument2, TArgument3>(string message, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3)
 		{
-			_logger.Info(message, argument1, argument2, argument3);
+			_logger.Information(message, argument1, argument2, argument3);
 		}
 
 		public void Warn<T>(T value)
 		{
-			_logger.Warn(value);
+			_logger.Warning(value.ToString());
 		}
 
 		public void Warn<T>(IFormatProvider formatProvider, T value)
 		{
-			_logger.Warn(formatProvider, value);
+			_logger.Warning(value.ToString());
 		}
 
 		public void Warn(string message, Exception exception)
 		{
-			_logger.Warn(exception, message);
+			_logger.Warning(exception, message);
 		}
 
 		public void Warn(IFormatProvider formatProvider, string message, params object[] args)
 		{
-			_logger.Warn(formatProvider, message, args);
+			_logger.Warning(message.ToString(formatProvider), args);
 		}
 
 		public void Warn(string message)
 		{
-			_logger.Warn(message);
+			_logger.Warning(message);
 		}
 
 		public void Warn(string message, params object[] args)
 		{
-			_logger.Warn(message, args);
+			_logger.Warning(message, args);
 		}
 
 		public void Warn<TArgument>(IFormatProvider formatProvider, string message, TArgument argument)
 		{
-			_logger.Warn(formatProvider, message, argument);
+			_logger.Warning(message.ToString(formatProvider), argument);
 		}
 
 		public void Warn<TArgument>(string message, TArgument argument)
 		{
-			_logger.Warn(message, argument);
+			_logger.Warning(message, argument);
 		}
 
 		public void Warn<TArgument1, TArgument2>(IFormatProvider formatProvider, string message, TArgument1 argument1, TArgument2 argument2)
 		{
-			_logger.Warn(formatProvider, message, argument1, argument2);
+			_logger.Warning(message.ToString(formatProvider), argument1, argument2);
 		}
 
 		public void Warn<TArgument1, TArgument2>(string message, TArgument1 argument1, TArgument2 argument2)
 		{
-			_logger.Warn(message, argument1, argument2);
+			_logger.Warning(message, argument1, argument2);
 		}
 
 		public void Warn<TArgument1, TArgument2, TArgument3>(IFormatProvider formatProvider, string message, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3)
 		{
-			_logger.Warn(formatProvider, message, argument1, argument2, argument3);
+			_logger.Warning(message.ToString(formatProvider), argument1, argument2, argument3);
 		}
 
 		public void Warn<TArgument1, TArgument2, TArgument3>(string message, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3)
 		{
-			_logger.Warn(message, argument1, argument2, argument3);
+			_logger.Warning(message, argument1, argument2, argument3);
 		}
 
 		public void Error<T>(T value)
 		{
-			_logger.Error(value);
+			_logger.Error(value.ToString());
 		}
 
 		public void Error<T>(IFormatProvider formatProvider, T value)
 		{
-			_logger.Error(formatProvider, value);
+			_logger.Error(value.ToString());
 		}
 
 		public void Error(string message, Exception exception)
@@ -302,7 +288,7 @@ namespace Stove
 
 		public void Error(IFormatProvider formatProvider, string message, params object[] args)
 		{
-			_logger.Error(formatProvider, message, args);
+			_logger.Error(message.ToString(formatProvider), args);
 		}
 
 		public void Error(string message)
@@ -317,7 +303,7 @@ namespace Stove
 
 		public void Error<TArgument>(IFormatProvider formatProvider, string message, TArgument argument)
 		{
-			_logger.Error(formatProvider, message, argument);
+			_logger.Error(message.ToString(formatProvider), argument);
 		}
 
 		public void Error<TArgument>(string message, TArgument argument)
@@ -327,7 +313,7 @@ namespace Stove
 
 		public void Error<TArgument1, TArgument2>(IFormatProvider formatProvider, string message, TArgument1 argument1, TArgument2 argument2)
 		{
-			_logger.Error(formatProvider, message, argument1, argument2);
+			_logger.Error(message.ToString(formatProvider), argument1, argument2);
 		}
 
 		public void Error<TArgument1, TArgument2>(string message, TArgument1 argument1, TArgument2 argument2)
@@ -337,7 +323,7 @@ namespace Stove
 
 		public void Error<TArgument1, TArgument2, TArgument3>(IFormatProvider formatProvider, string message, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3)
 		{
-			_logger.Error(formatProvider, message, argument1, argument2, argument3);
+			_logger.Error(message.ToString(formatProvider), argument1, argument2, argument3);
 		}
 
 		public void Error<TArgument1, TArgument2, TArgument3>(string message, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3)
@@ -347,12 +333,12 @@ namespace Stove
 
 		public void Fatal<T>(T value)
 		{
-			_logger.Fatal(value);
+			_logger.Fatal(value.ToString());
 		}
 
 		public void Fatal<T>(IFormatProvider formatProvider, T value)
 		{
-			_logger.Fatal(formatProvider, value);
+			_logger.Fatal(value.ToString());
 		}
 
 		public void Fatal(string message, Exception exception)
@@ -362,7 +348,7 @@ namespace Stove
 
 		public void Fatal(IFormatProvider formatProvider, string message, params object[] args)
 		{
-			_logger.Fatal(formatProvider, message, args);
+			_logger.Fatal(message.ToString(formatProvider), args);
 		}
 
 		public void Fatal(string message)
@@ -377,7 +363,7 @@ namespace Stove
 
 		public void Fatal<TArgument>(IFormatProvider formatProvider, string message, TArgument argument)
 		{
-			_logger.Fatal(formatProvider, message, argument);
+			_logger.Fatal(message.ToString(formatProvider), argument);
 		}
 
 		public void Fatal<TArgument>(string message, TArgument argument)
@@ -387,7 +373,7 @@ namespace Stove
 
 		public void Fatal<TArgument1, TArgument2>(IFormatProvider formatProvider, string message, TArgument1 argument1, TArgument2 argument2)
 		{
-			_logger.Fatal(formatProvider, message, argument1, argument2);
+			_logger.Fatal(message.ToString(formatProvider), argument1, argument2);
 		}
 
 		public void Fatal<TArgument1, TArgument2>(string message, TArgument1 argument1, TArgument2 argument2)
@@ -397,22 +383,12 @@ namespace Stove
 
 		public void Fatal<TArgument1, TArgument2, TArgument3>(IFormatProvider formatProvider, string message, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3)
 		{
-			_logger.Fatal(formatProvider, message, argument1, argument2, argument3);
+			_logger.Fatal(message.ToString(formatProvider), argument1, argument2, argument3);
 		}
 
 		public void Fatal<TArgument1, TArgument2, TArgument3>(string message, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3)
 		{
 			_logger.Fatal(message, argument1, argument2, argument3);
-		}
-
-		public void Log(LogEventInfo logEvent)
-		{
-			_logger.Log(logEvent);
-		}
-
-		public void Log(Type wrapperType, LogEventInfo logEvent)
-		{
-			_logger.Log(wrapperType, logEvent);
 		}
 	}
 }
