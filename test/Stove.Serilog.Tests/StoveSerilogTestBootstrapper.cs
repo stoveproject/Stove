@@ -1,6 +1,6 @@
 ﻿using Stove.Bootstrapping;
 
-namespace Stove.NLog.Tests
+namespace Stove.Serilog.Tests
 {
 	[DependsOn(
 		typeof(StoveSerilogBootstrapper)

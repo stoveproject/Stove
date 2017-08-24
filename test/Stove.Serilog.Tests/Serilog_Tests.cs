@@ -2,7 +2,7 @@
 
 using Xunit;
 
-namespace Stove.NLog.Tests
+namespace Stove.Serilog.Tests
 {
     public class Serilog_Tests : SerilogTestBase
     {

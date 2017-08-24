@@ -3,7 +3,7 @@
 using Stove.Reflection.Extensions;
 using Stove.TestBase;
 
-namespace Stove.NLog.Tests
+namespace Stove.Serilog.Tests
 {
 	public abstract class SerilogTestBase : ApplicationTestBase<StoveSerilogTestBootstrapper>
 	{
