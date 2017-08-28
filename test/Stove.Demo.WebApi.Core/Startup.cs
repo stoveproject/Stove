@@ -102,7 +102,6 @@ namespace Stove.Demo.WebApi.Core
 									  configuration.Username = "admin";
 									  configuration.Password = "admin";
 									  configuration.QueueName = "Default";
-									  configuration.LifetimeScopeTag = RootLifetimeTag;
 									  return configuration;
 								  })
 								  .UseStoveRedisCaching(configuration =>

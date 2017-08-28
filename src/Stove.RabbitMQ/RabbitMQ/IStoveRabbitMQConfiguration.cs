@@ -16,8 +16,6 @@ namespace Stove.RabbitMQ
 
 		int MaxRetryCount { get; set; }
 
-		IStoveStartupConfiguration Configuration { get; }
-
-		string LifetimeScopeTag { get; set; }
+		IStoveStartupConfiguration StoveConfiguration { get; }
 	}
 }

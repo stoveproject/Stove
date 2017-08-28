@@ -6,7 +6,7 @@ namespace Stove.RabbitMQ
 	{
 		public StoveRabbitMQConfiguration(IStoveStartupConfiguration configuration)
 		{
-			Configuration = configuration;
+			StoveConfiguration = configuration;
 		}
 
 		public string HostAddress { get; set; }
@@ -21,7 +21,7 @@ namespace Stove.RabbitMQ
 
 		public int MaxRetryCount { get; set; }
 
-		public IStoveStartupConfiguration Configuration { get; }
+		public IStoveStartupConfiguration StoveConfiguration { get; }
 
 		public string LifetimeScopeTag { get; set; }
 	}
