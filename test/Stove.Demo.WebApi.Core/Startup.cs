@@ -6,6 +6,9 @@ using Autofac.Extras.IocManager;
 
 using Hangfire;
 
+using MassTransit;
+using MassTransit.ExtensionsDependencyInjectionIntegration;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -47,11 +50,11 @@ namespace Stove.Demo.WebApi.Core
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public IServiceProvider ConfigureServices(IServiceCollection services)
 		{
-			// Add framework services.
-			services.AddMvc().AddControllersAsServices();
-
 			services.AddAutofac();
 
+			// Add framework services.
+			services.AddMvc().AddControllersAsServices();
+ 
 			services.AddStoveDbContext<AnimalDbContext>(configuration =>
 			{
 				if (configuration.ExistingConnection != null)
@@ -118,7 +121,7 @@ namespace Stove.Demo.WebApi.Core
 									  r.RegisterAssemblyByConvention(typeof(Startup).GetAssembly());
 									  r.BeforeRegistrationCompleted += (sender, args) =>
 									  {
-										  args.ContainerBuilder.Populate(services);
+										  args.ContainerBuilder.Populate(services,"root");
 									  };
 								  })
 								  .CreateResolver();

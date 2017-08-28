@@ -8,6 +8,8 @@ using Hangfire;
 
 using HibernatingRhinos.Profiler.Appender.EntityFramework;
 
+using MassTransit;
+
 using Stove.Demo.ConsoleApp.DbContexes;
 using Stove.EntityFramework;
 using Stove.Redis.Configurations;
