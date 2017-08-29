@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-using Autofac;
+﻿using Autofac;
 using Autofac.Extras.IocManager;
 
 using MassTransit;
@@ -15,7 +13,10 @@ namespace Stove.RabbitMQ.Tests
     {
         protected RabbitMQApplicationTestBase()
         {
-            Building(builder => { UseStoveRabbitMQInMemory(builder).RegisterServices(r => { r.RegisterAssemblyByConvention(typeof(RabbitMQApplicationTestBase).GetAssembly()); }); });
+            Building(builder => { UseStoveRabbitMQInMemory(builder).RegisterServices(r =>
+            {
+                r.RegisterAssemblyByConvention(typeof(RabbitMQApplicationTestBase).GetAssembly());
+            }); });
         }
 
         private IIocBuilder UseStoveRabbitMQInMemory(IIocBuilder builder)
@@ -25,16 +26,19 @@ namespace Stove.RabbitMQ.Tests
                 {
                     r.RegisterType<StoveRabbitMQBootstrapper>();
                     r.Register<IStoveRabbitMQConfiguration, StoveRabbitMQConfiguration>(Lifetime.Singleton);
-                    r.Register<IMessageBus, StoveRabbitMQMessageBus>();
+                    r.Register<IMessageBus, StoveRabbitMQMessageBus>(Lifetime.Singleton);
                 });
 
-            builder.RegisterServices(r => r.UseBuilder(cb => { cb.Register(ctx =>
+            builder.RegisterServices(r => r.UseBuilder(cb =>
             {
-                return Bus.Factory.CreateUsingInMemory(configurator =>
+                cb.Register(ctx =>
                 {
-                    configurator.ReceiveEndpoint("test", endpointConfigurator => { endpointConfigurator.LoadFrom(ctx); });
-                });
-            }).As<IBusControl>().As<IBus>().SingleInstance(); }));
+                    return Bus.Factory.CreateUsingInMemory(configurator =>
+                    {
+                        configurator.ReceiveEndpoint("test", endpointConfigurator => { endpointConfigurator.LoadFrom(ctx); });
+                    });
+                }).As<IBusControl>().As<IBus>().SingleInstance();
+            }));
 
             return builder;
         }
