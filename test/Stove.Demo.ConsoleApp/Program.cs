@@ -52,7 +52,7 @@ namespace Stove.Demo.ConsoleApp
 												   configuration.HostAddress = "rabbitmq://localhost/";
 												   configuration.Username = "admin";
 												   configuration.Password = "admin";
-												   configuration.QueueName = "Default";
+												   configuration.QueueName = "NotCore";
 												   return configuration;
 											   })
 											   .UseStoveHangfire(configuration =>

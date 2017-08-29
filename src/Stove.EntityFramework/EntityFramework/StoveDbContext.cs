@@ -18,7 +18,6 @@ using Autofac.Extras.IocManager;
 using EntityFramework.DynamicFilters;
 
 using Stove.Collections.Extensions;
-using Stove.Configuration;
 using Stove.Domain.Entities;
 using Stove.Domain.Entities.Auditing;
 using Stove.Domain.Uow;
@@ -32,20 +31,24 @@ using Stove.Timing;
 
 namespace Stove.EntityFramework
 {
+    /// <inheritdoc cref="DbContext" />
     /// <summary>
     ///     Base class for all DbContext classes in the application.
     /// </summary>
     public abstract class StoveDbContext : DbContext, ITransientDependency, IStartable
     {
+        /// <inheritdoc />
         /// <summary>
         ///     Constructor.
-        ///     Uses <see cref="IStoveStartupConfiguration.DefaultNameOrConnectionString" /> as connection string.
+        ///     Uses <see cref="P:Stove.Configuration.IStoveStartupConfiguration.DefaultNameOrConnectionString" /> as connection
+        ///     string.
         /// </summary>
         protected StoveDbContext()
         {
             InitializeDbContext();
         }
 
+        /// <inheritdoc />
         /// <summary>
         ///     Constructor.
         /// </summary>
@@ -64,6 +67,7 @@ namespace Stove.EntityFramework
             InitializeDbContext();
         }
 
+        /// <inheritdoc />
         /// <summary>
         ///     Constructor.
         /// </summary>
@@ -73,6 +77,7 @@ namespace Stove.EntityFramework
             InitializeDbContext();
         }
 
+        /// <inheritdoc />
         /// <summary>
         ///     Constructor.
         /// </summary>
@@ -82,6 +87,7 @@ namespace Stove.EntityFramework
             InitializeDbContext();
         }
 
+        /// <inheritdoc />
         /// <summary>
         ///     Constructor.
         /// </summary>
@@ -91,6 +97,7 @@ namespace Stove.EntityFramework
             InitializeDbContext();
         }
 
+        /// <inheritdoc />
         /// <summary>
         ///     Constructor.
         /// </summary>
