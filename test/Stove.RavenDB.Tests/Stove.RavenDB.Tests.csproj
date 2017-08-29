@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="RavenDB.Database" Version="3.5.5-patch-35216" />
-    <PackageReference Include="RavenDB.Embedded" Version="3.5.5-patch-35216" />
-    <PackageReference Include="RavenDB.Tests.Helpers" Version="3.5.5-patch-35216" />
+    <PackageReference Include="RavenDB.Database" Version="3.5.5-patch-35218" />
+    <PackageReference Include="RavenDB.Embedded" Version="3.5.5-patch-35218" />
+    <PackageReference Include="RavenDB.Tests.Helpers" Version="3.5.5-patch-35218" />
     <PackageReference Include="Shouldly" Version="3.0.0-beta0003" />
     <PackageReference Include="xunit" Version="2.3.0-beta4-build3742" />
     <PackageReference Include="NSubstitute" Version="2.0.3" />
