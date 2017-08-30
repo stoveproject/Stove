@@ -114,7 +114,7 @@ namespace Stove.Demo.WebApi.Core
                                   .RegisterServices(r =>
                                   {
                                       r.RegisterAssemblyByConvention(typeof(Startup).GetAssembly());
-                                      r.BeforeRegistrationCompleted += (sender, args) => { args.ContainerBuilder.Populate(services, "root"); };
+                                      r.BeforeRegistrationCompleted += (sender, args) => { args.ContainerBuilder.Populate(services); };
                                   })
                                   .CreateResolver();
 
