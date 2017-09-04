@@ -18,6 +18,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.0.0" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.4.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="1.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="1.0.0" />
   </ItemGroup>
@@ -33,6 +34,11 @@
     <ProjectReference Include="..\..\src\Stove.RabbitMQ\Stove.RabbitMQ.csproj" />
     <ProjectReference Include="..\..\src\Stove.Redis\Stove.Redis.csproj" />
     <ProjectReference Include="..\..\src\Stove\Stove.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
