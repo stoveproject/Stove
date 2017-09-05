@@ -1,8 +1,0 @@
-version: '3'
-
-services:
-  stove.demo.webapi.core:
-    image: stove.demo.webapi.core
-    build:
-      context: ./test/Stove.Demo.WebApi.Core
-      dockerfile: Dockerfile
