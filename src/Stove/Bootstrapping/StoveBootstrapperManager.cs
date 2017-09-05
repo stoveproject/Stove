@@ -73,7 +73,7 @@ namespace Stove.Bootstrapping
                 }
 
                 bootstrapper.Resolver = _resolver;
-                bootstrapper.Configuration = _resolver.Resolve<IStoveStartupConfiguration>();
+                bootstrapper.StoveConfiguration = _resolver.Resolve<IStoveStartupConfiguration>();
                 bootstrapper.Logger = _resolver.Resolve<ILogger>();
 
                 var bootstrapperInfo = new BootstrapperInfo(boostrapperType, bootstrapper);

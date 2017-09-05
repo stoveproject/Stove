@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 
 using Stove.Mapster;
 using Stove.ObjectMapping;
+using Stove.Reflection.Extensions;
 
 namespace Stove
 {
@@ -21,7 +22,7 @@ namespace Stove
         {
             return builder.RegisterServices(r =>
             {
-                r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly());
+                r.RegisterAssemblyByConvention(typeof(StoveMapsterRegistrationExtensions).GetAssembly());
                 r.Register<IStoveMapsterConfiguration, StoveMapsterConfiguration>(Lifetime.Singleton);
                 r.Register<IObjectMapper, MapsterObjectMapper>(Lifetime.Singleton);
             });

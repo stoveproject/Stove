@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 
+using Stove.Reflection.Extensions;
 using Stove.TestBase;
 
 namespace Stove.NLog.Tests
@@ -11,7 +12,7 @@ namespace Stove.NLog.Tests
             Building(builder =>
             {
                 builder.UseStoveNLog();
-                builder.RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
+                builder.RegisterServices(r => r.RegisterAssemblyByConvention(typeof(NLogTestBase).GetAssembly()));
             });
         }
     }

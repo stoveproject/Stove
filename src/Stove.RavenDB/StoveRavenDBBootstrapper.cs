@@ -12,7 +12,7 @@ namespace Stove
     {
         public override void PreStart()
         {
-            Configuration.GetConfigurerIfExists<IStoveRavenDBConfiguration>()(Configuration.Modules.StoveRavenDB());
+            StoveConfiguration.GetConfigurerIfExists<IStoveRavenDBConfiguration>()(StoveConfiguration.Modules.StoveRavenDB());
         }
 
         public override void Start()

@@ -3,7 +3,7 @@
   <Import Project="..\..\common.props"></Import>
   
   <PropertyGroup>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Stove.HangFire</AssemblyName>
     <PackageId>Stove.HangFire</PackageId>
     <RootNamespace>Stove</RootNamespace>
@@ -12,12 +12,12 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <DocumentationFile>bin\Release\net452\Stove.HangFire.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netstandard2.0\Stove.HangFire.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="bin\Release\net452\Stove.Hangfire.pdb">
-      <PackagePath>lib/net452/</PackagePath>
+    <None Include="bin\Release\netstandard2.0\Stove.Hangfire.pdb">
+      <PackagePath>lib/netstandard2.0/</PackagePath>
       <Pack>true</Pack>
     </None>
   </ItemGroup>
@@ -27,17 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Owin" Version="3.1.0" />
-    <PackageReference Include="Microsoft.Owin.Host.SystemWeb" Version="3.1.0" />
-    <PackageReference Include="Owin" Version="1.0" />
-    <PackageReference Include="Hangfire" Version="1.6.15" />
-    <PackageReference Include="Hangfire.Core" Version="1.6.15" />
-    <PackageReference Include="Hangfire.SqlServer" Version="1.6.15" />
+    <PackageReference Include="Hangfire.Core" Version="1.6.16" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-
+ 
 </Project>

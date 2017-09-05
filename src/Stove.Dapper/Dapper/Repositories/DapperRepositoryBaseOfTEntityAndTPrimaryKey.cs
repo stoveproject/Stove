@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -38,18 +39,18 @@ namespace Stove.Dapper.Repositories
 
         public IDapperActionFilterExecuter DapperActionFilterExecuter { get; set; }
 
-        public virtual IDbConnection Connection => _activeTransactionProvider.GetActiveConnection(ActiveTransactionProviderArgs.Empty);
+        public virtual DbConnection Connection => (DbConnection)_activeTransactionProvider.GetActiveConnection(ActiveTransactionProviderArgs.Empty);
 
-        /// <summary>
+	    /// <summary>
         ///     Gets the active transaction. If Dapper is active then <see cref="IUnitOfWork" /> should be started before
         ///     and there must be an active transaction.
         /// </summary>
         /// <value>
         ///     The active transaction.
         /// </value>
-        public virtual IDbTransaction ActiveTransaction => _activeTransactionProvider.GetActiveTransaction(ActiveTransactionProviderArgs.Empty);
+        public virtual DbTransaction ActiveTransaction => (DbTransaction)_activeTransactionProvider.GetActiveTransaction(ActiveTransactionProviderArgs.Empty);
 
-        public override TEntity Single(TPrimaryKey id)
+	    public override TEntity Single(TPrimaryKey id)
         {
             return Single(CreateEqualityExpressionForId(id));
         }
@@ -83,12 +84,6 @@ namespace Stove.Dapper.Repositories
         {
             PredicateGroup predicateGroup = DapperQueryFilterExecuter.ExecuteFilter<TEntity, TPrimaryKey>();
             return Connection.GetList<TEntity>(predicateGroup, transaction: ActiveTransaction);
-        }
-
-        public override Task<IEnumerable<TEntity>> GetAllAsync()
-        {
-            PredicateGroup predicateGroup = DapperQueryFilterExecuter.ExecuteFilter<TEntity, TPrimaryKey>();
-            return Connection.GetListAsync<TEntity>(predicateGroup, transaction: ActiveTransaction);
         }
 
         public override IEnumerable<TEntity> Query(string query, object parameters = null)
@@ -175,41 +170,6 @@ namespace Stove.Dapper.Repositories
         {
             IPredicate filteredPredicate = DapperQueryFilterExecuter.ExecuteFilter<TEntity, TPrimaryKey>(predicate);
             return Connection.GetList<TEntity>(filteredPredicate, transaction: ActiveTransaction);
-        }
-
-        public override Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate)
-        {
-            IPredicate filteredPredicate = DapperQueryFilterExecuter.ExecuteFilter<TEntity, TPrimaryKey>(predicate);
-            return Connection.GetListAsync<TEntity>(filteredPredicate, transaction: ActiveTransaction);
-        }
-
-        public override Task<IEnumerable<TEntity>> GetSetAsync(Expression<Func<TEntity, bool>> predicate, int firstResult, int maxResults, string sortingProperty, bool ascending = true)
-        {
-            IPredicate filteredPredicate = DapperQueryFilterExecuter.ExecuteFilter<TEntity, TPrimaryKey>(predicate);
-            return Connection.GetSetAsync<TEntity>(
-                filteredPredicate,
-                new List<ISort> { new Sort { Ascending = ascending, PropertyName = sortingProperty } },
-                firstResult,
-                maxResults,
-                ActiveTransaction
-            );
-        }
-
-        public override Task<IEnumerable<TEntity>> GetAllPagedAsync(Expression<Func<TEntity, bool>> predicate, int pageNumber, int itemsPerPage, string sortingProperty, bool ascending = true)
-        {
-            IPredicate filteredPredicate = DapperQueryFilterExecuter.ExecuteFilter<TEntity, TPrimaryKey>(predicate);
-            return Connection.GetPageAsync<TEntity>(
-                filteredPredicate,
-                new List<ISort> { new Sort { Ascending = ascending, PropertyName = sortingProperty } },
-                pageNumber,
-                itemsPerPage,
-                ActiveTransaction);
-        }
-
-        public override Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate)
-        {
-            IPredicate filteredPredicate = DapperQueryFilterExecuter.ExecuteFilter<TEntity, TPrimaryKey>(predicate);
-            return Connection.CountAsync<TEntity>(filteredPredicate, ActiveTransaction);
         }
 
         public override IEnumerable<TEntity> GetAllPaged(Expression<Func<TEntity, bool>> predicate, int pageNumber, int itemsPerPage, bool ascending = true, params Expression<Func<TEntity, object>>[] sortingExpression)

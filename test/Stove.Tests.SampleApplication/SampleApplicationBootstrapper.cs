@@ -12,7 +12,7 @@ namespace Stove.Tests.SampleApplication
     {
         public override void Start()
         {
-            Configuration.Modules.StoveMapster().Configurators.Add(config =>
+            StoveConfiguration.Modules.StoveMapster().Configurators.Add(config =>
             {
                 //add mapping....
             });

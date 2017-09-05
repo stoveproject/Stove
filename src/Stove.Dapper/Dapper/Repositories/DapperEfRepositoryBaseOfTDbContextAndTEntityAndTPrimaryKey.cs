@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Data.Common;
 
 using Stove.Domain.Entities;
 using Stove.Orm;
@@ -27,14 +28,14 @@ namespace Stove.Dapper.Repositories
             }
         }
 
-        public override IDbConnection Connection
+        public override DbConnection Connection
         {
-            get { return _activeTransactionProvider.GetActiveConnection(ActiveTransactionProviderArgs); }
+            get { return (DbConnection)_activeTransactionProvider.GetActiveConnection(ActiveTransactionProviderArgs); }
         }
 
-        public override IDbTransaction ActiveTransaction
+        public override DbTransaction ActiveTransaction
         {
-            get { return _activeTransactionProvider.GetActiveTransaction(ActiveTransactionProviderArgs); }
+            get { return (DbTransaction)_activeTransactionProvider.GetActiveTransaction(ActiveTransactionProviderArgs); }
         }
     }
 }

@@ -13,92 +13,82 @@ using Stove.Orm;
 
 namespace Stove
 {
-    public static class StoveEntityFrameworkRegistrationExtensions
-    {
-        /// <summary>
-        ///     Uses the stove entity framework.
-        /// </summary>
-        /// <param name="builder">The builder.</param>
-        /// <returns></returns>
-        [NotNull]
-        public static IIocBuilder UseStoveEntityFramework([NotNull] this IIocBuilder builder)
-        {
-            return builder.RegisterServices(r =>
-            {
-                var ormRegistrars = new List<ISecondaryOrmRegistrar>();
-                r.OnRegistering += (sender, args) =>
-                {
-                    if (typeof(StoveDbContext).IsAssignableFrom(args.ImplementationType))
-                    {
-                        EfRepositoryRegistrar.RegisterRepositories(args.ImplementationType, builder);
-                        ormRegistrars.Add(new EfBasedSecondaryOrmRegistrar(builder, args.ImplementationType, DbContextHelper.GetEntityTypeInfos, EntityHelper.GetPrimaryKeyType));
-                        args.ContainerBuilder.Properties[StoveConsts.OrmRegistrarContextKey] = ormRegistrars;
-                    }
-                };
+	public static class StoveEntityFrameworkRegistrationExtensions
+	{
+		/// <summary>
+		///     Uses the stove entity framework.
+		/// </summary>
+		/// <param name="builder">The builder.</param>
+		/// <returns></returns>
+		[NotNull]
+		public static IIocBuilder UseStoveEntityFramework([NotNull] this IIocBuilder builder)
+		{
+			return builder.RegisterServices(r =>
+			              {
+				              var ormRegistrars = new List<ISecondaryOrmRegistrar>();
+				              r.OnRegistering += (sender, args) =>
+				              {
+					              if (typeof(StoveDbContext).IsAssignableFrom(args.ImplementationType))
+					              {
+						              EfRepositoryRegistrar.RegisterRepositories(args.ImplementationType, builder);
+						              ormRegistrars.Add(new EfBasedSecondaryOrmRegistrar(builder, args.ImplementationType, DbContextHelper.GetEntityTypeInfos, EntityHelper.GetPrimaryKeyType));
+						              args.ContainerBuilder.Properties[StoveConsts.OrmRegistrarContextKey] = ormRegistrars;
+					              }
+				              };
 
-                r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly());
-                r.Register<IUnitOfWorkFilterExecuter, IEfUnitOfWorkFilterExecuter, EfDynamicFiltersUnitOfWorkFilterExecuter>();
-                r.RegisterGeneric(typeof(IDbContextProvider<>), typeof(UnitOfWorkDbContextProvider<>));
-                r.Register<IUnitOfWorkDefaultOptions, UnitOfWorkDefaultOptions>(Lifetime.Singleton);
-            });
-        }
+				              r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly());
+				              r.Register<IUnitOfWorkFilterExecuter, IEfUnitOfWorkFilterExecuter, EfDynamicFiltersUnitOfWorkFilterExecuter>();
+				              r.RegisterGeneric(typeof(IDbContextProvider<>), typeof(UnitOfWorkDbContextProvider<>));
+				              r.Register<IUnitOfWorkDefaultOptions, UnitOfWorkDefaultOptions>(Lifetime.Singleton);
+			              })
+			              .UseStoveEntityFrameworkCommon();
+		}
 
-        /// <summary>
-        ///     Uses the repository registrar in assembly.
-        /// </summary>
-        /// <param name="builder">The builder.</param>
-        /// <param name="assembly">The assembly.</param>
-        /// <returns></returns>
-        [NotNull]
-        public static IIocBuilder UseRepositoryRegistrarInAssembly([NotNull] this IIocBuilder builder, [NotNull] Assembly assembly)
-        {
-            Check.NotNull(assembly, nameof(assembly));
+		/// <summary>
+		///     Uses the repository registrar in assembly.
+		/// </summary>
+		/// <param name="builder">The builder.</param>
+		/// <param name="assembly">The assembly.</param>
+		/// <returns></returns>
+		[NotNull]
+		public static IIocBuilder UseRepositoryRegistrarInAssembly([NotNull] this IIocBuilder builder, [NotNull] Assembly assembly)
+		{
+			Check.NotNull(assembly, nameof(assembly));
 
-            builder.RegisterServices(r =>
-            {
-                r.OnRegistering += (sender, args) =>
-                {
-                    if (typeof(StoveDbContext).IsAssignableFrom(args.ImplementationType))
-                    {
-                        EfRepositoryRegistrar.RegisterRepositories(args.ImplementationType, builder);
-                    }
-                };
-            });
+			builder.RegisterServices(r =>
+			{
+				r.OnRegistering += (sender, args) =>
+				{
+					if (typeof(StoveDbContext).IsAssignableFrom(args.ImplementationType))
+					{
+						EfRepositoryRegistrar.RegisterRepositories(args.ImplementationType, builder);
+					}
+				};
+			});
 
-            return builder;
-        }
+			return builder;
+		}
 
-        /// <summary>
-        ///     Uses the stove typed connection string resolver.
-        /// </summary>
-        /// <param name="builder">The builder.</param>
-        /// <returns></returns>
-        [NotNull]
-        public static IIocBuilder UseStoveTypedConnectionStringResolver([NotNull] this IIocBuilder builder)
-        {
-            return builder.RegisterServices(r => r.Register<IConnectionStringResolver, TypedConnectionStringResolver>());
-        }
+		/// <summary>
+		///     Uses the stove transaction scope ef transaction strategy.
+		/// </summary>
+		/// <param name="builder">The builder.</param>
+		/// <returns></returns>
+		[NotNull]
+		public static IIocBuilder UseStoveTransactionScopeEfTransactionStrategy([NotNull] this IIocBuilder builder)
+		{
+			return builder.RegisterServices(r => r.Register<IEfTransactionStrategy, TransactionScopeEfTransactionStrategy>());
+		}
 
-        /// <summary>
-        ///     Uses the stove transaction scope ef transaction strategy.
-        /// </summary>
-        /// <param name="builder">The builder.</param>
-        /// <returns></returns>
-        [NotNull]
-        public static IIocBuilder UseStoveTransactionScopeEfTransactionStrategy([NotNull] this IIocBuilder builder)
-        {
-            return builder.RegisterServices(r => r.Register<IEfTransactionStrategy, TransactionScopeEfTransactionStrategy>());
-        }
-
-        /// <summary>
-        ///     Uses the stove database context ef transaction strategy.
-        /// </summary>
-        /// <param name="builder">The builder.</param>
-        /// <returns></returns>
-        [NotNull]
-        public static IIocBuilder UseStoveDbContextEfTransactionStrategy([NotNull] this IIocBuilder builder)
-        {
-            return builder.RegisterServices(r => r.Register<IEfTransactionStrategy, DbContextEfTransactionStrategy>());
-        }
-    }
+		/// <summary>
+		///     Uses the stove database context ef transaction strategy.
+		/// </summary>
+		/// <param name="builder">The builder.</param>
+		/// <returns></returns>
+		[NotNull]
+		public static IIocBuilder UseStoveDbContextEfTransactionStrategy([NotNull] this IIocBuilder builder)
+		{
+			return builder.RegisterServices(r => r.Register<IEfTransactionStrategy, DbContextEfTransactionStrategy>());
+		}
+	}
 }

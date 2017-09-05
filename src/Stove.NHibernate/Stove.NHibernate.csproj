@@ -3,7 +3,7 @@
   <Import Project="..\..\common.props"></Import>
 
   <PropertyGroup>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFramework>net461</TargetFramework>
     <RootNamespace>Stove</RootNamespace>
     <AssemblyName>Stove.NHibernate</AssemblyName>
     <PackageId>Stove.NHibernate</PackageId>
@@ -13,7 +13,8 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <DocumentationFile>bin\Release\net452\Stove.NHibernate.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\net461\Stove.NHibernate.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netstandard2.0\Stove.NHibernate.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,8 +31,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="bin\Release\net452\Stove.NHibernate.pdb">
-      <PackagePath>lib/net452/</PackagePath>
+    <None Include="bin\Release\net461\Stove.NHibernate.pdb">
+      <PackagePath>lib/net461/</PackagePath>
       <Pack>true</Pack>
     </None>
   </ItemGroup>

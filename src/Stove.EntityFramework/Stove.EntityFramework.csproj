@@ -3,7 +3,7 @@
   <Import Project="..\..\common.props"></Import>
   
   <PropertyGroup>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFramework>net461</TargetFramework>
     <AssemblyName>Stove.EntityFramework</AssemblyName>
     <PackageId>Stove.EntityFramework</PackageId>
     <PackageTags>.net;framework;boilerplate;entityframework</PackageTags>
@@ -12,17 +12,19 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <DocumentationFile>bin\Release\net452\Stove.EntityFramework.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\net461\Stove.EntityFramework.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netstandard2.0\Stove.EntityFramework.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="bin\Release\net452\Stove.EntityFramework.pdb">
-      <PackagePath>lib/net452/</PackagePath>
+    <None Include="bin\Release\net461\Stove.EntityFramework.pdb">
+      <PackagePath>lib/net461/</PackagePath>
       <Pack>true</Pack>
     </None>
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Stove.EntityFramework.Common\Stove.EntityFramework.Common.csproj" />
     <ProjectReference Include="..\Stove\Stove.csproj" />
   </ItemGroup>
 
@@ -36,4 +38,5 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Transactions" />
   </ItemGroup>
+  
 </Project>

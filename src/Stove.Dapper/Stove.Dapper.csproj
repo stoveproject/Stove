@@ -3,7 +3,7 @@
   <Import Project="..\..\common.props"></Import>
 
   <PropertyGroup>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Stove.Dapper</AssemblyName>
     <PackageId>Stove.Dapper</PackageId>
     <PackageTags>.net;framework;boilerplate;Dapper</PackageTags>
@@ -12,14 +12,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="bin\Release\net452\Stove.Dapper.pdb">
-      <PackagePath>lib/net452/</PackagePath>
+    <None Include="bin\Release\netstandard2.0\Stove.Dapper.pdb">
+      <PackagePath>lib/netstandard2.0/</PackagePath>
       <Pack>true</Pack>
     </None>
   </ItemGroup>
 
   <PropertyGroup>
-    <DocumentationFile>bin\Release\net452\Stove.Dapper.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netstandard2.0\Stove.Dapper.xml</DocumentationFile>
   </PropertyGroup>
   
   <ItemGroup>
@@ -28,13 +28,8 @@
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="1.50.2" />
-    <PackageReference Include="DapperExtensions" Version="1.6.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <PackageReference Include="DapperExtensions.DotnetCore" Version="1.0.1" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.4.0" />
   </ItemGroup>
 
 </Project>

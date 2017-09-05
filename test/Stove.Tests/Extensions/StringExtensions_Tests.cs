@@ -1,189 +1,196 @@
 ﻿using System;
-using System.Globalization;
 
 using Shouldly;
 
-using Stove.Extensions;
-
 using Xunit;
+
+using Stove.Extensions;
 
 namespace Stove.Tests.Extensions
 {
-    public class StringExtensions_Tests
-    {
-        [Fact]
-        public void EnsureEndsWith_Test()
-        {
-            //Expected use-cases
-            "Test".EnsureEndsWith('!').ShouldBe("Test!");
-            "Test!".EnsureEndsWith('!').ShouldBe("Test!");
-            @"C:\test\folderName".EnsureEndsWith('\\').ShouldBe(@"C:\test\folderName\");
-            @"C:\test\folderName\".EnsureEndsWith('\\').ShouldBe(@"C:\test\folderName\");
+	public class StringExtensions_Tests
+	{
+		[Fact]
+		public void EnsureEndsWith_Test()
+		{
+			//Expected use-cases
+			"Test".EnsureEndsWith('!').ShouldBe("Test!");
+			"Test!".EnsureEndsWith('!').ShouldBe("Test!");
+			@"C:\test\folderName".EnsureEndsWith('\\').ShouldBe(@"C:\test\folderName\");
+			@"C:\test\folderName\".EnsureEndsWith('\\').ShouldBe(@"C:\test\folderName\");
 
-            //Case differences
-            "TurkeY".EnsureEndsWith('y').ShouldBe("TurkeYy");
-            "TurkeY".EnsureEndsWith('y', StringComparison.InvariantCultureIgnoreCase).ShouldBe("TurkeY");
+			//Case differences
+			"TurkeY".EnsureEndsWith('y').ShouldBe("TurkeYy");
+			"TurkeY".EnsureEndsWith('y', StringComparison.OrdinalIgnoreCase).ShouldBe("TurkeY");
 
-            //Edge cases for Turkish 'i'.
-            "TAKSİ".EnsureEndsWith('i', true, new CultureInfo("tr-TR")).ShouldBe("TAKSİ");
-            "TAKSİ".EnsureEndsWith('i', false, new CultureInfo("tr-TR")).ShouldBe("TAKSİi");
-        }
+			//Edge cases for Turkish 'i'.
 
-        [Fact]
-        public void EnsureStartsWith_Test()
-        {
-            //Expected use-cases
-            "Test".EnsureStartsWith('~').ShouldBe("~Test");
-            "~Test".EnsureStartsWith('~').ShouldBe("~Test");
+			//using (CultureInfoHelper.Use("tr-TR"))
+			//{
+			//	"TAKSİ".EnsureEndsWith('i', StringComparison.CurrentCultureIgnoreCase).ShouldBe("TAKSİ");
+			//	"TAKSİ".EnsureEndsWith('i', StringComparison.CurrentCulture).ShouldBe("TAKSİi");
+			//}
+		}
 
-            //Case differences
-            "Turkey".EnsureStartsWith('t').ShouldBe("tTurkey");
-            "Turkey".EnsureStartsWith('t', StringComparison.InvariantCultureIgnoreCase).ShouldBe("Turkey");
+		[Fact]
+		public void EnsureStartsWith_Test()
+		{
+			//Expected use-cases
+			"Test".EnsureStartsWith('~').ShouldBe("~Test");
+			"~Test".EnsureStartsWith('~').ShouldBe("~Test");
 
-            //Edge cases for Turkish 'i'.
-            "İstanbul".EnsureStartsWith('i', true, new CultureInfo("tr-TR")).ShouldBe("İstanbul");
-            "İstanbul".EnsureStartsWith('i', false, new CultureInfo("tr-TR")).ShouldBe("iİstanbul");
-        }
+			//Case differences
+			"Turkey".EnsureStartsWith('t').ShouldBe("tTurkey");
+			"Turkey".EnsureStartsWith('t', StringComparison.OrdinalIgnoreCase).ShouldBe("Turkey");
 
-        [Fact]
-        public void ToPascalCase_Test()
-        {
-            (null as string).ToPascalCase().ShouldBe(null);
-            "helloWorld".ToPascalCase().ShouldBe("HelloWorld");
-            "istanbul".ToPascalCase().ShouldBe("Istanbul");
-            "istanbul".ToPascalCase(new CultureInfo("tr-TR")).ShouldBe("İstanbul");
-        }
+			//Edge cases for Turkish 'i'.
 
-        [Fact]
-        public void ToCamelCase_Test()
-        {
-            (null as string).ToCamelCase().ShouldBe(null);
-            "HelloWorld".ToCamelCase().ShouldBe("helloWorld");
-            "Istanbul".ToCamelCase().ShouldBe("istanbul");
-            "Istanbul".ToCamelCase(new CultureInfo("tr-TR")).ShouldBe("ıstanbul");
-            "İstanbul".ToCamelCase(new CultureInfo("tr-TR")).ShouldBe("istanbul");
-        }
+			//using (CultureInfoHelper.Use("tr-TR"))
+			//{
+			//	"İstanbul".EnsureStartsWith('i', StringComparison.CurrentCultureIgnoreCase).ShouldBe("İstanbul");
+			//	"İstanbul".EnsureStartsWith('i', StringComparison.CurrentCulture).ShouldBe("iİstanbul");
+			//}
+		}
 
-        [Fact]
-        public void ToSentenceCase_Test()
-        {
-            (null as string).ToSentenceCase().ShouldBe(null);
-            "HelloWorld".ToSentenceCase().ShouldBe("Hello world");
-            "HelloIsparta".ToSentenceCase().ShouldBe("Hello isparta");
-            "HelloIsparta".ToSentenceCase(new CultureInfo("tr-TR")).ShouldBe("Hello ısparta");
-        }
+		[Fact]
+		public void ToPascalCase_Test()
+		{
+			(null as string).ToPascalCase().ShouldBe(null);
+			"helloWorld".ToPascalCase().ShouldBe("HelloWorld");
+			"istanbul".ToPascalCase().ShouldBe("Istanbul");
+		}
 
-        [Fact]
-        public void Right_Test()
-        {
-            const string str = "This is a test string";
+		[Fact]
+		public void ToCamelCase_Test()
+		{
+			(null as string).ToCamelCase().ShouldBe(null);
+			"HelloWorld".ToCamelCase().ShouldBe("helloWorld");
+			"Istanbul".ToCamelCase().ShouldBe("istanbul");
+		}
 
-            str.Right(3).ShouldBe("ing");
-            str.Right(0).ShouldBe("");
-            str.Right(str.Length).ShouldBe(str);
-        }
+		[Fact]
+		public void ToSentenceCase_Test()
+		{
+			(null as string).ToSentenceCase().ShouldBe(null);
+			"HelloWorld".ToSentenceCase().ShouldBe("Hello world");
 
-        [Fact]
-        public void Left_Test()
-        {
-            const string str = "This is a test string";
+			//using (CultureInfoHelper.Use("en-US"))
+			//{
+			//	"HelloIsparta".ToSentenceCase().ShouldBe("Hello isparta");
+			//}
+		}
 
-            str.Left(3).ShouldBe("Thi");
-            str.Left(0).ShouldBe("");
-            str.Left(str.Length).ShouldBe(str);
-        }
+		[Fact]
+		public void Right_Test()
+		{
+			const string str = "This is a test string";
 
-        [Fact]
-        public void NormalizeLineEndings_Test()
-        {
-            const string str = "This\r\n is a\r test \n string";
-            var normalized = str.NormalizeLineEndings();
-            var lines = normalized.SplitToLines();
-            lines.Length.ShouldBe(4);
-        }
+			str.Right(3).ShouldBe("ing");
+			str.Right(0).ShouldBe("");
+			str.Right(str.Length).ShouldBe(str);
+		}
 
-        [Fact]
-        public void NthIndexOf_Test()
-        {
-            const string str = "This is a test string";
+		[Fact]
+		public void Left_Test()
+		{
+			const string str = "This is a test string";
 
-            str.NthIndexOf('i', 0).ShouldBe(-1);
-            str.NthIndexOf('i', 1).ShouldBe(2);
-            str.NthIndexOf('i', 2).ShouldBe(5);
-            str.NthIndexOf('i', 3).ShouldBe(18);
-            str.NthIndexOf('i', 4).ShouldBe(-1);
-        }
+			str.Left(3).ShouldBe("Thi");
+			str.Left(0).ShouldBe("");
+			str.Left(str.Length).ShouldBe(str);
+		}
 
-        [Fact]
-        public void Truncate_Test()
-        {
-            const string str = "This is a test string";
-            const string nullValue = null;
+		[Fact]
+		public void NormalizeLineEndings_Test()
+		{
+			const string str = "This\r\n is a\r test \n string";
+			string normalized = str.NormalizeLineEndings();
+			string[] lines = normalized.SplitToLines();
+			lines.Length.ShouldBe(4);
+		}
 
-            str.Truncate(7).ShouldBe("This is");
-            str.Truncate(0).ShouldBe("");
-            str.Truncate(100).ShouldBe(str);
+		[Fact]
+		public void NthIndexOf_Test()
+		{
+			const string str = "This is a test string";
 
-            nullValue.Truncate(5).ShouldBe(null);
-        }
+			str.NthIndexOf('i', 0).ShouldBe(-1);
+			str.NthIndexOf('i', 1).ShouldBe(2);
+			str.NthIndexOf('i', 2).ShouldBe(5);
+			str.NthIndexOf('i', 3).ShouldBe(18);
+			str.NthIndexOf('i', 4).ShouldBe(-1);
+		}
 
-        [Fact]
-        public void TruncateWithPostFix_Test()
-        {
-            const string str = "This is a test string";
-            const string nullValue = null;
+		[Fact]
+		public void Truncate_Test()
+		{
+			const string str = "This is a test string";
+			const string nullValue = null;
 
-            str.TruncateWithPostfix(3).ShouldBe("...");
-            str.TruncateWithPostfix(12).ShouldBe("This is a...");
-            str.TruncateWithPostfix(0).ShouldBe("");
-            str.TruncateWithPostfix(100).ShouldBe(str);
+			str.Truncate(7).ShouldBe("This is");
+			str.Truncate(0).ShouldBe("");
+			str.Truncate(100).ShouldBe(str);
 
-            nullValue.Truncate(5).ShouldBe(null);
+			nullValue.Truncate(5).ShouldBe(null);
+		}
 
-            str.TruncateWithPostfix(3, "~").ShouldBe("Th~");
-            str.TruncateWithPostfix(12, "~").ShouldBe("This is a t~");
-            str.TruncateWithPostfix(0, "~").ShouldBe("");
-            str.TruncateWithPostfix(100, "~").ShouldBe(str);
+		[Fact]
+		public void TruncateWithPostFix_Test()
+		{
+			const string str = "This is a test string";
+			const string nullValue = null;
 
-            nullValue.TruncateWithPostfix(5, "~").ShouldBe(null);
-        }
+			str.TruncateWithPostfix(3).ShouldBe("...");
+			str.TruncateWithPostfix(12).ShouldBe("This is a...");
+			str.TruncateWithPostfix(0).ShouldBe("");
+			str.TruncateWithPostfix(100).ShouldBe(str);
 
-        [Fact]
-        public void RemovePostFix_Tests()
-        {
-            //null case
-            (null as string).RemovePreFix("Test").ShouldBeNull();
+			nullValue.Truncate(5).ShouldBe(null);
 
-            //Simple case
-            "MyTestAppService".RemovePostFix("AppService").ShouldBe("MyTest");
-            "MyTestAppService".RemovePostFix("Service").ShouldBe("MyTestApp");
+			str.TruncateWithPostfix(3, "~").ShouldBe("Th~");
+			str.TruncateWithPostfix(12, "~").ShouldBe("This is a t~");
+			str.TruncateWithPostfix(0, "~").ShouldBe("");
+			str.TruncateWithPostfix(100, "~").ShouldBe(str);
 
-            //Multiple postfix (orders of postfixes are important)
-            "MyTestAppService".RemovePostFix("AppService", "Service").ShouldBe("MyTest");
-            "MyTestAppService".RemovePostFix("Service", "AppService").ShouldBe("MyTestApp");
+			nullValue.TruncateWithPostfix(5, "~").ShouldBe(null);
+		}
 
-            //Unmatched case
-            "MyTestAppService".RemovePostFix("Unmatched").ShouldBe("MyTestAppService");
-        }
+		[Fact]
+		public void RemovePostFix_Tests()
+		{
+			//null case
+			(null as string).RemovePreFix("Test").ShouldBeNull();
 
-        [Fact]
-        public void RemovePreFix_Tests()
-        {
-            "Home.Index".RemovePreFix("NotMatchedPostfix").ShouldBe("Home.Index");
-            "Home.About".RemovePreFix("Home.").ShouldBe("About");
-        }
+			//Simple case
+			"MyTestAppService".RemovePostFix("AppService").ShouldBe("MyTest");
+			"MyTestAppService".RemovePostFix("Service").ShouldBe("MyTestApp");
 
-        [Fact]
-        public void ToEnum_Test()
-        {
-            "MyValue1".ToEnum<MyEnum>().ShouldBe(MyEnum.MyValue1);
-            "MyValue2".ToEnum<MyEnum>().ShouldBe(MyEnum.MyValue2);
-        }
+			//Multiple postfix (orders of postfixes are important)
+			"MyTestAppService".RemovePostFix("AppService", "Service").ShouldBe("MyTest");
+			"MyTestAppService".RemovePostFix("Service", "AppService").ShouldBe("MyTestApp");
 
-        private enum MyEnum
-        {
-            MyValue1,
-            MyValue2
-        }
-    }
+			//Unmatched case
+			"MyTestAppService".RemovePostFix("Unmatched").ShouldBe("MyTestAppService");
+		}
+
+		[Fact]
+		public void RemovePreFix_Tests()
+		{
+			"Home.Index".RemovePreFix("NotMatchedPostfix").ShouldBe("Home.Index");
+			"Home.About".RemovePreFix("Home.").ShouldBe("About");
+		}
+
+		[Fact]
+		public void ToEnum_Test()
+		{
+			"MyValue1".ToEnum<MyEnum>().ShouldBe(MyEnum.MyValue1);
+			"MyValue2".ToEnum<MyEnum>().ShouldBe(MyEnum.MyValue2);
+		}
+
+		private enum MyEnum
+		{
+			MyValue1,
+			MyValue2
+		}
+	}
 }

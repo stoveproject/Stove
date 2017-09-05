@@ -271,7 +271,7 @@ namespace Stove
         [NotNull]
         private static void RegisterStoveDefaults([NotNull] this IIocBuilder builder)
         {
-            builder.RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()))
+            builder.RegisterServices(r => r.RegisterAssemblyByConvention(typeof(StoveCoreRegistrationExtensions).GetTypeInfo().Assembly))
                    .RegisterServices(r => r.Register<IGuidGenerator>(context => SequentialGuidGenerator.Instance, Lifetime.Singleton))
                    .RegisterServices(r => r.Register<IStoveStartupConfiguration, StoveStartupConfiguration>(Lifetime.Singleton))
                    .RegisterServices(r => r.Register<IBackgroundJobConfiguration, BackgroundJobConfiguration>(Lifetime.Singleton))

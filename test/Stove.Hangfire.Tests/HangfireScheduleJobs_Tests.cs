@@ -6,6 +6,7 @@ using Hangfire;
 using Shouldly;
 
 using Stove.BackgroundJobs;
+using Stove.Reflection.Extensions;
 
 using Xunit;
 
@@ -15,7 +16,7 @@ namespace Stove.Hangfire.Tests
     {
         public HangfireScheduleJobs_Tests()
         {
-            Building(builder => { builder.RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly())); }).Ok();
+            Building(builder => { builder.RegisterServices(r => r.RegisterAssemblyByConvention(typeof(HangfireScheduleJobs_Tests).GetAssembly())); }).Ok();
         }
 
         [Fact]
