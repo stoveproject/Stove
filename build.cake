@@ -6,8 +6,6 @@
 #addin "nuget:?package=NuGet.Core"
 #addin "nuget:?package=Cake.ExtendedNuGet"
 
-#l "common.cake"
-
 using NuGet;
 
 //////////////////////////////////////////////////////////////////////

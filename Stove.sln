@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.10
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{4D2BAE52-1E23-4321-BBE6-2BAC28F7B389}"
 EndProject
@@ -13,7 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		appveyor.yml = appveyor.yml
 		build.cake = build.cake
 		build.ps1 = build.ps1
-		common.cake = common.cake
 		common.props = common.props
 		LICENSE = LICENSE
 		README.md = README.md
@@ -85,7 +84,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stove.Demo.WebApi.Core", "t
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stove.Serilog", "src\Stove.Serilog\Stove.Serilog.csproj", "{59590481-E87E-418F-B5D8-8C415FF4B027}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stove.Serilog.Tests", "test\Stove.Serilog.Tests\Stove.Serilog.Tests.csproj", "{38E61EC8-F69C-41B1-9356-F5FD6DA507F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stove.Serilog.Tests", "test\Stove.Serilog.Tests\Stove.Serilog.Tests.csproj", "{38E61EC8-F69C-41B1-9356-F5FD6DA507F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
