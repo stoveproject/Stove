@@ -1,10 +1,7 @@
 #tool "nuget:?package=Cake.CoreCLR";
 #tool "nuget:?package=xunit.runner.console&version=2.3.0-beta4-build3742"
-#tool "nuget:?package=MSBuild.SonarQube.Runner.Tool"
-#tool "nuget:?package=JetBrains.dotCover.CommandLineTools"
 #tool "nuget:?package=NuGet.CommandLine"
 
-#addin "Cake.Json"
 #addin "Cake.FileHelpers"
 #addin "nuget:?package=NuGet.Core"
 #addin "nuget:?package=Cake.ExtendedNuGet"
@@ -117,7 +114,7 @@ Task("Pack")
 
 Task("NugetPublish")
     .IsDependentOn("Pack")
-    .WithCriteria(() => branch == "master" || branch == "netstandard2.0")
+    .WithCriteria(() => branch == "master")
     .Does(()=>
     {
         foreach(var nupkgFile in GetFiles(nupkgRegex))
