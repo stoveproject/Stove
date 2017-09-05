@@ -1,14 +1,13 @@
 ﻿using System.Threading.Tasks;
 
-using Autofac.Extras.IocManager;
-
 using MassTransit;
 
+using Stove.MQ;
 using Stove.RabbitMQ.Tests.Contracts;
 
 namespace Stove.RabbitMQ.Tests.Consumers
 {
-    public class OrderPlacedConsumer : IConsumer<OrderPlacedEvent>, ITransientDependency
+    public class OrderPlacedConsumer : ConsumerBase, IConsumer<OrderPlacedEvent>
     {
         public Task Consume(ConsumeContext<OrderPlacedEvent> context)
         {

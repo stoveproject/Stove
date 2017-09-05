@@ -21,14 +21,14 @@ namespace Stove
 
         public override void Start()
         {
-            Configuration.Modules.StoveHangfire().Configure(configuration =>
+            StoveConfiguration.Modules.StoveHangfire().Configure(configuration =>
             {
                 configuration.GlobalConfiguration.UseAutofacActivator(Resolver.Resolve<ILifetimeScope>());
-                Configuration.GetConfigurerIfExists<IStoveHangfireConfiguration>().Invoke(configuration);
+                StoveConfiguration.GetConfigurerIfExists<IStoveHangfireConfiguration>().Invoke(configuration);
             });
 
-            _backgroundWorkerManager.Add(Configuration.Resolver.Resolve<HangfireBackgroundJobManager>());
-            _backgroundWorkerManager.Add(Configuration.Resolver.Resolve<HangfireScheduleJobManager>());
+            _backgroundWorkerManager.Add(StoveConfiguration.Resolver.Resolve<HangfireBackgroundJobManager>());
+            _backgroundWorkerManager.Add(StoveConfiguration.Resolver.Resolve<HangfireScheduleJobManager>());
         }
     }
 }

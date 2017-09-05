@@ -10,7 +10,7 @@ namespace Stove.Demo.WebApi
     {
         public override void PreStart()
         {
-            Configuration.DefaultNameOrConnectionString = "Default";
+            StoveConfiguration.DefaultNameOrConnectionString = "Default";
         }
     }
 }

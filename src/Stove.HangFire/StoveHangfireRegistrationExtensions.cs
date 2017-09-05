@@ -6,6 +6,7 @@ using Autofac.Extras.IocManager;
 using JetBrains.Annotations;
 
 using Stove.Configurations;
+using Stove.Reflection.Extensions;
 
 namespace Stove
 {
@@ -22,7 +23,7 @@ namespace Stove
         {
             return builder.RegisterServices(r =>
             {
-                r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly());
+                r.RegisterAssemblyByConvention(typeof(StoveHangfireRegistrationExtensions).GetAssembly());
                 r.Register(context => configureAction);
             });
         }

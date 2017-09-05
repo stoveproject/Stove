@@ -3,7 +3,7 @@
   <Import Project="..\..\common.props"></Import>
 
   <PropertyGroup>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Stove.RabbitMQ</AssemblyName>
     <PackageId>Stove.RabbitMQ</PackageId>
     <PackageTags>.net;framework;boilerplate;Queue;RabbitMQ</PackageTags>
@@ -12,12 +12,12 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <DocumentationFile>bin\Release\net452\Stove.RabbitMQ.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netstandard2.0\Stove.RabbitMQ.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="bin\Release\net452\Stove.RabbitMQ.pdb">
-      <PackagePath>lib/net452/</PackagePath>
+    <None Include="bin\Release\netstandard2.0\Stove.RabbitMQ.pdb">
+      <PackagePath>lib/netstandard2.0/</PackagePath>
       <Pack>true</Pack>
     </None>
   </ItemGroup>
@@ -27,14 +27,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MassTransit" Version="3.5.7" />
-    <PackageReference Include="MassTransit.Autofac" Version="3.5.7" />
-    <PackageReference Include="MassTransit.RabbitMQ" Version="3.5.7" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
+    <PackageReference Include="MassTransit" Version="4.0.0.1274-develop" />
+    <PackageReference Include="MassTransit.Autofac" Version="4.0.0.1274-develop" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="4.0.0.1274-develop" />
   </ItemGroup>
 
 </Project>

@@ -6,6 +6,7 @@ using Shouldly;
 
 using Stove.Bootstrapping;
 using Stove.Reflection;
+using Stove.Reflection.Extensions;
 using Stove.TestBase;
 
 using Xunit;
@@ -24,7 +25,7 @@ namespace Stove.Tests.Bootstrapping
                 {
                     builder
                         .UseStoveWithNullables(typeof(MyStartupBootstrapper))
-                        .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
+                        .RegisterServices(r => r.RegisterAssemblyByConvention(typeof(BootstrapperAssemblyFinder_Tests).GetAssembly()));
                 })
                 .Ok();
 
@@ -39,16 +40,16 @@ namespace Stove.Tests.Bootstrapping
             List<Assembly> assemblies = sut.GetAllAssemblies();
 
             assemblies.Count.ShouldBe(3);
-            assemblies.Any(a => a == typeof(MyStartupBootstrapper).Assembly).ShouldBeTrue();
-            assemblies.Any(a => a == typeof(StoveKernelBootstrapper).Assembly).ShouldBeTrue();
-            assemblies.Any(a => a == typeof(FactAttribute).Assembly).ShouldBeTrue();
+            assemblies.Any(a => a == typeof(MyStartupBootstrapper).GetAssembly()).ShouldBeTrue();
+            assemblies.Any(a => a == typeof(StoveKernelBootstrapper).GetAssembly()).ShouldBeTrue();
+            assemblies.Any(a => a == typeof(FactAttribute).GetAssembly()).ShouldBeTrue();
         }
 
         public class MyStartupBootstrapper : StoveBootstrapper
         {
             public override Assembly[] GetAdditionalAssemblies()
             {
-                return new[] { typeof(FactAttribute).Assembly };
+                return new[] { typeof(FactAttribute).GetAssembly() };
             }
         }
     }

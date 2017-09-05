@@ -3,7 +3,7 @@
   <Import Project="..\..\common.props"></Import>
   
   <PropertyGroup>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Stove.Redis</AssemblyName>
     <PackageId>Stove.Redis</PackageId>
     <PackageTags>.net;framework;boilerplate;caching;redis</PackageTags>
@@ -12,12 +12,12 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <DocumentationFile>bin\Release\net452\Stove.Redis.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netstandard2.0\Stove.Redis.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="bin\Release\net452\Stove.Redis.pdb">
-      <PackagePath>lib/net452/</PackagePath>
+    <None Include="bin\Release\netstandard2.0\Stove.Redis.pdb">
+      <PackagePath>lib/netstandard2.0/</PackagePath>
       <Pack>true</Pack>
     </None>
   </ItemGroup>
@@ -27,17 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="StackExchange.Redis" Version="1.2.6" />
-    <PackageReference Include="StackExchange.Redis.Extensions.Core" Version="2.2.0" />
+    <PackageReference Include="StackExchange.Redis.StrongName" Version="1.2.6" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="System.Configuration" />
-  </ItemGroup>
-
-</Project>
+  
+ </Project>

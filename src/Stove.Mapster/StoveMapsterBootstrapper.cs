@@ -23,7 +23,7 @@ namespace Stove
 
         public override void PreStart()
         {
-            Configuration.Modules.StoveMapster().Configurators.Add(FindAndAutoMapTypes);
+            StoveConfiguration.Modules.StoveMapster().Configurators.Add(FindAndAutoMapTypes);
         }
 
         public override void Start()
@@ -32,23 +32,23 @@ namespace Stove
 
         public override void PostStart()
         {
-            Configuration.Modules
+            StoveConfiguration.Modules
                          .StoveMapster()
                          .Configurators
                          .ForEach(confgurerAction =>
                          {
-                             confgurerAction(Configuration.Modules.StoveMapster().Configuration);
+                             confgurerAction(StoveConfiguration.Modules.StoveMapster().Configuration);
                          });
 
-            Configuration.Modules.StoveMapster().Configuration.Compile();
+            StoveConfiguration.Modules.StoveMapster().Configuration.Compile();
         }
 
         private void FindAndAutoMapTypes(TypeAdapterConfig configuration)
         {
             Type[] types = _typeFinder.Find(type =>
-                type.IsDefined(typeof(AutoMapAttribute)) ||
-                type.IsDefined(typeof(AutoMapFromAttribute)) ||
-                type.IsDefined(typeof(AutoMapToAttribute))
+                type.GetTypeInfo().IsDefined(typeof(AutoMapAttribute)) ||
+                type.GetTypeInfo().IsDefined(typeof(AutoMapFromAttribute)) ||
+                type.GetTypeInfo().IsDefined(typeof(AutoMapToAttribute))
             );
 
             Logger.Debug($"Found {types.Length} classes define auto mapping attributes");

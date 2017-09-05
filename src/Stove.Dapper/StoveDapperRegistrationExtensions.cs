@@ -25,7 +25,7 @@ namespace Stove
         {
             AutoRegisterRepositories(builder);
 
-            return builder.RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
+            return builder.RegisterServices(r => r.RegisterAssemblyByConvention(typeof(StoveDapperRegistrationExtensions).GetTypeInfo().Assembly));
         }
 
         private static void AutoRegisterRepositories(IIocBuilder builder)
@@ -49,7 +49,10 @@ namespace Stove
                     case StoveConsts.Orms.EntityFramework:
                         registrar.RegisterRepositories(EfBasedDapperAutoRepositoryTypes.Default);
                         break;
-                    case StoveConsts.Orms.NHibernate:
+	                case StoveConsts.Orms.EntityFrameworkCore:
+		                registrar.RegisterRepositories(EfBasedDapperAutoRepositoryTypes.Default);
+		                break;
+					case StoveConsts.Orms.NHibernate:
                         registrar.RegisterRepositories(NhBasedDapperAutoRepositoryTypes.Default);
                         break;
                 }

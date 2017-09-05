@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  stove.demo.webapi.core:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "80"

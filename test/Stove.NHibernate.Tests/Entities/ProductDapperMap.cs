@@ -7,6 +7,7 @@ namespace Stove.NHibernate.Tests.Entities
         public ProductDapperMap()
         {
             Table("Product");
+	        Map(x => x.Id).Key(KeyType.Identity);
             AutoMap();
         }
     }

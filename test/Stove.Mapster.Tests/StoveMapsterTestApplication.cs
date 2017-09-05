@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 
+using Stove.Reflection.Extensions;
 using Stove.TestBase;
 
 namespace Stove.Mapster.Tests
@@ -12,7 +13,7 @@ namespace Stove.Mapster.Tests
             {
                 builder
                     .UseStoveMapster()
-                    .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
+                    .RegisterServices(r => r.RegisterAssemblyByConvention(typeof(StoveMapsterTestApplication).GetAssembly()));
             }).Ok();
         }
     }

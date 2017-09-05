@@ -189,3 +189,4 @@ Tools/**
 *.ncrunchproject
 
 /.dotnet
+/.vscode

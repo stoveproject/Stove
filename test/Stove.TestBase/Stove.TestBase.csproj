@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <VersionPrefix>0.0.1</VersionPrefix>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <AssemblyName>Stove.TestBase</AssemblyName>
     <PackageId>Stove.TestBase</PackageId>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
@@ -16,18 +16,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="bin\Release\net461\Stove.TestBase.pdb">
+      <PackagePath>lib/net461/</PackagePath>
+      <Pack>true</Pack>
+    </None>
+    <None Include="bin\Release\netstandard2.0\Stove.TestBase.pdb">
+      <PackagePath>lib/netstandard2.0/</PackagePath>
+      <Pack>true</Pack>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\src\Stove\Stove.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Shouldly" Version="2.8.3" />
-    <PackageReference Include="FluentAssemblyScanner" Version="1.0.7" />
-    <PackageReference Include="xunit" Version="2.2.0" />
-    <PackageReference Include="NSubstitute" Version="2.0.3" />
-    <PackageReference Include="Autofac.Extras.IocManager" Version="3.1.2" />
+    <PackageReference Include="Autofac.Extras.IocManager" Version="3.1.3" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>

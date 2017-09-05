@@ -11,6 +11,8 @@ using Stove.Domain.Repositories;
 using Stove.RavenDB.Configuration;
 using Stove.RavenDB.Repositories;
 
+using Stove.Reflection.Extensions;
+
 namespace Stove
 {
     public static class StoveRavenDBRegistrationExtensions
@@ -19,7 +21,7 @@ namespace Stove
         {
             return builder.RegisterServices(r =>
             {
-                r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly());
+                r.RegisterAssemblyByConvention(typeof(StoveRavenDBRegistrationExtensions).GetAssembly());
                 r.UseBuilder(cb =>
                 {
                     cb.RegisterGeneric(typeof(RavenDBRepositoryBase<>)).As(typeof(IRepository<>)).WithPropertyInjection(false);

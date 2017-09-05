@@ -12,7 +12,7 @@ namespace Stove.RabbitMQ.Tests
             Building(builder => { }).Ok();
         }
 
-        //[Fact]
+        [Fact]
         public void event_should_be_send_to_consumer()
         {
             //-----------------------------------------------------------------------------------------------------------

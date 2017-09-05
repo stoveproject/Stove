@@ -12,7 +12,7 @@ namespace Stove.Demo.ConsoleApp.Nh
     {
         public override void PreStart()
         {
-            Configuration.DefaultNameOrConnectionString = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
+	        StoveConfiguration.DefaultNameOrConnectionString = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
         }
     }
 }

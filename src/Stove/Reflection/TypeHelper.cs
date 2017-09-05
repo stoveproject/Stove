@@ -13,7 +13,7 @@ namespace Stove.Reflection
             }
 
             Type type = obj.GetType();
-            if (!type.IsGenericType)
+            if (!type.GetTypeInfo().IsGenericType)
             {
                 return false;
             }
@@ -33,7 +33,7 @@ namespace Stove.Reflection
                 return true;
             }
 
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+            if (type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
             {
                 return IsPrimitiveExtended(type.GenericTypeArguments[0]);
             }
@@ -43,7 +43,7 @@ namespace Stove.Reflection
 
         private static bool IsPrimitiveExtended(Type type)
         {
-            if (type.IsPrimitive)
+            if (type.GetTypeInfo().IsPrimitive)
             {
                 return true;
             }

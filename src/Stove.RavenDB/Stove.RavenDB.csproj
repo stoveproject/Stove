@@ -3,7 +3,7 @@
   <Import Project="..\..\common.props"></Import>
   
   <PropertyGroup>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Stove</RootNamespace>
     <AssemblyName>Stove.RavenDB</AssemblyName>
     <PackageId>Stove.RavenDB</PackageId>
@@ -12,26 +12,22 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <DocumentationFile>bin\Release\net452\Stove.RavenDB.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netstandard2.0\Stove.RavenDB.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="bin\Release\net452\Stove.RavenDB.pdb">
-      <PackagePath>lib/net452/</PackagePath>
+    <None Include="bin\Release\netstandard2.0\Stove.RavenDB.pdb">
+      <PackagePath>lib/netstandard2.0/</PackagePath>
       <Pack>true</Pack>
     </None>
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="RavenDB.Client" Version="3.5.4" />
+    <PackageReference Include="RavenDB.Client" Version="3.5.5-patch-35219" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Stove\Stove.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
 
 </Project>
