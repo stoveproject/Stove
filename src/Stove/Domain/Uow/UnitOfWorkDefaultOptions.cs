@@ -17,6 +17,7 @@ namespace Stove.Domain.Uow
 		{
 			_filters = new List<DataFilterConfiguration>();
 			IsTransactional = true;
+			IsLazyLoadEnabled = true;
 			Scope = TransactionScopeOption.Required;
 
 			ConventionalUowSelectors = new List<Func<Type, bool>>
@@ -27,21 +28,17 @@ namespace Stove.Domain.Uow
 
 		public TransactionScopeOption Scope { get; set; }
 
-		/// <inheritdoc />
 		public bool IsTransactional { get; set; }
 
-		/// <inheritdoc />
 		public TimeSpan? Timeout { get; set; }
 
-		/// <inheritdoc />
 		public IsolationLevel? IsolationLevel { get; set; }
 
-		public IReadOnlyList<DataFilterConfiguration> Filters
-		{
-			get { return _filters; }
-		}
+		public IReadOnlyList<DataFilterConfiguration> Filters => _filters;
 
 		public List<Func<Type, bool>> ConventionalUowSelectors { get; }
+
+		public bool IsLazyLoadEnabled { get; set; }
 
 		public void RegisterFilter(string filterName, bool isEnabledByDefault)
 		{
