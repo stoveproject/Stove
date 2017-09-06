@@ -42,6 +42,11 @@ namespace Stove.Domain.Uow
 		List<Func<Type, bool>> ConventionalUowSelectors { get; }
 
 		/// <summary>
+		///     Enables or disables the EF lazy load, not supported in EF Core.
+		/// </summary>
+		bool IsLazyLoadEnabled { get; set; }
+
+		/// <summary>
 		///     Registers a data filter to unit of work system.
 		/// </summary>
 		/// <param name="filterName">Name of the filter.</param>

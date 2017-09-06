@@ -5,17 +5,27 @@ using Stove.Domain.Entities;
 
 namespace Stove.Tests.SampleApplication.Domain.Entities
 {
-    [Table("ProductCategory")]
-    public class ProductCategory : Entity
-    {
-        private ProductCategory()
-        {
-        }
+	[Table("ProductCategory")]
+	public class ProductCategory : Entity
+	{
+		protected ProductCategory()
+		{
+		}
 
-        [Required]
-        public virtual Category Category { get; protected set; }
+		public ProductCategory(Category category, Product product) : this()
+		{
+			Category = category;
+			Product = product;
+		}
 
-        [Required]
-        public virtual Product Product { get; protected set; }
-    }
+		[Required]
+		public virtual Category Category { get; protected set; }
+
+		public virtual int CategoryId { get; protected set; }
+
+		[Required]
+		public virtual Product Product { get; protected set; }
+
+		public virtual int ProductId { get; protected set; }
+	}
 }

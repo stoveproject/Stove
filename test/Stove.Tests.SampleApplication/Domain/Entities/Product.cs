@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 using JetBrains.Annotations;
@@ -9,35 +7,33 @@ using Stove.Domain.Entities;
 
 namespace Stove.Tests.SampleApplication.Domain.Entities
 {
-    [Table("Product")]
-    public class Product : Entity
-    {
-        private Product()
-        {
-            _productCategories = new List<ProductCategory>();
-        }
+	[Table("Product")]
+	public class Product : Entity
+	{
+		private ICollection<ProductCategory> _productCategories;
 
-        [Required]
-        [NotNull]
-        public virtual string Name { get; protected set; }
+		protected Product()
+		{
+		}
 
-        [NotNull]
-        [InverseProperty("Product")]
-        public virtual ProductBrand ProductBrand { get; protected set; }
+		public Product([NotNull] string name) : this()
+		{
+			Name = name;
+		}
 
-        [NotNull]
-        [InverseProperty("Product")]
-        public virtual ProductGender ProductGender { get; protected set; }
+		[NotNull]
+		public virtual string Name { get; protected set; }
 
-        [NotNull]
-        [InverseProperty("Product")]
-        public virtual ProductDetail ProductDetail { get; protected set; }
+		[ForeignKey("ProductId")]
+		public virtual ICollection<ProductCategory> ProductCategories
+		{
+			get => _productCategories ?? (_productCategories = new List<ProductCategory>());
+			set => _productCategories = value;
+		}
 
-        [NotNull]
-        [ForeignKey("ProductId")]
-        public IReadOnlyCollection<ProductCategory> ProductCategories => _productCategories.ToImmutableList();
-
-        [NotNull]
-        protected virtual ICollection<ProductCategory> _productCategories { get; set; }
-    }
+		public void AddCategory(string categoryName)
+		{
+			ProductCategories.Add(new ProductCategory(new Category(categoryName), this));
+		}
+	}
 }
