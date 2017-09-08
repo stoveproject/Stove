@@ -42,7 +42,7 @@ namespace Stove.Demo.ConsoleApp
                                                {
 	                                                configuration.ConfigurationOptions
 	                                                            .AddEndpoint("127.0.0.1")
-	                                                            .SetDefaultDabase(0)
+	                                                            .SetDefaultDatabase(0)
 																.SetConnectionTimeOut(TimeSpan.FromMinutes(5));
 
 	                                               return configuration;
