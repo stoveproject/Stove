@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NHibernateProfiler.Appender" Version="4.0.4047" />
+    <PackageReference Include="NHibernateProfiler.Appender" Version="4.0.4048" />
   </ItemGroup>
 
   <ItemGroup>
