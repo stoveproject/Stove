@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -9,6 +11,7 @@ using Autofac.Extras.IocManager;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 using Stove.Collections.Extensions;
 using Stove.Domain.Entities;
@@ -17,6 +20,7 @@ using Stove.Domain.Uow;
 using Stove.Events.Bus;
 using Stove.Events.Bus.Entities;
 using Stove.Extensions;
+using Stove.Linq.Expressions;
 using Stove.Log;
 using Stove.Reflection;
 using Stove.Runtime.Session;
@@ -24,258 +28,317 @@ using Stove.Timing;
 
 namespace Stove.EntityFrameworkCore
 {
-    /// <inheritdoc cref="DbContext" />
-    /// <summary>
-    ///     Base class for all DbContext classes in the application.
-    /// </summary>
-    public abstract class StoveDbContext : DbContext, ITransientDependency
-    {
-        /// <inheritdoc />
-        /// <summary>
-        ///     Constructor.
-        /// </summary>
-        protected StoveDbContext(DbContextOptions options)
-            : base(options)
-        {
-            InitializeDbContext();
-        }
+	/// <inheritdoc cref="DbContext" />
+	/// <summary>
+	///     Base class for all DbContext classes in the application.
+	/// </summary>
+	public abstract class StoveDbContext : DbContext, ITransientDependency
+	{
+		private static readonly MethodInfo ConfigureGlobalFiltersMethodInfo = typeof(StoveDbContext).GetMethod(nameof(ConfigureGlobalFilters), BindingFlags.Instance | BindingFlags.NonPublic);
 
-        /// <summary>
-        ///     Used to get current session values.
-        /// </summary>
-        public IStoveSession StoveSession { get; set; }
+		/// <inheritdoc />
+		/// <summary>
+		///     Constructor.
+		/// </summary>
+		protected StoveDbContext(DbContextOptions options)
+			: base(options)
+		{
+			InitializeDbContext();
+		}
 
-        /// <summary>
-        ///     Used to trigger entity change events.
-        /// </summary>
-        public IEntityChangeEventHelper EntityChangeEventHelper { get; set; }
+		/// <summary>
+		///     Used to get current session values.
+		/// </summary>
+		public IStoveSession StoveSession { get; set; }
 
-        /// <summary>
-        ///     Reference to the logger.
-        /// </summary>
-        public ILogger Logger { get; set; }
+		/// <summary>
+		///     Used to trigger entity change events.
+		/// </summary>
+		public IEntityChangeEventHelper EntityChangeEventHelper { get; set; }
 
-        /// <summary>
-        ///     Reference to the event bus.
-        /// </summary>
-        public IEventBus EventBus { get; set; }
+		/// <summary>
+		///     Reference to the logger.
+		/// </summary>
+		public ILogger Logger { get; set; }
 
-        /// <summary>
-        ///     Reference to GUID generator.
-        /// </summary>
-        public IGuidGenerator GuidGenerator { get; set; }
+		/// <summary>
+		///     Reference to the event bus.
+		/// </summary>
+		public IEventBus EventBus { get; set; }
 
-        /// <summary>
-        ///     Reference to the current UOW provider.
-        /// </summary>
-        public ICurrentUnitOfWorkProvider CurrentUnitOfWorkProvider { get; set; }
+		/// <summary>
+		///     Reference to GUID generator.
+		/// </summary>
+		public IGuidGenerator GuidGenerator { get; set; }
 
-        /// <summary>
-        ///     Can be used to suppress automatically setting TenantId on SaveChanges.
-        ///     Default: false.
-        /// </summary>
-        public bool SuppressAutoSetTenantId { get; set; }
+		/// <summary>
+		///     Reference to the current UOW provider.
+		/// </summary>
+		public ICurrentUnitOfWorkProvider CurrentUnitOfWorkProvider { get; set; }
 
-        private void InitializeDbContext()
-        {
-            SetNullsForInjectedProperties();
-        }
+		/// <summary>
+		///     Can be used to suppress automatically setting TenantId on SaveChanges.
+		///     Default: false.
+		/// </summary>
+		public bool SuppressAutoSetTenantId { get; set; }
 
-        private void SetNullsForInjectedProperties()
-        {
-            Logger = NullLogger.Instance;
-            StoveSession = NullStoveSession.Instance;
-            EntityChangeEventHelper = NullEntityChangeEventHelper.Instance;
-            GuidGenerator = SequentialGuidGenerator.Instance;
-            EventBus = NullEventBus.Instance;
-        }
+		protected virtual bool IsSoftDeleteFilterEnabled => CurrentUnitOfWorkProvider?.Current?.IsFilterEnabled(StoveDataFilters.SoftDelete) == true;
 
-        public override int SaveChanges()
-        {
-            try
-            {
-                EntityChangeReport changeReport = ApplyStoveConcepts();
-                int result = base.SaveChanges();
-                EntityChangeEventHelper.TriggerEvents(changeReport);
-                return result;
-            }
-            catch (DbUpdateConcurrencyException ex)
-            {
-                throw new StoveDbConcurrencyException(ex.Message, ex);
-            }
-        }
+		private void InitializeDbContext()
+		{
+			SetNullsForInjectedProperties();
+		}
 
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            try
-            {
-                EntityChangeReport changeReport = ApplyStoveConcepts();
-                int result = await base.SaveChangesAsync(cancellationToken);
-                await EntityChangeEventHelper.TriggerEventsAsync(changeReport);
-                return result;
-            }
-            catch (DbUpdateConcurrencyException ex)
-            {
-                throw new StoveDbConcurrencyException(ex.Message, ex);
-            }
-        }
+		private void SetNullsForInjectedProperties()
+		{
+			Logger = NullLogger.Instance;
+			StoveSession = NullStoveSession.Instance;
+			EntityChangeEventHelper = NullEntityChangeEventHelper.Instance;
+			GuidGenerator = SequentialGuidGenerator.Instance;
+			EventBus = NullEventBus.Instance;
+		}
 
-        protected virtual EntityChangeReport ApplyStoveConcepts()
-        {
-            var changeReport = new EntityChangeReport();
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			base.OnModelCreating(modelBuilder);
 
-            long? userId = GetAuditUserId();
+			foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes())
+			{
+				ConfigureGlobalFiltersMethodInfo
+					.MakeGenericMethod(entityType.ClrType)
+					.Invoke(this, new object[] { modelBuilder, entityType });
+			}
+		}
 
-            foreach (EntityEntry entry in ChangeTracker.Entries().ToList())
-            {
-                ApplyStoveConcepts(entry, userId, changeReport);
-            }
+		public override int SaveChanges()
+		{
+			try
+			{
+				EntityChangeReport changeReport = ApplyStoveConcepts();
+				int result = base.SaveChanges();
+				EntityChangeEventHelper.TriggerEvents(changeReport);
+				return result;
+			}
+			catch (DbUpdateConcurrencyException ex)
+			{
+				throw new StoveDbConcurrencyException(ex.Message, ex);
+			}
+		}
 
-            return changeReport;
-        }
+		public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+		{
+			try
+			{
+				EntityChangeReport changeReport = ApplyStoveConcepts();
+				int result = await base.SaveChangesAsync(cancellationToken);
+				await EntityChangeEventHelper.TriggerEventsAsync(changeReport);
+				return result;
+			}
+			catch (DbUpdateConcurrencyException ex)
+			{
+				throw new StoveDbConcurrencyException(ex.Message, ex);
+			}
+		}
 
-        protected virtual void ApplyStoveConcepts(EntityEntry entry, long? userId, EntityChangeReport changeReport)
-        {
-            switch (entry.State)
-            {
-                case EntityState.Added:
-                    ApplyStoveConceptsForAddedEntity(entry, userId, changeReport);
-                    break;
-                case EntityState.Modified:
-                    ApplyStoveConceptsForModifiedEntity(entry, userId, changeReport);
-                    break;
-                case EntityState.Deleted:
-                    ApplyStoveConceptsForDeletedEntity(entry, userId, changeReport);
-                    break;
-            }
+		protected virtual EntityChangeReport ApplyStoveConcepts()
+		{
+			var changeReport = new EntityChangeReport();
 
-            AddDomainEvents(changeReport.DomainEvents, entry.Entity);
-        }
+			long? userId = GetAuditUserId();
 
-        protected virtual void ApplyStoveConceptsForAddedEntity(EntityEntry entry, long? userId, EntityChangeReport changeReport)
-        {
-            CheckAndSetId(entry);
-            SetCreationAuditProperties(entry.Entity, userId);
-            changeReport.ChangedEntities.Add(new EntityChangeEntry(entry.Entity, EntityChangeType.Created));
-        }
+			foreach (EntityEntry entry in ChangeTracker.Entries().ToList())
+			{
+				ApplyStoveConcepts(entry, userId, changeReport);
+			}
 
-        protected virtual void ApplyStoveConceptsForModifiedEntity(EntityEntry entry, long? userId, EntityChangeReport changeReport)
-        {
-            SetModificationAuditProperties(entry.Entity, userId);
-            if (entry.Entity is ISoftDelete && entry.Entity.As<ISoftDelete>().IsDeleted)
-            {
-                SetDeletionAuditProperties(entry.Entity, userId);
-                changeReport.ChangedEntities.Add(new EntityChangeEntry(entry.Entity, EntityChangeType.Deleted));
-            }
-            else
-            {
-                changeReport.ChangedEntities.Add(new EntityChangeEntry(entry.Entity, EntityChangeType.Updated));
-            }
-        }
+			return changeReport;
+		}
 
-        protected virtual void ApplyStoveConceptsForDeletedEntity(EntityEntry entry, long? userId, EntityChangeReport changeReport)
-        {
-            CancelDeletionForSoftDelete(entry);
-            SetDeletionAuditProperties(entry.Entity, userId);
-            changeReport.ChangedEntities.Add(new EntityChangeEntry(entry.Entity, EntityChangeType.Deleted));
-        }
+		protected virtual void ApplyStoveConcepts(EntityEntry entry, long? userId, EntityChangeReport changeReport)
+		{
+			switch (entry.State)
+			{
+				case EntityState.Added:
+					ApplyStoveConceptsForAddedEntity(entry, userId, changeReport);
+					break;
+				case EntityState.Modified:
+					ApplyStoveConceptsForModifiedEntity(entry, userId, changeReport);
+					break;
+				case EntityState.Deleted:
+					ApplyStoveConceptsForDeletedEntity(entry, userId, changeReport);
+					break;
+			}
 
-        protected virtual void AddDomainEvents(List<DomainEventEntry> domainEvents, object entityAsObj)
-        {
-            var generatesDomainEventsEntity = entityAsObj as IGeneratesDomainEvents;
-            if (generatesDomainEventsEntity == null)
-            {
-                return;
-            }
+			AddDomainEvents(changeReport.DomainEvents, entry.Entity);
+		}
 
-            if (generatesDomainEventsEntity.DomainEvents.IsNullOrEmpty())
-            {
-                return;
-            }
+		protected virtual void ApplyStoveConceptsForAddedEntity(EntityEntry entry, long? userId, EntityChangeReport changeReport)
+		{
+			CheckAndSetId(entry);
+			SetCreationAuditProperties(entry.Entity, userId);
+			changeReport.ChangedEntities.Add(new EntityChangeEntry(entry.Entity, EntityChangeType.Created));
+		}
 
-            domainEvents.AddRange(generatesDomainEventsEntity.DomainEvents.Select(eventData => new DomainEventEntry(entityAsObj, eventData)));
-            generatesDomainEventsEntity.DomainEvents.Clear();
-        }
+		protected virtual void ApplyStoveConceptsForModifiedEntity(EntityEntry entry, long? userId, EntityChangeReport changeReport)
+		{
+			SetModificationAuditProperties(entry.Entity, userId);
+			if (entry.Entity is ISoftDelete && entry.Entity.As<ISoftDelete>().IsDeleted)
+			{
+				SetDeletionAuditProperties(entry.Entity, userId);
+				changeReport.ChangedEntities.Add(new EntityChangeEntry(entry.Entity, EntityChangeType.Deleted));
+			}
+			else
+			{
+				changeReport.ChangedEntities.Add(new EntityChangeEntry(entry.Entity, EntityChangeType.Updated));
+			}
+		}
 
-        protected virtual void CheckAndSetId(EntityEntry entry)
-        {
-            if (entry.Entity is IEntity<Guid> entity && entity.Id == Guid.Empty)
-            {
-                var dbGeneratedAttr = ReflectionHelper
-                    .GetSingleAttributeOrDefault<DatabaseGeneratedAttribute>(
-                        entry.Property("Id").Metadata.PropertyInfo
-                    );
+		protected virtual void ApplyStoveConceptsForDeletedEntity(EntityEntry entry, long? userId, EntityChangeReport changeReport)
+		{
+			CancelDeletionForSoftDelete(entry);
+			SetDeletionAuditProperties(entry.Entity, userId);
+			changeReport.ChangedEntities.Add(new EntityChangeEntry(entry.Entity, EntityChangeType.Deleted));
+		}
 
-                if (dbGeneratedAttr == null || dbGeneratedAttr.DatabaseGeneratedOption == DatabaseGeneratedOption.None)
-                {
-                    entity.Id = GuidGenerator.Create();
-                }
-            }
-        }
+		protected virtual void AddDomainEvents(List<DomainEventEntry> domainEvents, object entityAsObj)
+		{
+			var generatesDomainEventsEntity = entityAsObj as IGeneratesDomainEvents;
+			if (generatesDomainEventsEntity == null)
+			{
+				return;
+			}
 
-        protected virtual void SetCreationAuditProperties(object entityAsObj, long? userId)
-        {
-            EntityAuditingHelper.SetCreationAuditProperties(entityAsObj, userId);
-        }
+			if (generatesDomainEventsEntity.DomainEvents.IsNullOrEmpty())
+			{
+				return;
+			}
 
-        protected virtual void SetModificationAuditProperties(object entityAsObj, long? userId)
-        {
-            EntityAuditingHelper.SetModificationAuditProperties(entityAsObj, userId);
-        }
+			domainEvents.AddRange(generatesDomainEventsEntity.DomainEvents.Select(eventData => new DomainEventEntry(entityAsObj, eventData)));
+			generatesDomainEventsEntity.DomainEvents.Clear();
+		}
 
-        protected virtual void CancelDeletionForSoftDelete(EntityEntry entry)
-        {
-            if (!(entry.Entity is ISoftDelete))
-            {
-                return;
-            }
+		protected virtual void CheckAndSetId(EntityEntry entry)
+		{
+			if (entry.Entity is IEntity<Guid> entity && entity.Id == Guid.Empty)
+			{
+				var dbGeneratedAttr = ReflectionHelper
+					.GetSingleAttributeOrDefault<DatabaseGeneratedAttribute>(
+						entry.Property("Id").Metadata.PropertyInfo
+					);
 
-            entry.Reload();
-            entry.State = EntityState.Modified;
-            entry.Entity.As<ISoftDelete>().IsDeleted = true;
-        }
+				if (dbGeneratedAttr == null || dbGeneratedAttr.DatabaseGeneratedOption == DatabaseGeneratedOption.None)
+				{
+					entity.Id = GuidGenerator.Create();
+				}
+			}
+		}
 
-        protected virtual void SetDeletionAuditProperties(object entityAsObj, long? userId)
-        {
-            if (entityAsObj is IHasDeletionTime)
-            {
-                var entity = entityAsObj.As<IHasDeletionTime>();
+		protected virtual void SetCreationAuditProperties(object entityAsObj, long? userId)
+		{
+			EntityAuditingHelper.SetCreationAuditProperties(entityAsObj, userId);
+		}
 
-                if (entity.DeletionTime == null)
-                {
-                    entity.DeletionTime = Clock.Now;
-                }
-            }
+		protected virtual void SetModificationAuditProperties(object entityAsObj, long? userId)
+		{
+			EntityAuditingHelper.SetModificationAuditProperties(entityAsObj, userId);
+		}
 
-            if (entityAsObj is IDeletionAudited)
-            {
-                var entity = entityAsObj.As<IDeletionAudited>();
+		protected virtual void CancelDeletionForSoftDelete(EntityEntry entry)
+		{
+			if (!(entry.Entity is ISoftDelete))
+			{
+				return;
+			}
 
-                if (entity.DeleterUserId != null)
-                {
-                    return;
-                }
+			entry.Reload();
+			entry.State = EntityState.Modified;
+			entry.Entity.As<ISoftDelete>().IsDeleted = true;
+		}
 
-                if (userId == null)
-                {
-                    entity.DeleterUserId = null;
-                    return;
-                }
+		protected virtual void SetDeletionAuditProperties(object entityAsObj, long? userId)
+		{
+			if (entityAsObj is IHasDeletionTime)
+			{
+				var entity = entityAsObj.As<IHasDeletionTime>();
 
-                entity.DeleterUserId = userId;
-            }
-        }
+				if (entity.DeletionTime == null)
+				{
+					entity.DeletionTime = Clock.Now;
+				}
+			}
 
-        protected virtual long? GetAuditUserId()
-        {
-            if (StoveSession.UserId.HasValue &&
-                CurrentUnitOfWorkProvider != null &&
-                CurrentUnitOfWorkProvider.Current != null)
-            {
-                return StoveSession.UserId;
-            }
+			if (entityAsObj is IDeletionAudited)
+			{
+				var entity = entityAsObj.As<IDeletionAudited>();
 
-            return null;
-        }
-    }
+				if (entity.DeleterUserId != null)
+				{
+					return;
+				}
+
+				if (userId == null)
+				{
+					entity.DeleterUserId = null;
+					return;
+				}
+
+				entity.DeleterUserId = userId;
+			}
+		}
+
+		protected virtual long? GetAuditUserId()
+		{
+			if (StoveSession.UserId.HasValue &&
+			    CurrentUnitOfWorkProvider != null &&
+			    CurrentUnitOfWorkProvider.Current != null)
+			{
+				return StoveSession.UserId;
+			}
+
+			return null;
+		}
+
+		protected virtual bool ShouldFilterEntity<TEntity>(IMutableEntityType entityType) where TEntity : class
+		{
+			if (typeof(ISoftDelete).IsAssignableFrom(typeof(TEntity)))
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+		protected void ConfigureGlobalFilters<TEntity>(ModelBuilder modelBuilder, IMutableEntityType entityType)
+			where TEntity : class
+		{
+			if (entityType.BaseType == null && ShouldFilterEntity<TEntity>(entityType))
+			{
+				Expression<Func<TEntity, bool>> filterExpression = CreateFilterExpression<TEntity>();
+				if (filterExpression != null)
+				{
+					modelBuilder.Entity<TEntity>().HasQueryFilter(filterExpression);
+				}
+			}
+		}
+
+		protected virtual Expression<Func<TEntity, bool>> CreateFilterExpression<TEntity>()
+			where TEntity : class
+		{
+			Expression<Func<TEntity, bool>> expression = null;
+
+			if (typeof(ISoftDelete).IsAssignableFrom(typeof(TEntity)))
+			{
+				/* This condition should normally be defined as below:
+                 * !IsSoftDeleteFilterEnabled || !((ISoftDelete) e).IsDeleted
+                 * But this causes a problem with EF Core (see https://github.com/aspnet/EntityFrameworkCore/issues/9502)
+                 * So, we made a workaround to make it working. It works same as above.
+                 */
+
+				Expression<Func<TEntity, bool>> softDeleteFilter = e => !((ISoftDelete)e).IsDeleted || ((ISoftDelete)e).IsDeleted != IsSoftDeleteFilterEnabled;
+				expression = expression == null ? softDeleteFilter : expression.And(softDeleteFilter);
+			}
+
+			return expression;
+		}
+	}
 }

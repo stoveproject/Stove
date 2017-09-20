@@ -31,378 +31,342 @@ using Stove.Timing;
 
 namespace Stove.EntityFramework
 {
-    /// <inheritdoc cref="DbContext" />
-    /// <summary>
-    ///     Base class for all DbContext classes in the application.
-    /// </summary>
-    public abstract class StoveDbContext : DbContext, ITransientDependency, IStartable
-    {
-        /// <inheritdoc />
-        /// <summary>
-        ///     Constructor.
-        ///     Uses <see cref="P:Stove.Configuration.IStoveStartupConfiguration.DefaultNameOrConnectionString" /> as connection
-        ///     string.
-        /// </summary>
-        protected StoveDbContext()
-        {
-            InitializeDbContext();
-        }
+	/// <inheritdoc cref="DbContext" />
+	/// <summary>
+	///     Base class for all DbContext classes in the application.
+	/// </summary>
+	public abstract class StoveDbContext : DbContext, ITransientDependency, IStartable
+	{
+		/// <inheritdoc />
+		/// <summary>
+		///     Constructor.
+		///     Uses <see cref="P:Stove.Configuration.IStoveStartupConfiguration.DefaultNameOrConnectionString" /> as connection
+		///     string.
+		/// </summary>
+		protected StoveDbContext()
+		{
+			InitializeDbContext();
+		}
 
-        /// <inheritdoc />
-        /// <summary>
-        ///     Constructor.
-        /// </summary>
-        protected StoveDbContext(string nameOrConnectionString)
-            : base(nameOrConnectionString)
-        {
-            InitializeDbContext();
-        }
+		/// <inheritdoc />
+		/// <summary>
+		///     Constructor.
+		/// </summary>
+		protected StoveDbContext(string nameOrConnectionString)
+			: base(nameOrConnectionString)
+		{
+			InitializeDbContext();
+		}
 
-        /// <summary>
-        ///     Constructor.
-        /// </summary>
-        protected StoveDbContext(DbCompiledModel model)
-            : base(model)
-        {
-            InitializeDbContext();
-        }
+		/// <inheritdoc />
+		/// <summary>
+		///     Constructor.
+		/// </summary>
+		protected StoveDbContext(DbCompiledModel model)
+			: base(model)
+		{
+			InitializeDbContext();
+		}
 
-        /// <inheritdoc />
-        /// <summary>
-        ///     Constructor.
-        /// </summary>
-        protected StoveDbContext(DbConnection existingConnection, bool contextOwnsConnection)
-            : base(existingConnection, contextOwnsConnection)
-        {
-            InitializeDbContext();
-        }
+		/// <inheritdoc />
+		/// <summary>
+		///     Constructor.
+		/// </summary>
+		protected StoveDbContext(DbConnection existingConnection, bool contextOwnsConnection)
+			: base(existingConnection, contextOwnsConnection)
+		{
+			InitializeDbContext();
+		}
 
-        /// <inheritdoc />
-        /// <summary>
-        ///     Constructor.
-        /// </summary>
-        protected StoveDbContext(string nameOrConnectionString, DbCompiledModel model)
-            : base(nameOrConnectionString, model)
-        {
-            InitializeDbContext();
-        }
+		/// <inheritdoc />
+		/// <summary>
+		///     Constructor.
+		/// </summary>
+		protected StoveDbContext(string nameOrConnectionString, DbCompiledModel model)
+			: base(nameOrConnectionString, model)
+		{
+			InitializeDbContext();
+		}
 
-        /// <inheritdoc />
-        /// <summary>
-        ///     Constructor.
-        /// </summary>
-        protected StoveDbContext(ObjectContext objectContext, bool dbContextOwnsObjectContext)
-            : base(objectContext, dbContextOwnsObjectContext)
-        {
-            InitializeDbContext();
-        }
+		/// <inheritdoc />
+		/// <summary>
+		///     Constructor.
+		/// </summary>
+		protected StoveDbContext(ObjectContext objectContext, bool dbContextOwnsObjectContext)
+			: base(objectContext, dbContextOwnsObjectContext)
+		{
+			InitializeDbContext();
+		}
 
-        /// <inheritdoc />
-        /// <summary>
-        ///     Constructor.
-        /// </summary>
-        protected StoveDbContext(DbConnection existingConnection, DbCompiledModel model, bool contextOwnsConnection)
-            : base(existingConnection, model, contextOwnsConnection)
-        {
-            InitializeDbContext();
-        }
+		/// <inheritdoc />
+		/// <summary>
+		///     Constructor.
+		/// </summary>
+		protected StoveDbContext(DbConnection existingConnection, DbCompiledModel model, bool contextOwnsConnection)
+			: base(existingConnection, model, contextOwnsConnection)
+		{
+			InitializeDbContext();
+		}
 
-        /// <summary>
-        ///     Used to get current session values.
-        /// </summary>
-        public IStoveSession StoveSession { get; set; }
+		/// <summary>
+		///     Used to get current session values.
+		/// </summary>
+		public IStoveSession StoveSession { get; set; }
 
-        /// <summary>
-        ///     Used to trigger entity change events.
-        /// </summary>
-        public IEntityChangeEventHelper EntityChangeEventHelper { get; set; }
+		/// <summary>
+		///     Used to trigger entity change events.
+		/// </summary>
+		public IEntityChangeEventHelper EntityChangeEventHelper { get; set; }
 
-        /// <summary>
-        ///     Reference to the logger.
-        /// </summary>
-        public ILogger Logger { get; set; }
+		/// <summary>
+		///     Reference to the logger.
+		/// </summary>
+		public ILogger Logger { get; set; }
 
-        /// <summary>
-        ///     Reference to the event bus.
-        /// </summary>
-        public IEventBus EventBus { get; set; }
+		/// <summary>
+		///     Reference to the event bus.
+		/// </summary>
+		public IEventBus EventBus { get; set; }
 
-        /// <summary>
-        ///     Reference to GUID generator.
-        /// </summary>
-        public IGuidGenerator GuidGenerator { get; set; }
+		/// <summary>
+		///     Reference to GUID generator.
+		/// </summary>
+		public IGuidGenerator GuidGenerator { get; set; }
 
-        /// <summary>
-        ///     Reference to the current UOW provider.
-        /// </summary>
-        public ICurrentUnitOfWorkProvider CurrentUnitOfWorkProvider { get; set; }
+		/// <summary>
+		///     Reference to the current UOW provider.
+		/// </summary>
+		public ICurrentUnitOfWorkProvider CurrentUnitOfWorkProvider { get; set; }
 
-        public virtual void Start()
-        {
-            Database.Initialize(false);
-        }
+		public virtual void Start()
+		{
+			Database.Initialize(false);
+		}
 
-        private void InitializeDbContext()
-        {
-            SetNullsForInjectedProperties();
-            RegisterToChanges();
-        }
+		private void InitializeDbContext()
+		{
+			SetNullsForInjectedProperties();
+			RegisterToChanges();
+		}
 
-        private void RegisterToChanges()
-        {
-            ((IObjectContextAdapter)this)
-                .ObjectContext
-                .ObjectStateManager
-                .ObjectStateManagerChanged += ObjectStateManager_ObjectStateManagerChanged;
-        }
+		private void RegisterToChanges()
+		{
+			((IObjectContextAdapter)this)
+				.ObjectContext
+				.ObjectStateManager
+				.ObjectStateManagerChanged += ObjectStateManager_ObjectStateManagerChanged;
+		}
 
-        protected virtual void ObjectStateManager_ObjectStateManagerChanged(object sender, CollectionChangeEventArgs e)
-        {
-            var contextAdapter = (IObjectContextAdapter)this;
-            if (e.Action != CollectionChangeAction.Add)
-            {
-                return;
-            }
+		protected virtual void ObjectStateManager_ObjectStateManagerChanged(object sender, CollectionChangeEventArgs e)
+		{
+			var contextAdapter = (IObjectContextAdapter)this;
+			if (e.Action != CollectionChangeAction.Add)
+			{
+				return;
+			}
 
-            ObjectStateEntry entry = contextAdapter.ObjectContext.ObjectStateManager.GetObjectStateEntry(e.Element);
-            switch (entry.State)
-            {
-                case EntityState.Added:
-                    CheckAndSetId(entry.Entity);
-                    SetCreationAuditProperties(entry.Entity, GetAuditUserId());
-                    break;
-            }
-        }
+			ObjectStateEntry entry = contextAdapter.ObjectContext.ObjectStateManager.GetObjectStateEntry(e.Element);
+			switch (entry.State)
+			{
+				case EntityState.Added:
+					CheckAndSetId(entry.Entity);
+					SetCreationAuditProperties(entry.Entity, GetAuditUserId());
+					break;
+			}
+		}
 
-        private void SetNullsForInjectedProperties()
-        {
-            Logger = NullLogger.Instance;
-            StoveSession = NullStoveSession.Instance;
-            EntityChangeEventHelper = NullEntityChangeEventHelper.Instance;
-            GuidGenerator = SequentialGuidGenerator.Instance;
-            EventBus = NullEventBus.Instance;
-        }
+		private void SetNullsForInjectedProperties()
+		{
+			Logger = NullLogger.Instance;
+			StoveSession = NullStoveSession.Instance;
+			EntityChangeEventHelper = NullEntityChangeEventHelper.Instance;
+			GuidGenerator = SequentialGuidGenerator.Instance;
+			EventBus = NullEventBus.Instance;
+		}
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-            modelBuilder.Filter(StoveDataFilters.SoftDelete, (ISoftDelete d) => d.IsDeleted, false);
-        }
+		protected override void OnModelCreating(DbModelBuilder modelBuilder)
+		{
+			base.OnModelCreating(modelBuilder);
+			modelBuilder.Filter(StoveDataFilters.SoftDelete, (ISoftDelete d) => d.IsDeleted, false);
+		}
 
-        public override int SaveChanges()
-        {
-            try
-            {
-                EntityChangeReport changedEntities = ApplyStoveConcepts();
-                int result = base.SaveChanges();
-                EntityChangeEventHelper.TriggerEvents(changedEntities);
-                return result;
-            }
-            catch (DbEntityValidationException ex)
-            {
-                LogDbEntityValidationException(ex);
-                throw;
-            }
-        }
+		public override int SaveChanges()
+		{
+			try
+			{
+				EntityChangeReport changedEntities = ApplyStoveConcepts();
+				int result = base.SaveChanges();
+				EntityChangeEventHelper.TriggerEvents(changedEntities);
+				return result;
+			}
+			catch (DbEntityValidationException ex)
+			{
+				LogDbEntityValidationException(ex);
+				throw;
+			}
+		}
 
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
-        {
-            try
-            {
-                EntityChangeReport changeReport = ApplyStoveConcepts();
-                int result = await base.SaveChangesAsync(cancellationToken);
-                await EntityChangeEventHelper.TriggerEventsAsync(changeReport);
-                return result;
-            }
-            catch (DbEntityValidationException ex)
-            {
-                LogDbEntityValidationException(ex);
-                throw;
-            }
-        }
+		public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
+		{
+			try
+			{
+				EntityChangeReport changeReport = ApplyStoveConcepts();
+				int result = await base.SaveChangesAsync(cancellationToken);
+				await EntityChangeEventHelper.TriggerEventsAsync(changeReport);
+				return result;
+			}
+			catch (DbEntityValidationException ex)
+			{
+				LogDbEntityValidationException(ex);
+				throw;
+			}
+		}
 
-        protected virtual EntityChangeReport ApplyStoveConcepts()
-        {
-            var changeReport = new EntityChangeReport();
+		protected virtual EntityChangeReport ApplyStoveConcepts()
+		{
+			var changeReport = new EntityChangeReport();
 
-            long? userId = GetAuditUserId();
+			long? userId = GetAuditUserId();
 
-            List<DbEntityEntry> entries = ChangeTracker.Entries().ToList();
-            foreach (DbEntityEntry entry in entries)
-            {
-                switch (entry.State)
-                {
-                    case EntityState.Added:
-                        CheckAndSetId(entry.Entity);
-                        SetCreationAuditProperties(entry.Entity, userId);
-                        changeReport.ChangedEntities.Add(new EntityChangeEntry(entry.Entity, EntityChangeType.Created));
-                        break;
-                    case EntityState.Modified:
-                        SetModificationAuditProperties(entry, userId);
-                        if (entry.Entity is ISoftDelete && entry.Entity.As<ISoftDelete>().IsDeleted)
-                        {
-                            SetDeletionAuditProperties(entry.Entity, userId);
-                            changeReport.ChangedEntities.Add(new EntityChangeEntry(entry.Entity, EntityChangeType.Deleted));
-                        }
-                        else
-                        {
-                            changeReport.ChangedEntities.Add(new EntityChangeEntry(entry.Entity, EntityChangeType.Updated));
-                        }
+			List<DbEntityEntry> entries = ChangeTracker.Entries().ToList();
+			foreach (DbEntityEntry entry in entries)
+			{
+				switch (entry.State)
+				{
+					case EntityState.Added:
+						CheckAndSetId(entry.Entity);
+						SetCreationAuditProperties(entry.Entity, userId);
+						changeReport.ChangedEntities.Add(new EntityChangeEntry(entry.Entity, EntityChangeType.Created));
+						break;
+					case EntityState.Modified:
+						SetModificationAuditProperties(entry, userId);
+						if (entry.Entity is ISoftDelete && entry.Entity.As<ISoftDelete>().IsDeleted)
+						{
+							SetDeletionAuditProperties(entry.Entity, userId);
+							changeReport.ChangedEntities.Add(new EntityChangeEntry(entry.Entity, EntityChangeType.Deleted));
+						}
+						else
+						{
+							changeReport.ChangedEntities.Add(new EntityChangeEntry(entry.Entity, EntityChangeType.Updated));
+						}
 
-                        break;
-                    case EntityState.Deleted:
-                        CancelDeletionForSoftDelete(entry);
-                        SetDeletionAuditProperties(entry.Entity, userId);
-                        changeReport.ChangedEntities.Add(new EntityChangeEntry(entry.Entity, EntityChangeType.Deleted));
-                        break;
-                }
+						break;
+					case EntityState.Deleted:
+						CancelDeletionForSoftDelete(entry);
+						SetDeletionAuditProperties(entry.Entity, userId);
+						changeReport.ChangedEntities.Add(new EntityChangeEntry(entry.Entity, EntityChangeType.Deleted));
+						break;
+				}
 
-                AddDomainEvents(changeReport.DomainEvents, entry.Entity);
-            }
+				AddDomainEvents(changeReport.DomainEvents, entry.Entity);
+			}
 
-            return changeReport;
-        }
+			return changeReport;
+		}
 
-        protected virtual void AddDomainEvents(List<DomainEventEntry> domainEvents, object entityAsObj)
-        {
-            var generatesDomainEventsEntity = entityAsObj as IGeneratesDomainEvents;
-            if (generatesDomainEventsEntity == null)
-            {
-                return;
-            }
+		protected virtual void AddDomainEvents(List<DomainEventEntry> domainEvents, object entityAsObj)
+		{
+			if (!(entityAsObj is IGeneratesDomainEvents generatesDomainEventsEntity))
+			{
+				return;
+			}
 
-            if (generatesDomainEventsEntity.DomainEvents.IsNullOrEmpty())
-            {
-                return;
-            }
+			if (generatesDomainEventsEntity.DomainEvents.IsNullOrEmpty())
+			{
+				return;
+			}
 
-            domainEvents.AddRange(generatesDomainEventsEntity.DomainEvents.Select(eventData => new DomainEventEntry(entityAsObj, eventData)));
-            generatesDomainEventsEntity.DomainEvents.Clear();
-        }
+			domainEvents.AddRange(generatesDomainEventsEntity.DomainEvents.Select(eventData => new DomainEventEntry(entityAsObj, eventData)));
+			generatesDomainEventsEntity.DomainEvents.Clear();
+		}
 
-        protected virtual void CheckAndSetId(object entityAsObj)
-        {
-            //Set GUID Ids
-            var entity = entityAsObj as IEntity<Guid>;
-            if (entity != null && entity.Id == Guid.Empty)
-            {
-                Type entityType = ObjectContext.GetObjectType(entityAsObj.GetType());
-                PropertyInfo idProperty = entityType.GetProperty("Id");
-                var dbGeneratedAttr = ReflectionHelper.GetSingleAttributeOrDefault<DatabaseGeneratedAttribute>(idProperty);
-                if (dbGeneratedAttr == null || dbGeneratedAttr.DatabaseGeneratedOption == DatabaseGeneratedOption.None)
-                {
-                    entity.Id = GuidGenerator.Create();
-                }
-            }
-        }
+		protected virtual void CheckAndSetId(object entityAsObj)
+		{
+			if (entityAsObj is IEntity<Guid> entity && entity.Id == Guid.Empty)
+			{
+				Type entityType = ObjectContext.GetObjectType(entityAsObj.GetType());
+				PropertyInfo idProperty = entityType.GetProperty("Id");
+				var dbGeneratedAttr = ReflectionHelper.GetSingleAttributeOrDefault<DatabaseGeneratedAttribute>(idProperty);
+				if (dbGeneratedAttr == null || dbGeneratedAttr.DatabaseGeneratedOption == DatabaseGeneratedOption.None)
+				{
+					entity.Id = GuidGenerator.Create();
+				}
+			}
+		}
 
-        protected virtual void SetCreationAuditProperties(object entityAsObj, long? userId)
-        {
-            var entityWithCreationTime = entityAsObj as IHasCreationTime;
-            if (entityWithCreationTime == null)
-            {
-                return;
-            }
+		protected virtual void SetCreationAuditProperties(object entityAsObj, long? userId)
+		{
+			EntityAuditingHelper.SetCreationAuditProperties(entityAsObj, userId);
+		}
 
-            if (entityWithCreationTime.CreationTime == default(DateTime))
-            {
-                entityWithCreationTime.CreationTime = Clock.Now;
-            }
+		protected virtual void SetModificationAuditProperties(DbEntityEntry entry, long? userId)
+		{
+			EntityAuditingHelper.SetModificationAuditProperties(entry.Entity, userId);
+		}
 
-            if (userId.HasValue && entityAsObj is ICreationAudited)
-            {
-                var entity = entityAsObj as ICreationAudited;
-                if (entity.CreatorUserId == null)
-                {
-                    entity.CreatorUserId = userId;
-                }
-            }
-        }
+		protected virtual void CancelDeletionForSoftDelete(DbEntityEntry entry)
+		{
+			if (!(entry.Entity is ISoftDelete))
+			{
+				return;
+			}
 
-        protected virtual void SetModificationAuditProperties(DbEntityEntry entry, long? userId)
-        {
-            if (entry.Entity is IHasModificationTime)
-            {
-                entry.Cast<IHasModificationTime>().Entity.LastModificationTime = Clock.Now;
-            }
+			DbEntityEntry<ISoftDelete> softDeleteEntry = entry.Cast<ISoftDelete>();
+			softDeleteEntry.Reload();
+			softDeleteEntry.State = EntityState.Modified;
+			softDeleteEntry.Entity.IsDeleted = true;
+		}
 
-            if (entry.Entity is IModificationAudited)
-            {
-                IModificationAudited entity = entry.Cast<IModificationAudited>().Entity;
+		protected virtual void SetDeletionAuditProperties(object entityAsObj, long? userId)
+		{
+			if (entityAsObj is IHasDeletionTime)
+			{
+				var entity = entityAsObj.As<IHasDeletionTime>();
 
-                if (userId == null)
-                {
-                    entity.LastModifierUserId = null;
-                    return;
-                }
+				if (entity.DeletionTime == null)
+				{
+					entity.DeletionTime = Clock.Now;
+				}
+			}
 
-                entity.LastModifierUserId = userId;
-            }
-        }
+			if (entityAsObj is IDeletionAudited)
+			{
+				var entity = entityAsObj.As<IDeletionAudited>();
 
-        protected virtual void CancelDeletionForSoftDelete(DbEntityEntry entry)
-        {
-            if (!(entry.Entity is ISoftDelete))
-            {
-                return;
-            }
+				if (entity.DeleterUserId != null)
+				{
+					return;
+				}
 
-            DbEntityEntry<ISoftDelete> softDeleteEntry = entry.Cast<ISoftDelete>();
-            softDeleteEntry.Reload();
-            softDeleteEntry.State = EntityState.Modified;
-            softDeleteEntry.Entity.IsDeleted = true;
-        }
+				if (userId == null)
+				{
+					entity.DeleterUserId = null;
+					return;
+				}
 
-        protected virtual void SetDeletionAuditProperties(object entityAsObj, long? userId)
-        {
-            if (entityAsObj is IHasDeletionTime)
-            {
-                var entity = entityAsObj.As<IHasDeletionTime>();
+				entity.DeleterUserId = userId;
+			}
+		}
 
-                if (entity.DeletionTime == null)
-                {
-                    entity.DeletionTime = Clock.Now;
-                }
-            }
+		protected virtual void LogDbEntityValidationException(DbEntityValidationException exception)
+		{
+			Logger.Error("There are some validation errors while saving changes in EntityFramework:");
+			foreach (DbValidationError ve in exception.EntityValidationErrors.SelectMany(eve => eve.ValidationErrors))
+			{
+				Logger.Error(" - " + ve.PropertyName + ": " + ve.ErrorMessage);
+			}
+		}
 
-            if (entityAsObj is IDeletionAudited)
-            {
-                var entity = entityAsObj.As<IDeletionAudited>();
+		protected virtual long? GetAuditUserId()
+		{
+			if (StoveSession.UserId.HasValue &&
+				CurrentUnitOfWorkProvider != null &&
+				CurrentUnitOfWorkProvider.Current != null)
+			{
+				return StoveSession.UserId;
+			}
 
-                if (entity.DeleterUserId != null)
-                {
-                    return;
-                }
-
-                if (userId == null)
-                {
-                    entity.DeleterUserId = null;
-                    return;
-                }
-
-                entity.DeleterUserId = userId;
-            }
-        }
-
-        protected virtual void LogDbEntityValidationException(DbEntityValidationException exception)
-        {
-            Logger.Error("There are some validation errors while saving changes in EntityFramework:");
-            foreach (DbValidationError ve in exception.EntityValidationErrors.SelectMany(eve => eve.ValidationErrors))
-            {
-                Logger.Error(" - " + ve.PropertyName + ": " + ve.ErrorMessage);
-            }
-        }
-
-        protected virtual long? GetAuditUserId()
-        {
-            if (StoveSession.UserId.HasValue &&
-                CurrentUnitOfWorkProvider != null &&
-                CurrentUnitOfWorkProvider.Current != null)
-            {
-                return StoveSession.UserId;
-            }
-
-            return null;
-        }
-    }
+			return null;
+		}
+	}
 }

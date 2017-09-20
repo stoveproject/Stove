@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using System.Threading.Tasks;
 
 using Autofac.Extras.IocManager;
@@ -256,25 +255,6 @@ namespace Stove.Domain.Repositories
 			);
 
 			return Expression.Lambda<Func<TEntity, bool>>(lambdaBody, lambdaParam);
-		}
-
-		protected virtual IQueryable<TEntity> ApplyFilters(IQueryable<TEntity> query)
-		{
-			query = ApplySoftDeleteFilter(query);
-			return query;
-		}
-
-		private IQueryable<TEntity> ApplySoftDeleteFilter(IQueryable<TEntity> query)
-		{
-			if (typeof(ISoftDelete).GetTypeInfo().IsAssignableFrom(typeof(TEntity)))
-			{
-				if (UnitOfWorkManager?.Current == null || UnitOfWorkManager.Current.IsFilterEnabled(StoveDataFilters.SoftDelete))
-				{
-					query = query.Where(e => !((ISoftDelete)e).IsDeleted);
-				}
-			}
-
-			return query;
 		}
 	}
 }
