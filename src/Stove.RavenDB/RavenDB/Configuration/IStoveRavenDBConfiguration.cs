@@ -8,8 +8,6 @@ namespace Stove.RavenDB.Configuration
 
 		string DefaultDatabase { get; set; }
 
-		bool AllowQueriesOnId { get; set; }
-
 		IStoveStartupConfiguration Configuration { get; }
 	}
 }
