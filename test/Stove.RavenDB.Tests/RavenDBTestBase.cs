@@ -1,6 +1,6 @@
 ﻿using Autofac.Extras.IocManager;
 
-using Raven.Client;
+using Raven.Client.Documents;
 using Raven.Client.Embedded;
 
 using Stove.RavenDB.Configuration;
@@ -34,6 +34,7 @@ namespace Stove.RavenDB.Tests
 							store.Configuration.Storage.Voron.AllowOn32Bits = true;
 							store.Conventions.AllowQueriesOnId = configuration.AllowQueriesOnId;
 							return store;
+
 						}, Lifetime.Singleton);
 					});
 			});

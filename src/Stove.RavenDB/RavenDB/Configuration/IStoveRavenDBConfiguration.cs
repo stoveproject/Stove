@@ -2,14 +2,14 @@
 
 namespace Stove.RavenDB.Configuration
 {
-    public interface IStoveRavenDBConfiguration
-    {
-        string Url { get; set; }
+	public interface IStoveRavenDBConfiguration
+	{
+		string[] Urls { get; set; }
 
-        string DefaultDatabase { get; set; }
+		string DefaultDatabase { get; set; }
 
-        bool AllowQueriesOnId { get; set; }
+		bool AllowQueriesOnId { get; set; }
 
-        IStoveStartupConfiguration Configuration { get; }
-    }
+		IStoveStartupConfiguration Configuration { get; }
+	}
 }

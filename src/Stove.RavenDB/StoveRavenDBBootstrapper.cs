@@ -1,4 +1,5 @@
 ﻿using Raven.Client;
+using Raven.Client.Documents;
 
 using Stove.Bootstrapping;
 using Stove.RavenDB.Configuration;
