@@ -27,9 +27,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MassTransit" Version="4.0.0.1278-develop" />
-    <PackageReference Include="MassTransit.Autofac" Version="4.0.0.1278-develop" />
-    <PackageReference Include="MassTransit.RabbitMQ" Version="4.0.0.1278-develop" />
+    <PackageReference Include="MassTransit" Version="4.0.0.1286-develop" />
+    <PackageReference Include="MassTransit.Autofac" Version="4.0.0.1286-develop" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="4.0.0.1286-develop" />
   </ItemGroup>
 
 </Project>

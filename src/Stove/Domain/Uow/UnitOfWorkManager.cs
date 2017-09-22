@@ -52,11 +52,15 @@ namespace Stove.Domain.Uow
 
 			var uow = _childScope.Resolve<IUnitOfWork>();
 
-			uow.Completed += (sender, args) => { _currentUnitOfWorkProvider.Current = null; };
+			uow.Completed += (sender, args) => {  };
 
 			uow.Failed += (sender, args) => { _currentUnitOfWorkProvider.Current = null; };
 
-			uow.Disposed += (sender, args) => { _childScope.Dispose(); };
+			uow.Disposed += (sender, args) =>
+			{
+			    _currentUnitOfWorkProvider.Current = null;
+                _childScope.Dispose();
+			};
 
 			//Inherit filters from outer UOW
 			if (outerUow != null)
