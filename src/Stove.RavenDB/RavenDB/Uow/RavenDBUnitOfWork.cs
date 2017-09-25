@@ -3,6 +3,8 @@
 using Autofac.Extras.IocManager;
 
 using Raven.Client;
+using Raven.Client.Documents;
+using Raven.Client.Documents.Session;
 
 using Stove.Domain.Uow;
 

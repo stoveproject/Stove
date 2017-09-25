@@ -1,9 +1,8 @@
 ﻿using Autofac.Extras.IocManager;
 
-using Raven.Client;
-using Raven.Client.Embedded;
+using Raven.Client.Documents;
+using Raven.TestDriver;
 
-using Stove.RavenDB.Configuration;
 using Stove.Reflection.Extensions;
 using Stove.TestBase;
 
@@ -16,27 +15,23 @@ namespace Stove.RavenDB.Tests
 			Building(builder =>
 			{
 				builder
-					.UseStoveRavenDB(configuration =>
-					{
-						configuration.AllowQueriesOnId = false;
-						return configuration;
-					})
+					.UseStoveRavenDB(configuration => { return configuration; })
 					.RegisterServices(r =>
 					{
 						r.RegisterAssemblyByConvention(typeof(RavenDBTestBase).GetAssembly());
-						r.Register<IDocumentStore>(ctx =>
+						r.Register(ctx =>
 						{
-							var configuration = ctx.Resolver.Resolve<IStoveRavenDBConfiguration>();
-							var store = new EmbeddableDocumentStore
-							{
-								RunInMemory = true
-							};
-							store.Configuration.Storage.Voron.AllowOn32Bits = true;
-							store.Conventions.AllowQueriesOnId = configuration.AllowQueriesOnId;
+							IDocumentStore store = new RavenTestDriver<TestRavenServerLocator>().GetDocumentStore();
+
 							return store;
 						}, Lifetime.Singleton);
 					});
 			});
 		}
+	}
+
+	public class TestRavenServerLocator : RavenServerLocator
+	{
+		public override string ServerPath { get; } = "local";
 	}
 }

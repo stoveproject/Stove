@@ -5,89 +5,99 @@ using System.Transactions;
 
 namespace Stove.Domain.Uow
 {
-    /// <summary>
-    /// Unit of work options.
-    /// </summary>
-    public class UnitOfWorkOptions
-    {
-        /// <summary>
-        /// Scope option.
-        /// </summary>
-        public TransactionScopeOption? Scope { get; set; }
+	/// <summary>
+	///     Unit of work options.
+	/// </summary>
+	public class UnitOfWorkOptions
+	{
+		/// <summary>
+		///     Creates a new <see cref="UnitOfWorkOptions" /> object.
+		/// </summary>
+		public UnitOfWorkOptions()
+		{
+			FilterOverrides = new List<DataFilterConfiguration>();
+		}
 
-        /// <summary>
-        /// Is this UOW transactional?
-        /// Uses default value if not supplied.
-        /// </summary>
-        public bool? IsTransactional { get; set; }
+		/// <summary>
+		///     Scope option.
+		/// </summary>
+		public TransactionScopeOption? Scope { get; set; }
 
-        /// <summary>
-        /// Timeout of UOW As milliseconds.
-        /// Uses default value if not supplied.
-        /// </summary>
-        public TimeSpan? Timeout { get; set; }
+		/// <summary>
+		///     Is this UOW transactional?
+		///     Uses default value if not supplied.
+		/// </summary>
+		public bool? IsTransactional { get; set; }
 
-        /// <summary>
-        /// If this UOW is transactional, this option indicated the isolation level of the transaction.
-        /// Uses default value if not supplied.
-        /// </summary>
-        public IsolationLevel? IsolationLevel { get; set; }
+		/// <summary>
+		///     Timeout of UOW As milliseconds.
+		///     Uses default value if not supplied.
+		/// </summary>
+		public TimeSpan? Timeout { get; set; }
 
-        /// <summary>
-        /// This option should be set to <see cref="TransactionScopeAsyncFlowOption.Enabled"/>
-        /// if unit of work is used in an async scope.
-        /// </summary>
-        public TransactionScopeAsyncFlowOption? AsyncFlowOption { get; set; }
+		/// <summary>
+		///     If this UOW is transactional, this option indicated the isolation level of the transaction.
+		///     Uses default value if not supplied.
+		/// </summary>
+		public IsolationLevel? IsolationLevel { get; set; }
 
-        /// <summary>
-        /// Can be used to enable/disable some filters. 
-        /// </summary>
-        public List<DataFilterConfiguration> FilterOverrides { get; private set; }
+		/// <summary>
+		///     This option should be set to <see cref="TransactionScopeAsyncFlowOption.Enabled" />
+		///     if unit of work is used in an async scope.
+		/// </summary>
+		public TransactionScopeAsyncFlowOption? AsyncFlowOption { get; set; }
 
-        /// <summary>
-        /// Creates a new <see cref="UnitOfWorkOptions"/> object.
-        /// </summary>
-        public UnitOfWorkOptions()
-        {
-            FilterOverrides = new List<DataFilterConfiguration>();
-        }
+		/// <summary>
+		///     Can be used to enable/disable some filters.
+		/// </summary>
+		public List<DataFilterConfiguration> FilterOverrides { get; }
 
-        internal void FillDefaultsForNonProvidedOptions(IUnitOfWorkDefaultOptions defaultOptions)
-        {
-            //TODO: Do not change options object..?
+		/// <summary>
+		///     Can be used to enable/disable the LazyLoad.
+		/// </summary>
+		public bool? IsLazyLoadEnabled { get; set; }
 
-            if (!IsTransactional.HasValue)
-            {
-                IsTransactional = defaultOptions.IsTransactional;
-            }
+		internal void FillDefaultsForNonProvidedOptions(IUnitOfWorkDefaultOptions defaultOptions)
+		{
+			//TODO: Do not change options object..?
 
-            if (!Scope.HasValue)
-            {
-                Scope = defaultOptions.Scope;
-            }
+			if (!IsTransactional.HasValue)
+			{
+				IsTransactional = defaultOptions.IsTransactional;
+			}
 
-            if (!Timeout.HasValue && defaultOptions.Timeout.HasValue)
-            {
-                Timeout = defaultOptions.Timeout.Value;
-            }
+			if (!Scope.HasValue)
+			{
+				Scope = defaultOptions.Scope;
+			}
 
-            if (!IsolationLevel.HasValue && defaultOptions.IsolationLevel.HasValue)
-            {
-                IsolationLevel = defaultOptions.IsolationLevel.Value;
-            }
-        }
+			if (!Timeout.HasValue && defaultOptions.Timeout.HasValue)
+			{
+				Timeout = defaultOptions.Timeout.Value;
+			}
 
-        internal void FillOuterUowFiltersForNonProvidedOptions(List<DataFilterConfiguration> filterOverrides)
-        {
-            foreach (var filterOverride in filterOverrides)
-            {
-                if (FilterOverrides.Any(fo => fo.FilterName == filterOverride.FilterName))
-                {
-                    continue;
-                }
+			if (!IsolationLevel.HasValue && defaultOptions.IsolationLevel.HasValue)
+			{
+				IsolationLevel = defaultOptions.IsolationLevel.Value;
+			}
 
-                FilterOverrides.Add(filterOverride);
-            }
-        }
-    }
+			if (!IsLazyLoadEnabled.HasValue)
+			{
+				IsLazyLoadEnabled = defaultOptions.IsLazyLoadEnabled;
+			}
+		}
+
+		internal void FillOuterUowFiltersForNonProvidedOptions(List<DataFilterConfiguration> filterOverrides)
+		{
+			foreach (DataFilterConfiguration filterOverride in filterOverrides)
+			{
+				if (FilterOverrides.Any(fo => fo.FilterName == filterOverride.FilterName))
+				{
+					continue;
+				}
+
+				FilterOverrides.Add(filterOverride);
+			}
+		}
+	}
 }

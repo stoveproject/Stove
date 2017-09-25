@@ -13,6 +13,7 @@ using Stove.Extensions;
 
 namespace Stove.EntityFrameworkCore.Uow
 {
+	/// <inheritdoc cref="UnitOfWorkBase" />
 	/// <summary>
 	///     Implements Unit of work for Entity Framework.
 	/// </summary>
@@ -22,8 +23,9 @@ namespace Stove.EntityFrameworkCore.Uow
 		private readonly IDbContextTypeMatcher _dbContextTypeMatcher;
 		private readonly IEfCoreTransactionStrategy _transactionStrategy;
 
+		/// <inheritdoc />
 		/// <summary>
-		///     Creates a new <see cref="EfCoreUnitOfWork" />.
+		///     Creates a new <see cref="T:Stove.EntityFrameworkCore.Uow.EfCoreUnitOfWork" />.
 		/// </summary>
 		public EfCoreUnitOfWork(
 			IConnectionStringResolver connectionStringResolver,
@@ -107,8 +109,7 @@ namespace Stove.EntityFrameworkCore.Uow
 
 			string dbContextKey = concreteDbContextType.FullName + "#" + connectionString;
 
-			DbContext dbContext;
-			if (!ActiveDbContexts.TryGetValue(dbContextKey, out dbContext))
+			if (!ActiveDbContexts.TryGetValue(dbContextKey, out DbContext dbContext))
 			{
 				if (Options.IsTransactional == true)
 				{
@@ -167,7 +168,8 @@ namespace Stove.EntityFrameworkCore.Uow
 			dbContext.Dispose();
 		}
 
-		//}
+		//private static void ObjectContext_ObjectMaterialized(DbContext dbContext, ObjectMaterializedEventArgs e)
+		//{
 		//    dbContext.Configuration.AutoDetectChangesEnabled = true;
 
 		//    dbContext.Entry(e.Entity).State = previousState;
@@ -177,8 +179,6 @@ namespace Stove.EntityFrameworkCore.Uow
 
 		//    dbContext.Configuration.AutoDetectChangesEnabled = false;
 		//    var entityType = ObjectContext.GetObjectType(e.Entity.GetType());
-		//{
-
-		//private static void ObjectContext_ObjectMaterialized(DbContext dbContext, ObjectMaterializedEventArgs e)
+		//}
 	}
 }

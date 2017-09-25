@@ -113,8 +113,6 @@ namespace Stove.EntityFrameworkCore.Repositories
 				}
 			}
 
-			query = ApplyFilters(query);
-
 			return query;
 		}
 

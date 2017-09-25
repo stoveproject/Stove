@@ -1,12 +1,7 @@
-#tool "nuget:?package=Cake.CoreCLR";
 #tool "nuget:?package=xunit.runner.console&version=2.3.0-beta4-build3742"
-#tool "nuget:?package=NuGet.CommandLine"
 
-#addin "Cake.FileHelpers"
 #addin "nuget:?package=NuGet.Core"
 #addin "nuget:?package=Cake.ExtendedNuGet"
-
-using NuGet;
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -35,13 +30,14 @@ var testProjects = new List<Tuple<string, string[]>>
                     new Tuple<string, string[]>("Stove.Dapper.Tests", new[] { "net461" }),
                     new Tuple<string, string[]>("Stove.Hangfire.Tests", new[] { "netcoreapp2.0" }),
                     new Tuple<string, string[]>("Stove.NHibernate.Tests", new[] { "net461" }),
-                    new Tuple<string, string[]>("Stove.EntityFrameworkCore.Tests", new[] { "netcoreapp2.0" })
+                    new Tuple<string, string[]>("Stove.EntityFrameworkCore.Tests", new[] { "netcoreapp2.0" }),
+                    new Tuple<string, string[]>("Stove.Serilog.Tests", new[] { "netcoreapp2.0" })
                 };
                       
 
 var nupkgPath = "nupkg";
 var nupkgRegex = $"**/{projectName}*.nupkg";
-var nugetPath = toolpath + "/NuGet.CommandLine/tools/nuget.exe";
+var nugetPath = toolpath + "/nuget.exe";
 var nugetQueryUrl = "https://www.nuget.org/api/v2/";
 var nugetPushUrl = "https://www.nuget.org/api/v2/package";
 var NUGET_PUSH_SETTINGS = new NuGetPushSettings

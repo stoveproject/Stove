@@ -35,7 +35,6 @@ namespace Stove.Tests.SampleApplication.Uow
 
                 _unitOfWorkManager.Current.Completed += (sender, args) =>
                 {
-                    _unitOfWorkManager.Current.ShouldBe(null);
                     completeCount++;
                 };
 

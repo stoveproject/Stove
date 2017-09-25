@@ -1,4 +1,5 @@
 ﻿using Raven.Client;
+using Raven.Client.Documents.Session;
 
 namespace Stove
 {

@@ -114,8 +114,7 @@ namespace Stove.EntityFramework.Uow
 
             string dbContextKey = concreteDbContextType.FullName + "#" + connectionString;
 
-            DbContext dbContext;
-            if (!ActiveDbContexts.TryGetValue(dbContextKey, out dbContext))
+	        if (!ActiveDbContexts.TryGetValue(dbContextKey, out DbContext dbContext))
             {
                 if (Options.IsTransactional == true)
                 {
@@ -130,6 +129,11 @@ namespace Stove.EntityFramework.Uow
                 {
                     dbContext.Database.CommandTimeout = Options.Timeout.Value.TotalSeconds.To<int>();
                 }
+
+	            if (Options.IsLazyLoadEnabled.HasValue)
+	            {
+		            dbContext.Configuration.LazyLoadingEnabled = Options.IsLazyLoadEnabled.Value;
+	            }
 
                 ((IObjectContextAdapter)dbContext).ObjectContext.ObjectMaterialized += (sender, args) => { ObjectContext_ObjectMaterialized(dbContext, args); };
 
