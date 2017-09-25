@@ -5,7 +5,7 @@ using Autofac.Extras.IocManager;
 
 namespace Stove.Runtime.Session
 {
-	public class DefaultPrincipalAccessor : IPrincipalAccessor, ISingletonDependency
+	public class DefaultPrincipalAccessor : IPrincipalAccessor, ITransientDependency
 	{
 		public static DefaultPrincipalAccessor Instance => new DefaultPrincipalAccessor();
 
