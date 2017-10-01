@@ -3,6 +3,7 @@ using System.Linq;
 
 using Shouldly;
 
+using Stove.Dapper;
 using Stove.Dapper.Repositories;
 using Stove.Domain.Repositories;
 using Stove.Domain.Uow;

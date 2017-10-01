@@ -1,4 +1,5 @@
 ﻿using Stove.Bootstrapping;
+using Stove.EntityFramework;
 using Stove.Mapster;
 
 namespace Stove.Tests.SampleApplication

@@ -1,4 +1,6 @@
 ﻿using Stove.Bootstrapping;
+using Stove.Dapper;
+using Stove.EntityFramework;
 
 namespace Stove.Demo.WebApi
 {

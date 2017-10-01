@@ -5,6 +5,7 @@ using System.Transactions;
 using DapperExtensions.Sql;
 
 using Stove.Bootstrapping;
+using Stove.Dapper;
 using Stove.Reflection.Extensions;
 
 namespace Stove.EntityFrameworkCore.Dapper.Tests

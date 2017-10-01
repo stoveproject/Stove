@@ -7,11 +7,10 @@ using Autofac;
 using Autofac.Core;
 
 using Stove.Log;
-using Stove.Serilog;
 
 using Module = Autofac.Module;
 
-namespace Stove
+namespace Stove.Serilog
 {
 	public class SerilogRegistrarModule : Module
 	{

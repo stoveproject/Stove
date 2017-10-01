@@ -3,7 +3,6 @@
 using JetBrains.Annotations;
 
 using Stove.Domain.Uow;
-using Stove.EntityFramework.Uow;
 using Stove.Reflection.Extensions;
 
 namespace Stove.EntityFramework

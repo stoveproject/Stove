@@ -7,6 +7,9 @@ using FluentNHibernate.Cfg.Db;
 
 using HibernatingRhinos.Profiler.Appender.NHibernate;
 
+using Stove.Dapper;
+using Stove.NHibernate;
+
 namespace Stove.Demo.ConsoleApp.Nh
 {
     public class Program

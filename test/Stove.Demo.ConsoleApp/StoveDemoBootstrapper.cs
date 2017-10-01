@@ -8,8 +8,14 @@ using System.Reflection;
 using Dapper;
 
 using Stove.Bootstrapping;
+using Stove.Dapper;
 using Stove.Demo.ConsoleApp.DbContexes;
+using Stove.EntityFramework;
 using Stove.EntityFramework.Interceptors;
+using Stove.Hangfire;
+using Stove.Mapster;
+using Stove.RabbitMQ;
+using Stove.Redis;
 
 namespace Stove.Demo.ConsoleApp
 {

@@ -6,7 +6,7 @@ using Autofac.Extras.IocManager;
 using Hangfire;
 
 using Stove.BackgroundJobs;
-using Stove.Configurations;
+using Stove.Hangfire.Configurations;
 using Stove.Threading.BackgrodunWorkers;
 
 namespace Stove.Hangfire

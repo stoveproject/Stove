@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NLog" Version="5.0.0-beta10" />
+    <PackageReference Include="NLog" Version="5.0.0-beta11" />
   </ItemGroup>
  
 </Project>
