@@ -10,8 +10,14 @@ using HibernatingRhinos.Profiler.Appender.EntityFramework;
 
 using MassTransit;
 
+using Stove.Dapper;
 using Stove.Demo.ConsoleApp.DbContexes;
 using Stove.EntityFramework;
+using Stove.Hangfire;
+using Stove.Mapster;
+using Stove.NLog;
+using Stove.RabbitMQ;
+using Stove.Redis;
 using Stove.Redis.Configurations;
 
 namespace Stove.Demo.ConsoleApp

@@ -3,7 +3,7 @@
 using Stove.Configuration;
 using Stove.Domain.Uow;
 
-namespace Stove.EntityFramework.Uow
+namespace Stove.EntityFramework
 {
     public class TypedConnectionStringResolver : IConnectionStringResolver
     {

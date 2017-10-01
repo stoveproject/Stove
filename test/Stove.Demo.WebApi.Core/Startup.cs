@@ -17,8 +17,15 @@ using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 using NLog.Web;
 
+using Stove.Dapper;
 using Stove.Demo.WebApi.Core.Domain.DbContexts;
 using Stove.EntityFramework;
+using Stove.EntityFrameworkCore;
+using Stove.Hangfire;
+using Stove.Mapster;
+using Stove.NLog;
+using Stove.RabbitMQ;
+using Stove.Redis;
 using Stove.Redis.Configurations;
 using Stove.Reflection.Extensions;
 

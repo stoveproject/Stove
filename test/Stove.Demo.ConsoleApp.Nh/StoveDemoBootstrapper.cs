@@ -1,6 +1,8 @@
 ﻿using System.Configuration;
 
 using Stove.Bootstrapping;
+using Stove.Dapper;
+using Stove.NHibernate;
 
 namespace Stove.Demo.ConsoleApp.Nh
 {

@@ -2,6 +2,8 @@
 
 using Autofac.Extras.IocManager;
 
+using Stove.RavenDB;
+
 namespace Stove.Demo.ConsoleApp.RavenDB
 {
 	public class Program

@@ -6,6 +6,7 @@ using DapperExtensions.Sql;
 
 using Stove.Bootstrapping;
 using Stove.Dapper.Tests.DbContexes;
+using Stove.EntityFramework;
 
 namespace Stove.Dapper.Tests
 {

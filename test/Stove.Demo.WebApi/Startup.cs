@@ -9,7 +9,10 @@ using Microsoft.Owin;
 
 using Owin;
 
+using Stove.Dapper;
 using Stove.Demo.WebApi;
+using Stove.EntityFramework;
+using Stove.NLog;
 
 using Swashbuckle.Application;
 

@@ -5,6 +5,7 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
+using Stove.Dapper;
 using Stove.Domain.Repositories;
 using Stove.EntityFrameworkCore.Dapper.Tests.Domain;
 using Stove.EntityFrameworkCore.Dapper.Tests.Ef;
