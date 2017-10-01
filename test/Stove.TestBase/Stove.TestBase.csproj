@@ -16,10 +16,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="bin\Release\net461\Stove.TestBase.pdb">
-      <PackagePath>lib/net461/</PackagePath>
-      <Pack>true</Pack>
-    </None>
     <None Include="bin\Release\netstandard2.0\Stove.TestBase.pdb">
       <PackagePath>lib/netstandard2.0/</PackagePath>
       <Pack>true</Pack>
@@ -29,14 +25,5 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Stove\Stove.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Autofac.Extras.IocManager" Version="3.1.3" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-
+ 
 </Project>
