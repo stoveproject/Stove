@@ -13,10 +13,12 @@ namespace Stove.RabbitMQ.Tests
     public class RabbitMQMessageBus_Tests : TestBaseWithLocalIocResolver
     {
         private readonly IBus _bus;
+        private readonly IStoveRabbitMQConfiguration _configuration;
 
         public RabbitMQMessageBus_Tests()
         {
             _bus = Substitute.For<IBus>();
+            _configuration = Substitute.For<IStoveRabbitMQConfiguration>();
 
             Building(builder =>
                 {
@@ -24,6 +26,7 @@ namespace Stove.RabbitMQ.Tests
                     {
                         r.Register<IMessageBus, StoveRabbitMQMessageBus>();
                         r.Register(ctx => _bus);
+                        r.Register(ctx=>_configuration);
                     });
                 })
                 .Ok();
