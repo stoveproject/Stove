@@ -16,7 +16,7 @@ namespace Stove.RabbitMQ
             StoveConfiguration.GetConfigurerIfExists<IStoveRabbitMQConfiguration>().Invoke(StoveConfiguration.Modules.StoveRabbitMQ());
         }
 
-        public override void PostStart()
+        public override void Start()
         {
             StoveConfiguration.Resolver.Resolve<IBusControl>().Start();
         }
