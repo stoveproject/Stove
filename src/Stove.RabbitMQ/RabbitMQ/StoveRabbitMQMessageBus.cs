@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using JetBrains.Annotations;
 
 using MassTransit;
 
@@ -10,12 +9,10 @@ namespace Stove.RabbitMQ
 {
     public class StoveRabbitMQMessageBus : IMessageBus
     {
-        [NotNull]
         private readonly IBus _bus;
-
         private readonly IStoveRabbitMQConfiguration _stoveRabbitMqConfiguration;
 
-        public StoveRabbitMQMessageBus([NotNull] IBus bus,
+        public StoveRabbitMQMessageBus(IBus bus,
             IStoveRabbitMQConfiguration stoveRabbitMqConfiguration)
         {
             _bus = bus;
@@ -41,7 +38,8 @@ namespace Stove.RabbitMQ
         {
             _bus.Publish(message, messageType);
         }
-        public Task<TResponse> CallRequest<TRequest, TResponse>(TRequest request, TimeSpan timeOut,string queueName)
+
+        public Task<TResponse> CallRequest<TRequest, TResponse>(TRequest request, TimeSpan timeOut, string queueName)
             where TRequest : class
             where TResponse : class
         {
