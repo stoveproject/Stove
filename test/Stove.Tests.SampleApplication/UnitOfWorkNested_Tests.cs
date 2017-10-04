@@ -1,4 +1,8 @@
-﻿using System.Transactions;
+﻿using System;
+using System.Threading.Tasks;
+using System.Transactions;
+
+using NSubstitute;
 
 using Shouldly;
 
@@ -10,13 +14,13 @@ namespace Stove.Tests.SampleApplication
 {
     public class UnitOfWorkNested_Tests : SampleApplicationTestBase
     {
-        private readonly IUnitOfWorkManager _unitOfWorkManager;
-
         public UnitOfWorkNested_Tests()
         {
             Building(builder => { }).Ok();
             _unitOfWorkManager = The<IUnitOfWorkManager>();
         }
+
+        private readonly IUnitOfWorkManager _unitOfWorkManager;
 
         [Fact]
         public void Should_Copy_Filters_To_Nested_Uow()
@@ -44,6 +48,28 @@ namespace Stove.Tests.SampleApplication
 
                 outerUow.Complete();
             }
+
+            _unitOfWorkManager.Current.ShouldBeNull();
+        }
+
+        [Fact]
+        public async Task uow_multithread_current_shouldnotbenull()
+        {
+            Parallel.For(0, 1000, i =>
+            {
+                var provider = The<ICurrentUnitOfWorkProvider>();
+
+                var uow = Substitute.For<IUnitOfWork>();
+                uow.Id.Returns(Guid.NewGuid().ToString("N"));
+
+                provider.Current = uow;
+
+                provider.Current.ShouldNotBeNull();
+
+                provider.Current = null;
+
+                provider.Current.ShouldBeNull();
+            });
         }
     }
 }
