@@ -6,7 +6,7 @@ using Stove.Log;
 
 namespace Stove.Domain.Uow
 {
-    public class AsyncLocalCurrentUnitOfWorkProvider : ICurrentUnitOfWorkProvider
+    public class AsyncLocalCurrentUnitOfWorkProvider : ICurrentUnitOfWorkProvider, ITransientDependency
     {
         private static readonly AsyncLocal<LocalUowWrapper> asyncLocalUow = new AsyncLocal<LocalUowWrapper>();
 
@@ -17,7 +17,6 @@ namespace Stove.Domain.Uow
 
         public ILogger Logger { get; set; }
 
-        /// <inheritdoc />
         [DoNotInject]
         public IUnitOfWork Current
         {
