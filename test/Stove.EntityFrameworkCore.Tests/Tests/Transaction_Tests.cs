@@ -9,6 +9,8 @@ using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
 using Stove.EntityFrameworkCore.Tests.Domain;
 
+using Xunit;
+
 namespace Stove.EntityFrameworkCore.Tests.Tests
 {
     //WE CAN NOT TEST TRANSACTIONS SINCE INMEMORY DB DOES NOT SUPPORT IT! TODO: Use SQLite

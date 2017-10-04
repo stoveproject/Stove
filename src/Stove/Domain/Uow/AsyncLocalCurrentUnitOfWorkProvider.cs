@@ -6,93 +6,89 @@ using Stove.Log;
 
 namespace Stove.Domain.Uow
 {
-	/// <summary>
-	///     CallContext implementation of <see cref="ICurrentUnitOfWorkProvider" />.
-	///     This is the default implementation.
-	/// </summary>
-	public class AsyncLocalCurrentUnitOfWorkProvider : ICurrentUnitOfWorkProvider, ITransientDependency
-	{
-		private static readonly AsyncLocal<LocalUowWrapper> AsyncLocalUow = new AsyncLocal<LocalUowWrapper>();
+    public class AsyncLocalCurrentUnitOfWorkProvider : ICurrentUnitOfWorkProvider
+    {
+        private static readonly AsyncLocal<LocalUowWrapper> asyncLocalUow = new AsyncLocal<LocalUowWrapper>();
 
-		public AsyncLocalCurrentUnitOfWorkProvider()
-		{
-			Logger = NullLogger.Instance;
-		}
+        public AsyncLocalCurrentUnitOfWorkProvider()
+        {
+            Logger = NullLogger.Instance;
+        }
 
-		public ILogger Logger { get; set; }
+        public ILogger Logger { get; set; }
 
-		/// <inheritdoc />
-		[DoNotInject]
-		public IUnitOfWork Current
-		{
-			get { return GetCurrentUow(); }
-			set { SetCurrentUow(value); }
-		}
+        /// <inheritdoc />
+        [DoNotInject]
+        public IUnitOfWork Current
+        {
+            get => GetCurrentUow();
+            set => SetCurrentUow(value);
+        }
 
-		private static IUnitOfWork GetCurrentUow()
-		{
-			var uow = AsyncLocalUow.Value?.UnitOfWork;
-			if (uow == null)
-			{
-				return null;
-			}
+        private static IUnitOfWork GetCurrentUow()
+        {
+            IUnitOfWork uow = asyncLocalUow.Value?.UnitOfWork;
+            if (uow == null)
+            {
+                return null;
+            }
 
-			if (uow.IsDisposed)
-			{
-				AsyncLocalUow.Value = null;
-				return null;
-			}
+            if (uow.IsDisposed)
+            {
+                asyncLocalUow.Value = null;
+                return null;
+            }
 
-			return uow;
-		}
+            return uow;
+        }
 
-		private static void SetCurrentUow(IUnitOfWork value)
-		{
-			lock (AsyncLocalUow)
-			{
-				if (value == null)
-				{
-					if (AsyncLocalUow.Value == null)
-					{
-						return;
-					}
+        private static void SetCurrentUow(IUnitOfWork value)
+        {
+            lock (asyncLocalUow)
+            {
+                if (value == null)
+                {
+                    if (asyncLocalUow.Value == null)
+                    {
+                        return;
+                    }
 
-					if (AsyncLocalUow.Value.UnitOfWork?.Outer == null)
-					{
-						AsyncLocalUow.Value.UnitOfWork = null;
-						AsyncLocalUow.Value = null;
-						return;
-					}
+                    if (asyncLocalUow.Value.UnitOfWork?.Outer == null)
+                    {
+                        asyncLocalUow.Value.UnitOfWork = null;
+                        asyncLocalUow.Value = null;
+                        return;
+                    }
 
-					AsyncLocalUow.Value.UnitOfWork = AsyncLocalUow.Value.UnitOfWork.Outer;
-				}
-				else
-				{
-					if (AsyncLocalUow.Value?.UnitOfWork == null)
-					{
-						if (AsyncLocalUow.Value != null)
-						{
-							AsyncLocalUow.Value.UnitOfWork = value;
-						}
+                    asyncLocalUow.Value.UnitOfWork = asyncLocalUow.Value.UnitOfWork.Outer;
+                }
+                else
+                {
+                    if (asyncLocalUow.Value?.UnitOfWork == null)
+                    {
+                        if (asyncLocalUow.Value != null)
+                        {
+                            asyncLocalUow.Value.UnitOfWork = value;
+                        }
 
-						AsyncLocalUow.Value = new LocalUowWrapper(value);
-						return;
-					}
+                        asyncLocalUow.Value = new LocalUowWrapper(value);
+                        return;
+                    }
 
-					value.Outer = AsyncLocalUow.Value.UnitOfWork;
-					AsyncLocalUow.Value.UnitOfWork = value;
-				}
-			}
-		}
+                    value.Outer = asyncLocalUow.Value.UnitOfWork;
+                    asyncLocalUow.Value.UnitOfWork = value;
+                }
+            }
+        }
 
-		private class LocalUowWrapper
-		{
-			public LocalUowWrapper(IUnitOfWork unitOfWork)
-			{
-				UnitOfWork = unitOfWork;
-			}
+        private class LocalUowWrapper
+        {
+            public LocalUowWrapper(IUnitOfWork unitOfWork)
+            {
+                UnitOfWork = unitOfWork;
+            }
 
-			public IUnitOfWork UnitOfWork { get; set; }
-		}
-	}
+            public IUnitOfWork UnitOfWork { get; set; }
+        }
+    }
 }
