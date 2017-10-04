@@ -61,6 +61,7 @@ namespace Stove.Tests.SampleApplication
 
                 var uow = Substitute.For<IUnitOfWork>();
                 uow.Id.Returns(Guid.NewGuid().ToString("N"));
+                uow.Outer.Returns((IUnitOfWork)null);
 
                 provider.Current = uow;
 

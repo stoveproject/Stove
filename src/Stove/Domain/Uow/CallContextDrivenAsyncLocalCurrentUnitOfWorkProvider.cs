@@ -7,7 +7,7 @@ using Stove.Threading;
 
 namespace Stove.Domain.Uow
 {
-    public class CallContextDrivenAsyncLocalCurrentUnitOfWorkProvider : ICurrentUnitOfWorkProvider, ITransientDependency
+    public class CallContextDrivenAsyncLocalCurrentUnitOfWorkProvider : ICurrentUnitOfWorkProvider
     {
         private const string ContextKey = "Stove.UnitOfWork.Current";
         private static readonly ConcurrentDictionary<string, IUnitOfWork> unitOfWorkDictionary = new ConcurrentDictionary<string, IUnitOfWork>();
