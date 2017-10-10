@@ -220,17 +220,6 @@ namespace Stove
         }
 
         /// <summary>
-        ///     Uses CallContextDriven and AsyncLocal based Uow provider.
-        /// </summary>
-        /// <param name="builder">The builder.</param>
-        /// <returns></returns>
-        [NotNull]
-        public static IIocBuilder UseStoveCallContextDrivenAsyncLocalUnitOfWorkProvider([NotNull] this IIocBuilder builder)
-        {
-            return builder.RegisterServices(r => r.Register<ICurrentUnitOfWorkProvider, CallContextDrivenAsyncLocalCurrentUnitOfWorkProvider>());
-        }
-
-        /// <summary>
         ///     Uses only AsyncLocal based Uow provider.
         /// </summary>
         /// <param name="builder">The builder.</param>
