@@ -2,20 +2,24 @@
 
 namespace Stove.RabbitMQ
 {
-	public interface IStoveRabbitMQConfiguration
-	{
-		string HostAddress { get; set; }
+    public interface IStoveRabbitMQConfiguration
+    {
+        string HostAddress { get; set; }
 
-		string Username { get; set; }
+        string Username { get; set; }
 
-		string Password { get; set; }
+        string Password { get; set; }
 
-		string QueueName { get; set; }
+        string QueueName { get; set; }
 
-		bool UseRetryMechanism { get; set; }
+        bool UseRetryMechanism { get; set; }
 
-		int MaxRetryCount { get; set; }
+        int MaxRetryCount { get; set; }
 
-		IStoveStartupConfiguration StoveConfiguration { get; }
-	}
+        int? PrefetchCount { get; set; }
+
+        int? ConcurrencyLimit { get; set; }
+
+        IStoveStartupConfiguration StoveConfiguration { get; }
+    }
 }
