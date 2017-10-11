@@ -48,6 +48,7 @@ namespace Stove.Events.Bus.Factories
         public void ReleaseHandler(IEventHandler handler)
         {
             _childScope.Dispose();
+            _childScope = null;
         }
     }
 }

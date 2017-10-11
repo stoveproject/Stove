@@ -4,6 +4,7 @@ using Autofac.Extras.IocManager;
 using MassTransit;
 
 using Stove.MQ;
+using Stove.RabbitMQ.Tests.Consumers;
 using Stove.Reflection.Extensions;
 using Stove.TestBase;
 

@@ -39,11 +39,18 @@ namespace Stove.RabbitMQ
             _bus.Publish(message, messageType);
         }
 
-        public Task<TResponse> CallRequest<TRequest, TResponse>(TRequest request, TimeSpan timeOut, string queueName)
+        public Task<TResponse> CallRequest<TRequest, TResponse>(TRequest request, TimeSpan timeout, string queueName)
             where TRequest : class
             where TResponse : class
         {
-            return _bus.CreateRequestClient<TRequest, TResponse>(new Uri($"{_stoveRabbitMqConfiguration.HostAddress}{queueName}"), timeOut).Request(request);
+            return _bus.CreateRequestClient<TRequest, TResponse>(new Uri(new Uri(_stoveRabbitMqConfiguration.HostAddress), queueName), timeout).Request(request);
+        }
+
+        public Task<TResponse> CallRequest<TRequest, TResponse>(TRequest request, TimeSpan timeout, Uri queueUri)
+            where TRequest : class
+            where TResponse : class
+        {
+            return _bus.CreateRequestClient<TRequest, TResponse>(queueUri, timeout).Request(request);
         }
     }
 }

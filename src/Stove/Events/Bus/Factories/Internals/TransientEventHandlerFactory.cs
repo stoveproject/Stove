@@ -4,8 +4,9 @@ using Stove.Events.Bus.Handlers;
 
 namespace Stove.Events.Bus.Factories.Internals
 {
+    /// <inheritdoc />
     /// <summary>
-    ///     This <see cref="IEventHandlerFactory" /> implementation is used to handle events
+    ///     This <see cref="T:Stove.Events.Bus.Factories.IEventHandlerFactory" /> implementation is used to handle events
     ///     by a single instance object.
     /// </summary>
     /// <remarks>
@@ -14,6 +15,7 @@ namespace Stove.Events.Bus.Factories.Internals
     internal class TransientEventHandlerFactory<THandler> : IEventHandlerFactory
         where THandler : IEventHandler, new()
     {
+        /// <inheritdoc />
         /// <summary>
         ///     Creates a new instance of the handler object.
         /// </summary>
@@ -23,16 +25,14 @@ namespace Stove.Events.Bus.Factories.Internals
             return new THandler();
         }
 
+        /// <inheritdoc />
         /// <summary>
-        ///     Disposes the handler object if it's <see cref="IDisposable" />. Does nothing if it's not.
+        ///     Disposes the handler object if it's <see cref="T:System.IDisposable" />. Does nothing if it's not.
         /// </summary>
         /// <param name="handler">Handler to be released</param>
         public void ReleaseHandler(IEventHandler handler)
         {
-            if (handler is IDisposable)
-            {
-                (handler as IDisposable).Dispose();
-            }
+            (handler as IDisposable)?.Dispose();
         }
     }
 }

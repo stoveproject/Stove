@@ -23,7 +23,12 @@ namespace Stove.MQ
 		{
 		}
 
-	    public Task<TResponse> CallRequest<TRequest, TResponse>(TRequest request, TimeSpan timeOut, string queueName) where TRequest : class where TResponse : class
+	    public Task<TResponse> CallRequest<TRequest, TResponse>(TRequest request, TimeSpan timeout, string queueName) where TRequest : class where TResponse : class
+	    {
+	        return Task.FromResult(default(TResponse));
+        }
+
+	    public Task<TResponse> CallRequest<TRequest, TResponse>(TRequest request, TimeSpan timeout, Uri queueUri) where TRequest : class where TResponse : class
 	    {
 	        return Task.FromResult(default(TResponse));
         }

@@ -1,4 +1,8 @@
-﻿using MassTransit;
+﻿using System;
+
+using Autofac.Extras.IocManager;
+
+using MassTransit;
 using MassTransit.Testing;
 
 using NSubstitute;
@@ -26,7 +30,7 @@ namespace Stove.RabbitMQ.Tests
                     {
                         r.Register<IMessageBus, StoveRabbitMQMessageBus>();
                         r.Register(ctx => _bus);
-                        r.Register(ctx=>_configuration);
+                        r.Register(ctx => _configuration);
                     });
                 })
                 .Ok();
@@ -124,12 +128,33 @@ namespace Stove.RabbitMQ.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Act
             //-----------------------------------------------------------------------------------------------------------
-            messageBus.Publish(message, typeof(IRabbitMqTestMessage));
+            messageBus.Publish((object)message, typeof(IRabbitMqTestMessage));
 
             //-----------------------------------------------------------------------------------------------------------
             // Assert
             //-----------------------------------------------------------------------------------------------------------
-            _bus.Received().Publish(message, typeof(IRabbitMqTestMessage));
+            _bus.Received().Publish((object)message, typeof(IRabbitMqTestMessage));
+        }
+
+        [Fact]
+        public void request_response_uri_should_work()
+        {
+            //-----------------------------------------------------------------------------------------------------------
+            // Arrange
+            //-----------------------------------------------------------------------------------------------------------
+            var messageBus = The<IMessageBus>();
+
+            _configuration.HostAddress.Returns("rabbitmq://localhost");
+
+            //-----------------------------------------------------------------------------------------------------------
+            // Act
+            //-----------------------------------------------------------------------------------------------------------
+            messageBus.CallRequest<RabbitMqTestMessage, RabbitMqTestResponse>(new RabbitMqTestMessage(), TimeSpan.MaxValue, "abc");
+
+            //-----------------------------------------------------------------------------------------------------------
+            // Assert
+            //-----------------------------------------------------------------------------------------------------------
+            _bus.Received().CreateRequestClient<RabbitMqTestMessage, RabbitMqTestResponse>(Arg.Any<Uri>(), TimeSpan.MaxValue, Arg.Any<TimeSpan>());
         }
 
         private interface IRabbitMqTestMessage
@@ -140,6 +165,11 @@ namespace Stove.RabbitMQ.Tests
         private class RabbitMqTestMessage : IRabbitMqTestMessage
         {
             public string Message { get; set; }
+        }
+
+        private class RabbitMqTestResponse
+        {
+
         }
     }
 }
