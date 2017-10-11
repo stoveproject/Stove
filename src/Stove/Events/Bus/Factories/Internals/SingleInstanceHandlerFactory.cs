@@ -2,8 +2,9 @@ using Stove.Events.Bus.Handlers;
 
 namespace Stove.Events.Bus.Factories.Internals
 {
+    /// <inheritdoc />
     /// <summary>
-    ///     This <see cref="IEventHandlerFactory" /> implementation is used to handle events
+    ///     This <see cref="T:Stove.Events.Bus.Factories.IEventHandlerFactory" /> implementation is used to handle events
     ///     by a single instance object.
     /// </summary>
     /// <remarks>

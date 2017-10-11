@@ -214,6 +214,13 @@ namespace Stove.Tests.SampleApplication
             IEventHandler<EntityUpdatedEventData<User>>,
             ITransientDependency
         {
+            private readonly IRepository<User> _userRepository;
+
+            public UserCreatedEventHandler(IRepository<User> userRepository)
+            {
+                _userRepository = userRepository;
+            }
+
             public void HandleEvent(EntityCreatedEventData<User> eventData)
             {
                 User a = eventData.Entity;

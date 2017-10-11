@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 
 using Autofac.Extras.IocManager;
 
-using JetBrains.Annotations;
-
 using Stove.Domain.Uow;
 using Stove.EntityFramework.Utils;
 using Stove.Extensions;
@@ -47,7 +45,6 @@ namespace Stove.EntityFramework.Uow
             ActiveDbContexts = new Dictionary<string, DbContext>();
         }
 
-        [NotNull]
         protected IDictionary<string, DbContext> ActiveDbContexts { get; }
 
         protected override void BeginUow()
@@ -71,7 +68,6 @@ namespace Stove.EntityFramework.Uow
             }
         }
 
-        [NotNull]
         public IReadOnlyList<DbContext> GetAllActiveDbContexts()
         {
             return ActiveDbContexts.Values.ToImmutableList();
@@ -85,8 +81,6 @@ namespace Stove.EntityFramework.Uow
             {
                 _transactionStrategy.Commit();
             }
-
-            DisposeUow();
         }
 
         protected override async Task CompleteUowAsync()
@@ -97,11 +91,8 @@ namespace Stove.EntityFramework.Uow
             {
                 _transactionStrategy.Commit();
             }
-
-            DisposeUow();
         }
 
-        [NotNull]
         public virtual TDbContext GetOrCreateDbContext<TDbContext>()
             where TDbContext : DbContext
         {
@@ -114,7 +105,7 @@ namespace Stove.EntityFramework.Uow
 
             string dbContextKey = concreteDbContextType.FullName + "#" + connectionString;
 
-	        if (!ActiveDbContexts.TryGetValue(dbContextKey, out DbContext dbContext))
+            if (!ActiveDbContexts.TryGetValue(dbContextKey, out DbContext dbContext))
             {
                 if (Options.IsTransactional == true)
                 {
@@ -130,10 +121,10 @@ namespace Stove.EntityFramework.Uow
                     dbContext.Database.CommandTimeout = Options.Timeout.Value.TotalSeconds.To<int>();
                 }
 
-	            if (Options.IsLazyLoadEnabled.HasValue)
-	            {
-		            dbContext.Configuration.LazyLoadingEnabled = Options.IsLazyLoadEnabled.Value;
-	            }
+                if (Options.IsLazyLoadEnabled.HasValue)
+                {
+                    dbContext.Configuration.LazyLoadingEnabled = Options.IsLazyLoadEnabled.Value;
+                }
 
                 ((IObjectContextAdapter)dbContext).ObjectContext.ObjectMaterialized += (sender, args) => { ObjectContext_ObjectMaterialized(dbContext, args); };
 
@@ -162,22 +153,22 @@ namespace Stove.EntityFramework.Uow
             ActiveDbContexts.Clear();
         }
 
-        protected virtual void SaveChangesInDbContext([NotNull] DbContext dbContext)
+        protected virtual void SaveChangesInDbContext(DbContext dbContext)
         {
             dbContext.SaveChanges();
         }
 
-        protected virtual async Task SaveChangesInDbContextAsync([NotNull] DbContext dbContext)
+        protected virtual async Task SaveChangesInDbContextAsync(DbContext dbContext)
         {
             await dbContext.SaveChangesAsync();
         }
 
-        protected virtual void Release([NotNull] DbContext dbContext)
+        protected virtual void Release(DbContext dbContext)
         {
             dbContext.Dispose();
         }
 
-        private void ObjectContext_ObjectMaterialized([NotNull] DbContext dbContext, ObjectMaterializedEventArgs e)
+        private void ObjectContext_ObjectMaterialized(DbContext dbContext, ObjectMaterializedEventArgs e)
         {
             Type entityType = ObjectContext.GetObjectType(e.Entity.GetType());
 
