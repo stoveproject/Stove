@@ -56,7 +56,7 @@ namespace Stove.RabbitMQ.Tests
             _bus.Received().Publish(message);
         }
 
-        [Fact]
+        //[Fact]
         public void publish_with_object_should_work()
         {
             //-----------------------------------------------------------------------------------------------------------
