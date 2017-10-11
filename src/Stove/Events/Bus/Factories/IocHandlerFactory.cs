@@ -1,5 +1,6 @@
 using System;
 
+using Autofac;
 using Autofac.Extras.IocManager;
 
 using Stove.Events.Bus.Handlers;
@@ -12,18 +13,18 @@ namespace Stove.Events.Bus.Factories
     /// </summary>
     public class IocHandlerFactory : IEventHandlerFactory
     {
-        private readonly IScopeResolver _scopeResolver;
-        private IScopeResolver _childScope;
+        private readonly IResolver _resolver;
+        private ILifetimeScope _childScope;
 
         /// <summary>
         ///     Creates a new instance of <see cref="IocHandlerFactory" /> class.
         /// </summary>
         /// <param name="scopeResolver">The scope resolver.</param>
         /// <param name="handlerType">Type of the handler</param>
-        public IocHandlerFactory(IScopeResolver scopeResolver, Type handlerType)
+        public IocHandlerFactory(IResolver scopeResolver, Type handlerType)
         {
             HandlerType = handlerType;
-            _scopeResolver = scopeResolver;
+            _resolver = scopeResolver;
         }
 
         /// <summary>
@@ -37,7 +38,10 @@ namespace Stove.Events.Bus.Factories
         /// <returns>Resolved handler object</returns>
         public IEventHandler GetHandler()
         {
-            _childScope = _scopeResolver.BeginScope();
+            _childScope = _resolver.Resolve<ILifetimeScope>().BeginLifetimeScope(cb =>
+            {
+                cb.RegisterType(HandlerType).AsSelf().WithPropertyInjection().AsImplementedInterfaces();
+            });
             return (IEventHandler)_childScope.Resolve(HandlerType);
         }
 
