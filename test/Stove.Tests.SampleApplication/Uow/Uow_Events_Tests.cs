@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using System.Transactions;
 
 using Autofac;
@@ -79,30 +80,33 @@ namespace Stove.Tests.SampleApplication.Uow
             var completeCount = 0;
             var disposeCount = 0;
 
-            using (IUnitOfWorkCompleteHandle uow = _unitOfWorkManager.Begin())
+            Parallel.For(0, 500, i =>
             {
-                _userRepository.Insert(new User { Name = "Oğuzhan", Email = "osoykan@gmail", Surname = "Soykan" });
-
-                _unitOfWorkManager.Current.Completed += (sender, args) => { completeCount++; };
-
-                _unitOfWorkManager.Current.Disposed += (sender, args) =>
+                var uowManager = The<IUnitOfWorkManager>();
+                using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
                 {
-                    var provider = The<Provider>();
-                    provider.ShouldNotBeNull();
-                    _unitOfWorkManager.Current.ShouldBe(null);
-                    completeCount.ShouldBe(1);
-                    disposeCount++;
-                };
-                
-                uow.Complete();
+                    The<IRepository<User>>().Insert(new User { Name = "Oğuzhan", Email = "osoykan@gmail", Surname = "Soykan" });
 
-                The<IEventBus>().Trigger(new SomeUowEvent());
-            }
+                    uowManager.Current.Completed += (sender, args) =>
+                    {
+                        completeCount++;
+                    };
 
-            UsingDbContext(context => context.Users.Any(p => p.Name == "Oğuzhan").ShouldBe(true));
+                    uowManager.Current.Disposed += (sender, args) =>
+                    {
+                        var provider = The<Provider>();
+                        provider.ShouldNotBeNull();
+                        uowManager.Current.ShouldBe(null);
+                        disposeCount++;
+                    };
 
-            completeCount.ShouldBe(1);
-            disposeCount.ShouldBe(1);
+                    The<IRepository<User>>().FirstOrDefault(x=>x.Name == "Oğuzhan").ShouldNotBeNull();
+
+                    uow.Complete();
+
+                    The<IEventBus>().Trigger(new SomeUowEvent());
+                }
+            });             
         }
     }
 
