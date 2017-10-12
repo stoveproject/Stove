@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 
 using Autofac;
 using Autofac.Extras.IocManager;
@@ -13,6 +14,7 @@ namespace Stove.Events.Bus.Factories
     /// </summary>
     public class IocHandlerFactory : IEventHandlerFactory
     {
+        private static readonly ReaderWriterLockSlim _rw = new ReaderWriterLockSlim();
         private readonly IResolver _resolver;
         private ILifetimeScope _childScope;
 
@@ -38,11 +40,19 @@ namespace Stove.Events.Bus.Factories
         /// <returns>Resolved handler object</returns>
         public IEventHandler GetHandler()
         {
+            _rw.EnterUpgradeableReadLock();
+
+            _rw.EnterWriteLock();
+
             _childScope = _resolver.Resolve<ILifetimeScope>().BeginLifetimeScope(cb =>
             {
                 cb.RegisterType(HandlerType).AsSelf().WithPropertyInjection().AsImplementedInterfaces();
             });
-            return (IEventHandler)_childScope.Resolve(HandlerType);
+            var handler = (IEventHandler)_childScope.Resolve(HandlerType);
+
+            _rw.ExitWriteLock();
+
+            return handler;
         }
 
         /// <summary>
@@ -51,8 +61,15 @@ namespace Stove.Events.Bus.Factories
         /// <param name="handler">The handler.</param>
         public void ReleaseHandler(IEventHandler handler)
         {
+           _rw.EnterWriteLock();
+
             _childScope.Dispose();
+
             _childScope = null;
+
+            _rw.ExitWriteLock();
+
+            _rw.ExitUpgradeableReadLock();
         }
     }
 }

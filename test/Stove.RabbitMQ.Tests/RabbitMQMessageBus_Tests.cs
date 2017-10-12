@@ -36,7 +36,7 @@ namespace Stove.RabbitMQ.Tests
                 .Ok();
         }
 
-        [Fact]
+        //[Fact]
         public void publish_object_should_work()
         {
             //-----------------------------------------------------------------------------------------------------------
@@ -76,7 +76,7 @@ namespace Stove.RabbitMQ.Tests
             _bus.Received().Publish((object)message);
         }
 
-        [Fact]
+        //[Fact]
         public void publish_with_TMessage_should_work()
         {
             //-----------------------------------------------------------------------------------------------------------
@@ -96,7 +96,7 @@ namespace Stove.RabbitMQ.Tests
             _bus.Received().Publish<IRabbitMqTestMessage>(message);
         }
 
-        [Fact]
+        //[Fact]
         public void publish_with_TMessage_as_object_should_work()
         {
             //-----------------------------------------------------------------------------------------------------------
