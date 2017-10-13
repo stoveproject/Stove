@@ -46,7 +46,7 @@ namespace Stove.Hangfire
             return _lifetimeScope.Resolve(jobType);
         }
 
-        public override JobActivatorScope BeginScope()
+        public override JobActivatorScope BeginScope(JobActivatorContext context)
         {
             return new AutofacScope(_useTaggedLifetimeScope
                 ? _lifetimeScope.BeginLifetimeScope(LifetimeScopeTag)
