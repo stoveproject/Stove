@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Data;
+using System.Data.Common;
 using System.Data.SQLite;
 using System.Reflection;
 
@@ -31,7 +31,7 @@ namespace Stove.NHibernate.Tests
                         nhConfiguration.FluentConfiguration
                                        .Database(SQLiteConfiguration.Standard.InMemory())
                                        .Mappings(m => m.FluentMappings.AddFromAssembly(Assembly.GetExecutingAssembly()))
-                                       .ExposeConfiguration(cfg => new SchemaExport(cfg).Execute(true, true, false, The<IDbConnection>(), Console.Out));
+                                       .ExposeConfiguration(cfg => new SchemaExport(cfg).Execute(true, true, false, The<DbConnection>(), Console.Out));
 
                         return nhConfiguration;
                     })
@@ -40,14 +40,14 @@ namespace Stove.NHibernate.Tests
                     .RegisterServices(r =>
                     {
                         r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly());
-                        r.Register<IDbConnection>(ctx => _connection, Lifetime.Singleton);
+                        r.Register<DbConnection>(ctx => _connection, Lifetime.Singleton);
                     });
             });
         }
 
         public void UsingSession(Action<ISession> action)
         {
-            using (ISession session = The<ISessionFactory>().OpenSession(_connection))
+            using (ISession session = The<ISessionFactory>().OpenSessionWithConnection(_connection))
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
@@ -62,7 +62,7 @@ namespace Stove.NHibernate.Tests
         {
             T result;
 
-            using (ISession session = The<ISessionFactory>().OpenSession(_connection))
+            using (ISession session = The<ISessionFactory>().OpenSessionWithConnection(_connection))
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {

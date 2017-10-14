@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Autofac.Extras.IocManager;
@@ -60,11 +61,11 @@ namespace Stove.EntityFramework.Uow
             GetAllActiveDbContexts().ForEach(SaveChangesInDbContext);
         }
 
-        public override async Task SaveChangesAsync()
+        public override async Task SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             foreach (DbContext dbContext in GetAllActiveDbContexts())
             {
-                await SaveChangesInDbContextAsync(dbContext);
+                await SaveChangesInDbContextAsync(dbContext, cancellationToken);
             }
         }
 
@@ -83,9 +84,9 @@ namespace Stove.EntityFramework.Uow
             }
         }
 
-        protected override async Task CompleteUowAsync()
+        protected override async Task CompleteUowAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            await SaveChangesAsync();
+            await SaveChangesAsync(cancellationToken);
 
             if (Options.IsTransactional == true)
             {
@@ -158,9 +159,9 @@ namespace Stove.EntityFramework.Uow
             dbContext.SaveChanges();
         }
 
-        protected virtual async Task SaveChangesInDbContextAsync(DbContext dbContext)
+        protected virtual async Task SaveChangesInDbContextAsync(DbContext dbContext, CancellationToken cancellationToken = default(CancellationToken))
         {
-            await dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync(cancellationToken);
         }
 
         protected virtual void Release(DbContext dbContext)
