@@ -69,8 +69,6 @@ namespace Stove.Couchbase.Repositories
 
             if (entity is ISoftDelete)
             {
-                entity.As<ISoftDelete>().IsDeleted = true;
-
                 Session.Bucket.Upsert(new Document<TEntity>
                 {
                     Content = entity,
