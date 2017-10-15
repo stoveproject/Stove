@@ -5,12 +5,12 @@ using Autofac.Extras.IocManager;
 using Couchbase;
 using Couchbase.Core;
 
-using Stove.Couchbase.Couchbase.Configuration;
-using Stove.Couchbase.Couchbase.Repositories;
+using Stove.Couchbase.Configuration;
+using Stove.Couchbase.Repositories;
 using Stove.Domain.Repositories;
 using Stove.Reflection.Extensions;
 
-namespace Stove.Couchbase.Couchbase
+namespace Stove.Couchbase
 {
     public static class StoveCouchbaseRegistrationExtensions
     {

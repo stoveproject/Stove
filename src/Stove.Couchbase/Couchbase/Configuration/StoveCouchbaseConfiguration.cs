@@ -2,7 +2,7 @@
 
 using Couchbase.Configuration.Client;
 
-namespace Stove.Couchbase.Couchbase.Configuration
+namespace Stove.Couchbase.Configuration
 {
     public class StoveCouchbaseConfiguration : IStoveCouchbaseConfiguration, ISingletonDependency
     {

@@ -4,7 +4,6 @@ using System.Reflection;
 
 using Couchbase.Configuration.Client;
 
-using Stove.Couchbase.Couchbase;
 using Stove.TestBase;
 
 namespace Stove.Couchbase.Tests

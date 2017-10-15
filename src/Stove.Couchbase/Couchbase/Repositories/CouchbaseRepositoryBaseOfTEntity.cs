@@ -3,12 +3,12 @@
 using Couchbase;
 using Couchbase.Linq;
 
-using Stove.Couchbase.Couchbase.Filters.Action;
+using Stove.Couchbase.Filters.Action;
 using Stove.Domain.Entities;
 using Stove.Domain.Repositories;
 using Stove.Extensions;
 
-namespace Stove.Couchbase.Couchbase.Repositories
+namespace Stove.Couchbase.Repositories
 {
     public class CouchbaseRepositoryBase<TEntity> : StoveRepositoryBase<TEntity, string> where TEntity : class, IEntity<string>
     {

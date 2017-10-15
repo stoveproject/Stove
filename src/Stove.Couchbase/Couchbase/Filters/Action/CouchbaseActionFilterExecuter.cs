@@ -3,7 +3,7 @@
 using Stove.Domain.Entities;
 using Stove.Domain.Uow.DynamicFilters.Action;
 
-namespace Stove.Couchbase.Couchbase.Filters.Action
+namespace Stove.Couchbase.Filters.Action
 {
     public class CouchbaseActionFilterExecuter : ICouchbaseActionFilterExecuter, ITransientDependency
     {

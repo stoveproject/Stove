@@ -1,8 +1,26 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="..\..\common.props"></Import>
+  
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Stove</RootNamespace>
+    <AssemblyName>Stove.Couchbase</AssemblyName>
+    <PackageId>Stove.Couchbase</PackageId>
+    <PackageTags>.net;framework;boilerplate;NoSQL;Couchbase</PackageTags>
+    <Description>Couchbase integration for Stove.</Description>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <DocumentationFile>bin\Release\netstandard2.0\Stove.Couchbase.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="bin\Release\netstandard2.0\Stove.Couchbase.pdb">
+      <PackagePath>lib/netstandard2.0/</PackagePath>
+      <Pack>true</Pack>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CouchbaseNetClient" Version="2.5.1" />

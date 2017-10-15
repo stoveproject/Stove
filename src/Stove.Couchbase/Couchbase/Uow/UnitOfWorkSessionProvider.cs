@@ -4,7 +4,7 @@ using Couchbase.Linq;
 
 using Stove.Domain.Uow;
 
-namespace Stove.Couchbase.Couchbase.Uow
+namespace Stove.Couchbase.Uow
 {
     public class UnitOfWorkSessionProvider : ISessionProvider, ITransientDependency
     {

@@ -1,6 +1,6 @@
 ﻿using Stove.Configuration;
 
-namespace Stove.Couchbase.Couchbase.Configuration
+namespace Stove.Couchbase.Configuration
 {
     public static class StoveCouchbaseConfigurationExtensions
     {

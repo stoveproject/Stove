@@ -1,6 +1,6 @@
 ﻿using Couchbase.Linq;
 
-namespace Stove.Couchbase.Couchbase
+namespace Stove.Couchbase
 {
     public interface ISessionProvider
     {

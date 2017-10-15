@@ -1,6 +1,6 @@
 ﻿using Stove.Domain.Entities;
 
-namespace Stove.Couchbase.Couchbase.Filters.Action
+namespace Stove.Couchbase.Filters.Action
 {
     public class NullCouchbaseActionFilterExecuter : ICouchbaseActionFilterExecuter
     {

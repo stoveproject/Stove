@@ -1,9 +1,9 @@
 ﻿using Couchbase.Core;
 
 using Stove.Bootstrapping;
-using Stove.Couchbase.Couchbase.Configuration;
+using Stove.Couchbase.Configuration;
 
-namespace Stove.Couchbase.Couchbase
+namespace Stove.Couchbase
 {
     public class StoveCouchbaseBootstrapper : StoveBootstrapper
     {
