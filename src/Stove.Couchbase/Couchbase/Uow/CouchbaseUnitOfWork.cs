@@ -1,0 +1,62 @@
+﻿using System.Threading;
+using System.Threading.Tasks;
+
+using Autofac.Extras.IocManager;
+
+using Couchbase.Core;
+using Couchbase.Linq;
+
+using Stove.Domain.Uow;
+
+namespace Stove.Couchbase.Couchbase.Uow
+{
+    public class CouchbaseUnitOfWork : UnitOfWorkBase, ITransientDependency
+    {
+        private readonly ICluster _cluster;
+
+        public CouchbaseUnitOfWork(
+            IConnectionStringResolver connectionStringResolver,
+            IUnitOfWorkDefaultOptions defaultOptions,
+            IUnitOfWorkFilterExecuter filterExecuter,
+            ICluster cluster) : base(connectionStringResolver, defaultOptions, filterExecuter)
+        {
+            _cluster = cluster;
+        }
+
+        public IBucketContext Session { get; private set; }
+
+        protected override void BeginUow()
+        {
+            Session = new BucketContext(_cluster.OpenBucket());
+            Session.BeginChangeTracking();
+        }
+
+        public override void SaveChanges()
+        {
+            Session.SubmitChanges();
+        }
+
+        public override Task SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            SaveChanges();
+            return Task.CompletedTask;
+        }
+
+        protected override void CompleteUow()
+        {
+            SaveChanges();
+            Session.EndChangeTracking();
+        }
+
+        protected override Task CompleteUowAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            CompleteUow();
+            return Task.CompletedTask;
+        }
+
+        protected override void DisposeUow()
+        {
+            Session = null;
+        }
+    }
+}
