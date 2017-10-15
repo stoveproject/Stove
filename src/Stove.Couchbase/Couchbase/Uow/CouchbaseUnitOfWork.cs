@@ -25,9 +25,12 @@ namespace Stove.Couchbase.Couchbase.Uow
 
         public IBucketContext Session { get; private set; }
 
+        public IBucket Bucket { get; private set; }
+
         protected override void BeginUow()
         {
-            Session = new BucketContext(_cluster.OpenBucket());
+            Bucket = _cluster.OpenBucket();
+            Session = new BucketContext(Bucket);
             Session.BeginChangeTracking();
         }
 
@@ -56,7 +59,8 @@ namespace Stove.Couchbase.Couchbase.Uow
 
         protected override void DisposeUow()
         {
-            Session = null;
+            Bucket.Dispose();
+            _cluster.CloseBucket(Bucket);
         }
     }
 }

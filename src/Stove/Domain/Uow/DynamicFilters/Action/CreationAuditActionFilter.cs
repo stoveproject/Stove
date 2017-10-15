@@ -12,8 +12,7 @@ namespace Stove.Domain.Uow.DynamicFilters.Action
         {
             long? userId = GetAuditUserId();
             CheckAndSetId(entity);
-            var entityWithCreationTime = entity as IHasCreationTime;
-            if (entityWithCreationTime == null)
+            if (!(entity is IHasCreationTime entityWithCreationTime))
             {
                 return;
             }

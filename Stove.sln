@@ -86,7 +86,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stove.Serilog", "src\Stove.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stove.Serilog.Tests", "test\Stove.Serilog.Tests\Stove.Serilog.Tests.csproj", "{38E61EC8-F69C-41B1-9356-F5FD6DA507F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stove.Couchbase", "src\Stove.Couchbase\Stove.Couchbase.csproj", "{3AFF2B60-62F5-4547-9152-DD26E1A9918A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stove.Couchbase", "src\Stove.Couchbase\Stove.Couchbase.csproj", "{3AFF2B60-62F5-4547-9152-DD26E1A9918A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stove.Couchbase.Tests", "test\Stove.Couchbase.Tests\Stove.Couchbase.Tests.csproj", "{46E3FC0A-20B8-4749-AA68-1D165249211C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -230,6 +232,10 @@ Global
 		{3AFF2B60-62F5-4547-9152-DD26E1A9918A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3AFF2B60-62F5-4547-9152-DD26E1A9918A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3AFF2B60-62F5-4547-9152-DD26E1A9918A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46E3FC0A-20B8-4749-AA68-1D165249211C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46E3FC0A-20B8-4749-AA68-1D165249211C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46E3FC0A-20B8-4749-AA68-1D165249211C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46E3FC0A-20B8-4749-AA68-1D165249211C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -270,6 +276,7 @@ Global
 		{59590481-E87E-418F-B5D8-8C415FF4B027} = {23CB5044-8ECE-4DDC-89E0-FC1B8EC9DDDF}
 		{38E61EC8-F69C-41B1-9356-F5FD6DA507F0} = {4D2BAE52-1E23-4321-BBE6-2BAC28F7B389}
 		{3AFF2B60-62F5-4547-9152-DD26E1A9918A} = {23CB5044-8ECE-4DDC-89E0-FC1B8EC9DDDF}
+		{46E3FC0A-20B8-4749-AA68-1D165249211C} = {4D2BAE52-1E23-4321-BBE6-2BAC28F7B389}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FA9941D3-2A68-4501-B951-D2447D6EF432}
