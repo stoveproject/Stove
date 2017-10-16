@@ -22,8 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac.Extras.IocManager" Version="3.2.0" />
-    <PackageReference Include="Autofac.Extras.IocManager.DynamicProxy" Version="3.2.0" />
+    <PackageReference Include="Autofac.Extras.IocManager" Version="3.2.1" />
+    <PackageReference Include="Autofac.Extras.IocManager.DynamicProxy" Version="3.2.1" />
     <PackageReference Include="JetBrains.Annotations" Version="11.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="System.Collections.Immutable" Version="1.4.0" />
