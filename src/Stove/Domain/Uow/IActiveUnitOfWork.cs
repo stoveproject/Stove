@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Stove.Domain.Uow
@@ -57,7 +58,7 @@ namespace Stove.Domain.Uow
         ///     No explicit call is needed to SaveChanges generally,
         ///     since all changes saved at end of a unit of work automatically.
         /// </summary>
-        Task SaveChangesAsync();
+        Task SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         ///     Disables one or more data filters.

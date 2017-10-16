@@ -1,4 +1,5 @@
-using System.Data;
+using System.Data.Common;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Autofac.Extras.IocManager;
@@ -43,12 +44,12 @@ namespace Stove.NHibernate.Uow
         ///     <see cref="NhUnitOfWork" /> uses this DbConnection if it's set.
         ///     This is usually set in tests.
         /// </summary>
-        public IDbConnection DbConnection { get; set; }
+        public DbConnection DbConnection { get; set; }
 
         protected override void BeginUow()
         {
             Session = DbConnection != null
-                ? _sessionFactory.OpenSession(DbConnection)
+                ? _sessionFactory.OpenSessionWithConnection(DbConnection)
                 : _sessionFactory.OpenSession();
 
             if (Options.IsTransactional == true)
@@ -64,10 +65,9 @@ namespace Stove.NHibernate.Uow
             Session.Flush();
         }
 
-        public override Task SaveChangesAsync()
+        public override Task SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            Session.Flush();
-            return Task.FromResult(0);
+            return Session.FlushAsync(cancellationToken);
         }
 
         /// <summary>
@@ -76,16 +76,12 @@ namespace Stove.NHibernate.Uow
         protected override void CompleteUow()
         {
             SaveChanges();
-            if (_transaction != null)
-            {
-                _transaction.Commit();
-            }
+            _transaction?.Commit();
         }
 
-        protected override Task CompleteUowAsync()
+        protected override Task CompleteUowAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            CompleteUow();
-            return Task.FromResult(0);
+            return SaveChangesAsync(cancellationToken).ContinueWith(task => _transaction?.CommitAsync(cancellationToken), cancellationToken);
         }
 
         /// <summary>

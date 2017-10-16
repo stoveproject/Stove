@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 using Autofac.Extras.IocManager;
 
@@ -36,7 +37,7 @@ namespace Stove.RavenDB.Uow
             Session.SaveChanges();
         }
 
-        public override Task SaveChangesAsync()
+        public override Task SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             SaveChanges();
             return Task.FromResult(0);
@@ -47,7 +48,7 @@ namespace Stove.RavenDB.Uow
             SaveChanges();
         }
 
-        protected override Task CompleteUowAsync()
+        protected override Task CompleteUowAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             CompleteUow();
             return Task.FromResult(0);

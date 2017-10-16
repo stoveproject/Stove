@@ -1,6 +1,7 @@
-﻿using System.Linq;
-
-using NHibernate.Linq;
+﻿using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 using Shouldly;
 
@@ -142,6 +143,45 @@ namespace Stove.NHibernate.Tests
 
                 triggerCount.ShouldBe(1);
             }
+        }
+
+        [Fact]
+        public async Task Should_rollback_when_CancellationToken_cancel_is_requested()
+        {
+            var ts = new CancellationTokenSource();
+            int updatingEventTriggerCount = 0;
+            try
+            {
+                using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
+                {
+                    The<IEventBus>().Register<EntityUpdatingEventData<Product>>(
+                        eventData =>
+                        {
+                            eventData.Entity.Name.ShouldBe("Pants");
+                            ts.Cancel(true);
+                            updatingEventTriggerCount++;
+                        });
+
+                    Product product = The<IRepository<Product>>().Single(p => p.Name == "TShirt");
+
+                    product.Name = "Pants";
+
+                    await uow.CompleteAsync(ts.Token);
+                }
+            }
+            catch (Exception exception)
+            {
+                //Handle
+            }
+
+            using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
+            {
+                The<IRepository<Product>>().FirstOrDefault(x => x.Name == "Pants").ShouldBeNull();
+
+                await uow.CompleteAsync();
+            }
+
+            updatingEventTriggerCount.ShouldBe(1);
         }
     }
 }

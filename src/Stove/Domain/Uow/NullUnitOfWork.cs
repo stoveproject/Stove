@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace Stove.Domain.Uow
 {
@@ -24,7 +25,7 @@ namespace Stove.Domain.Uow
 		{
 		}
 
-		public override Task SaveChangesAsync()
+		public override Task SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
 		{
 			return Task.FromResult(0);
 		}
@@ -37,7 +38,7 @@ namespace Stove.Domain.Uow
 		{
 		}
 
-		protected override Task CompleteUowAsync()
+		protected override Task CompleteUowAsync(CancellationToken cancellationToken = default(CancellationToken))
 		{
 			return Task.FromResult(0);
 		}

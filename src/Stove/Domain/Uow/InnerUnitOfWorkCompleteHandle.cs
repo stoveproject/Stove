@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Stove.Domain.Uow
@@ -22,7 +23,7 @@ namespace Stove.Domain.Uow
             _isCompleteCalled = true;
         }
 
-        public Task CompleteAsync()
+        public Task CompleteAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             _isCompleteCalled = true;
             return Task.FromResult(0);

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +10,8 @@ using Shouldly;
 using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
 using Stove.EntityFrameworkCore.Tests.Domain;
+using Stove.Events.Bus;
+using Stove.Events.Bus.Entities;
 
 using Xunit;
 
@@ -21,7 +25,7 @@ namespace Stove.EntityFrameworkCore.Tests.Tests
 
         public Repository_Tests()
         {
-	        Building(builder => { }).Ok();
+            Building(builder => { }).Ok();
 
             _uowManager = The<IUnitOfWorkManager>();
             _blogRepository = The<IRepository<Blog>>();
@@ -33,7 +37,7 @@ namespace Stove.EntityFrameworkCore.Tests.Tests
         {
             //Act
 
-            var blogs = _blogRepository.GetAllList();
+            List<Blog> blogs = _blogRepository.GetAllList();
 
             //Assert
 
@@ -47,9 +51,9 @@ namespace Stove.EntityFrameworkCore.Tests.Tests
 
             //Act
 
-            using (var uow = _uowManager.Begin())
+            using (IUnitOfWorkCompleteHandle uow = _uowManager.Begin())
             {
-                var blog1 = await _blogRepository.SingleAsync(b => b.Name == "test-blog-1");
+                Blog blog1 = await _blogRepository.SingleAsync(b => b.Name == "test-blog-1");
                 blog1Id = blog1.Id;
 
                 blog1.Name = "test-blog-1-updated";
@@ -61,7 +65,7 @@ namespace Stove.EntityFrameworkCore.Tests.Tests
 
             await UsingDbContextAsync(async context =>
             {
-                var blog1 = await context.Blogs.SingleAsync(b => b.Id == blog1Id);
+                Blog blog1 = await context.Blogs.SingleAsync(b => b.Id == blog1Id);
                 blog1.Name.ShouldBe("test-blog-1-updated");
             });
         }
@@ -71,9 +75,9 @@ namespace Stove.EntityFrameworkCore.Tests.Tests
         {
             //EF Core does not support lazy loading yet, so navigation properties will not be loaded if not included
 
-            using (var uow = _uowManager.Begin())
+            using (IUnitOfWorkCompleteHandle uow = _uowManager.Begin())
             {
-                var post = await _postRepository.GetAll().FirstAsync();
+                Post post = await _postRepository.GetAll().FirstAsync();
 
                 post.Blog.ShouldBeNull();
 
@@ -84,9 +88,9 @@ namespace Stove.EntityFrameworkCore.Tests.Tests
         [Fact]
         public async Task Should_Include_Navigation_Properties_If_Requested()
         {
-            using (var uow = _uowManager.Begin())
+            using (IUnitOfWorkCompleteHandle uow = _uowManager.Begin())
             {
-                var post = await _postRepository.GetAllIncluding(p => p.Blog).FirstAsync();
+                Post post = await _postRepository.GetAllIncluding(p => p.Blog).FirstAsync();
 
                 post.Blog.ShouldNotBeNull();
                 post.Blog.Name.ShouldBe("test-blog-1");
@@ -98,7 +102,7 @@ namespace Stove.EntityFrameworkCore.Tests.Tests
         [Fact]
         public async Task Should_Insert_New_Entity()
         {
-            using (var uow = _uowManager.Begin())
+            using (IUnitOfWorkCompleteHandle uow = _uowManager.Begin())
             {
                 var blog = new Blog("blog2", "http://myblog2.com");
                 blog.IsTransient().ShouldBeTrue();
@@ -111,14 +115,50 @@ namespace Stove.EntityFrameworkCore.Tests.Tests
         [Fact]
         public async Task Should_Insert_New_Entity_With_Guid_Id()
         {
-            using (var uow = _uowManager.Begin())
+            using (IUnitOfWorkCompleteHandle uow = _uowManager.Begin())
             {
-                var blog1 = await _blogRepository.GetAsync(1);
+                Blog blog1 = await _blogRepository.GetAsync(1);
                 var post = new Post(blog1, "a test title", "a test body");
                 post.IsTransient().ShouldBeTrue();
                 await _postRepository.InsertAsync(post);
                 await uow.CompleteAsync();
                 post.IsTransient().ShouldBeFalse();
+            }
+        }
+
+        [Fact]
+        public async Task should_rolled_back_when_CancellationToken_is_requested_as_cancel()
+        {
+            var ts = new CancellationTokenSource();
+
+            The<IEventBus>().Register<EntityCreatingEventData<Blog>>(data =>
+            {
+                ts.Cancel(true);
+            });
+
+            try
+            {
+                using (IUnitOfWorkCompleteHandle uow = _uowManager.Begin())
+                {
+                    await _blogRepository.InsertAsync(new Blog("cancellationtoken", "cancellationtoken.com"));
+
+                    _blogRepository.FirstOrDefaultAsync(x=>x.Name == "cancellationtoken").ShouldNotBeNull();
+
+                    await uow.CompleteAsync(ts.Token);
+                }
+            }
+            catch (Exception exception)
+            {
+                //Handle uow should be Rolled Back!
+            }
+
+            using (IUnitOfWorkCompleteHandle uow = _uowManager.Begin())
+            {
+                Blog blog = await _blogRepository.FirstOrDefaultAsync(x => x.Name == "cancellationtoken");
+
+                blog.ShouldBeNull();
+
+                await uow.CompleteAsync();
             }
         }
     }
