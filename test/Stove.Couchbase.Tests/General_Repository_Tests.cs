@@ -5,6 +5,8 @@ using Shouldly;
 using Stove.Couchbase.Tests.Entities;
 using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
+using Stove.Events.Bus;
+using Stove.Events.Bus.Entities;
 
 using Xunit;
 
@@ -20,6 +22,7 @@ namespace Stove.Couchbase.Tests
         [Fact]
         public void Insert_should_work()
         {
+
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
             //-----------------------------------------------------------------------------------------------------------
@@ -36,6 +39,35 @@ namespace Stove.Couchbase.Tests
             //-----------------------------------------------------------------------------------------------------------
             Product item = The<IRepository<Product, string>>().FirstOrDefault(x => x.Id == inserted.Id);
             item.ShouldNotBeNull();
+        }
+
+        [Fact]
+        public void Insert_and_event_fire_should_work()
+        {
+            //-----------------------------------------------------------------------------------------------------------
+            // Arrange
+            //-----------------------------------------------------------------------------------------------------------
+            string productName = Guid.NewGuid().ToString("N");
+            var product = new Product(productName);
+            var eventInvocationCount = 0;
+
+            //-----------------------------------------------------------------------------------------------------------
+            // Act
+            //-----------------------------------------------------------------------------------------------------------
+
+            The<IEventBus>().Register<EntityCreatingEventData<Product>>(data =>
+            {
+                eventInvocationCount++;
+            });
+
+            Product inserted = The<IRepository<Product, string>>().Insert(product);
+
+            //-----------------------------------------------------------------------------------------------------------
+            // Assert
+            //-----------------------------------------------------------------------------------------------------------
+            Product item = The<IRepository<Product, string>>().FirstOrDefault(x => x.Id == inserted.Id);
+            item.ShouldNotBeNull();
+            eventInvocationCount.ShouldBe(1);
         }
 
         [Fact]

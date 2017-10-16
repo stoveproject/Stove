@@ -1,5 +1,6 @@
 ﻿using System;
 
+using Autofac;
 using Autofac.Extras.IocManager;
 
 using Couchbase;
@@ -19,11 +20,15 @@ namespace Stove.Couchbase
             return builder
                 .RegisterServices(r =>
                 {
-                    r.RegisterGeneric(typeof(IRepository<,>), typeof(CouchbaseRepositoryBase<>));
+                   r.UseBuilder(cb =>
+                   {
+                       cb.RegisterGeneric(typeof(CouchbaseRepositoryBase<>)).As(typeof(IRepository<,>)).PropertiesAutowired();
+                   });
                     r.Register(ctx => configurer);
                     r.Register<ICluster>(ctx =>
                     {
                         var cfg = ctx.Resolver.Resolve<IStoveCouchbaseConfiguration>();
+
                         return new Cluster(cfg.ClientConfiguration);
                     }, Lifetime.Singleton);
 

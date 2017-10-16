@@ -15,6 +15,7 @@ namespace Stove.Couchbase.Tests
             Building(builder =>
             {
                 builder
+                    .UseStoveEventBus()
                     .UseStoveCouchbase(configuration =>
                     {
                         ClientConfiguration cfg = configuration.ClientConfiguration;
@@ -27,7 +28,6 @@ namespace Stove.Couchbase.Tests
                                 {
                                     BucketName = "default",
                                     UseSsl = false,
-                                    Password = "",
                                     DefaultOperationLifespan = 2000,
                                     PoolConfiguration = new PoolConfiguration
                                     {

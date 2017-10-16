@@ -47,8 +47,8 @@ namespace Stove.Couchbase.Uow
 
         protected override void CompleteUow()
         {
-            SaveChanges();
             Session.EndChangeTracking();
+            SaveChanges();
         }
 
         protected override Task CompleteUowAsync(CancellationToken cancellationToken = default(CancellationToken))

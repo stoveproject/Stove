@@ -6,24 +6,27 @@ using Couchbase.Linq;
 using Stove.Couchbase.Filters.Action;
 using Stove.Domain.Entities;
 using Stove.Domain.Repositories;
-using Stove.Extensions;
+using Stove.Events.Bus.Entities;
 
 namespace Stove.Couchbase.Repositories
 {
     public class CouchbaseRepositoryBase<TEntity> : StoveRepositoryBase<TEntity, string> where TEntity : class, IEntity<string>
     {
-        private readonly ICouchbaseActionFilterExecuter _actionFilterExecuter;
         private readonly ISessionProvider _sessionProvider;
 
         public CouchbaseRepositoryBase(
-            ISessionProvider sessionProvider,
-            ICouchbaseActionFilterExecuter actionFilterExecuter)
+            ISessionProvider sessionProvider)
         {
             _sessionProvider = sessionProvider;
-            _actionFilterExecuter = actionFilterExecuter;
 
             GuidGenerator = SequentialGuidGenerator.Instance;
+            EntityChangeEventHelper = NullEntityChangeEventHelper.Instance;
+            ActionFilterExecuter = NullCouchbaseActionFilterExecuter.Instance;
         }
+
+        public ICouchbaseActionFilterExecuter ActionFilterExecuter { get; set; }
+
+        public IEntityChangeEventHelper EntityChangeEventHelper { get; set; }
 
         public IGuidGenerator GuidGenerator { get; set; }
 
@@ -37,7 +40,10 @@ namespace Stove.Couchbase.Repositories
         public override TEntity Insert(TEntity entity)
         {
             entity.Id = GuidGenerator.Create().ToString("N");
-            _actionFilterExecuter.ExecuteCreationAuditFilter<TEntity, string>(entity);
+            ActionFilterExecuter.ExecuteCreationAuditFilter<TEntity, string>(entity);
+
+            EntityChangeEventHelper.TriggerEntityCreatingEvent(entity);
+
             IDocumentResult<TEntity> result = Session.Bucket.Insert(new Document<TEntity>
             {
                 Content = entity,
@@ -46,12 +52,17 @@ namespace Stove.Couchbase.Repositories
 
             result.EnsureSuccess();
 
+            EntityChangeEventHelper.TriggerEntityCreatedEventOnUowCompleted(entity);
+
             return result.Content;
         }
 
         public override TEntity Update(TEntity entity)
         {
-            _actionFilterExecuter.ExecuteModificationAuditFilter<TEntity, string>(entity);
+            ActionFilterExecuter.ExecuteModificationAuditFilter<TEntity, string>(entity);
+
+            EntityChangeEventHelper.TriggerEntityUpdatingEvent(entity);
+
             IDocumentResult<TEntity> result = Session.Bucket.Upsert(new Document<TEntity>
             {
                 Content = entity,
@@ -60,12 +71,16 @@ namespace Stove.Couchbase.Repositories
 
             result.EnsureSuccess();
 
+            EntityChangeEventHelper.TriggerEntityUpdatedEventOnUowCompleted(entity);
+
             return result.Content;
         }
 
         public override void Delete(TEntity entity)
         {
-            _actionFilterExecuter.ExecuteDeletionAuditFilter<TEntity, string>(entity);
+            ActionFilterExecuter.ExecuteDeletionAuditFilter<TEntity, string>(entity);
+
+            EntityChangeEventHelper.TriggerEntityDeletingEvent(entity);
 
             if (entity is ISoftDelete)
             {
@@ -83,6 +98,8 @@ namespace Stove.Couchbase.Repositories
                     Id = $"{typeof(TEntity).Name}:{entity.Id}"
                 }).EnsureSuccess();
             }
+
+            EntityChangeEventHelper.TriggerEntityDeletedEventOnUowCompleted(entity);
         }
 
         public override void Delete(string id)
