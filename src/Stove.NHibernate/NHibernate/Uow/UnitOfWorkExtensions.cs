@@ -3,6 +3,7 @@ using System;
 using NHibernate;
 
 using Stove.Domain.Uow;
+using Stove.NHibernate.Enrichments;
 
 namespace Stove.NHibernate.Uow
 {
@@ -10,17 +11,20 @@ namespace Stove.NHibernate.Uow
     {
         public static ISession GetSession(this IActiveUnitOfWork unitOfWork)
         {
-            if (unitOfWork == null)
-            {
-                throw new ArgumentNullException(nameof(unitOfWork));
-            }
+            if (unitOfWork == null) throw new ArgumentNullException(nameof(unitOfWork));
 
-            if (!(unitOfWork is NhUnitOfWork))
-            {
-                throw new ArgumentException("unitOfWork is not type of " + typeof(NhUnitOfWork).FullName, nameof(unitOfWork));
-            }
+            if (!(unitOfWork is NhUnitOfWork)) throw new ArgumentException("unitOfWork is not type of " + typeof(NhUnitOfWork).FullName, nameof(unitOfWork));
 
-            return (unitOfWork as NhUnitOfWork).Session;
+            return ((NhUnitOfWork)unitOfWork).Session;
+        }
+
+        public static ISession GetSession<TSessionContext>(this IActiveUnitOfWork unitOfWork) where TSessionContext : StoveSessionContext
+        {
+            if (unitOfWork == null) throw new ArgumentNullException(nameof(unitOfWork));
+
+            if (!(unitOfWork is NhUnitOfWork)) throw new ArgumentException("unitOfWork is not type of " + typeof(NhUnitOfWork).FullName, nameof(unitOfWork));
+
+            return ((NhUnitOfWork)unitOfWork).GetOrCreateSession<TSessionContext>();
         }
     }
 }

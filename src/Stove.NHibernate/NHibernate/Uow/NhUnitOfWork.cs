@@ -1,12 +1,17 @@
+using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 using Autofac.Extras.IocManager;
 
 using NHibernate;
+using NHibernate.Util;
 
+using Stove.Collections.Extensions;
 using Stove.Domain.Uow;
+using Stove.NHibernate.Enrichments;
 using Stove.Transactions.Extensions;
 
 namespace Stove.NHibernate.Uow
@@ -16,24 +21,30 @@ namespace Stove.NHibernate.Uow
     /// </summary>
     public class NhUnitOfWork : UnitOfWorkBase, ITransientDependency
     {
-        private readonly ISessionFactory _sessionFactory;
-        private ITransaction _transaction;
+        private readonly ISessionFactoryProvider _sessionFactoryProvider;
 
         /// <summary>
         ///     Creates a new instance of <see cref="NhUnitOfWork" />.
         /// </summary>
         public NhUnitOfWork(
-            ISessionFactory sessionFactory,
             IConnectionStringResolver connectionStringResolver,
             IUnitOfWorkDefaultOptions defaultOptions,
-            IUnitOfWorkFilterExecuter filterExecuter)
+            IUnitOfWorkFilterExecuter filterExecuter, 
+            ISessionFactoryProvider sessionFactoryProvider)
             : base(
                 connectionStringResolver,
                 defaultOptions,
                 filterExecuter)
         {
-            _sessionFactory = sessionFactory;
+            _sessionFactoryProvider = sessionFactoryProvider;
+
+            ActiveSessions = new Dictionary<string, ISession>();
+            ActiveTransactions = new Dictionary<string, ActiveTransactionInfo>();
         }
+
+        protected Dictionary<string, ISession> ActiveSessions { get; set; }
+
+        protected Dictionary<string, ActiveTransactionInfo> ActiveTransactions { get; set; }
 
         /// <summary>
         ///     Gets NHibernate session object to perform queries.
@@ -48,26 +59,29 @@ namespace Stove.NHibernate.Uow
 
         protected override void BeginUow()
         {
-            Session = DbConnection != null
-                ? _sessionFactory.OpenSessionWithConnection(DbConnection)
-                : _sessionFactory.OpenSession();
+            //Session = DbConnection != null
+            //    ? _sessionFactory.OpenSessionWithConnection(DbConnection)
+            //    : _sessionFactory.OpenSession();
 
-            if (Options.IsTransactional == true)
-            {
-                _transaction = Options.IsolationLevel.HasValue
-                    ? Session.BeginTransaction(Options.IsolationLevel.Value.ToSystemDataIsolationLevel())
-                    : Session.BeginTransaction();
-            }
+            //if (Options.IsTransactional == true)
+            //{
+            //    _transaction = Options.IsolationLevel.HasValue
+            //        ? Session.BeginTransaction(Options.IsolationLevel.Value.ToSystemDataIsolationLevel())
+            //        : Session.BeginTransaction();
+            //}
         }
 
         public override void SaveChanges()
         {
-            Session.Flush();
+            GetAllActiveSessions().ForEach(x => x.Flush());
         }
 
-        public override Task SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public override async Task SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            return Session.FlushAsync(cancellationToken);
+            foreach (ISession session in GetAllActiveSessions())
+            {
+                await session.FlushAsync(cancellationToken);
+            }
         }
 
         /// <summary>
@@ -76,12 +90,19 @@ namespace Stove.NHibernate.Uow
         protected override void CompleteUow()
         {
             SaveChanges();
-            _transaction?.Commit();
+
+            GetAllActiveTransactions().ForEach(x => x?.Commit());
         }
 
         protected override Task CompleteUowAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            return SaveChangesAsync(cancellationToken).ContinueWith(task => _transaction?.CommitAsync(cancellationToken), cancellationToken);
+            return SaveChangesAsync(cancellationToken).ContinueWith(async task =>
+            {
+                foreach (ITransaction activeTransaction in GetAllActiveTransactions())
+                {
+                    await activeTransaction.CommitAsync(cancellationToken);
+                }
+            }, cancellationToken);
         }
 
         /// <summary>
@@ -89,13 +110,108 @@ namespace Stove.NHibernate.Uow
         /// </summary>
         protected override void DisposeUow()
         {
-            if (_transaction != null)
+            foreach (ActiveTransactionInfo activeTransaction in ActiveTransactions.Values)
             {
-                _transaction.Dispose();
-                _transaction = null;
+                foreach (ISession session in activeTransaction.AttendedSessions)
+                {
+                    session.Dispose();
+                }
+
+                activeTransaction.Session.Dispose();
+                activeTransaction.StarterSession.Dispose();
             }
 
-            Session.Dispose();
+            foreach (ISession activeSession in ActiveSessions.Values)
+            {
+                activeSession.Dispose();
+            }
+
+            ActiveSessions.Clear();
+            ActiveTransactions.Clear();
         }
+
+        protected virtual IReadOnlyList<ISession> GetAllActiveSessions()
+        {
+            return ActiveSessions.Select(x => x.Value).ToList();
+        }
+
+        protected virtual IReadOnlyList<ITransaction> GetAllActiveTransactions()
+        {
+            return ActiveTransactions.Select(x => x.Value.Transaction).ToList();
+        }
+
+        public ISession GetOrCreateSession<TSessionContext>() where TSessionContext : StoveSessionContext
+        {
+            ISessionFactory sessionFactory = _sessionFactoryProvider.GetSessionFactory<TSessionContext>();
+            var connectionStringResolveArgs = new ConnectionStringResolveArgs();
+            connectionStringResolveArgs["SessionContextType"] = typeof(TSessionContext);
+            string connectionString = ResolveConnectionString(connectionStringResolveArgs);
+
+            string sessionKey = typeof(TSessionContext).FullName + "#" + connectionString;
+
+            if (!ActiveSessions.TryGetValue(sessionKey, out ISession session))
+            {
+                if (Options.IsTransactional == true)
+                {
+                    session = DbConnection != null
+                        ? sessionFactory.OpenSessionWithConnection(DbConnection)
+                        : sessionFactory.OpenSession();
+
+                    ActiveTransactionInfo activeTransaction = ActiveTransactions.GetOrDefault(connectionString);
+                    if (activeTransaction == null)
+                    {
+                        ITransaction transaction = Options.IsolationLevel.HasValue
+                            ? session.BeginTransaction(Options.IsolationLevel.Value.ToSystemDataIsolationLevel())
+                            : session.BeginTransaction();
+                        activeTransaction = new ActiveTransactionInfo(transaction, session, session);
+                        ActiveTransactions[connectionString] = activeTransaction;
+                    }
+                    else
+                    {
+                        session = sessionFactory.OpenSession()
+                                                .SessionWithOptions()
+                                                .Connection(activeTransaction.Session.Connection)
+                                                .AutoJoinTransaction()
+                                                .OpenSession();
+
+                        activeTransaction.AttendedSessions.Add(session);
+                    }
+                }
+                else
+                {
+                    session = DbConnection != null
+                        ? sessionFactory.OpenSessionWithConnection(DbConnection)
+                        : sessionFactory.OpenSession();
+                }
+
+                if (Options.Timeout.HasValue && session.Connection.ConnectionTimeout != 0)
+                {
+                    //TODO
+                }
+
+                ActiveSessions[sessionKey] = session;
+            }
+
+            return session;
+        }
+    }
+
+    public class ActiveTransactionInfo
+    {
+        public ActiveTransactionInfo(ITransaction tran, ISession actualSession, ISession starterSession)
+        {
+            Transaction = tran;
+            Session = actualSession;
+            StarterSession = starterSession;
+            AttendedSessions = new List<ISession>();
+        }
+
+        public ITransaction Transaction { get; }
+
+        public ISession Session { get; }
+
+        public ISession StarterSession { get; }
+
+        public List<ISession> AttendedSessions { get; }
     }
 }

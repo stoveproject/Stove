@@ -54,6 +54,28 @@ namespace Stove.NHibernate.Tests
         }
 
         [Fact]
+        public void Insert_should_work_on_multi_database()
+        {
+            using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
+            {
+                The<IRepository<Product>>().Insert(new Product("Pants"));
+                The<IRepository<Category>>().Insert(new Category("Bread"));
+
+                Product product = UsingSession(session => session.Query<Product>().FirstOrDefault(p => p.Name == "Pants"));
+                product.ShouldNotBe(null);
+                product.IsTransient().ShouldBe(false);
+                product.Name.ShouldBe("Pants");
+
+                Category category = The<IRepository<Category>>().FirstOrDefault(x => x.Name == "Bread");
+                category.ShouldNotBe(null);
+                category.IsTransient().ShouldBe(false);
+                category.Name.ShouldBe("Bread");
+
+                uow.Complete();
+            }
+        }
+
+        [Fact]
         public void Update_With_Action_Test()
         {
             using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())

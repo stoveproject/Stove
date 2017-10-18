@@ -24,9 +24,9 @@ namespace Stove.Demo.ConsoleApp.Nh
                                                    .UseStoveNullLogger()
                                                    .UseStoveNHibernate(nhCfg =>
                                                    {
-                                                       nhCfg.FluentConfiguration
-                                                            .Database(MsSqlConfiguration.MsSql2012.ConnectionString(nhCfg.Configuration.DefaultNameOrConnectionString))
-                                                            .Mappings(m => m.FluentMappings.AddFromAssembly(Assembly.GetExecutingAssembly()));
+                                                       //nhCfg.FluentConfiguration
+                                                       //     .Database(MsSqlConfiguration.MsSql2012.ConnectionString(nhCfg.Configuration.DefaultNameOrConnectionString))
+                                                       //     .Mappings(m => m.FluentMappings.AddFromAssembly(Assembly.GetExecutingAssembly()));
 
                                                        return nhCfg;
                                                    })
