@@ -29,7 +29,7 @@ namespace Stove.NHibernate.Uow
         public NhUnitOfWork(
             IConnectionStringResolver connectionStringResolver,
             IUnitOfWorkDefaultOptions defaultOptions,
-            IUnitOfWorkFilterExecuter filterExecuter, 
+            IUnitOfWorkFilterExecuter filterExecuter,
             ISessionFactoryProvider sessionFactoryProvider)
             : base(
                 connectionStringResolver,
@@ -117,7 +117,7 @@ namespace Stove.NHibernate.Uow
                     session.Dispose();
                 }
 
-                activeTransaction.Session.Dispose();
+                activeTransaction.Transaction.Dispose();
                 activeTransaction.StarterSession.Dispose();
             }
 
@@ -163,14 +163,14 @@ namespace Stove.NHibernate.Uow
                         ITransaction transaction = Options.IsolationLevel.HasValue
                             ? session.BeginTransaction(Options.IsolationLevel.Value.ToSystemDataIsolationLevel())
                             : session.BeginTransaction();
-                        activeTransaction = new ActiveTransactionInfo(transaction, session, session);
+                        activeTransaction = new ActiveTransactionInfo(transaction, session.Connection, session);
                         ActiveTransactions[connectionString] = activeTransaction;
                     }
                     else
                     {
                         session = sessionFactory.OpenSession()
                                                 .SessionWithOptions()
-                                                .Connection(activeTransaction.Session.Connection)
+                                                .Connection(activeTransaction.Connection)
                                                 .AutoJoinTransaction()
                                                 .OpenSession();
 
@@ -198,17 +198,17 @@ namespace Stove.NHibernate.Uow
 
     public class ActiveTransactionInfo
     {
-        public ActiveTransactionInfo(ITransaction tran, ISession actualSession, ISession starterSession)
+        public ActiveTransactionInfo(ITransaction transaction, DbConnection connection, ISession starterSession)
         {
-            Transaction = tran;
-            Session = actualSession;
+            Transaction = transaction;
+            Connection = connection;
             StarterSession = starterSession;
             AttendedSessions = new List<ISession>();
         }
 
         public ITransaction Transaction { get; }
 
-        public ISession Session { get; }
+        public DbConnection Connection { get; }
 
         public ISession StarterSession { get; }
 
