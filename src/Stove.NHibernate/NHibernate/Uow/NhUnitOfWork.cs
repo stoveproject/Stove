@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Autofac.Extras.IocManager;
 
 using NHibernate;
-using NHibernate.Util;
 
 using Stove.Collections.Extensions;
 using Stove.Domain.Uow;
@@ -16,6 +15,7 @@ using Stove.Transactions.Extensions;
 
 namespace Stove.NHibernate.Uow
 {
+    /// <inheritdoc cref="UnitOfWorkBase" />
     /// <summary>
     ///     Implements Unit of work for NHibernate.
     /// </summary>
@@ -73,7 +73,10 @@ namespace Stove.NHibernate.Uow
 
         public override void SaveChanges()
         {
-            GetAllActiveSessions().ForEach(x => x.Flush());
+            foreach (ISession session in ActiveSessions.Values)
+            {
+                session.Flush();
+            }
         }
 
         public override async Task SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
@@ -91,7 +94,10 @@ namespace Stove.NHibernate.Uow
         {
             SaveChanges();
 
-            GetAllActiveTransactions().ForEach(x => x?.Commit());
+            foreach (ActiveTransactionInfo activeTransactionInfo in ActiveTransactions.Values)
+            {
+                activeTransactionInfo.Transaction.Commit();
+            }
         }
 
         protected override Task CompleteUowAsync(CancellationToken cancellationToken = default(CancellationToken))
@@ -130,16 +136,6 @@ namespace Stove.NHibernate.Uow
             ActiveTransactions.Clear();
         }
 
-        protected virtual IReadOnlyList<ISession> GetAllActiveSessions()
-        {
-            return ActiveSessions.Select(x => x.Value).ToList();
-        }
-
-        protected virtual IReadOnlyList<ITransaction> GetAllActiveTransactions()
-        {
-            return ActiveTransactions.Select(x => x.Value.Transaction).ToList();
-        }
-
         public ISession GetOrCreateSession<TSessionContext>() where TSessionContext : StoveSessionContext
         {
             ISessionFactory sessionFactory = _sessionFactoryProvider.GetSessionFactory<TSessionContext>();
@@ -153,28 +149,25 @@ namespace Stove.NHibernate.Uow
             {
                 if (Options.IsTransactional == true)
                 {
-                    session = DbConnection != null
-                        ? sessionFactory.OpenSessionWithConnection(DbConnection)
-                        : sessionFactory.OpenSession();
-
-                    ActiveTransactionInfo activeTransaction = ActiveTransactions.GetOrDefault(connectionString);
-                    if (activeTransaction == null)
+                    ActiveTransactionInfo activeTransactionInfo = ActiveTransactions.GetOrDefault(connectionString);
+                    if (activeTransactionInfo == null)
                     {
+                        session = DbConnection != null
+                            ? sessionFactory.WithOptions().Connection(DbConnection).OpenSession()
+                            : sessionFactory.OpenSession();
+
                         ITransaction transaction = Options.IsolationLevel.HasValue
                             ? session.BeginTransaction(Options.IsolationLevel.Value.ToSystemDataIsolationLevel())
                             : session.BeginTransaction();
-                        activeTransaction = new ActiveTransactionInfo(transaction, session.Connection, session);
-                        ActiveTransactions[connectionString] = activeTransaction;
+
+                        activeTransactionInfo = new ActiveTransactionInfo(transaction, session.Connection, session);
+                        ActiveTransactions[connectionString] = activeTransactionInfo;
                     }
                     else
                     {
-                        session = sessionFactory.OpenSession()
-                                                .SessionWithOptions()
-                                                .Connection(activeTransaction.Connection)
-                                                .AutoJoinTransaction()
-                                                .OpenSession();
+                        session = activeTransactionInfo.StarterSession;
 
-                        activeTransaction.AttendedSessions.Add(session);
+                        activeTransactionInfo.AttendedSessions.Add(session);
                     }
                 }
                 else
@@ -193,6 +186,16 @@ namespace Stove.NHibernate.Uow
             }
 
             return session;
+        }
+
+        protected virtual IReadOnlyList<ISession> GetAllActiveSessions()
+        {
+            return ActiveSessions.Select(x => x.Value).ToList();
+        }
+
+        protected virtual IReadOnlyList<ITransaction> GetAllActiveTransactions()
+        {
+            return ActiveTransactions.Select(x => x.Value.Transaction).ToList();
         }
     }
 

@@ -4,9 +4,9 @@ using Stove.Demo.ConsoleApp.Nh.Entities;
 
 namespace Stove.Demo.ConsoleApp.Nh.Mappings.Dapper
 {
-    public sealed class ProductMap : ClassMapper<Product>
+    public sealed class CategoryMap : ClassMapper<Category>
     {
-        public ProductMap()
+        public CategoryMap()
         {
             Table("Products");
             Map(x => x.Id).Key(KeyType.Identity);

@@ -3,11 +3,13 @@ using System.Reflection;
 
 using Autofac.Extras.IocManager;
 
+using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 
 using HibernatingRhinos.Profiler.Appender.NHibernate;
 
 using Stove.Dapper;
+using Stove.Demo.ConsoleApp.Nh.SessionContexts;
 using Stove.NHibernate;
 
 namespace Stove.Demo.ConsoleApp.Nh
@@ -24,13 +26,22 @@ namespace Stove.Demo.ConsoleApp.Nh
                                                    .UseStoveNullLogger()
                                                    .UseStoveNHibernate(nhCfg =>
                                                    {
-                                                       //nhCfg.FluentConfiguration
-                                                       //     .Database(MsSqlConfiguration.MsSql2012.ConnectionString(nhCfg.Configuration.DefaultNameOrConnectionString))
-                                                       //     .Mappings(m => m.FluentMappings.AddFromAssembly(Assembly.GetExecutingAssembly()));
+                                                       nhCfg.AddFluentConfigurationFor<PrimarySessionContext>(() =>
+                                                       {
+                                                           return Fluently.Configure()
+                                                                          .Database(MsSqlConfiguration.MsSql2012.ConnectionString(nhCfg.Configuration.DefaultNameOrConnectionString))
+                                                                          .Mappings(m => m.FluentMappings.AddFromAssembly(Assembly.GetExecutingAssembly()));
+                                                       });
+
+                                                       nhCfg.AddFluentConfigurationFor<SecondarySessionContext>(() =>
+                                                       {
+                                                           return Fluently.Configure()
+                                                                          .Database(MsSqlConfiguration.MsSql2012.ConnectionString(nhCfg.Configuration.DefaultNameOrConnectionString))
+                                                                          .Mappings(m => m.FluentMappings.AddFromAssembly(Assembly.GetExecutingAssembly()));
+                                                       });
 
                                                        return nhCfg;
                                                    })
-                                                   .UseStoveDefaultConnectionStringResolver()
                                                    .UseStoveDapper()
                                                    .UseStoveEventBus()
                                                    .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()))
