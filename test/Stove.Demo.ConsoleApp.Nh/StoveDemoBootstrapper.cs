@@ -17,7 +17,7 @@ namespace Stove.Demo.ConsoleApp.Nh
         {
             StoveConfiguration.DefaultNameOrConnectionString = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
             StoveConfiguration.TypedConnectionStrings.Add(typeof(PrimarySessionContext), StoveConfiguration.DefaultNameOrConnectionString);
-            StoveConfiguration.TypedConnectionStrings.Add(typeof(SecondarySessionContext), StoveConfiguration.DefaultNameOrConnectionString);
+            StoveConfiguration.TypedConnectionStrings.Add(typeof(SecondarySessionContext), ConfigurationManager.ConnectionStrings["Default2"].ConnectionString);
         }
     }
 }

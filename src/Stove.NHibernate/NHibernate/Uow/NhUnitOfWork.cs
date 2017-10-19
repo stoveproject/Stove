@@ -22,7 +22,7 @@ namespace Stove.NHibernate.Uow
     public class NhUnitOfWork : UnitOfWorkBase, ITransientDependency
     {
         private readonly ISessionFactoryProvider _sessionFactoryProvider;
-
+       
         /// <summary>
         ///     Creates a new instance of <see cref="NhUnitOfWork" />.
         /// </summary>
@@ -59,16 +59,7 @@ namespace Stove.NHibernate.Uow
 
         protected override void BeginUow()
         {
-            //Session = DbConnection != null
-            //    ? _sessionFactory.OpenSessionWithConnection(DbConnection)
-            //    : _sessionFactory.OpenSession();
-
-            //if (Options.IsTransactional == true)
-            //{
-            //    _transaction = Options.IsolationLevel.HasValue
-            //        ? Session.BeginTransaction(Options.IsolationLevel.Value.ToSystemDataIsolationLevel())
-            //        : Session.BeginTransaction();
-            //}
+            
         }
 
         public override void SaveChanges()

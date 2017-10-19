@@ -36,7 +36,7 @@ namespace Stove.Demo.ConsoleApp.Nh
                                                        nhCfg.AddFluentConfigurationFor<SecondarySessionContext>(() =>
                                                        {
                                                            return Fluently.Configure()
-                                                                          .Database(MsSqlConfiguration.MsSql2012.ConnectionString(nhCfg.Configuration.DefaultNameOrConnectionString))
+                                                                          .Database(MsSqlConfiguration.MsSql2012.ConnectionString(nhCfg.Configuration.TypedConnectionStrings[typeof(SecondarySessionContext)]))
                                                                           .Mappings(m => m.FluentMappings.AddFromAssembly(Assembly.GetExecutingAssembly()));
                                                        });
 
