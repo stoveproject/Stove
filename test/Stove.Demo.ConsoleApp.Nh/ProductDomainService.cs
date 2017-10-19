@@ -9,11 +9,11 @@ namespace Stove.Demo.ConsoleApp.Nh
 {
     public class ProductDomainService : DomainService
     {
+        private readonly IDapperRepository<Category> _categoryDapperRepository;
+        private readonly IRepository<Category> _categoryRepository;
         private readonly IDapperRepository<Product> _productDapperRepository;
         private readonly IRepository<Product> _productRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
-        private readonly IRepository<Category> _categoryRepository;
-        private readonly IDapperRepository<Category> _categoryDapperRepository;
 
         public ProductDomainService(
             IDapperRepository<Product> productDapperRepository,

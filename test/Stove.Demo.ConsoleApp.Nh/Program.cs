@@ -20,32 +20,33 @@ namespace Stove.Demo.ConsoleApp.Nh
         {
             NHibernateProfiler.Initialize();
 
-            IRootResolver rootResolver = IocBuilder.New
-                                                   .UseAutofacContainerBuilder()
-                                                   .UseStove<StoveDemoBootstrapper>()
-                                                   .UseStoveNullLogger()
-                                                   .UseStoveNHibernate(nhCfg =>
-                                                   {
-                                                       nhCfg.AddFluentConfigurationFor<PrimarySessionContext>(() =>
-                                                       {
-                                                           return Fluently.Configure()
-                                                                          .Database(MsSqlConfiguration.MsSql2012.ConnectionString(nhCfg.Configuration.DefaultNameOrConnectionString))
-                                                                          .Mappings(m => m.FluentMappings.AddFromAssembly(Assembly.GetExecutingAssembly()));
-                                                       });
+            IRootResolver rootResolver = IocBuilder
+                .New
+                .UseAutofacContainerBuilder()
+                .UseStove<StoveDemoBootstrapper>()
+                .UseStoveNullLogger()
+                .UseStoveNHibernate(nhCfg =>
+                {
+                    nhCfg.AddFluentConfigurationFor<PrimarySessionContext>(() =>
+                    {
+                        return Fluently.Configure()
+                                       .Database(MsSqlConfiguration.MsSql2012.ConnectionString(nhCfg.Configuration.DefaultNameOrConnectionString))
+                                       .Mappings(m => m.FluentMappings.AddFromAssembly(Assembly.GetExecutingAssembly()));
+                    });
 
-                                                       nhCfg.AddFluentConfigurationFor<SecondarySessionContext>(() =>
-                                                       {
-                                                           return Fluently.Configure()
-                                                                          .Database(MsSqlConfiguration.MsSql2012.ConnectionString(nhCfg.Configuration.TypedConnectionStrings[typeof(SecondarySessionContext)]))
-                                                                          .Mappings(m => m.FluentMappings.AddFromAssembly(Assembly.GetExecutingAssembly()));
-                                                       });
+                    nhCfg.AddFluentConfigurationFor<SecondarySessionContext>(() =>
+                    {
+                        return Fluently.Configure()
+                                       .Database(MsSqlConfiguration.MsSql2012.ConnectionString(nhCfg.Configuration.TypedConnectionStrings[typeof(SecondarySessionContext)]))
+                                       .Mappings(m => m.FluentMappings.AddFromAssembly(Assembly.GetExecutingAssembly()));
+                    });
 
-                                                       return nhCfg;
-                                                   })
-                                                   .UseStoveDapper()
-                                                   .UseStoveEventBus()
-                                                   .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()))
-                                                   .CreateResolver();
+                    return nhCfg;
+                })
+                .UseStoveDapper()
+                .UseStoveEventBus()
+                .RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()))
+                .CreateResolver();
 
             using (rootResolver)
             {
