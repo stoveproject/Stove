@@ -4,40 +4,34 @@ using System.Reflection;
 
 using Autofac.Extras.IocManager;
 
-using Stove.Configuration;
-using Stove.Domain.Repositories;
+using Stove.Domain.Entities;
 using Stove.NHibernate.Configuration;
-using Stove.NHibernate.Interceptors;
-using Stove.NHibernate.Repositories;
+using Stove.NHibernate.Enrichments;
 using Stove.Orm;
 
 namespace Stove.NHibernate
 {
     public static class StoveNHibernateRegistrationExtensions
     {
-        public static IIocBuilder UseStoveNHibernate(this IIocBuilder builder, Func<IStoveNHibernateConfiguration, IStoveNHibernateConfiguration> stoveNhConfigurer)
+        public static IIocBuilder UseStoveNHibernate(
+            this IIocBuilder builder,
+            Func<IStoveNHibernateConfiguration, IStoveNHibernateConfiguration> stoveNhConfigurer)
         {
             return builder.RegisterServices(r =>
             {
-                r.Register(ctx => stoveNhConfigurer);
-                r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly());
-                r.RegisterGeneric(typeof(IRepository<>), typeof(NhRepositoryBase<>));
-                r.RegisterGeneric(typeof(IRepository<,>), typeof(NhRepositoryBase<,>));
-                r.Register(ctx =>
-                {
-                    var configuration = ctx.Resolver.Resolve<IStoveNHibernateConfiguration>();
-                    Func<IStoveNHibernateConfiguration, IStoveNHibernateConfiguration> configurer = ctx.Resolver.Resolve<IStoveStartupConfiguration>().GetConfigurerIfExists<IStoveNHibernateConfiguration>();
-                    configuration = configurer(configuration);
-
-                    return configuration
-                        .FluentConfiguration
-                        .ExposeConfiguration(cfg => cfg.SetInterceptor(ctx.Resolver.Resolve<StoveNHibernateInterceptor>()))
-                        .BuildSessionFactory();
-                }, Lifetime.Singleton);
-
                 var ormRegistrars = new List<ISecondaryOrmRegistrar>();
-                ormRegistrars.Add(new NhBasedSecondaryOrmRegistrar(builder));
-                r.UseBuilder(cb => { cb.Properties[StoveConsts.OrmRegistrarContextKey] = ormRegistrars; });
+                r.OnRegistering += (sender, args) =>
+                {
+                    if (typeof(StoveSessionContext).IsAssignableFrom(args.ImplementationType))
+                    {
+                        NhRepositoryRegistrar.RegisterRepositories(args.ImplementationType, builder);
+                        ormRegistrars.Add(new NhBasedSecondaryOrmRegistrar(builder, args.ImplementationType, SessionContextHelper.GetEntityTypeInfos, EntityHelper.GetPrimaryKeyType));
+                        args.ContainerBuilder.Properties[StoveConsts.OrmRegistrarContextKey] = ormRegistrars;
+                    }
+                };
+                r.Register(ctx => stoveNhConfigurer);
+                r.RegisterGeneric(typeof(ISessionContextProvider<>),typeof(UnitOfWorkSessionContextProvider<>));
+                r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly());
             });
         }
     }

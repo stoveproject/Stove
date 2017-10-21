@@ -1,42 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
 
 using Autofac;
 using Autofac.Extras.IocManager;
 
 using Stove.Domain.Entities;
 using Stove.Domain.Repositories;
-using Stove.Orm;
+using Stove.Reflection.Extensions;
 
-namespace Stove.NHibernate
+namespace Stove.NHibernate.Enrichments
 {
-    public class NhBasedSecondaryOrmRegistrar : ISecondaryOrmRegistrar
+    public static class NhRepositoryRegistrar
     {
-        private readonly Type _stoveSessionContextType;
-        private readonly Func<Type, IEnumerable<EntityTypeInfo>> _entityTypeInfoFinder;
-        private readonly IIocBuilder _iocBuilder;
-        private readonly Func<Type, Type> _primaryKeyTypeFinder;
-
-        public NhBasedSecondaryOrmRegistrar(
-            IIocBuilder iocBuilder,
-            Type stoveSessionContextType,
-            Func<Type, IEnumerable<EntityTypeInfo>> entityTypeInfoFinder,
-            Func<Type, Type> primaryKeyTypeFinder)
+        public static void RegisterRepositories(Type sessionContextType, IIocBuilder builder)
         {
-            _stoveSessionContextType = stoveSessionContextType;
-            _entityTypeInfoFinder = entityTypeInfoFinder;
-            _primaryKeyTypeFinder = primaryKeyTypeFinder;
-            _iocBuilder = iocBuilder;
-        }
+            AutoRepositoryTypesAttribute autoRepositoryAttr = sessionContextType.GetSingleAttributeOrNull<AutoRepositoryTypesAttribute>() ??
+                                                              NhAutoRepositoryTypes.Default;
 
-        public void RegisterRepositories(AutoRepositoryTypesAttribute defaultRepositoryTypes)
-        {
-            AutoRepositoryTypesAttribute autoRepositoryAttr = defaultRepositoryTypes;
-
-            foreach (EntityTypeInfo entityTypeInfo in _entityTypeInfoFinder(_stoveSessionContextType))
+            foreach (EntityTypeInfo entityTypeInfo in SessionContextHelper.GetEntityTypeInfos(sessionContextType))
             {
                 Type implType;
-                Type primaryKeyType = _primaryKeyTypeFinder(entityTypeInfo.EntityType);
+                Type primaryKeyType = EntityHelper.GetPrimaryKeyType(entityTypeInfo.EntityType);
                 if (primaryKeyType == typeof(int))
                 {
                     Type genericRepositoryType = autoRepositoryAttr.RepositoryInterface.MakeGenericType(entityTypeInfo.EntityType);
@@ -45,7 +28,7 @@ namespace Stove.NHibernate
                         ? autoRepositoryAttr.RepositoryImplementation.MakeGenericType(entityTypeInfo.EntityType)
                         : autoRepositoryAttr.RepositoryImplementation.MakeGenericType(entityTypeInfo.DeclaringType, entityTypeInfo.EntityType);
 
-                    _iocBuilder.RegisterServices(r => r.UseBuilder(cb =>
+                    builder.RegisterServices(r => r.UseBuilder(cb =>
                     {
                         cb.RegisterType(implType).As(genericRepositoryType).AsSelf().AsImplementedInterfaces().WithPropertyInjection();
                     }));
@@ -58,15 +41,12 @@ namespace Stove.NHibernate
                         ? autoRepositoryAttr.RepositoryImplementationWithPrimaryKey.MakeGenericType(entityTypeInfo.EntityType, primaryKeyType)
                         : autoRepositoryAttr.RepositoryImplementationWithPrimaryKey.MakeGenericType(entityTypeInfo.DeclaringType, entityTypeInfo.EntityType, primaryKeyType);
 
-
-                    _iocBuilder.RegisterServices(r => r.UseBuilder(cb =>
+                    builder.RegisterServices(r => r.UseBuilder(cb =>
                     {
                         cb.RegisterType(implType).As(genericRepositoryTypeWithPrimaryKey).AsSelf().AsImplementedInterfaces().WithPropertyInjection();
                     }));
                 }
             }
         }
-
-        public string OrmContextKey => StoveConsts.Orms.NHibernate;
     }
 }
