@@ -168,11 +168,6 @@ namespace Stove.NHibernate.Uow
                         : sessionFactory.OpenSession();
                 }
 
-                if (Options.Timeout.HasValue && session.Connection.ConnectionTimeout != 0)
-                {
-                    //TODO
-                }
-
                 ActiveSessions[sessionKey] = session;
             }
 
