@@ -13,18 +13,18 @@ using Stove.NHibernate.Enrichments;
 
 namespace Stove.NHibernate.Repositories
 {
-    public class NhRepositoryBase<TSessionContext, TEntity, TPrimaryKey> : StoveRepositoryBase<TEntity, TPrimaryKey>
+    public class NhRepositoryBase<TSessionContext, TEntity, TPrimaryKey> : StoveRepositoryBase<TEntity, TPrimaryKey>, IRepositoryWithSession
         where TEntity : class, IEntity<TPrimaryKey>
         where TSessionContext : StoveSessionContext
     {
-        private readonly ISessionContextProvider<TSessionContext> _sessionProvider;
+        private readonly ISessionProvider _sessionProvider;
 
-        public NhRepositoryBase(ISessionContextProvider<TSessionContext> sessionProvider)
+        public NhRepositoryBase(ISessionProvider sessionProvider)
         {
             _sessionProvider = sessionProvider;
         }
 
-        public virtual ISession Session => _sessionProvider.GetSession();
+        public virtual ISession Session => _sessionProvider.GetSession<TSessionContext>();
 
         public override IQueryable<TEntity> GetAll()
         {
@@ -92,6 +92,11 @@ namespace Stove.NHibernate.Repositories
         public override void Delete(TPrimaryKey id)
         {
             Delete(Session.Load<TEntity>(id));
+        }
+
+        public ISession GetSession()
+        {
+            return Session;
         }
     }
 }

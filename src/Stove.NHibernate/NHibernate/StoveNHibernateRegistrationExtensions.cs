@@ -30,7 +30,6 @@ namespace Stove.NHibernate
                     }
                 };
                 r.Register(ctx => stoveNhConfigurer);
-                r.RegisterGeneric(typeof(ISessionContextProvider<>),typeof(UnitOfWorkSessionContextProvider<>));
                 r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly());
             });
         }

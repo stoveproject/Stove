@@ -43,9 +43,11 @@ namespace Stove.NHibernate
         private ISession GetSession(ActiveTransactionProviderArgs args)
         {
             var sessionContextType = (Type)args["SessionContextType"];
-            Type sessionContextProviderType = typeof(ISessionContextProvider<>).MakeGenericType(sessionContextType);
-            object sessionContextProvider = _scope.Resolve(sessionContextProviderType);
-            MethodInfo method = sessionContextProvider.GetType().GetMethod(nameof(ISessionContextProvider<StoveSessionContext>.GetSession));
+            var sessionContextProvider = _scope.Resolve<ISessionProvider>();
+            MethodInfo method = sessionContextProvider.GetType()
+                                                      .GetMethod(nameof(ISessionProvider.GetSession))
+                                                      ?.MakeGenericMethod(sessionContextType);
+          
             var session = method.Invoke(sessionContextProvider, null).As<ISession>();
             return session;
         }

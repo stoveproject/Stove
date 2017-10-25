@@ -58,9 +58,9 @@ namespace Stove.NHibernate.Tests
             });
         }
 
-        public void UsingSession(Action<ISession> action)
+        public void UsingSession<TSessionContext>(Action<ISession> action) where TSessionContext : StoveSessionContext
         {
-            using (ISession session = The<ISessionFactoryProvider>().GetSessionFactory<PrimaryStoveSessionContext>().OpenSessionWithConnection(_connection))
+            using (ISession session = The<ISessionFactoryProvider>().GetSessionFactory<TSessionContext>().OpenSessionWithConnection(_connection))
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
@@ -71,11 +71,11 @@ namespace Stove.NHibernate.Tests
             }
         }
 
-        public T UsingSession<T>(Func<ISession, T> func)
+        public T UsingSession<TSessionContext, T>(Func<ISession, T> func) where TSessionContext : StoveSessionContext
         {
             T result;
 
-            using (ISession session = The<ISessionFactoryProvider>().GetSessionFactory<PrimaryStoveSessionContext>().OpenSessionWithConnection(_connection))
+            using (ISession session = The<ISessionFactoryProvider>().GetSessionFactory<TSessionContext>().OpenSessionWithConnection(_connection))
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {

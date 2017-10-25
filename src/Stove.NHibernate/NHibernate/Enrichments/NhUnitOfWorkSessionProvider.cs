@@ -1,20 +1,22 @@
-﻿using NHibernate;
+﻿using Autofac.Extras.IocManager;
+
+using NHibernate;
 
 using Stove.Domain.Uow;
 using Stove.NHibernate.Uow;
 
 namespace Stove.NHibernate.Enrichments
 {
-    public class UnitOfWorkSessionContextProvider<TSessionContext> : ISessionContextProvider<TSessionContext> where TSessionContext : StoveSessionContext
+    public class NhUnitOfWorkSessionProvider : ISessionProvider, ITransientDependency
     {
         private readonly ICurrentUnitOfWorkProvider _currentUnitOfWorkProvider;
 
-        public UnitOfWorkSessionContextProvider(ICurrentUnitOfWorkProvider currentUnitOfWorkProvider)
+        public NhUnitOfWorkSessionProvider(ICurrentUnitOfWorkProvider currentUnitOfWorkProvider)
         {
             _currentUnitOfWorkProvider = currentUnitOfWorkProvider;
         }
 
-        public ISession GetSession()
+        public ISession GetSession<TSessionContext>() where TSessionContext : StoveSessionContext
         {
             return _currentUnitOfWorkProvider.Current.GetSession<TSessionContext>();
         }

@@ -8,7 +8,7 @@ namespace Stove.Reflection
         /// <summary>
         ///     Returns dynamic proxy target object if this is a proxied object, otherwise returns the given object.
         /// </summary>
-        public static object UnProxy(object obj)
+        public static object UnProxyOrSelf(object obj)
         {
             if (obj.GetType().Namespace != "Castle.Proxies")
             {

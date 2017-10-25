@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,6 +11,8 @@ using Autofac.Extras.IocManager;
 
 using Castle.DynamicProxy;
 
+using NHibernate;
+
 using Shouldly;
 
 using Stove.Domain.Repositories;
@@ -17,9 +20,13 @@ using Stove.Domain.Uow;
 using Stove.Events.Bus;
 using Stove.Events.Bus.Entities;
 using Stove.Events.Bus.Handlers;
+using Stove.NHibernate.Repositories;
 using Stove.NHibernate.Tests.Entities;
+using Stove.NHibernate.Tests.Sessions;
 
 using Xunit;
+
+using IInterceptor = Castle.DynamicProxy.IInterceptor;
 
 namespace Stove.NHibernate.Tests
 {
@@ -42,7 +49,7 @@ namespace Stove.NHibernate.Tests
                 });
             }).Ok();
             StoveSession.UserId = 1;
-            UsingSession(session => { session.Save(new Product("TShirt")); });
+            UsingSession<PrimaryStoveSessionContext>(session => { session.Save(new Product("TShirt")); });
         }
 
         [Fact]
@@ -65,7 +72,7 @@ namespace Stove.NHibernate.Tests
             {
                 The<IRepository<Product>>().Insert(new Product("Pants"));
 
-                Product product = UsingSession(session => session.Query<Product>().FirstOrDefault(p => p.Name == "Pants"));
+                Product product = UsingSession<PrimaryStoveSessionContext, Product>(session => session.Query<Product>().FirstOrDefault(p => p.Name == "Pants"));
                 product.ShouldNotBe(null);
                 product.IsTransient().ShouldBe(false);
                 product.Name.ShouldBe("Pants");
@@ -82,7 +89,7 @@ namespace Stove.NHibernate.Tests
                 The<IRepository<Product>>().Insert(new Product("Pants"));
                 The<IRepository<Category>>().Insert(new Category("Bread"));
 
-                Product product = UsingSession(session => session.Query<Product>().FirstOrDefault(p => p.Name == "Pants"));
+                Product product = UsingSession<PrimaryStoveSessionContext, Product>(session => session.Query<Product>().FirstOrDefault(p => p.Name == "Pants"));
                 product.ShouldNotBe(null);
                 product.IsTransient().ShouldBe(false);
                 product.Name.ShouldBe("Pants");
@@ -206,13 +213,13 @@ namespace Stove.NHibernate.Tests
                 triggerCount.ShouldBe(1);
             }
         }
-        
+
         [Fact]
         public void Update_With_Action_Test()
         {
             using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
             {
-                Product productBefore = UsingSession(session => session.Query<Product>().Single(p => p.Name == "TShirt"));
+                Product productBefore = UsingSession<PrimaryStoveSessionContext, Product>(session => session.Query<Product>().Single(p => p.Name == "TShirt"));
 
                 Product updatedUser = The<IRepository<Product>>().Update(productBefore.Id, user => user.Name = "Polo");
                 updatedUser.Id.ShouldBe(productBefore.Id);
@@ -220,8 +227,23 @@ namespace Stove.NHibernate.Tests
 
                 The<IUnitOfWorkManager>().Current.SaveChanges();
 
-                Product productAfter = UsingSession(session => session.Get<Product>(productBefore.Id));
+                Product productAfter = UsingSession<PrimaryStoveSessionContext, Product>(session => session.Get<Product>(productBefore.Id));
                 productAfter.Name.ShouldBe("Polo");
+
+                uow.Complete();
+            }
+        }
+
+        [Fact]
+        public void QueryOver_should_work_on_generic_repsitories()
+        {
+            using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
+            {
+                ISession session = The<IRepository<Product>>().GetSession();
+
+                IList<Product> products = session.QueryOver<Product>().List();
+
+                products.Count.ShouldBeGreaterThan(0);
 
                 uow.Complete();
             }
@@ -241,10 +263,7 @@ namespace Stove.NHibernate.Tests
                     The<IRepository<Product>>().Insert(new Product("Oguzhan"));
                     The<IRepository<Category>>().Insert(new Category("Selam"));
 
-                    uowManager.Current.Completed += (sender, args) =>
-                    {
-                        completeCount++;
-                    };
+                    uowManager.Current.Completed += (sender, args) => { completeCount++; };
 
                     uowManager.Current.Disposed += (sender, args) =>
                     {
@@ -297,9 +316,9 @@ namespace Stove.NHibernate.Tests
 
     public class Provider
     {
-        private readonly IUnitOfWorkManager _unitOfWorkManager;
-        private readonly IRepository<Product> _productRepository;
         private readonly IRepository<Category> _categoryRepository;
+        private readonly IRepository<Product> _productRepository;
+        private readonly IUnitOfWorkManager _unitOfWorkManager;
 
         public Provider(
             IRepository<Product> productRepository,

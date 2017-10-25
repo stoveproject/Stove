@@ -9,15 +9,6 @@ namespace Stove.NHibernate.Uow
 {
     internal static class UnitOfWorkExtensions
     {
-        public static ISession GetSession(this IActiveUnitOfWork unitOfWork)
-        {
-            if (unitOfWork == null) throw new ArgumentNullException(nameof(unitOfWork));
-
-            if (!(unitOfWork is NhUnitOfWork)) throw new ArgumentException("unitOfWork is not type of " + typeof(NhUnitOfWork).FullName, nameof(unitOfWork));
-
-            return ((NhUnitOfWork)unitOfWork).Session;
-        }
-
         public static ISession GetSession<TSessionContext>(this IActiveUnitOfWork unitOfWork) where TSessionContext : StoveSessionContext
         {
             if (unitOfWork == null) throw new ArgumentNullException(nameof(unitOfWork));

@@ -14,7 +14,7 @@ namespace Stove.NHibernate.Repositories
         where TEntity : class, IEntity<int>
 
     {
-        public NhRepositoryBase(ISessionContextProvider<TSessionContext> sessionProvider) : base(sessionProvider)
+        public NhRepositoryBase(ISessionProvider sessionProvider) : base(sessionProvider)
         {
         }
     }
