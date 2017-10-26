@@ -17,7 +17,7 @@
 |Stove.RavenDB|[![NuGet version](https://badge.fury.io/nu/Stove.RavenDB.svg)](https://badge.fury.io/nu/Stove.RavenDB)|
 |Stove.Couchbase|[![NuGet version](https://badge.fury.io/nu/Stove.Couchbase.svg)](https://badge.fury.io/nu/Stove.Couchbase)|
 
-Stove is an application framework that wraps and abstracts your needs for easy use. Built with strongly adepted dependency injection principles.
+Stove is an application framework that wraps and abstracts your needs for easy use. Built with strongly adopted dependency injection principles.
 
 ## IoC
 * Autofac
