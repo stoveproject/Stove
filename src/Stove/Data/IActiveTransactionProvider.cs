@@ -12,7 +12,7 @@ namespace Stove.Data
         IDbTransaction GetActiveTransaction(ActiveTransactionProviderArgs args);
 
         /// <summary>
-        ///     Gets the active connection.
+        ///     Gets the active connection from the network.
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
