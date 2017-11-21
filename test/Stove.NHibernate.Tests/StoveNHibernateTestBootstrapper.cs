@@ -4,6 +4,7 @@ using System.Reflection;
 using DapperExtensions.Sql;
 
 using Stove.Bootstrapping;
+using Stove.NHibernate.Tests.Sessions;
 
 namespace Stove.NHibernate.Tests
 {
@@ -13,7 +14,11 @@ namespace Stove.NHibernate.Tests
     public class StoveNHibernateTestBootstrapper : StoveBootstrapper
     {
         public override void PreStart()
-        { 
+        {
+            StoveConfiguration.DefaultNameOrConnectionString = "data source=:memory:";
+            StoveConfiguration.TypedConnectionStrings.Add(typeof(PrimaryStoveSessionContext), StoveConfiguration.DefaultNameOrConnectionString);
+            StoveConfiguration.TypedConnectionStrings.Add(typeof(SecondaryStoveSessionContext), StoveConfiguration.DefaultNameOrConnectionString);
+
             DapperExtensions.DapperExtensions.SqlDialect = new SqliteDialect();
             DapperExtensions.DapperExtensions.SetMappingAssemblies(new List<Assembly> { Assembly.GetExecutingAssembly() });
         }

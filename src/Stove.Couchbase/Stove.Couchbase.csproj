@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CouchbaseNetClient" Version="2.5.1" />
+    <PackageReference Include="CouchbaseNetClient" Version="2.5.2" />
     <PackageReference Include="Linq2Couchbase" Version="1.3.3" />
   </ItemGroup>
 

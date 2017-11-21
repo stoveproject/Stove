@@ -1,4 +1,9 @@
-﻿using FluentNHibernate.Cfg;
+﻿using System;
+using System.Collections.Generic;
+
+using FluentNHibernate.Cfg;
+
+using NHibernate;
 
 using Stove.Configuration;
 
@@ -11,8 +16,13 @@ namespace Stove.NHibernate.Configuration
         ///     You can add mappings to this object.
         ///     Do not call BuildSessionFactory on it.
         /// </summary>
-        FluentConfiguration FluentConfiguration { get; }
+
+        Dictionary<Type, FluentConfiguration> FluentConfigurations { get; set; }
+
+        Dictionary<Type, ISessionFactory> SessionFactories { get; }
 
         IStoveStartupConfiguration Configuration { get; }
+
+        IStoveNHibernateConfiguration AddFluentConfigurationFor<TStoveSessionContext>(Func<FluentConfiguration> cfgFactory);
     }
 }
