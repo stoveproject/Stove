@@ -111,8 +111,7 @@ Task("Pack")
     });
 
 Task("NugetPublish")
-    .IsDependentOn("Pack")
-    .WithCriteria(() => branch == "master" && !isPR)
+    .IsDependentOn("Pack") 
     .Does(()=>
     {
         foreach(var nupkgFile in GetFiles(nupkgRegex))
