@@ -4,38 +4,52 @@ using System.Reflection;
 
 using Autofac.Extras.IocManager;
 
+using NHibernate;
 using NHibernate.Transaction;
 
-using Stove.Extensions;
 using Stove.Data;
+using Stove.Extensions;
+using Stove.NHibernate.Enrichments;
 
 namespace Stove.NHibernate
 {
     public class NhActiveTransactionProvider : IActiveTransactionProvider, ITransientDependency
     {
-        private readonly ISessionProvider _sessionProvider;
+        private readonly IScopeResolver _scope;
 
-        public NhActiveTransactionProvider(ISessionProvider sessionProvider)
+        public NhActiveTransactionProvider(IScopeResolver scope)
         {
-            _sessionProvider = sessionProvider;
+            _scope = scope;
         }
 
         public IDbTransaction GetActiveTransaction(ActiveTransactionProviderArgs args)
         {
-            var adoTransaction = _sessionProvider.Session.Transaction.As<AdoTransaction>();
+            var adoTransaction = GetSession(args).Transaction.As<AdoTransaction>();
             var dbTransaction = GetInstanceField(typeof(AdoTransaction), adoTransaction, "trans").As<IDbTransaction>();
             return dbTransaction;
         }
 
         public IDbConnection GetActiveConnection(ActiveTransactionProviderArgs args)
         {
-            return _sessionProvider.Session.Connection;
+            return GetSession(args).Connection;
         }
 
         private object GetInstanceField(Type type, object instance, string fieldName)
         {
             return type.GetField(fieldName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static)
-                       .GetValue(instance);
+                       ?.GetValue(instance);
+        }
+
+        private ISession GetSession(ActiveTransactionProviderArgs args)
+        {
+            var sessionContextType = (Type)args["SessionContextType"];
+            var sessionContextProvider = _scope.Resolve<ISessionProvider>();
+            MethodInfo method = sessionContextProvider.GetType()
+                                                      .GetMethod(nameof(ISessionProvider.GetSession))
+                                                      ?.MakeGenericMethod(sessionContextType);
+          
+            var session = method.Invoke(sessionContextProvider, null).As<ISession>();
+            return session;
         }
     }
 }

@@ -4,6 +4,7 @@ using Shouldly;
 
 using Stove.Domain.Repositories;
 using Stove.NHibernate.Tests.Entities;
+using Stove.NHibernate.Tests.Sessions;
 
 using Xunit;
 
@@ -15,7 +16,7 @@ namespace Stove.NHibernate.Tests
         {
             Building(builder => { }).Ok();
             StoveSession.UserId = 1;
-            UsingSession(session => { session.Save(new Product("TShirt")); });
+            UsingSession<PrimaryStoveSessionContext>(session => { session.Save(new Product("TShirt")); });
         }
 
         [Fact]

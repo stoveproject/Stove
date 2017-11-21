@@ -1,7 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Transactions;
+
+using Autofac;
+using Autofac.Extras.DynamicProxy;
+using Autofac.Extras.IocManager;
+
+using Castle.DynamicProxy;
+
+using NHibernate;
 
 using Shouldly;
 
@@ -9,9 +19,14 @@ using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
 using Stove.Events.Bus;
 using Stove.Events.Bus.Entities;
+using Stove.Events.Bus.Handlers;
+using Stove.NHibernate.Repositories;
 using Stove.NHibernate.Tests.Entities;
+using Stove.NHibernate.Tests.Sessions;
 
 using Xunit;
+
+using IInterceptor = Castle.DynamicProxy.IInterceptor;
 
 namespace Stove.NHibernate.Tests
 {
@@ -19,9 +34,22 @@ namespace Stove.NHibernate.Tests
     {
         public General_Repository_Tests()
         {
-            Building(builder => { }).Ok();
+            Building(builder =>
+            {
+                builder.RegisterServices(r =>
+                {
+                    r.UseBuilder(cb =>
+                    {
+                        cb.RegisterType<Provider>()
+                          .AsSelf()
+                          .WithPropertyInjection()
+                          .EnableClassInterceptors()
+                          .InterceptedBy(typeof(SomeKindOfInterceptor));
+                    });
+                });
+            }).Ok();
             StoveSession.UserId = 1;
-            UsingSession(session => { session.Save(new Product("TShirt")); });
+            UsingSession<PrimaryStoveSessionContext>(session => { session.Save(new Product("TShirt")); });
         }
 
         [Fact]
@@ -44,7 +72,7 @@ namespace Stove.NHibernate.Tests
             {
                 The<IRepository<Product>>().Insert(new Product("Pants"));
 
-                Product product = UsingSession(session => session.Query<Product>().FirstOrDefault(p => p.Name == "Pants"));
+                Product product = UsingSession<PrimaryStoveSessionContext, Product>(session => session.Query<Product>().FirstOrDefault(p => p.Name == "Pants"));
                 product.ShouldNotBe(null);
                 product.IsTransient().ShouldBe(false);
                 product.Name.ShouldBe("Pants");
@@ -54,22 +82,88 @@ namespace Stove.NHibernate.Tests
         }
 
         [Fact]
-        public void Update_With_Action_Test()
+        public void Insert_should_work_on_multi_database()
         {
             using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
             {
-                Product productBefore = UsingSession(session => session.Query<Product>().Single(p => p.Name == "TShirt"));
+                The<IRepository<Product>>().Insert(new Product("Pants"));
+                The<IRepository<Category>>().Insert(new Category("Bread"));
 
-                Product updatedUser = The<IRepository<Product>>().Update(productBefore.Id, user => user.Name = "Polo");
-                updatedUser.Id.ShouldBe(productBefore.Id);
-                updatedUser.Name.ShouldBe("Polo");
+                Product product = UsingSession<PrimaryStoveSessionContext, Product>(session => session.Query<Product>().FirstOrDefault(p => p.Name == "Pants"));
+                product.ShouldNotBe(null);
+                product.IsTransient().ShouldBe(false);
+                product.Name.ShouldBe("Pants");
 
-                The<IUnitOfWorkManager>().Current.SaveChanges();
-
-                Product productAfter = UsingSession(session => session.Get<Product>(productBefore.Id));
-                productAfter.Name.ShouldBe("Polo");
+                Category category = The<IRepository<Category>>().FirstOrDefault(x => x.Name == "Bread");
+                category.ShouldNotBe(null);
+                category.IsTransient().ShouldBe(false);
+                category.Name.ShouldBe("Bread");
 
                 uow.Complete();
+            }
+        }
+
+        [Fact]
+        public async Task Should_rollback_when_CancellationToken_cancel_is_requested()
+        {
+            var ts = new CancellationTokenSource();
+            var updatingEventTriggerCount = 0;
+            try
+            {
+                using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
+                {
+                    The<IEventBus>().Register<EntityUpdatingEventData<Product>>(
+                        eventData =>
+                        {
+                            eventData.Entity.Name.ShouldBe("Pants");
+                            ts.Cancel(true);
+                            updatingEventTriggerCount++;
+                        });
+
+                    Product product = The<IRepository<Product>>().Single(p => p.Name == "TShirt");
+
+                    product.Name = "Pants";
+
+                    await uow.CompleteAsync(ts.Token);
+                }
+            }
+            catch (Exception exception)
+            {
+                //Handle
+            }
+
+            using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
+            {
+                The<IRepository<Product>>().FirstOrDefault(x => x.Name == "Pants").ShouldBeNull();
+
+                await uow.CompleteAsync();
+            }
+
+            updatingEventTriggerCount.ShouldBe(1);
+        }
+
+        [Fact]
+        public void Should_Trigger_Event_On_Delete()
+        {
+            using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
+            {
+                var triggerCount = 0;
+
+                The<IEventBus>().Register<EntityDeletedEventData<Product>>(
+                    eventData =>
+                    {
+                        eventData.Entity.Name.ShouldBe("TShirt");
+                        triggerCount++;
+                    });
+
+                Product product = The<IRepository<Product>>().Single(p => p.Name == "TShirt");
+                The<IRepository<Product>>().Delete(product.Id);
+
+                The<IRepository<Product>>().FirstOrDefault(p => p.Name == "TShirt").ShouldBe(null);
+
+                uow.Complete();
+
+                triggerCount.ShouldBe(1);
             }
         }
 
@@ -121,67 +215,163 @@ namespace Stove.NHibernate.Tests
         }
 
         [Fact]
-        public void Should_Trigger_Event_On_Delete()
+        public void Update_With_Action_Test()
         {
             using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
             {
-                var triggerCount = 0;
+                Product productBefore = UsingSession<PrimaryStoveSessionContext, Product>(session => session.Query<Product>().Single(p => p.Name == "TShirt"));
 
-                The<IEventBus>().Register<EntityDeletedEventData<Product>>(
-                    eventData =>
-                    {
-                        eventData.Entity.Name.ShouldBe("TShirt");
-                        triggerCount++;
-                    });
+                Product updatedUser = The<IRepository<Product>>().Update(productBefore.Id, user => user.Name = "Polo");
+                updatedUser.Id.ShouldBe(productBefore.Id);
+                updatedUser.Name.ShouldBe("Polo");
 
-                Product product = The<IRepository<Product>>().Single(p => p.Name == "TShirt");
-                The<IRepository<Product>>().Delete(product.Id);
+                The<IUnitOfWorkManager>().Current.SaveChanges();
 
-                The<IRepository<Product>>().FirstOrDefault(p => p.Name == "TShirt").ShouldBe(null);
+                Product productAfter = UsingSession<PrimaryStoveSessionContext, Product>(session => session.Get<Product>(productBefore.Id));
+                productAfter.Name.ShouldBe("Polo");
 
                 uow.Complete();
-
-                triggerCount.ShouldBe(1);
             }
         }
 
         [Fact]
-        public async Task Should_rollback_when_CancellationToken_cancel_is_requested()
+        public void QueryOver_should_work_on_generic_repsitories()
         {
-            var ts = new CancellationTokenSource();
-            int updatingEventTriggerCount = 0;
-            try
-            {
-                using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
-                {
-                    The<IEventBus>().Register<EntityUpdatingEventData<Product>>(
-                        eventData =>
-                        {
-                            eventData.Entity.Name.ShouldBe("Pants");
-                            ts.Cancel(true);
-                            updatingEventTriggerCount++;
-                        });
-
-                    Product product = The<IRepository<Product>>().Single(p => p.Name == "TShirt");
-
-                    product.Name = "Pants";
-
-                    await uow.CompleteAsync(ts.Token);
-                }
-            }
-            catch (Exception exception)
-            {
-                //Handle
-            }
-
             using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
             {
-                The<IRepository<Product>>().FirstOrDefault(x => x.Name == "Pants").ShouldBeNull();
+                ISession session = The<IRepository<Product>>().GetSession();
 
-                await uow.CompleteAsync();
+                IList<Product> products = session.QueryOver<Product>().List();
+
+                products.Count.ShouldBeGreaterThan(0);
+
+                uow.Complete();
             }
+        }
 
-            updatingEventTriggerCount.ShouldBe(1);
+        [Fact]
+        public void Should_Trigger_events_with_proxied_objects_in_multithread()
+        {
+            var completeCount = 0;
+            var disposeCount = 0;
+
+            Parallel.For(0, 150, i =>
+            {
+                var uowManager = The<IUnitOfWorkManager>();
+                using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
+                {
+                    The<IRepository<Product>>().Insert(new Product("Oguzhan"));
+                    The<IRepository<Category>>().Insert(new Category("Selam"));
+
+                    uowManager.Current.Completed += (sender, args) => { completeCount++; };
+
+                    uowManager.Current.Disposed += (sender, args) =>
+                    {
+                        var provider = The<Provider>();
+                        provider.ShouldNotBeNull();
+                        uowManager.Current.ShouldBe(null);
+                        disposeCount++;
+                    };
+
+                    The<IRepository<Product>>().FirstOrDefault(x => x.Name == "Oguzhan").ShouldNotBeNull();
+                    The<IRepository<Category>>().FirstOrDefault(x => x.Name == "Selam").ShouldNotBeNull();
+
+                    uow.Complete();
+
+                    The<IEventBus>().Trigger(new SomeUowEvent());
+                }
+            });
+        }
+    }
+
+    public class SomeUowEvent : EventData
+    {
+    }
+
+    public class SomeUowEventHandler : IEventHandler<SomeUowEvent>, ITransientDependency
+    {
+        private readonly Provider _provider;
+
+        public SomeUowEventHandler(Provider provider)
+        {
+            _provider = provider;
+        }
+
+        public void HandleEvent(SomeUowEvent eventData)
+        {
+            var a = 1;
+            _provider.ShouldNotBeNull();
+            _provider.SomeStuff();
+        }
+    }
+
+    public class SomeKindOfInterceptor : IInterceptor, ITransientDependency
+    {
+        public void Intercept(IInvocation invocation)
+        {
+            var a = 1;
+            invocation.Proceed();
+        }
+    }
+
+    public class Provider
+    {
+        private readonly IRepository<Category> _categoryRepository;
+        private readonly IRepository<Product> _productRepository;
+        private readonly IUnitOfWorkManager _unitOfWorkManager;
+
+        public Provider(
+            IRepository<Product> productRepository,
+            IUnitOfWorkManager unitOfWorkManager,
+            IRepository<Category> categoryRepository)
+        {
+            _productRepository = productRepository;
+            _unitOfWorkManager = unitOfWorkManager;
+            _categoryRepository = categoryRepository;
+            _productRepository.ShouldNotBeNull();
+        }
+
+        public virtual void SomeStuff()
+        {
+            using (IUnitOfWorkCompleteHandle uow = _unitOfWorkManager.Begin(TransactionScopeOption.RequiresNew))
+            {
+                using (IUnitOfWorkCompleteHandle uow1 = _unitOfWorkManager.Begin(TransactionScopeOption.RequiresNew))
+                {
+                    _productRepository.FirstOrDefault(1).ShouldNotBeNull();
+                    _categoryRepository.FirstOrDefault(1).ShouldNotBeNull();
+
+                    using (IUnitOfWorkCompleteHandle uow2 = _unitOfWorkManager.Begin(TransactionScopeOption.RequiresNew))
+                    {
+                        _productRepository.FirstOrDefault(1).ShouldNotBeNull();
+                        _categoryRepository.FirstOrDefault(1).ShouldNotBeNull();
+
+                        using (IUnitOfWorkCompleteHandle uow3 = _unitOfWorkManager.Begin(TransactionScopeOption.RequiresNew))
+                        {
+                            _productRepository.FirstOrDefault(1).ShouldNotBeNull();
+                            _categoryRepository.FirstOrDefault(1).ShouldNotBeNull();
+
+                            using (IUnitOfWorkCompleteHandle uow4 = _unitOfWorkManager.Begin(TransactionScopeOption.RequiresNew))
+                            {
+                                _productRepository.FirstOrDefault(1).ShouldNotBeNull();
+                                _categoryRepository.FirstOrDefault(1).ShouldNotBeNull();
+
+                                uow4.Complete();
+                            }
+
+                            uow3.Complete();
+                        }
+
+                        uow2.Complete();
+                    }
+
+                    uow1.Complete();
+                }
+
+                _productRepository.FirstOrDefault(1).ShouldNotBeNull();
+                _categoryRepository.FirstOrDefault(1).ShouldNotBeNull();
+
+                uow.Complete();
+            }
         }
     }
 }
