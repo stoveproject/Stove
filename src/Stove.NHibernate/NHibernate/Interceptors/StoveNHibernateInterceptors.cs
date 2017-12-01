@@ -4,6 +4,8 @@ using System.Linq;
 
 using Autofac.Extras.IocManager;
 
+using Castle.Core.Internal;
+
 using NHibernate;
 using NHibernate.Type;
 
@@ -257,23 +259,22 @@ namespace Stove.NHibernate.Interceptors
 
         protected virtual void TriggerDomainEvents(object entityAsObj)
         {
-            var generatesDomainEventsEntity = entityAsObj as IGeneratesDomainEvents;
-            if (generatesDomainEventsEntity == null)
+            if (!(entityAsObj is IAggregateChangeTracker generatesDomainEventsEntity))
             {
                 return;
             }
 
-            if (generatesDomainEventsEntity.DomainEvents.IsNullOrEmpty())
+            if (generatesDomainEventsEntity.GetChanges().IsNullOrEmpty())
             {
                 return;
             }
 
-            var domainEvents = generatesDomainEventsEntity.DomainEvents.ToList();
-            generatesDomainEventsEntity.DomainEvents.Clear();
+            var domainEvents = generatesDomainEventsEntity.GetChanges().ToList();
+            generatesDomainEventsEntity.ClearChanges();
 
             foreach (var domainEvent in domainEvents)
             {
-                _eventBus.Value.Trigger(domainEvent.GetType(), entityAsObj, domainEvent);
+                _eventBus.Value.Trigger(domainEvent.GetType(), entityAsObj, domainEvent as IEventData);
             }
         }
     }

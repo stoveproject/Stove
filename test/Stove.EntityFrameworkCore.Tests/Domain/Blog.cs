@@ -8,17 +8,12 @@ namespace Stove.EntityFrameworkCore.Tests.Domain
 {
     public class Blog : AggregateRoot, IHasCreationTime
     {
-        public string Name { get; set; }
-
-        public string Url { get; protected set; }
-
-        public DateTime CreationTime { get; set; }
-
-        public ICollection<Post> Posts { get; set; }
-
         public Blog()
         {
-            
+            Register<BlogUrlChangedEventData>(@event =>
+            {
+                Url = @event.Url;
+            });
         }
 
         public Blog(string name, string url)
@@ -37,6 +32,14 @@ namespace Stove.EntityFrameworkCore.Tests.Domain
             Url = url;
         }
 
+        public string Name { get; set; }
+
+        public string Url { get; protected set; }
+
+        public ICollection<Post> Posts { get; set; }
+
+        public DateTime CreationTime { get; set; }
+
         public void ChangeUrl(string url)
         {
             if (string.IsNullOrWhiteSpace(url))
@@ -44,10 +47,7 @@ namespace Stove.EntityFrameworkCore.Tests.Domain
                 throw new ArgumentNullException(nameof(url));
             }
 
-            var oldUrl = Url;
-            Url = url;
-
-            DomainEvents.Add(new BlogUrlChangedEventData(this, oldUrl));
+            ApplyChange(new BlogUrlChangedEventData(this, url));
         }
     }
 }

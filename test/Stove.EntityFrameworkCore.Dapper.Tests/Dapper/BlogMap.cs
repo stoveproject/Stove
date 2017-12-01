@@ -10,7 +10,6 @@ namespace Stove.EntityFrameworkCore.Dapper.Tests.Dapper
         {
             Table("Blogs");
             Map(x => x.Id).Key(KeyType.Identity);
-            Map(x => x.DomainEvents).Ignore();
             AutoMap();
         }
     }

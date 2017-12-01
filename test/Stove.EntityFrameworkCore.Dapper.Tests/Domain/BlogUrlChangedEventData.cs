@@ -4,14 +4,13 @@ namespace Stove.EntityFrameworkCore.Dapper.Tests.Domain
 {
     public class BlogUrlChangedEventData : EventData
     {
-        public Blog Blog { get; private set; }
+        public Blog Blog;
+        public string Url;
 
-        public string OldUrl { get; private set; }
-
-        public BlogUrlChangedEventData(Blog blog, string oldUrl)
+        public BlogUrlChangedEventData(Blog blog, string url)
         {
             Blog = blog;
-            OldUrl = oldUrl;
+            Url = url;
         }
     }
 }
