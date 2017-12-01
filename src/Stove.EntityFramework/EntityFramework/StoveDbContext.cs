@@ -15,6 +15,8 @@ using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extras.IocManager;
 
+using Castle.Core.Internal;
+
 using EntityFramework.DynamicFilters;
 
 using Stove.Collections.Extensions;
@@ -266,18 +268,18 @@ namespace Stove.EntityFramework
 
         protected virtual void AddDomainEvents(List<DomainEventEntry> domainEvents, object entityAsObj)
         {
-            if (!(entityAsObj is IGeneratesDomainEvents generatesDomainEventsEntity))
+            if (!(entityAsObj is IAggregateChangeTracker generatesDomainEventsEntity))
             {
                 return;
             }
 
-            if (generatesDomainEventsEntity.DomainEvents.IsNullOrEmpty())
+            if (generatesDomainEventsEntity.GetChanges().IsNullOrEmpty())
             {
                 return;
             }
 
-            domainEvents.AddRange(generatesDomainEventsEntity.DomainEvents.Select(eventData => new DomainEventEntry(entityAsObj, eventData)));
-            generatesDomainEventsEntity.DomainEvents.Clear();
+            domainEvents.AddRange(generatesDomainEventsEntity.GetChanges().Select(eventData => new DomainEventEntry(entityAsObj, eventData as IEventData)));
+            generatesDomainEventsEntity.ClearChanges();
         }
 
         protected virtual void CheckAndSetId(object entityAsObj)

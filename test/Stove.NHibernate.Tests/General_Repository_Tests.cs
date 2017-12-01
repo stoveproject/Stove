@@ -255,7 +255,7 @@ namespace Stove.NHibernate.Tests
             var completeCount = 0;
             var disposeCount = 0;
 
-            Parallel.For(0, 150, i =>
+            Parallel.For(0, 100, i =>
             {
                 var uowManager = The<IUnitOfWorkManager>();
                 using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
