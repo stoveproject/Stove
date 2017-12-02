@@ -112,7 +112,7 @@ Task("Pack")
 
 Task("NugetPublish")
     .IsDependentOn("Pack")
-    .WithCriteria(() => branch == "master" && !isPR)
+    .WithCriteria(() => branch == "master" && !AppVeyor.Environment.PullRequest.IsPullRequest)
     .Does(()=>
     {
         foreach(var nupkgFile in GetFiles(nupkgRegex))
