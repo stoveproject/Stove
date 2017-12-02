@@ -19,7 +19,7 @@ namespace Stove.Couchbase.Tests
             Building(builder => { }).Ok();
         }
 
-        [Fact]
+        [Fact(Skip = "Flaky")]
         public void Insert_should_work()
         {
 
@@ -41,7 +41,7 @@ namespace Stove.Couchbase.Tests
             item.ShouldNotBeNull();
         }
 
-        [Fact]
+        [Fact(Skip = "Flaky")]
         public void Insert_and_event_fire_should_work()
         {
             //-----------------------------------------------------------------------------------------------------------
@@ -70,7 +70,7 @@ namespace Stove.Couchbase.Tests
             eventInvocationCount.ShouldBe(1);
         }
 
-        [Fact]
+        [Fact(Skip = "Flaky")]
         public void Update_should_work()
         {
             //-----------------------------------------------------------------------------------------------------------
@@ -98,7 +98,7 @@ namespace Stove.Couchbase.Tests
             pant.ShouldNotBeNull();
         }
 
-        [Fact]
+        [Fact(Skip = "Flaky")]
         public void Update_should_work_with_object_tracking_mechanism()
         {
             using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
@@ -132,7 +132,7 @@ namespace Stove.Couchbase.Tests
             }
         }
 
-        [Fact]
+        [Fact(Skip = "Flaky")]
         public void Delete_should_work_on_hard_deletable_entities()
         {
             //-----------------------------------------------------------------------------------------------------------
@@ -155,7 +155,7 @@ namespace Stove.Couchbase.Tests
             deleted.ShouldBeNull();
         }
 
-        [Fact]
+        [Fact(Skip = "Flaky")]
         public void Delete_should_work_soft_deletable_entities()
         {
             //-----------------------------------------------------------------------------------------------------------

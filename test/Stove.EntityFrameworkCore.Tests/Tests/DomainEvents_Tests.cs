@@ -30,7 +30,7 @@ namespace Stove.EntityFrameworkCore.Tests.Tests
 
 			_eventBus.Register<BlogUrlChangedEventData>(data =>
 			{
-				data.OldUrl.ShouldBe("http://testblog1.myblogs.com");
+				data.Url.ShouldBe("http://testblog1-changed.myblogs.com");
 				isTriggered = true;
 			});
 
