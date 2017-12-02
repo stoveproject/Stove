@@ -23,8 +23,7 @@ namespace Stove.Domain.Repositories
 			where TEntity : class, IEntity<TPrimaryKey>
 			where TProperty : class
 		{
-			var repo = ProxyHelper.UnProxy(repository) as ISupportsExplicitLoading<TEntity, TPrimaryKey>;
-			if (repo != null)
+		    if (ProxyHelper.UnProxyOrSelf(repository) is ISupportsExplicitLoading<TEntity, TPrimaryKey> repo)
 			{
 				await repo.EnsureCollectionLoadedAsync(entity, propertyExpression, cancellationToken);
 			}
@@ -50,8 +49,7 @@ namespace Stove.Domain.Repositories
 			where TEntity : class, IEntity<TPrimaryKey>
 			where TProperty : class
 		{
-			var repo = ProxyHelper.UnProxy(repository) as ISupportsExplicitLoading<TEntity, TPrimaryKey>;
-			if (repo != null)
+		    if (ProxyHelper.UnProxyOrSelf(repository) is ISupportsExplicitLoading<TEntity, TPrimaryKey> repo)
 			{
 				await repo.EnsurePropertyLoadedAsync(entity, propertyExpression, cancellationToken);
 			}
@@ -71,8 +69,7 @@ namespace Stove.Domain.Repositories
 		public static IScopeResolver GetIocResolver<TEntity, TPrimaryKey>(this IRepository<TEntity, TPrimaryKey> repository)
 			where TEntity : class, IEntity<TPrimaryKey>
 		{
-			var repo = ProxyHelper.UnProxy(repository) as StoveRepositoryBase<TEntity, TPrimaryKey>;
-			if (repo != null)
+		    if (ProxyHelper.UnProxyOrSelf(repository) is StoveRepositoryBase<TEntity, TPrimaryKey> repo)
 			{
 				return repo.ScopeResolver;
 			}

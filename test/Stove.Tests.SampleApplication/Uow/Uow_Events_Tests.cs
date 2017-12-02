@@ -83,7 +83,7 @@ namespace Stove.Tests.SampleApplication.Uow
             var completeCount = 0;
             var disposeCount = 0;
 
-            Parallel.For(0, 500, i =>
+            Parallel.For(0, 178, i =>
             {
                 var uowManager = The<IUnitOfWorkManager>();
                 using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())

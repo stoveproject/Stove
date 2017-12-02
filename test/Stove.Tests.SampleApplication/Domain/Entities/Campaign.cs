@@ -9,9 +9,14 @@ namespace Stove.Tests.SampleApplication.Domain.Entities
         {
             Name = name;
 
-            Raise(new CampaignCreatedEvent { Name = Name });
+            ApplyChange(new CampaignCreatedEvent { Name = Name });
         }
 
         public string Name { get; set; }
+
+        public void Apply(CampaignCreatedEvent @event)
+        {
+            Name = @event.Name;
+        }
     }
 }

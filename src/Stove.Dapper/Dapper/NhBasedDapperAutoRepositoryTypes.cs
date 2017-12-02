@@ -9,8 +9,8 @@ namespace Stove.Dapper
             Default = new DapperAutoRepositoryTypeAttribute(
                 typeof(IDapperRepository<>),
                 typeof(IDapperRepository<,>),
-                typeof(DapperRepositoryBase<>),
-                typeof(DapperRepositoryBase<,>)
+                typeof(DapperNhRepositoryBase<,>),
+                typeof(DapperNhRepositoryBase<,,>)
             );
         }
 

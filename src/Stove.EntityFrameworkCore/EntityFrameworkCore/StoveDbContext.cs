@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 
 using Autofac.Extras.IocManager;
 
+using Castle.Core.Internal;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -202,19 +204,18 @@ namespace Stove.EntityFrameworkCore
 
         protected virtual void AddDomainEvents(List<DomainEventEntry> domainEvents, object entityAsObj)
         {
-            var generatesDomainEventsEntity = entityAsObj as IGeneratesDomainEvents;
-            if (generatesDomainEventsEntity == null)
+            if (!(entityAsObj is IAggregateChangeTracker generatesDomainEventsEntity))
             {
                 return;
             }
 
-            if (generatesDomainEventsEntity.DomainEvents.IsNullOrEmpty())
+            if (generatesDomainEventsEntity.GetChanges().IsNullOrEmpty())
             {
                 return;
             }
 
-            domainEvents.AddRange(generatesDomainEventsEntity.DomainEvents.Select(eventData => new DomainEventEntry(entityAsObj, eventData)));
-            generatesDomainEventsEntity.DomainEvents.Clear();
+            domainEvents.AddRange(generatesDomainEventsEntity.GetChanges().Select(eventData => new DomainEventEntry(entityAsObj, eventData as IEventData)));
+            generatesDomainEventsEntity.ClearChanges();
         }
 
         protected virtual void CheckAndSetId(EntityEntry entry)

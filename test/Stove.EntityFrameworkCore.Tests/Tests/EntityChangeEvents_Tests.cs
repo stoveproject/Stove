@@ -27,7 +27,7 @@ namespace Stove.EntityFrameworkCore.Tests.Tests
         [Fact]
         public void Complex_Event_Test()
         {
-            var blogName = Guid.NewGuid().ToString("N");
+            string blogName = Guid.NewGuid().ToString("N");
 
             var creatingEventTriggered = false;
             var createdEventTriggered = false;

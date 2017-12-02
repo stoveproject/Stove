@@ -5,11 +5,14 @@ using System.Reflection;
 
 using Autofac.Extras.IocManager;
 
+using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 
 using NHibernate;
 using NHibernate.Tool.hbm2ddl;
 
+using Stove.NHibernate.Enrichments;
+using Stove.NHibernate.Tests.Sessions;
 using Stove.TestBase;
 
 namespace Stove.NHibernate.Tests
@@ -28,14 +31,24 @@ namespace Stove.NHibernate.Tests
                 builder
                     .UseStoveNHibernate(nhConfiguration =>
                     {
-                        nhConfiguration.FluentConfiguration
-                                       .Database(SQLiteConfiguration.Standard.InMemory())
-                                       .Mappings(m => m.FluentMappings.AddFromAssembly(Assembly.GetExecutingAssembly()))
-                                       .ExposeConfiguration(cfg => new SchemaExport(cfg).Execute(true, true, false, The<DbConnection>(), Console.Out));
+                        nhConfiguration.AddFluentConfigurationFor<PrimaryStoveSessionContext>(() =>
+                        {
+                            return Fluently.Configure()
+                                           .Database(SQLiteConfiguration.Standard.InMemory())
+                                           .Mappings(m => m.FluentMappings.AddFromAssembly(Assembly.GetExecutingAssembly()))
+                                           .ExposeConfiguration(cfg => new SchemaExport(cfg).Execute(true, true, false, _connection, Console.Out));
+                        });
+
+                        nhConfiguration.AddFluentConfigurationFor<SecondaryStoveSessionContext>(() =>
+                        {
+                            return Fluently.Configure()
+                                           .Database(SQLiteConfiguration.Standard.InMemory())
+                                           .Mappings(m => m.FluentMappings.AddFromAssembly(Assembly.GetExecutingAssembly()))
+                                           .ExposeConfiguration(cfg => new SchemaExport(cfg).Execute(true, true, false, _connection, Console.Out));
+                        });
 
                         return nhConfiguration;
                     })
-                    .UseStoveDefaultConnectionStringResolver()
                     .UseStoveEventBus()
                     .RegisterServices(r =>
                     {
@@ -45,9 +58,9 @@ namespace Stove.NHibernate.Tests
             });
         }
 
-        public void UsingSession(Action<ISession> action)
+        public void UsingSession<TSessionContext>(Action<ISession> action) where TSessionContext : StoveSessionContext
         {
-            using (ISession session = The<ISessionFactory>().OpenSessionWithConnection(_connection))
+            using (ISession session = The<ISessionFactoryProvider>().GetSessionFactory<TSessionContext>().OpenSessionWithConnection(_connection))
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
@@ -58,11 +71,11 @@ namespace Stove.NHibernate.Tests
             }
         }
 
-        public T UsingSession<T>(Func<ISession, T> func)
+        public T UsingSession<TSessionContext, T>(Func<ISession, T> func) where TSessionContext : StoveSessionContext
         {
             T result;
 
-            using (ISession session = The<ISessionFactory>().OpenSessionWithConnection(_connection))
+            using (ISession session = The<ISessionFactoryProvider>().GetSessionFactory<TSessionContext>().OpenSessionWithConnection(_connection))
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
