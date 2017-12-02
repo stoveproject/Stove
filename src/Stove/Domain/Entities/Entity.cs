@@ -12,6 +12,7 @@ namespace Stove.Domain.Entities
     {
     }
 
+    /// <inheritdoc />
     /// <summary>
     ///     Basic implementation of IEntity interface.
     ///     An entity can inherit this class of directly implement to IEntity interface.
@@ -20,7 +21,7 @@ namespace Stove.Domain.Entities
     [Serializable]
     public abstract class Entity<TPrimaryKey> : IEntity<TPrimaryKey>
     {
-        protected readonly InstanceEventRouter _router;
+        private readonly InstanceEventRouter _router;
 
         protected Entity()
         {
@@ -32,6 +33,40 @@ namespace Stove.Domain.Entities
         /// </summary>
         public virtual TPrimaryKey Id { get; set; }
 
+        /// <summary>
+        ///     Registers the state handler to be invoked when the specified event is applied.
+        /// </summary>
+        /// <typeparam name="TEvent">The type of the event to register the handler for.</typeparam>
+        /// <param name="handler">The handler.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown when the <paramref name="handler" /> is null.</exception>
+        protected void Register<TEvent>(Action<TEvent> handler)
+        {
+            if (handler == null)
+            {
+                throw new ArgumentNullException(nameof(handler));
+            }
+
+            _router.ConfigureRoute(handler);
+        }
+
+        /// <summary>
+        ///     Routes the specified <paramref name="event" /> to a configured state handler, if any.
+        /// </summary>
+        /// <param name="event">The event to route.</param>
+        /// <exception cref="ArgumentNullException">Thrown when the <paramref name="event" /> is null.</exception>
+        public virtual void Route(object @event)
+        {
+            if (@event == null)
+            {
+                throw new ArgumentNullException(nameof(@event));
+            }
+
+            _router.Route(@event);
+        }
+
+        #region Overrides
+
+        /// <inheritdoc />
         /// <summary>
         ///     Checks if this entity is transient (it has not an Id).
         /// </summary>
@@ -60,7 +95,7 @@ namespace Stove.Domain.Entities
         /// <inheritdoc />
         public override bool Equals(object obj)
         {
-            if (obj == null || !(obj is Entity<TPrimaryKey>))
+            if (!(obj is Entity<TPrimaryKey>))
             {
                 return false;
             }
@@ -89,66 +124,11 @@ namespace Stove.Domain.Entities
             return Id.Equals(other.Id);
         }
 
-        /// <summary>
-        ///     Registers the state handler to be invoked when the specified event is applied.
-        /// </summary>
-        /// <typeparam name="TEvent">The type of the event to register the handler for.</typeparam>
-        /// <param name="handler">The handler.</param>
-        /// <exception cref="System.ArgumentNullException">Thrown when the <paramref name="handler" /> is null.</exception>
-        protected void Register<TEvent>(Action<TEvent> handler)
-        {
-            if (handler == null)
-            {
-                throw new ArgumentNullException(nameof(handler));
-            }
-
-            _router.ConfigureRoute(handler);
-        }
-
-        /// <summary>
-        ///     Applies the specified event to this instance and invokes the associated state handler.
-        /// </summary>
-        /// <param name="event">The event to apply.</param>
-        protected void ApplyChange(object @event)
-        {
-            if (@event == null)
-            {
-                throw new ArgumentNullException(nameof(@event));
-            }
-
-            BeforeApplyChange(@event);
-            Play(@event);
-            AfterApplyChange(@event);
-        }
-
-        private void Play(object @event)
-        {
-            _router.Route(@event);
-        }
-
-        /// <summary>
-        ///     Called before an event is applied, exposed as a point of interception.
-        /// </summary>
-        /// <param name="event">The event that will be applied.</param>
-        protected virtual void BeforeApplyChange(object @event)
-        {
-        }
-
-        /// <summary>
-        ///     Called after an event has been applied, exposed as a point of interception.
-        /// </summary>
-        /// <param name="event">The event that has been applied.</param>
-        protected virtual void AfterApplyChange(object @event)
-        {
-        }
-
-        /// <inheritdoc />
         public override int GetHashCode()
         {
             return Id.GetHashCode();
         }
 
-        /// <inheritdoc />
         public static bool operator ==(Entity<TPrimaryKey> left, Entity<TPrimaryKey> right)
         {
             if (Equals(left, null))
@@ -159,16 +139,16 @@ namespace Stove.Domain.Entities
             return left.Equals(right);
         }
 
-        /// <inheritdoc />
         public static bool operator !=(Entity<TPrimaryKey> left, Entity<TPrimaryKey> right)
         {
             return !(left == right);
         }
 
-        /// <inheritdoc />
         public override string ToString()
         {
             return $"[{GetType().Name} {Id}]";
         }
+
+        #endregion
     }
 }

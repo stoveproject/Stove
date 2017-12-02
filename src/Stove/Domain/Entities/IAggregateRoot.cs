@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Stove.Domain.Entities
 {
@@ -28,7 +27,6 @@ namespace Stove.Domain.Entities
         ///     Gets the state changes applied to this instance.
         /// </summary>
         /// <returns>A list of recorded state changes.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         IEnumerable<object> GetChanges();
 
         /// <summary>

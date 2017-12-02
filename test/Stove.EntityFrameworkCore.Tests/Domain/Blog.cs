@@ -10,13 +10,10 @@ namespace Stove.EntityFrameworkCore.Tests.Domain
     {
         public Blog()
         {
-            Register<BlogUrlChangedEventData>(@event =>
-            {
-                Url = @event.Url;
-            });
+            Register<BlogUrlChangedEventData>(When);
         }
 
-        public Blog(string name, string url)
+        public Blog(string name, string url) : this()
         {
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -39,6 +36,11 @@ namespace Stove.EntityFrameworkCore.Tests.Domain
         public ICollection<Post> Posts { get; set; }
 
         public DateTime CreationTime { get; set; }
+
+        private void When(BlogUrlChangedEventData @event)
+        {
+            Url = @event.Url;
+        }
 
         public void ChangeUrl(string url)
         {
