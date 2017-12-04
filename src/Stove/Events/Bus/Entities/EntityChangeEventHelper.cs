@@ -10,7 +10,7 @@ using Stove.Domain.Uow;
 namespace Stove.Events.Bus.Entities
 {
     /// <summary>
-    ///     Used to trigger entity change events.
+    ///     Used to publish entity change events.
     /// </summary>
     public class EntityChangeEventHelper : IEntityChangeEventHelper, ITransientDependency
     {
@@ -24,103 +24,103 @@ namespace Stove.Events.Bus.Entities
 
         public IEventBus EventBus { get; set; }
 
-        public virtual void TriggerEvents(EntityChangeReport changeReport)
+        public virtual void PublishEvents(EntityChangeReport changeReport)
         {
-            TriggerEventsInternal(changeReport);
+            PublishEventsInternal(changeReport);
 
             if (changeReport.IsEmpty() || _unitOfWorkManager.Current == null) return;
 
             _unitOfWorkManager.Current.SaveChanges();
         }
 
-        public Task TriggerEventsAsync(EntityChangeReport changeReport, CancellationToken cancellationToken = default(CancellationToken))
+        public Task PublishEventsAsync(EntityChangeReport changeReport, CancellationToken cancellationToken = default(CancellationToken))
         {
-            TriggerEventsInternal(changeReport);
+            PublishEventsInternal(changeReport);
 
             if (changeReport.IsEmpty() || _unitOfWorkManager.Current == null) return Task.FromResult(0);
 
             return _unitOfWorkManager.Current.SaveChangesAsync(cancellationToken);
         }
 
-        public virtual void TriggerEntityCreatingEvent(object entity)
+        public virtual void PublishEntityCreatingEvent(object entity)
         {
-            TriggerEventWithEntity(typeof(EntityCreatingEventData<>), entity, true);
+            PublishEventWithEntity(typeof(EntityCreatingEventData<>), entity, true);
         }
 
-        public virtual void TriggerEntityCreatedEventOnUowCompleted(object entity)
+        public virtual void PublishEntityCreatedEventOnUowCompleted(object entity)
         {
-            TriggerEventWithEntity(typeof(EntityCreatedEventData<>), entity, false);
+            PublishEventWithEntity(typeof(EntityCreatedEventData<>), entity, false);
         }
 
-        public virtual void TriggerEntityUpdatingEvent(object entity)
+        public virtual void PublishEntityUpdatingEvent(object entity)
         {
-            TriggerEventWithEntity(typeof(EntityUpdatingEventData<>), entity, true);
+            PublishEventWithEntity(typeof(EntityUpdatingEventData<>), entity, true);
         }
 
-        public virtual void TriggerEntityUpdatedEventOnUowCompleted(object entity)
+        public virtual void PublishEntityUpdatedEventOnUowCompleted(object entity)
         {
-            TriggerEventWithEntity(typeof(EntityUpdatedEventData<>), entity, false);
+            PublishEventWithEntity(typeof(EntityUpdatedEventData<>), entity, false);
         }
 
-        public virtual void TriggerEntityDeletingEvent(object entity)
+        public virtual void PublishEntityDeletingEvent(object entity)
         {
-            TriggerEventWithEntity(typeof(EntityDeletingEventData<>), entity, true);
+            PublishEventWithEntity(typeof(EntityDeletingEventData<>), entity, true);
         }
 
-        public virtual void TriggerEntityDeletedEventOnUowCompleted(object entity)
+        public virtual void PublishEntityDeletedEventOnUowCompleted(object entity)
         {
-            TriggerEventWithEntity(typeof(EntityDeletedEventData<>), entity, false);
+            PublishEventWithEntity(typeof(EntityDeletedEventData<>), entity, false);
         }
 
-        public virtual void TriggerEventsInternal(EntityChangeReport changeReport)
+        public virtual void PublishEventsInternal(EntityChangeReport changeReport)
         {
-            TriggerEntityChangeEvents(changeReport.ChangedEntities);
-            TriggerDomainEvents(changeReport.DomainEvents);
+            PublishEntityChangeEvents(changeReport.ChangedEntities);
+            PublishDomainEvents(changeReport.DomainEvents);
         }
 
-        protected virtual void TriggerEntityChangeEvents(List<EntityChangeEntry> changedEntities)
+        protected virtual void PublishEntityChangeEvents(List<EntityChangeEntry> changedEntities)
         {
             foreach (EntityChangeEntry changedEntity in changedEntities)
             {
                 switch (changedEntity.ChangeType)
                 {
                     case EntityChangeType.Created:
-                        TriggerEntityCreatingEvent(changedEntity.Entity);
-                        TriggerEntityCreatedEventOnUowCompleted(changedEntity.Entity);
+                        PublishEntityCreatingEvent(changedEntity.Entity);
+                        PublishEntityCreatedEventOnUowCompleted(changedEntity.Entity);
                         break;
                     case EntityChangeType.Updated:
-                        TriggerEntityUpdatingEvent(changedEntity.Entity);
-                        TriggerEntityUpdatedEventOnUowCompleted(changedEntity.Entity);
+                        PublishEntityUpdatingEvent(changedEntity.Entity);
+                        PublishEntityUpdatedEventOnUowCompleted(changedEntity.Entity);
                         break;
                     case EntityChangeType.Deleted:
-                        TriggerEntityDeletingEvent(changedEntity.Entity);
-                        TriggerEntityDeletedEventOnUowCompleted(changedEntity.Entity);
+                        PublishEntityDeletingEvent(changedEntity.Entity);
+                        PublishEntityDeletedEventOnUowCompleted(changedEntity.Entity);
                         break;
                     default: throw new StoveException("Unknown EntityChangeType: " + changedEntity.ChangeType);
                 }
             }
         }
 
-        protected virtual void TriggerDomainEvents(List<DomainEventEntry> domainEvents)
+        protected virtual void PublishDomainEvents(List<DomainEventEntry> domainEvents)
         {
             foreach (DomainEventEntry domainEvent in domainEvents)
             {
-                EventBus.Trigger(domainEvent.EventData.GetType(), domainEvent.SourceEntity, domainEvent.EventData);
+                EventBus.Publish(domainEvent.EventData.GetType(), domainEvent.SourceEntity, domainEvent.EventData);
             }
         }
 
-        protected virtual void TriggerEventWithEntity(Type genericEventType, object entity, bool triggerInCurrentUnitOfWork)
+        protected virtual void PublishEventWithEntity(Type genericEventType, object entity, bool publishInCurrentUnitOfWork)
         {
             Type entityType = entity.GetType();
             Type eventType = genericEventType.MakeGenericType(entityType);
 
-            if (triggerInCurrentUnitOfWork || _unitOfWorkManager.Current == null)
+            if (publishInCurrentUnitOfWork || _unitOfWorkManager.Current == null)
             {
-                EventBus.Trigger(eventType, (IEventData)Activator.CreateInstance(eventType, entity));
+                EventBus.Publish(eventType, (IEventData)Activator.CreateInstance(eventType, entity));
                 return;
             }
 
-            _unitOfWorkManager.Current.Completed += (sender, args) => EventBus.Trigger(eventType, (IEventData)Activator.CreateInstance(eventType, entity));
+            _unitOfWorkManager.Current.Completed += (sender, args) => EventBus.Publish(eventType, (IEventData)Activator.CreateInstance(eventType, entity));
         }
     }
 }

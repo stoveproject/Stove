@@ -71,12 +71,15 @@ namespace Stove.Bootstrapping
                     continue;
                 }
 
-                Type impl = serviceTypes.ToList().FirstOrDefault(x => @interface.IsAssignableFrom(x));
+                List<Type> handlers = serviceTypes.Where(x => @interface.IsAssignableFrom(x)).ToList();
 
                 Type[] genericArgs = @interface.GetTypeInfo().GetGenericArguments();
                 if (genericArgs.Length == 1)
                 {
-                    _eventBus.Register(genericArgs[0], new IocHandlerFactory(Resolver, impl));
+                    handlers.ForEach(handler =>
+                        _eventBus.Register(genericArgs[0], new IocHandlerFactory(Resolver, handler)
+                        )
+                    );
                 }
             }
         }

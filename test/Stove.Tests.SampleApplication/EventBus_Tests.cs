@@ -17,15 +17,67 @@ namespace Stove.Tests.SampleApplication
         [Fact]
         public void one_eventdata_with_multiple_handler()
         {
-            The<IEventBus>().Trigger(new SomeEvent
+            The<IEventBus>().Publish(new SomeEvent
             {
                 ExecutionCount = 0
             });
 
-            The<IEventBus>().Trigger(new SomeEvent2
+            The<IEventBus>().Publish(new SomeEvent2
             {
                 ExecutionCount = 0
             });
+        }
+
+        [Fact]
+        public void multiple_same_event_multiple_event_handler()
+        {
+            The<IEventBus>().Publish(new ProductCreatedEvent(12));
+        }
+
+
+        [Fact]
+        public void inherited_event_should_work()
+        {
+            The<IEventBus>().Publish(new InheritedEvent(16));
+        }
+
+        public class ProductCreatedEvent : EventData
+        {
+            public int ProductId;
+
+            public ProductCreatedEvent(int productId)
+            {
+                ProductId = productId;
+            }
+
+        }
+
+        public class InheritedEvent : ProductCreatedEvent
+        {
+            public InheritedEvent(int productId) : base(productId)
+            {
+            }
+        }
+
+        public class FirstEventHandler : IEventHandler<ProductCreatedEvent>, ITransientDependency
+        {
+            public void Handle(ProductCreatedEvent @event)
+            {
+            }
+        }
+
+        public class SecondEventHandler : IEventHandler<ProductCreatedEvent>, ITransientDependency
+        {
+            public void Handle(ProductCreatedEvent @event)
+            {
+            }
+        }
+
+        public class InheritedEventHandler : IEventHandler<InheritedEvent>, ITransientDependency
+        {
+            public void Handle(InheritedEvent @event)
+            {
+            }
         }
 
         public class SomeEvent : EventData
@@ -40,12 +92,12 @@ namespace Stove.Tests.SampleApplication
 
         public class SomeEventHandler : IEventHandler<SomeEvent>, IEventHandler<SomeEvent2>, ITransientDependency
         {
-            public void HandleEvent(SomeEvent eventData)
+            public void Handle(SomeEvent eventData)
             {
                 eventData.ExecutionCount++;
             }
 
-            public void HandleEvent(SomeEvent2 eventData)
+            public void Handle(SomeEvent2 eventData)
             {
                 eventData.ExecutionCount++;
             }

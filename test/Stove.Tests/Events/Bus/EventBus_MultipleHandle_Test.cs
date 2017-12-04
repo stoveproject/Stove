@@ -18,7 +18,7 @@ namespace Stove.Tests.Events.Bus
             EventBus.Register<EntityChangedEventData<MyEntity>>(handler);
             EventBus.Register<EntityCreatedEventData<MyEntity>>(handler);
 
-            EventBus.Trigger(new EntityCreatedEventData<MyEntity>(new MyEntity()));
+            EventBus.Publish(new EntityCreatedEventData<MyEntity>(new MyEntity()));
 
             handler.EntityCreatedEventCount.ShouldBe(1);
             handler.EntityChangedEventCount.ShouldBe(1);
@@ -36,12 +36,12 @@ namespace Stove.Tests.Events.Bus
             public int EntityChangedEventCount { get; set; }
             public int EntityCreatedEventCount { get; set; }
 
-            public void HandleEvent(EntityChangedEventData<MyEntity> eventData)
+            public void Handle(EntityChangedEventData<MyEntity> eventData)
             {
                 EntityChangedEventCount++;
             }
 
-            public void HandleEvent(EntityCreatedEventData<MyEntity> eventData)
+            public void Handle(EntityCreatedEventData<MyEntity> eventData)
             {
                 EntityCreatedEventCount++;
             }

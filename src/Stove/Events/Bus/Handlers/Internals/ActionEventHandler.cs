@@ -28,7 +28,7 @@ namespace Stove.Events.Bus.Handlers.Internals
         /// Handles the event.
         /// </summary>
         /// <param name="eventData"></param>
-        public void HandleEvent(TEventData eventData)
+        public void Handle(TEventData eventData)
         {
             Action(eventData);
         }

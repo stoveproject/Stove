@@ -107,7 +107,7 @@ namespace Stove.Tests.SampleApplication.Uow
 
                     uow.Complete();
 
-                    The<IEventBus>().Trigger(new SomeUowEvent());
+                    The<IEventBus>().Publish(new SomeUowEvent());
                 }
             });
         }
@@ -170,7 +170,7 @@ namespace Stove.Tests.SampleApplication.Uow
             _provider = provider;
         }
 
-        public void HandleEvent(SomeUowEvent eventData)
+        public void Handle(SomeUowEvent eventData)
         {
             var a = 1;
             _provider.ShouldNotBeNull();

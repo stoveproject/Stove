@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-
-using Autofac.Extras.IocManager;
+﻿using Autofac.Extras.IocManager;
 
 using Shouldly;
 
@@ -129,10 +126,7 @@ namespace Stove.Tests.SampleApplication
         public void uow_completed_event_should_fire_when_uow_is_completed()
         {
             var executionCount = 0;
-            The<IEventBus>().Register<UserCretedEventAfterUowCompleted>(completed =>
-            {
-                executionCount++;
-            });
+            The<IEventBus>().Register<UserCretedEventAfterUowCompleted>(completed => { executionCount++; });
 
             var uowManager = The<IUnitOfWorkManager>();
             var userRepository = The<IRepository<User>>();
@@ -146,39 +140,9 @@ namespace Stove.Tests.SampleApplication
                     Name = "Oğuz"
                 });
 
-                The<IUnitOfWorkCompletedEventHelper>().Trigger(new UserCretedEventAfterUowCompleted() { Name = "Oğuz" });
+                The<IUnitOfWorkCompletedEventHelper>().Publish(new UserCretedEventAfterUowCompleted { Name = "Oğuz" });
 
                 uow.Complete();
-            }
-
-            executionCount.ShouldBe(1);
-
-        }
-
-        //[Fact]
-        public async Task uow_completed_async_event_should_fire_when_uow_is_completed()
-        {
-            var executionCount = 0;
-            The<IEventBus>().Register<UserCretedEventAfterUowCompleted>(async completed =>
-            {
-                executionCount++;
-                await Task.FromResult(0);
-            });
-            var uowManager = The<IUnitOfWorkManager>();
-            var userRepository = The<IRepository<User>>();
-
-            using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
-            {
-                await userRepository.InsertAsync(new User
-                {
-                    Email = "ouzsykn@hotmail.com",
-                    Surname = "Sykn",
-                    Name = "Oğuz"
-                });
-
-                await The<IUnitOfWorkCompletedEventHelper>().TriggerAsync(new UserCretedEventAfterUowCompleted() { Name = "Oğuz" });
-
-                await uow.CompleteAsync();
             }
 
             executionCount.ShouldBe(1);
@@ -188,10 +152,7 @@ namespace Stove.Tests.SampleApplication
         public void uow_completed_event_should_not_fire_when_uow_is_not_completed()
         {
             var executionCount = 0;
-            The<IEventBus>().Register<UserCretedEventAfterUowCompleted>(completed =>
-            {
-                executionCount++;
-            });
+            The<IEventBus>().Register<UserCretedEventAfterUowCompleted>(completed => { executionCount++; });
             var uowManager = The<IUnitOfWorkManager>();
             var userRepository = The<IRepository<User>>();
 
@@ -204,7 +165,7 @@ namespace Stove.Tests.SampleApplication
                     Name = "Oğuz"
                 });
 
-                The<IUnitOfWorkCompletedEventHelper>().Trigger(new UserCretedEventAfterUowCompleted() { Name = "Oğuz" });
+                The<IUnitOfWorkCompletedEventHelper>().Publish(new UserCretedEventAfterUowCompleted { Name = "Oğuz" });
             }
 
             executionCount.ShouldBe(0);
@@ -221,12 +182,12 @@ namespace Stove.Tests.SampleApplication
                 _userRepository = userRepository;
             }
 
-            public void HandleEvent(EntityCreatedEventData<User> eventData)
+            public void Handle(EntityCreatedEventData<User> eventData)
             {
                 User a = eventData.Entity;
             }
 
-            public void HandleEvent(EntityUpdatedEventData<User> eventData)
+            public void Handle(EntityUpdatedEventData<User> eventData)
             {
                 User a = eventData.Entity;
             }
@@ -238,4 +199,3 @@ namespace Stove.Tests.SampleApplication
         }
     }
 }
-

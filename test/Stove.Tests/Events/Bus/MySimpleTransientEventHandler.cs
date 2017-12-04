@@ -10,7 +10,7 @@ namespace Stove.Tests.Events.Bus
 
         public static int DisposeCount { get; set; }
 
-        public void HandleEvent(MySimpleEventData eventData)
+        public void Handle(MySimpleEventData eventData)
         {
             ++HandleCount;
         }

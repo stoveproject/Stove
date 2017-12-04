@@ -90,50 +90,50 @@ namespace Stove.Events.Bus
 		}
 
 		/// <inheritdoc />
-		public void UnregisterAll(Type eventType)
+		public void UnregisterAll(Type @event)
 		{
 		}
 
 		/// <inheritdoc />
-		public void Trigger<TEventData>(TEventData eventData) where TEventData : IEventData
+		public void Publish<TEventData>(TEventData @event) where TEventData : IEventData
 		{
 		}
 
 		/// <inheritdoc />
-		public void Trigger<TEventData>(object eventSource, TEventData eventData) where TEventData : IEventData
+		public void Publish<TEventData>(object eventSource, TEventData @event) where TEventData : IEventData
 		{
 		}
 
 		/// <inheritdoc />
-		public void Trigger(Type eventType, IEventData eventData)
+		public void Publish(Type eventType, IEventData @event)
 		{
 		}
 
 		/// <inheritdoc />
-		public void Trigger(Type eventType, object eventSource, IEventData eventData)
+		public void Publish(Type eventType, object eventSource, IEventData @event)
 		{
 		}
 
 		/// <inheritdoc />
-		public Task TriggerAsync<TEventData>(TEventData eventData) where TEventData : IEventData
-		{
-			return new Task(() => { });
-		}
-
-		/// <inheritdoc />
-		public Task TriggerAsync<TEventData>(object eventSource, TEventData eventData) where TEventData : IEventData
+		public Task PublishAsync<TEventData>(TEventData @event) where TEventData : IEventData
 		{
 			return new Task(() => { });
 		}
 
 		/// <inheritdoc />
-		public Task TriggerAsync(Type eventType, IEventData eventData)
+		public Task PublishAsync<TEventData>(object eventSource, TEventData @event) where TEventData : IEventData
 		{
 			return new Task(() => { });
 		}
 
 		/// <inheritdoc />
-		public Task TriggerAsync(Type eventType, object eventSource, IEventData eventData)
+		public Task PublishAsync(Type eventType, IEventData @event)
+		{
+			return new Task(() => { });
+		}
+
+		/// <inheritdoc />
+		public Task PublishAsync(Type eventType, object eventSource, IEventData @event)
 		{
 			return new Task(() => { });
 		}
