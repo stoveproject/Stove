@@ -102,71 +102,71 @@ namespace Stove.Events.Bus
         /// <summary>
         ///     Unregisters all event handlers of given event type.
         /// </summary>
-        /// <param name="eventType">Event type</param>
-        void UnregisterAll(Type eventType);
+        /// <param name="event">Event type</param>
+        void UnregisterAll(Type @event);
 
         /// <summary>
-        ///     Triggers an event.
+        ///     Publishes an event.
         /// </summary>
         /// <typeparam name="TEventData">Event type</typeparam>
-        /// <param name="eventData">Related data for the event</param>
-        void Trigger<TEventData>(TEventData eventData) where TEventData : IEventData;
+        /// <param name="event">Related data for the event</param>
+        void Publish<TEventData>(TEventData @event) where TEventData : IEventData;
 
         /// <summary>
-        ///     Triggers an event.
+        ///     Publishes an event.
         /// </summary>
         /// <typeparam name="TEventData">Event type</typeparam>
-        /// <param name="eventSource">The object which triggers the event</param>
-        /// <param name="eventData">Related data for the event</param>
-        void Trigger<TEventData>(object eventSource, TEventData eventData) where TEventData : IEventData;
+        /// <param name="eventSource">The object which Publishes the event</param>
+        /// <param name="event">Related data for the event</param>
+        void Publish<TEventData>(object eventSource, TEventData @event) where TEventData : IEventData;
 
         /// <summary>
-        ///     Triggers an event.
+        ///     Publishes an event.
         /// </summary>
         /// <param name="eventType">Event type</param>
-        /// <param name="eventData">Related data for the event</param>
-        void Trigger(Type eventType, IEventData eventData);
+        /// <param name="event">Related data for the event</param>
+        void Publish(Type eventType, IEventData @event);
 
         /// <summary>
-        ///     Triggers an event.
+        ///     Publishes an event.
         /// </summary>
         /// <param name="eventType">Event type</param>
-        /// <param name="eventSource">The object which triggers the event</param>
-        /// <param name="eventData">Related data for the event</param>
-        void Trigger(Type eventType, object eventSource, IEventData eventData);
+        /// <param name="eventSource">The object which Publishes the event</param>
+        /// <param name="event">Related data for the event</param>
+        void Publish(Type eventType, object eventSource, IEventData @event);
 
         /// <summary>
-        ///     Triggers an event asynchronously.
+        ///     Publishes an event asynchronously.
         /// </summary>
         /// <typeparam name="TEventData">Event type</typeparam>
-        /// <param name="eventData">Related data for the event</param>
+        /// <param name="event">Related data for the event</param>
         /// <returns>The task to handle async operation</returns>
-        Task TriggerAsync<TEventData>(TEventData eventData) where TEventData : IEventData;
+        Task PublishAsync<TEventData>(TEventData @event) where TEventData : IEventData;
 
         /// <summary>
-        ///     Triggers an event asynchronously.
+        ///     Publishes an event asynchronously.
         /// </summary>
         /// <typeparam name="TEventData">Event type</typeparam>
-        /// <param name="eventSource">The object which triggers the event</param>
-        /// <param name="eventData">Related data for the event</param>
+        /// <param name="eventSource">The object which Publishes the event</param>
+        /// <param name="event">Related data for the event</param>
         /// <returns>The task to handle async operation</returns>
-        Task TriggerAsync<TEventData>(object eventSource, TEventData eventData) where TEventData : IEventData;
+        Task PublishAsync<TEventData>(object eventSource, TEventData @event) where TEventData : IEventData;
 
         /// <summary>
-        ///     Triggers an event asynchronously.
+        ///     Publishes an event asynchronously.
         /// </summary>
         /// <param name="eventType">Event type</param>
-        /// <param name="eventData">Related data for the event</param>
+        /// <param name="event">Related data for the event</param>
         /// <returns>The task to handle async operation</returns>
-        Task TriggerAsync(Type eventType, IEventData eventData);
+        Task PublishAsync(Type eventType, IEventData @event);
 
         /// <summary>
-        ///     Triggers an event asynchronously.
+        ///     Publishes an event asynchronously.
         /// </summary>
         /// <param name="eventType">Event type</param>
-        /// <param name="eventSource">The object which triggers the event</param>
-        /// <param name="eventData">Related data for the event</param>
+        /// <param name="eventSource">The object which Publishes the event</param>
+        /// <param name="event">Related data for the event</param>
         /// <returns>The task to handle async operation</returns>
-        Task TriggerAsync(Type eventType, object eventSource, IEventData eventData);
+        Task PublishAsync(Type eventType, object eventSource, IEventData @event);
     }
 }

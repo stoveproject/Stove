@@ -10,7 +10,7 @@ namespace Stove.Demo.WebApi.Core.Domain.Events
 {
     public class PersonCreatedEventHandler : IEventHandler<EntityCreatedEventData<Person>>, ITransientDependency
     {
-        public void HandleEvent(EntityCreatedEventData<Person> eventData)
+        public void Handle(EntityCreatedEventData<Person> eventData)
         {
             Person person = eventData.Entity;
             Console.WriteLine($"Person Entity Created Event, with Subject : {person.Name}");

@@ -118,7 +118,7 @@ namespace Stove.EntityFrameworkCore
             {
                 EntityChangeReport changeReport = ApplyStoveConcepts();
                 int result = base.SaveChanges();
-                EntityChangeEventHelper.TriggerEvents(changeReport);
+                EntityChangeEventHelper.PublishEvents(changeReport);
                 return result;
             }
             catch (DbUpdateConcurrencyException ex)
@@ -133,7 +133,7 @@ namespace Stove.EntityFrameworkCore
             {
                 EntityChangeReport changeReport = ApplyStoveConcepts();
                 int result = await base.SaveChangesAsync(cancellationToken);
-                await EntityChangeEventHelper.TriggerEventsAsync(changeReport, cancellationToken);
+                await EntityChangeEventHelper.PublishEventsAsync(changeReport, cancellationToken);
                 return result;
             }
             catch (DbUpdateConcurrencyException ex)

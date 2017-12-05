@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-using Autofac.Extras.IocManager;
+﻿using Autofac.Extras.IocManager;
 
 using Stove.Domain.Uow;
 
@@ -13,30 +11,24 @@ namespace Stove.Events.Bus
         public UnitOfWorkCompletedEventHelper(IUnitOfWorkManager unitOfWorkManager)
         {
             _unitOfWorkManager = unitOfWorkManager;
+            
+            EventBus = NullEventBus.Instance;
         }
 
         public IEventBus EventBus { get; set; }
 
-        public void Trigger<T>(T @event) where T : IEventData
+        public void Publish<T>(T @event) where T : IEventData
         {
             CheckCurrentUow();
 
-            _unitOfWorkManager.Current.Completed += (sender, args) => { EventBus.Trigger(@event); };
-        }
-
-        public Task TriggerAsync<T>(T @event) where T : IEventData
-        {
-            CheckCurrentUow();
-
-            _unitOfWorkManager.Current.Completed += async (sender, args) => { await EventBus.TriggerAsync(@event); };
-            return Task.FromResult(0);
+            _unitOfWorkManager.Current.Completed += (sender, args) => { EventBus.Publish(@event); };
         }
 
         private void CheckCurrentUow()
         {
             if (_unitOfWorkManager.Current == null)
             {
-                throw new StoveException($"{nameof(IUnitOfWorkCompletedEventHelper.Trigger)} method should be called in a UOW.");
+                throw new StoveException($"{nameof(IUnitOfWorkCompletedEventHelper.Publish)} method should be called in a UOW.");
             }
         }
     }

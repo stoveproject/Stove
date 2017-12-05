@@ -49,10 +49,10 @@ namespace Stove.RavenDB.Repositories
 		/// <returns></returns>
 		public override TEntity Insert(TEntity entity)
 		{
-			EntityChangeEventHelper.TriggerEntityCreatingEvent(entity);
+			EntityChangeEventHelper.PublishEntityCreatingEvent(entity);
 			RavenActionFilterExecuter.ExecuteCreationAuditFilter<TEntity, TPrimaryKey>(entity);
 			Session.Store(entity);
-			EntityChangeEventHelper.TriggerEntityCreatedEventOnUowCompleted(entity);
+			EntityChangeEventHelper.PublishEntityCreatedEventOnUowCompleted(entity);
 			return entity;
 		}
 
@@ -63,10 +63,10 @@ namespace Stove.RavenDB.Repositories
 		/// <returns></returns>
 		public override TEntity Update(TEntity entity)
 		{
-			EntityChangeEventHelper.TriggerEntityUpdatingEvent(entity);
+			EntityChangeEventHelper.PublishEntityUpdatingEvent(entity);
 			RavenActionFilterExecuter.ExecuteModificationAuditFilter<TEntity, TPrimaryKey>(entity);
 			Session.Store(entity);
-			EntityChangeEventHelper.TriggerEntityUpdatedEventOnUowCompleted(entity);
+			EntityChangeEventHelper.PublishEntityUpdatedEventOnUowCompleted(entity);
 			return entity;
 		}
 
@@ -76,7 +76,7 @@ namespace Stove.RavenDB.Repositories
 		/// <param name="entity">The entity.</param>
 		public override void Delete(TEntity entity)
 		{
-			EntityChangeEventHelper.TriggerEntityDeletingEvent(entity);
+			EntityChangeEventHelper.PublishEntityDeletingEvent(entity);
 			if (entity is ISoftDelete)
 			{
 				RavenActionFilterExecuter.ExecuteDeletionAuditFilter<TEntity, TPrimaryKey>(entity);
@@ -86,7 +86,7 @@ namespace Stove.RavenDB.Repositories
 			{
 				Session.Delete(entity);
 			}
-			EntityChangeEventHelper.TriggerEntityDeletedEventOnUowCompleted(entity);
+			EntityChangeEventHelper.PublishEntityDeletedEventOnUowCompleted(entity);
 		}
 
 		/// <summary>

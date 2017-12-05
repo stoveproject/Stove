@@ -21,7 +21,7 @@ namespace Stove.Tests.Events.Bus
                     triggeredEvent = true;
                 });
 
-            EventBus.Trigger(new EntityUpdatedEventData<Person>(new Person { Id = 42 }));
+            EventBus.Publish(new EntityUpdatedEventData<Person>(new Person { Id = 42 }));
 
             triggeredEvent.ShouldBe(true);
         }
@@ -38,7 +38,7 @@ namespace Stove.Tests.Events.Bus
                     triggeredEvent = true;
                 });
 
-            EventBus.Trigger(new EntityChangedEventData<Student>(new Student { Id = 42 }));
+            EventBus.Publish(new EntityChangedEventData<Student>(new Student { Id = 42 }));
 
             triggeredEvent.ShouldBe(true);
         }

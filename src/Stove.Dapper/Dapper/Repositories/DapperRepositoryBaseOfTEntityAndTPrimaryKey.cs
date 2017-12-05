@@ -191,15 +191,15 @@ namespace Stove.Dapper.Repositories
 
         public override void Update(TEntity entity)
         {
-            EntityChangeEventHelper.TriggerEntityUpdatingEvent(entity);
+            EntityChangeEventHelper.PublishEntityUpdatingEvent(entity);
             DapperActionFilterExecuter.ExecuteModificationAuditFilter<TEntity, TPrimaryKey>(entity);
             Connection.Update(entity, ActiveTransaction);
-            EntityChangeEventHelper.TriggerEntityUpdatedEventOnUowCompleted(entity);
+            EntityChangeEventHelper.PublishEntityUpdatedEventOnUowCompleted(entity);
         }
 
         public override void Delete(TEntity entity)
         {
-            EntityChangeEventHelper.TriggerEntityDeletingEvent(entity);
+            EntityChangeEventHelper.PublishEntityDeletingEvent(entity);
             if (entity is ISoftDelete)
             {
                 DapperActionFilterExecuter.ExecuteDeletionAuditFilter<TEntity, TPrimaryKey>(entity);
@@ -209,7 +209,7 @@ namespace Stove.Dapper.Repositories
             {
                 Connection.Delete(entity, ActiveTransaction);
             }
-            EntityChangeEventHelper.TriggerEntityDeletedEventOnUowCompleted(entity);
+            EntityChangeEventHelper.PublishEntityDeletedEventOnUowCompleted(entity);
         }
 
         public override void Delete(Expression<Func<TEntity, bool>> predicate)
@@ -223,10 +223,10 @@ namespace Stove.Dapper.Repositories
 
         public override TPrimaryKey InsertAndGetId(TEntity entity)
         {
-            EntityChangeEventHelper.TriggerEntityCreatingEvent(entity);
+            EntityChangeEventHelper.PublishEntityCreatingEvent(entity);
             DapperActionFilterExecuter.ExecuteCreationAuditFilter<TEntity, TPrimaryKey>(entity);
             TPrimaryKey primaryKey = Connection.Insert(entity, ActiveTransaction);
-            EntityChangeEventHelper.TriggerEntityCreatedEventOnUowCompleted(entity);
+            EntityChangeEventHelper.PublishEntityCreatedEventOnUowCompleted(entity);
             return primaryKey;
         }
     }

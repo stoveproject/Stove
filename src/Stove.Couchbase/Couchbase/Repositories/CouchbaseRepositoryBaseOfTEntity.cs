@@ -42,7 +42,7 @@ namespace Stove.Couchbase.Repositories
             entity.Id = GuidGenerator.Create().ToString("N");
             ActionFilterExecuter.ExecuteCreationAuditFilter<TEntity, string>(entity);
 
-            EntityChangeEventHelper.TriggerEntityCreatingEvent(entity);
+            EntityChangeEventHelper.PublishEntityCreatingEvent(entity);
 
             IDocumentResult<TEntity> result = Session.Bucket.Insert(new Document<TEntity>
             {
@@ -52,7 +52,7 @@ namespace Stove.Couchbase.Repositories
 
             result.EnsureSuccess();
 
-            EntityChangeEventHelper.TriggerEntityCreatedEventOnUowCompleted(entity);
+            EntityChangeEventHelper.PublishEntityCreatedEventOnUowCompleted(entity);
 
             return result.Content;
         }
@@ -61,7 +61,7 @@ namespace Stove.Couchbase.Repositories
         {
             ActionFilterExecuter.ExecuteModificationAuditFilter<TEntity, string>(entity);
 
-            EntityChangeEventHelper.TriggerEntityUpdatingEvent(entity);
+            EntityChangeEventHelper.PublishEntityUpdatingEvent(entity);
 
             IDocumentResult<TEntity> result = Session.Bucket.Upsert(new Document<TEntity>
             {
@@ -71,7 +71,7 @@ namespace Stove.Couchbase.Repositories
 
             result.EnsureSuccess();
 
-            EntityChangeEventHelper.TriggerEntityUpdatedEventOnUowCompleted(entity);
+            EntityChangeEventHelper.PublishEntityUpdatedEventOnUowCompleted(entity);
 
             return result.Content;
         }
@@ -80,7 +80,7 @@ namespace Stove.Couchbase.Repositories
         {
             ActionFilterExecuter.ExecuteDeletionAuditFilter<TEntity, string>(entity);
 
-            EntityChangeEventHelper.TriggerEntityDeletingEvent(entity);
+            EntityChangeEventHelper.PublishEntityDeletingEvent(entity);
 
             if (entity is ISoftDelete)
             {
@@ -99,7 +99,7 @@ namespace Stove.Couchbase.Repositories
                 }).EnsureSuccess();
             }
 
-            EntityChangeEventHelper.TriggerEntityDeletedEventOnUowCompleted(entity);
+            EntityChangeEventHelper.PublishEntityDeletedEventOnUowCompleted(entity);
         }
 
         public override void Delete(string id)

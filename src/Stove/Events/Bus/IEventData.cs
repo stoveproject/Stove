@@ -13,7 +13,7 @@ namespace Stove.Events.Bus
         DateTime EventTime { get; set; }
 
         /// <summary>
-        /// The object which triggers the event (optional).
+        /// The object which publishes the event (optional).
         /// </summary>
         object EventSource { get; set; }
     }

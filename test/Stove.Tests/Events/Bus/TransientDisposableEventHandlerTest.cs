@@ -9,9 +9,9 @@ namespace Stove.Tests.Events.Bus
         {
             EventBus.Register<MySimpleEventData, MySimpleTransientEventHandler>();
 
-            EventBus.Trigger(new MySimpleEventData(1));
-            EventBus.Trigger(new MySimpleEventData(2));
-            EventBus.Trigger(new MySimpleEventData(3));
+            EventBus.Publish(new MySimpleEventData(1));
+            EventBus.Publish(new MySimpleEventData(2));
+            EventBus.Publish(new MySimpleEventData(3));
 
             Assert.Equal(MySimpleTransientEventHandler.HandleCount, 3);
             Assert.Equal(MySimpleTransientEventHandler.DisposeCount, 3);

@@ -116,7 +116,7 @@ namespace Stove.EntityFramework
         public IStoveSession StoveSession { get; set; }
 
         /// <summary>
-        ///     Used to trigger entity change events.
+        ///     Used to pbulish entity change events.
         /// </summary>
         public IEntityChangeEventHelper EntityChangeEventHelper { get; set; }
 
@@ -198,7 +198,7 @@ namespace Stove.EntityFramework
             {
                 EntityChangeReport changedEntities = ApplyStoveConcepts();
                 int result = base.SaveChanges();
-                EntityChangeEventHelper.TriggerEvents(changedEntities);
+                EntityChangeEventHelper.PublishEvents(changedEntities);
                 return result;
             }
             catch (DbEntityValidationException ex)
@@ -214,7 +214,7 @@ namespace Stove.EntityFramework
             {
                 EntityChangeReport changeReport = ApplyStoveConcepts();
                 int result = await base.SaveChangesAsync(cancellationToken);
-                await EntityChangeEventHelper.TriggerEventsAsync(changeReport, cancellationToken);
+                await EntityChangeEventHelper.PublishEventsAsync(changeReport, cancellationToken);
                 return result;
             }
             catch (DbEntityValidationException ex)

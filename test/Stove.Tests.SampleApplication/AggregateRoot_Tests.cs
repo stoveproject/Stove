@@ -30,7 +30,7 @@ namespace Stove.Tests.SampleApplication
 
     public class CampaignCreatedEventHandler : IEventHandler<CampaignCreatedEvent>, ITransientDependency
     {
-        public void HandleEvent(CampaignCreatedEvent eventData)
+        public void Handle(CampaignCreatedEvent eventData)
         {
             string name = eventData.Name;
         }

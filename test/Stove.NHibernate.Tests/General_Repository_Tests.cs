@@ -278,7 +278,7 @@ namespace Stove.NHibernate.Tests
 
                     uow.Complete();
 
-                    The<IEventBus>().Trigger(new SomeUowEvent());
+                    The<IEventBus>().Publish(new SomeUowEvent());
                 }
             });
         }
@@ -297,7 +297,7 @@ namespace Stove.NHibernate.Tests
             _provider = provider;
         }
 
-        public void HandleEvent(SomeUowEvent eventData)
+        public void Handle(SomeUowEvent eventData)
         {
             var a = 1;
             _provider.ShouldNotBeNull();

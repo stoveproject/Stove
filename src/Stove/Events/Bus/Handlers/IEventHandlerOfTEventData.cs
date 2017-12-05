@@ -1,16 +1,16 @@
 ﻿namespace Stove.Events.Bus.Handlers
 {
-	/// <inheritdoc />
-	/// <summary>
-	///     Defines an interface of a class that handles events of type <see cref="!:TEventData" />.
-	/// </summary>
-	/// <typeparam name="TEventData">Event type to handle</typeparam>
-	public interface IEventHandler<in TEventData> : IEventHandler
-	{
-		/// <summary>
-		///     Handler handles the event by implementing this method.
-		/// </summary>
-		/// <param name="eventData">Event data</param>
-		void HandleEvent(TEventData eventData);
-	}
+    /// <inheritdoc />
+    /// <summary>
+    ///     Defines an interface of a class that handles events of type <see cref="!:TEventData" />.
+    /// </summary>
+    /// <typeparam name="TEventData">Event type to handle</typeparam>
+    public interface IEventHandler<in TEventData> : IEventHandler
+    {
+        /// <summary>
+        ///     Handler handles the event by implementing this method.
+        /// </summary>
+        /// <param name="event"></param>
+        void Handle(TEventData @event);
+    }
 }

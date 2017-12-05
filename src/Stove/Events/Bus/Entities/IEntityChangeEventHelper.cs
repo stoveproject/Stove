@@ -4,24 +4,24 @@ using System.Threading.Tasks;
 namespace Stove.Events.Bus.Entities
 {
     /// <summary>
-    ///     Used to trigger entity change events.
+    ///     Used to publish entity change events.
     /// </summary>
     public interface IEntityChangeEventHelper
     {
-        void TriggerEvents(EntityChangeReport changeReport);
+        void PublishEvents(EntityChangeReport changeReport);
 
-        Task TriggerEventsAsync(EntityChangeReport changeReport, CancellationToken cancellationToken = default(CancellationToken));
+        Task PublishEventsAsync(EntityChangeReport changeReport, CancellationToken cancellationToken = default(CancellationToken));
 
-        void TriggerEntityCreatingEvent(object entity);
+        void PublishEntityCreatingEvent(object entity);
 
-        void TriggerEntityCreatedEventOnUowCompleted(object entity);
+        void PublishEntityCreatedEventOnUowCompleted(object entity);
 
-        void TriggerEntityUpdatingEvent(object entity);
+        void PublishEntityUpdatingEvent(object entity);
 
-        void TriggerEntityUpdatedEventOnUowCompleted(object entity);
+        void PublishEntityUpdatedEventOnUowCompleted(object entity);
 
-        void TriggerEntityDeletingEvent(object entity);
+        void PublishEntityDeletingEvent(object entity);
 
-        void TriggerEntityDeletedEventOnUowCompleted(object entity);
+        void PublishEntityDeletedEventOnUowCompleted(object entity);
     }
 }
