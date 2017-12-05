@@ -40,6 +40,7 @@ namespace Stove.Events.Bus
         public EventBus()
         {
             _handlerFactories = new ConcurrentDictionary<Type, List<IEventHandlerFactory>>();
+
             Logger = NullLogger.Instance;
         }
 
@@ -100,14 +101,12 @@ namespace Stove.Events.Bus
                     factories.RemoveAll(
                         factory =>
                         {
-                            var singleInstanceFactory = factory as SingleInstanceHandlerFactory;
-                            if (singleInstanceFactory == null)
+                            if (!(factory is SingleInstanceHandlerFactory singleInstanceFactory))
                             {
                                 return false;
                             }
 
-                            var actionHandler = singleInstanceFactory.HandlerInstance as ActionEventHandler<TEventData>;
-                            if (actionHandler == null)
+                            if (!(singleInstanceFactory.HandlerInstance is ActionEventHandler<TEventData> actionHandler))
                             {
                                 return false;
                             }
@@ -185,14 +184,7 @@ namespace Stove.Events.Bus
             }
         }
 
-        /// <inheritdoc />
         public Task PublishAsync<TEventData>(TEventData @event) where TEventData : IEventData
-        {
-            return PublishAsync((object)null, @event);
-        }
-
-        /// <inheritdoc />
-        public Task PublishAsync<TEventData>(object eventSource, TEventData @event) where TEventData : IEventData
         {
             ExecutionContext.SuppressFlow();
 
@@ -216,12 +208,6 @@ namespace Stove.Events.Bus
 
         /// <inheritdoc />
         public Task PublishAsync(Type eventType, IEventData @event)
-        {
-            return PublishAsync(eventType, null, @event);
-        }
-
-        /// <inheritdoc />
-        public Task PublishAsync(Type eventType, object eventSource, IEventData @event)
         {
             ExecutionContext.SuppressFlow();
 
