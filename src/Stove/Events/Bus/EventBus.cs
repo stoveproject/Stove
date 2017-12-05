@@ -164,27 +164,15 @@ namespace Stove.Events.Bus
         /// <inheritdoc />
         public void Publish<TEventData>(TEventData @event) where TEventData : IEventData
         {
-            Publish((object)null, @event);
-        }
-
-        /// <inheritdoc />
-        public void Publish<TEventData>(object eventSource, TEventData @event) where TEventData : IEventData
-        {
-            Publish(typeof(TEventData), eventSource, @event);
+            Publish(typeof(TEventData), @event);
         }
 
         /// <inheritdoc />
         public void Publish(Type eventType, IEventData @event)
         {
-            Publish(eventType, null, @event);
-        }
-
-        /// <inheritdoc />
-        public void Publish(Type eventType, object eventSource, IEventData @event)
-        {
             var exceptions = new List<Exception>();
 
-            PublishHandlingException(eventType, eventSource, @event, exceptions);
+            PublishHandlingException(eventType, @event, exceptions);
 
             if (exceptions.Any())
             {
@@ -213,7 +201,7 @@ namespace Stove.Events.Bus
                 {
                     try
                     {
-                        Publish(eventSource, @event);
+                        Publish(@event);
                     }
                     catch (Exception ex)
                     {
@@ -242,7 +230,7 @@ namespace Stove.Events.Bus
                 {
                     try
                     {
-                        Publish(eventType, eventSource, @event);
+                        Publish(eventType, @event);
                     }
                     catch (Exception ex)
                     {
@@ -255,11 +243,9 @@ namespace Stove.Events.Bus
             return task;
         }
 
-        private void PublishHandlingException(Type eventType, object eventSource, IEventData eventData, List<Exception> exceptions)
+        private void PublishHandlingException(Type eventType, IEventData eventData, List<Exception> exceptions)
         {
             //TODO: This method can be optimized by adding all possibilities to a dictionary.
-
-            eventData.EventSource = eventSource;
 
             foreach (EventTypeWithEventHandlerFactories handlerFactories in GetHandlerFactories(eventType))
             {
@@ -311,7 +297,7 @@ namespace Stove.Events.Bus
                     object[] constructorArgs = ((IEventDataWithInheritableGenericArgument)eventData).GetConstructorArgs();
                     var baseEventData = (IEventData)Activator.CreateInstance(baseEventType, constructorArgs);
                     baseEventData.EventTime = eventData.EventTime;
-                    Publish(baseEventType, eventData.EventSource, baseEventData);
+                    Publish(baseEventType, baseEventData);
                 }
             }
         }

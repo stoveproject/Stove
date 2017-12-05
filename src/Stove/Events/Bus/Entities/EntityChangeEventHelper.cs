@@ -105,7 +105,7 @@ namespace Stove.Events.Bus.Entities
         {
             foreach (DomainEventEntry domainEvent in domainEvents)
             {
-                EventBus.Publish(domainEvent.EventData.GetType(), domainEvent.SourceEntity, domainEvent.EventData);
+                EventBus.Publish(domainEvent.EventData.GetType(), domainEvent.EventData);
             }
         }
 

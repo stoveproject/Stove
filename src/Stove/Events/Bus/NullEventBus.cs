@@ -93,25 +93,15 @@ namespace Stove.Events.Bus
 		public void UnregisterAll(Type @event)
 		{
 		}
-
+        
 		/// <inheritdoc />
 		public void Publish<TEventData>(TEventData @event) where TEventData : IEventData
 		{
 		}
 
 		/// <inheritdoc />
-		public void Publish<TEventData>(object eventSource, TEventData @event) where TEventData : IEventData
-		{
-		}
-
-		/// <inheritdoc />
 		public void Publish(Type eventType, IEventData @event)
-		{
-		}
-
-		/// <inheritdoc />
-		public void Publish(Type eventType, object eventSource, IEventData @event)
-		{
+        {
 		}
 
 		/// <inheritdoc />
