@@ -19,7 +19,6 @@ using Castle.Core.Internal;
 
 using EntityFramework.DynamicFilters;
 
-using Stove.Collections.Extensions;
 using Stove.Domain.Entities;
 using Stove.Domain.Entities.Auditing;
 using Stove.Domain.Uow;
@@ -278,7 +277,7 @@ namespace Stove.EntityFramework
                 return;
             }
 
-            domainEvents.AddRange(generatesDomainEventsEntity.GetChanges().Select(eventData => new DomainEventEntry(entityAsObj, eventData as IEventData)));
+            domainEvents.AddRange(generatesDomainEventsEntity.GetChanges().Select(eventData => new DomainEventEntry(entityAsObj, (IEventData)eventData)));
             generatesDomainEventsEntity.ClearChanges();
         }
 
