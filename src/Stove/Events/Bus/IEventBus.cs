@@ -115,25 +115,9 @@ namespace Stove.Events.Bus
         /// <summary>
         ///     Publishes an event.
         /// </summary>
-        /// <typeparam name="TEventData">Event type</typeparam>
-        /// <param name="eventSource">The object which Publishes the event</param>
-        /// <param name="event">Related data for the event</param>
-        void Publish<TEventData>(object eventSource, TEventData @event) where TEventData : IEventData;
-
-        /// <summary>
-        ///     Publishes an event.
-        /// </summary>
         /// <param name="eventType">Event type</param>
         /// <param name="event">Related data for the event</param>
         void Publish(Type eventType, IEventData @event);
-
-        /// <summary>
-        ///     Publishes an event.
-        /// </summary>
-        /// <param name="eventType">Event type</param>
-        /// <param name="eventSource">The object which Publishes the event</param>
-        /// <param name="event">Related data for the event</param>
-        void Publish(Type eventType, object eventSource, IEventData @event);
 
         /// <summary>
         ///     Publishes an event asynchronously.
@@ -146,27 +130,9 @@ namespace Stove.Events.Bus
         /// <summary>
         ///     Publishes an event asynchronously.
         /// </summary>
-        /// <typeparam name="TEventData">Event type</typeparam>
-        /// <param name="eventSource">The object which Publishes the event</param>
-        /// <param name="event">Related data for the event</param>
-        /// <returns>The task to handle async operation</returns>
-        Task PublishAsync<TEventData>(object eventSource, TEventData @event) where TEventData : IEventData;
-
-        /// <summary>
-        ///     Publishes an event asynchronously.
-        /// </summary>
         /// <param name="eventType">Event type</param>
         /// <param name="event">Related data for the event</param>
         /// <returns>The task to handle async operation</returns>
         Task PublishAsync(Type eventType, IEventData @event);
-
-        /// <summary>
-        ///     Publishes an event asynchronously.
-        /// </summary>
-        /// <param name="eventType">Event type</param>
-        /// <param name="eventSource">The object which Publishes the event</param>
-        /// <param name="event">Related data for the event</param>
-        /// <returns>The task to handle async operation</returns>
-        Task PublishAsync(Type eventType, object eventSource, IEventData @event);
     }
 }

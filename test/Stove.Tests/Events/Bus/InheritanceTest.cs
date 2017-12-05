@@ -13,13 +13,13 @@ namespace Stove.Tests.Events.Bus
                 eventData =>
                 {
                     totalData += eventData.Value;
-                    Assert.Equal(this, eventData.EventSource);
+                    //Assert.Equal(this, eventData.EventSource);
                 });
 
-            EventBus.Publish(this, new MySimpleEventData(1)); //Should handle directly registered class
-            EventBus.Publish(this, new MySimpleEventData(2)); //Should handle directly registered class
-            EventBus.Publish(this, new MyDerivedEventData(3)); //Should handle derived class too
-            EventBus.Publish(this, new MyDerivedEventData(4)); //Should handle derived class too
+            EventBus.Publish(new MySimpleEventData(1)); //Should handle directly registered class
+            EventBus.Publish(new MySimpleEventData(2)); //Should handle directly registered class
+            EventBus.Publish(new MyDerivedEventData(3)); //Should handle derived class too
+            EventBus.Publish(new MyDerivedEventData(4)); //Should handle derived class too
 
             Assert.Equal(10, totalData);
         }
@@ -33,13 +33,13 @@ namespace Stove.Tests.Events.Bus
                 eventData =>
                 {
                     totalData += eventData.Value;
-                    Assert.Equal(this, eventData.EventSource);
+                    //Assert.Equal(this, eventData.EventSource);
                 });
 
-            EventBus.Publish(this, new MySimpleEventData(1)); //Should not handle
-            EventBus.Publish(this, new MySimpleEventData(2)); //Should not handle
-            EventBus.Publish(this, new MyDerivedEventData(3)); //Should handle
-            EventBus.Publish(this, new MyDerivedEventData(4)); //Should handle
+            EventBus.Publish(new MySimpleEventData(1)); //Should not handle
+            EventBus.Publish(new MySimpleEventData(2)); //Should not handle
+            EventBus.Publish(new MyDerivedEventData(3)); //Should handle
+            EventBus.Publish(new MyDerivedEventData(4)); //Should handle
 
             Assert.Equal(7, totalData);
         }   

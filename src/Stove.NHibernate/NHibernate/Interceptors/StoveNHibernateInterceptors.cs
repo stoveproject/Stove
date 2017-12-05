@@ -274,7 +274,7 @@ namespace Stove.NHibernate.Interceptors
 
             foreach (var domainEvent in domainEvents)
             {
-                _eventBus.Value.Publish(domainEvent.GetType(), entityAsObj, domainEvent as IEventData);
+                _eventBus.Value.Publish(domainEvent.GetType(), domainEvent as IEventData);
             }
         }
     }
