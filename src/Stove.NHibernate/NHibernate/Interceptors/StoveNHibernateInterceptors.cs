@@ -9,7 +9,6 @@ using Castle.Core.Internal;
 using NHibernate;
 using NHibernate.Type;
 
-using Stove.Collections.Extensions;
 using Stove.Domain.Entities;
 using Stove.Domain.Entities.Auditing;
 using Stove.Events.Bus;
@@ -22,12 +21,11 @@ namespace Stove.NHibernate.Interceptors
 {
     internal class StoveNHibernateInterceptor : EmptyInterceptor, ITransientDependency
     {
-        public IEntityChangeEventHelper EntityChangeEventHelper { get; set; }
+        private readonly Lazy<IEventBus> _eventBus;
+        private readonly Lazy<IGuidGenerator> _guidGenerator;
 
         private readonly IScopeResolver _scopeResolver;
         private readonly Lazy<IStoveSession> _stoveSession;
-        private readonly Lazy<IGuidGenerator> _guidGenerator;
-        private readonly Lazy<IEventBus> _eventBus;
 
         public StoveNHibernateInterceptor(IScopeResolver scopeResolver)
         {
@@ -38,24 +36,26 @@ namespace Stove.NHibernate.Interceptors
                     () => _scopeResolver.IsRegistered(typeof(IStoveSession))
                         ? _scopeResolver.Resolve<IStoveSession>()
                         : NullStoveSession.Instance,
-                    isThreadSafe: true
-                    );
+                    true
+                );
             _guidGenerator =
                 new Lazy<IGuidGenerator>(
                     () => _scopeResolver.IsRegistered(typeof(IGuidGenerator))
                         ? _scopeResolver.Resolve<IGuidGenerator>()
                         : SequentialGuidGenerator.Instance,
-                    isThreadSafe: true
-                    );
+                    true
+                );
 
             _eventBus =
                 new Lazy<IEventBus>(
                     () => _scopeResolver.IsRegistered(typeof(IEventBus))
                         ? _scopeResolver.Resolve<IEventBus>()
                         : NullEventBus.Instance,
-                    isThreadSafe: true
+                    true
                 );
         }
+
+        public IEntityChangeEventHelper EntityChangeEventHelper { get; set; }
 
         public override bool OnSave(object entity, object id, object[] state, string[] propertyNames, IType[] types)
         {
@@ -231,12 +231,12 @@ namespace Stove.NHibernate.Interceptors
             var componentType = type as ComponentType;
             if (componentType != null)
             {
-                for (int i = 0; i < componentType.PropertyNames.Length; i++)
+                for (var i = 0; i < componentType.PropertyNames.Length; i++)
                 {
-                    var propertyName = componentType.PropertyNames[i];
+                    string propertyName = componentType.PropertyNames[i];
                     if (componentType.Subtypes[i].IsComponentType)
                     {
-                        var value = componentObject.GetType().GetProperty(propertyName).GetValue(componentObject, null);
+                        object value = componentObject.GetType().GetProperty(propertyName).GetValue(componentObject, null);
                         NormalizeDateTimePropertiesForComponentType(value, componentType.Subtypes[i]);
                     }
 
@@ -269,12 +269,12 @@ namespace Stove.NHibernate.Interceptors
                 return;
             }
 
-            var domainEvents = generatesDomainEventsEntity.GetChanges().ToList();
+            List<object> domainEvents = generatesDomainEventsEntity.GetChanges().ToList();
             generatesDomainEventsEntity.ClearChanges();
 
-            foreach (var domainEvent in domainEvents)
+            foreach (object domainEvent in domainEvents)
             {
-                _eventBus.Value.Publish(domainEvent.GetType(), domainEvent as IEventData);
+                _eventBus.Value.Publish(domainEvent.GetType(), (IEventData)domainEvent);
             }
         }
     }
