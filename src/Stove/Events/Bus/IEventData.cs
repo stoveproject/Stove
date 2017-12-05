@@ -11,10 +11,5 @@ namespace Stove.Events.Bus
         /// The time when the event occured.
         /// </summary>
         DateTime EventTime { get; set; }
-
-        /// <summary>
-        /// The object which publishes the event (optional).
-        /// </summary>
-        object EventSource { get; set; }
     }
 }
