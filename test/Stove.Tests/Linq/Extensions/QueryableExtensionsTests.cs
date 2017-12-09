@@ -3,7 +3,6 @@ using System.Linq;
 
 using Shouldly;
 
-using Stove.Application.Dto;
 using Stove.Linq.Extensions;
 
 using Xunit;
@@ -12,22 +11,6 @@ namespace Stove.Tests.Linq.Extensions
 {
     public class QueryableExtensionsTests
     {
-        [Fact]
-        public void PageBy_with_PagedResultRequestDto_should_work()
-        {
-            var products = new List<Product>
-            {
-                new Product { Name = "Oguzhan" },
-                new Product { Name = "Soykan" }
-            };
-
-            IQueryable<Product> productsQueryable = products.AsQueryable();
-
-            IQueryable<Product> pagedQueryable = productsQueryable.PageBy(new PagedResultRequestDto { MaxResultCount = 1, SkipCount = 0 });
-
-            pagedQueryable.ToList().Count.ShouldBe(1);
-        }
-
         [Fact]
         public void PageBy_with_skip_and_maxresultcount_should_work()
         {
@@ -59,7 +42,6 @@ namespace Stove.Tests.Linq.Extensions
 
             pagedQueryable.ToList().Count.ShouldBe(1);
         }
-
 
         [Fact]
         public void WhereIf_should_wor2k()

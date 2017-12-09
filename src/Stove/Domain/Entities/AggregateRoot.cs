@@ -22,6 +22,7 @@ namespace Stove.Domain.Entities
 
         public virtual TPrimaryKey Id { get; set; }
 
+        /// <inheritdoc />
         /// <summary>
         ///     Determines whether this instance has state changes.
         /// </summary>

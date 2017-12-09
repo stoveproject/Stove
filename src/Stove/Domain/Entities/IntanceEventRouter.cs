@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Stove.Domain.Entities
 {
+    /// <inheritdoc />
     /// <summary>
     ///     Routes an event to a configured state handler.
     /// </summary>
@@ -42,12 +42,13 @@ namespace Stove.Domain.Entities
             _handlers.Add(@event, handler);
         }
 
+        /// <inheritdoc />
         /// <summary>
         ///     Adds a route for the specified event type to the specified state handler.
         /// </summary>
         /// <typeparam name="TEvent">The event type the route is for.</typeparam>
         /// <param name="handler">The state handler that should be invoked when an event of the specified type is routed.</param>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="handler" /> is <c>null</c>.</exception>
+        /// <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="handler" /> is <c>null</c>.</exception>
         public void ConfigureRoute<TEvent>(Action<TEvent> handler)
         {
             if (handler == null)
@@ -58,11 +59,12 @@ namespace Stove.Domain.Entities
             _handlers.Add(typeof(TEvent), @event => handler((TEvent)@event));
         }
 
+        /// <inheritdoc />
         /// <summary>
         ///     Routes the specified <paramref name="event" /> to a configured state handler, if any.
         /// </summary>
         /// <param name="event">The event to route.</param>
-        /// <exception cref="ArgumentNullException">Thrown when the <paramref name="event" /> is null.</exception>
+        /// <exception cref="T:System.ArgumentNullException">Thrown when the <paramref name="event" /> is null.</exception>
         public void Route(object @event)
         {
             if (@event == null)
@@ -70,8 +72,7 @@ namespace Stove.Domain.Entities
                 throw new ArgumentNullException(nameof(@event));
             }
 
-            Action<object> handler;
-            if (_handlers.TryGetValue(@event.GetType(), out handler))
+            if (_handlers.TryGetValue(@event.GetType(), out Action<object> handler))
             {
                 handler(@event);
             }
@@ -92,7 +93,6 @@ namespace Stove.Domain.Entities
         ///     Thrown when <paramref name="event" /> or <paramref name="handler" /> is
         ///     <c>null</c>.
         /// </exception>
-        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "event")]
         void ConfigureRoute(Type @event, Action<object> handler);
 
         /// <summary>
@@ -111,7 +111,6 @@ namespace Stove.Domain.Entities
         /// </summary>
         /// <param name="event">The event to route.</param>
         /// <exception cref="ArgumentNullException">Thrown when the <paramref name="event" /> is null.</exception>
-        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "event")]
         void Route(object @event);
     }
 }
