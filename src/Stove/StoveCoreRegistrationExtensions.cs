@@ -92,17 +92,6 @@ namespace Stove
         }
 
         /// <summary>
-        ///     Uses the stove default event bus.
-        /// </summary>
-        /// <param name="builder">The builder.</param>
-        /// <returns></returns>
-        [NotNull]
-        public static IIocBuilder UseStoveDefaultEventBus([NotNull] this IIocBuilder builder)
-        {
-            return builder.RegisterServices(r => r.Register<IEventBus>(context => EventBus.Default, Lifetime.Singleton));
-        }
-
-        /// <summary>
         ///     Uses the stove background jobs.
         /// </summary>
         /// <param name="builder">The builder.</param>
