@@ -288,7 +288,7 @@ namespace Stove.NHibernate.Tests
     {
     }
 
-    public class SomeUowEventHandler : IEventHandler<SomeUowEvent>, ITransientDependency
+    public class SomeUowEventHandler : EventHandlerBase, IEventHandler<SomeUowEvent>, ITransientDependency
     {
         private readonly Provider _provider;
 

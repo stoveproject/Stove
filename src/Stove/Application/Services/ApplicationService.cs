@@ -7,9 +7,9 @@ namespace Stove.Application.Services
     /// <summary>
     ///     This class can be used as a base class for application services.
     /// </summary>
-    /// <seealso cref="Stove.StoveServiceBase" />
+    /// <seealso cref="StoveComponentBase" />
     /// <seealso cref="Stove.Application.Services.IApplicationService" />
-    public abstract class ApplicationService : StoveServiceBase, IApplicationService
+    public abstract class ApplicationService : StoveComponentBase, IApplicationService
     {
         /// <summary>
         ///     Constructor.
