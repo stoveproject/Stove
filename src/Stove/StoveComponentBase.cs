@@ -85,11 +85,20 @@ namespace Stove
             }
         }
 
-        protected void UseUow(Action act, IsolationLevel isolation, TransactionScopeOption scope, bool isTransactional)
+        protected void UseUow(Action act, bool isTransactional)
+        {
+            using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(new UnitOfWorkOptions { IsTransactional = isTransactional }))
+            {
+                act();
+
+                uow.Complete();
+            }
+        }
+
+        protected void UseUow(Action act, IsolationLevel isolation, TransactionScopeOption scope)
         {
             using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(new UnitOfWorkOptions
             {
-                IsTransactional = isTransactional,
                 IsolationLevel = isolation,
                 Scope = scope
             }))
@@ -131,6 +140,26 @@ namespace Stove
             }
         }
 
+        protected void UseUowIfNot(Action act, bool isTransactional)
+        {
+            if (UnitOfWorkManager.Current == null)
+            {
+                using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(new UnitOfWorkOptions()
+                {
+                    IsTransactional = isTransactional
+                }))
+                {
+                    act();
+
+                    uow.Complete();
+                }
+            }
+            else
+            {
+                act();
+            }
+        }
+
         protected void UseUowIfNot(Action act, IsolationLevel isolation)
         {
             if (UnitOfWorkManager.Current == null)
@@ -151,13 +180,12 @@ namespace Stove
             }
         }
 
-        protected void UseUowIfNot(Action act, IsolationLevel isolation, TransactionScopeOption scope, bool isTransactional)
+        protected void UseUowIfNot(Action act, IsolationLevel isolation, TransactionScopeOption scope)
         {
             if (UnitOfWorkManager.Current == null)
             {
                 using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(new UnitOfWorkOptions
                 {
-                    IsTransactional = isTransactional,
                     IsolationLevel = isolation,
                     Scope = scope
                 }))
