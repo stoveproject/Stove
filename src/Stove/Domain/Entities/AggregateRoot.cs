@@ -20,8 +20,9 @@ namespace Stove.Domain.Entities
             _router = new InstanceEventRouter();
         }
 
-        public TPrimaryKey Id { get; set; }
+        public virtual TPrimaryKey Id { get; set; }
 
+        /// <inheritdoc />
         /// <summary>
         ///     Determines whether this instance has state changes.
         /// </summary>

@@ -1,7 +1,10 @@
-﻿using Autofac.Extras.IocManager;
+﻿using System;
+
+using Autofac.Extras.IocManager;
 
 using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
+using Stove.Events.Bus;
 using Stove.Events.Bus.Handlers;
 using Stove.Tests.SampleApplication.Domain.Entities;
 using Stove.Tests.SampleApplication.Domain.Events;
@@ -28,7 +31,7 @@ namespace Stove.Tests.SampleApplication
         }
     }
 
-    public class CampaignCreatedEventHandler : IEventHandler<CampaignCreatedEvent>, ITransientDependency
+    public class CampaignCreatedEventHandler : EventHandlerBase, IEventHandler<CampaignCreatedEvent>, ITransientDependency
     {
         public void Handle(CampaignCreatedEvent eventData)
         {
