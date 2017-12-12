@@ -95,6 +95,19 @@ namespace Stove
             }
         }
 
+        protected void UseUow(Action act, TransactionScopeOption scope)
+        {
+            using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(new UnitOfWorkOptions
+            {
+                Scope = scope
+            }))
+            {
+                act();
+
+                uow.Complete();
+            }
+        }
+
         protected void UseUow(Action act, IsolationLevel isolation, TransactionScopeOption scope)
         {
             using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(new UnitOfWorkOptions
@@ -144,7 +157,7 @@ namespace Stove
         {
             if (UnitOfWorkManager.Current == null)
             {
-                using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(new UnitOfWorkOptions()
+                using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(new UnitOfWorkOptions
                 {
                     IsTransactional = isTransactional
                 }))
