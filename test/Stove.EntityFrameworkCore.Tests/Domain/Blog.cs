@@ -10,7 +10,7 @@ namespace Stove.EntityFrameworkCore.Tests.Domain
     {
         public Blog()
         {
-            Register<BlogUrlChangedEventData>(When);
+            Register<BlogUrlChangedEvent>(When);
         }
 
         public Blog(string name, string url) : this()
@@ -37,7 +37,7 @@ namespace Stove.EntityFrameworkCore.Tests.Domain
 
         public DateTime CreationTime { get; set; }
 
-        private void When(BlogUrlChangedEventData @event)
+        private void When(BlogUrlChangedEvent @event)
         {
             Url = @event.Url;
         }
@@ -49,7 +49,7 @@ namespace Stove.EntityFrameworkCore.Tests.Domain
                 throw new ArgumentNullException(nameof(url));
             }
 
-            ApplyChange(new BlogUrlChangedEventData(this, url));
+            ApplyChange(new BlogUrlChangedEvent(this, url));
         }
     }
 }

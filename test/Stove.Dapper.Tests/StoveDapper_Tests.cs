@@ -140,7 +140,7 @@ namespace Stove.Dapper.Tests
         }
     }
 
-    public class ProductCreatedEvent : EventData
+    public class ProductCreatedEvent : Event
     {
     }
 }

@@ -16,24 +16,24 @@ namespace Stove.Events.Bus
         ///     Given action is called for all event occurrences.
         /// </summary>
         /// <param name="action">Action to handle events</param>
-        /// <typeparam name="TEventData">Event type</typeparam>
-        IDisposable Register<TEventData>(Action<TEventData> action) where TEventData : IEventData;
+        /// <typeparam name="TEvent">Event type</typeparam>
+        IDisposable Register<TEvent>(Action<TEvent> action) where TEvent : IEvent;
 
         /// <summary>
         ///     Registers to an event.
         ///     Same (given) instance of the handler is used for all event occurrences.
         /// </summary>
-        /// <typeparam name="TEventData">Event type</typeparam>
+        /// <typeparam name="TEvent">Event type</typeparam>
         /// <param name="handler">Object to handle the event</param>
-        IDisposable Register<TEventData>(IEventHandler<TEventData> handler) where TEventData : IEventData;
+        IDisposable Register<TEvent>(IEventHandler<TEvent> handler) where TEvent : IEvent;
 
         /// <summary>
         ///     Registers to an event.
         ///     A new instance of <see cref="THandler" /> object is created for every event occurrence.
         /// </summary>
-        /// <typeparam name="TEventData">Event type</typeparam>
+        /// <typeparam name="TEvent">Event type</typeparam>
         /// <typeparam name="THandler">Type of the event handler</typeparam>
-        IDisposable Register<TEventData, THandler>() where TEventData : IEventData where THandler : IEventHandler<TEventData>, new();
+        IDisposable Register<TEvent, THandler>() where TEvent : IEvent where THandler : IEventHandler<TEvent>, new();
 
         /// <summary>
         ///     Registers to an event.
@@ -47,9 +47,9 @@ namespace Stove.Events.Bus
         ///     Registers to an event.
         ///     Given factory is used to create/release handlers
         /// </summary>
-        /// <typeparam name="TEventData">Event type</typeparam>
+        /// <typeparam name="TEvent">Event type</typeparam>
         /// <param name="handlerFactory">A factory to create/release handlers</param>
-        IDisposable Register<TEventData>(IEventHandlerFactory handlerFactory) where TEventData : IEventData;
+        IDisposable Register<TEvent>(IEventHandlerFactory handlerFactory) where TEvent : IEvent;
 
         /// <summary>
         ///     Registers to an event.
@@ -61,16 +61,16 @@ namespace Stove.Events.Bus
         /// <summary>
         ///     Unregisters from an event.
         /// </summary>
-        /// <typeparam name="TEventData">Event type</typeparam>
+        /// <typeparam name="TEvent">Event type</typeparam>
         /// <param name="action"></param>
-        void Unregister<TEventData>(Action<TEventData> action) where TEventData : IEventData;
+        void Unregister<TEvent>(Action<TEvent> action) where TEvent : IEvent;
 
         /// <summary>
         ///     Unregisters from an event.
         /// </summary>
-        /// <typeparam name="TEventData">Event type</typeparam>
+        /// <typeparam name="TEvent">Event type</typeparam>
         /// <param name="handler">Handler object that is registered before</param>
-        void Unregister<TEventData>(IEventHandler<TEventData> handler) where TEventData : IEventData;
+        void Unregister<TEvent>(IEventHandler<TEvent> handler) where TEvent : IEvent;
 
         /// <summary>
         ///     Unregisters from an event.
@@ -82,9 +82,9 @@ namespace Stove.Events.Bus
         /// <summary>
         ///     Unregisters from an event.
         /// </summary>
-        /// <typeparam name="TEventData">Event type</typeparam>
+        /// <typeparam name="TEvent">Event type</typeparam>
         /// <param name="factory">Factory object that is registered before</param>
-        void Unregister<TEventData>(IEventHandlerFactory factory) where TEventData : IEventData;
+        void Unregister<TEvent>(IEventHandlerFactory factory) where TEvent : IEvent;
 
         /// <summary>
         ///     Unregisters from an event.
@@ -96,8 +96,8 @@ namespace Stove.Events.Bus
         /// <summary>
         ///     Unregisters all event handlers of given event type.
         /// </summary>
-        /// <typeparam name="TEventData">Event type</typeparam>
-        void UnregisterAll<TEventData>() where TEventData : IEventData;
+        /// <typeparam name="TEvent">Event type</typeparam>
+        void UnregisterAll<TEvent>() where TEvent : IEvent;
 
         /// <summary>
         ///     Unregisters all event handlers of given event type.
@@ -108,24 +108,24 @@ namespace Stove.Events.Bus
         /// <summary>
         ///     Publishes an event.
         /// </summary>
-        /// <typeparam name="TEventData">Event type</typeparam>
+        /// <typeparam name="TEvent">Event type</typeparam>
         /// <param name="event">Related data for the event</param>
-        void Publish<TEventData>(TEventData @event) where TEventData : IEventData;
+        void Publish<TEvent>(TEvent @event) where TEvent : IEvent;
 
         /// <summary>
         ///     Publishes an event.
         /// </summary>
         /// <param name="eventType">Event type</param>
         /// <param name="event">Related data for the event</param>
-        void Publish(Type eventType, IEventData @event);
+        void Publish(Type eventType, IEvent @event);
 
         /// <summary>
         ///     Publishes an event asynchronously.
         /// </summary>
-        /// <typeparam name="TEventData">Event type</typeparam>
+        /// <typeparam name="TEvent">Event type</typeparam>
         /// <param name="event">Related data for the event</param>
         /// <returns>The task to handle async operation</returns>
-        Task PublishAsync<TEventData>(TEventData @event) where TEventData : IEventData;
+        Task PublishAsync<TEvent>(TEvent @event) where TEvent : IEvent;
 
         /// <summary>
         ///     Publishes an event asynchronously.
@@ -133,6 +133,6 @@ namespace Stove.Events.Bus
         /// <param name="eventType">Event type</param>
         /// <param name="event">Related data for the event</param>
         /// <returns>The task to handle async operation</returns>
-        Task PublishAsync(Type eventType, IEventData @event);
+        Task PublishAsync(Type eventType, IEvent @event);
     }
 }

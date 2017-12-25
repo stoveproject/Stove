@@ -2,6 +2,6 @@
 {
     public interface IUnitOfWorkCompletedEventHelper
     {
-        void Publish<T>(T @event) where T : IEventData;
+        void Publish<T>(T @event) where T : IEvent;
     }
 }

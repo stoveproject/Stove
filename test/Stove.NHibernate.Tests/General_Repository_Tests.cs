@@ -112,10 +112,10 @@ namespace Stove.NHibernate.Tests
             {
                 using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
                 {
-                    The<IEventBus>().Register<EntityUpdatingEventData<Product>>(
-                        eventData =>
+                    The<IEventBus>().Register<EntityUpdatingEvent<Product>>(
+                        @event =>
                         {
-                            eventData.Entity.Name.ShouldBe("Pants");
+                            @event.Entity.Name.ShouldBe("Pants");
                             ts.Cancel(true);
                             updatingEventTriggerCount++;
                         });
@@ -149,10 +149,10 @@ namespace Stove.NHibernate.Tests
             {
                 var triggerCount = 0;
 
-                The<IEventBus>().Register<EntityDeletedEventData<Product>>(
-                    eventData =>
+                The<IEventBus>().Register<EntityDeletedEvent<Product>>(
+                    @event =>
                     {
-                        eventData.Entity.Name.ShouldBe("TShirt");
+                        @event.Entity.Name.ShouldBe("TShirt");
                         triggerCount++;
                     });
 
@@ -174,11 +174,11 @@ namespace Stove.NHibernate.Tests
             {
                 var triggerCount = 0;
 
-                The<IEventBus>().Register<EntityCreatedEventData<Product>>(
-                    eventData =>
+                The<IEventBus>().Register<EntityCreatedEvent<Product>>(
+                    @event =>
                     {
-                        eventData.Entity.Name.ShouldBe("Kazak");
-                        eventData.Entity.IsTransient().ShouldBe(false);
+                        @event.Entity.Name.ShouldBe("Kazak");
+                        @event.Entity.IsTransient().ShouldBe(false);
                         triggerCount++;
                     });
 
@@ -197,10 +197,10 @@ namespace Stove.NHibernate.Tests
             {
                 var triggerCount = 0;
 
-                The<IEventBus>().Register<EntityUpdatedEventData<Product>>(
-                    eventData =>
+                The<IEventBus>().Register<EntityUpdatedEvent<Product>>(
+                    @event =>
                     {
-                        eventData.Entity.Name.ShouldBe("Kazak");
+                        @event.Entity.Name.ShouldBe("Kazak");
                         triggerCount++;
                     });
 
@@ -284,7 +284,7 @@ namespace Stove.NHibernate.Tests
         }
     }
 
-    public class SomeUowEvent : EventData
+    public class SomeUowEvent : Event
     {
     }
 
@@ -297,7 +297,7 @@ namespace Stove.NHibernate.Tests
             _provider = provider;
         }
 
-        public void Handle(SomeUowEvent eventData)
+        public void Handle(SomeUowEvent @event)
         {
             var a = 1;
             _provider.ShouldNotBeNull();

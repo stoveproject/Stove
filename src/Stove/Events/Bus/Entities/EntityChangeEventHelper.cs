@@ -44,32 +44,32 @@ namespace Stove.Events.Bus.Entities
 
         public virtual void PublishEntityCreatingEvent(object entity)
         {
-            PublishEventWithEntity(typeof(EntityCreatingEventData<>), entity, true);
+            PublishEventWithEntity(typeof(EntityCreatingEvent<>), entity, true);
         }
 
         public virtual void PublishEntityCreatedEventOnUowCompleted(object entity)
         {
-            PublishEventWithEntity(typeof(EntityCreatedEventData<>), entity, false);
+            PublishEventWithEntity(typeof(EntityCreatedEvent<>), entity, false);
         }
 
         public virtual void PublishEntityUpdatingEvent(object entity)
         {
-            PublishEventWithEntity(typeof(EntityUpdatingEventData<>), entity, true);
+            PublishEventWithEntity(typeof(EntityUpdatingEvent<>), entity, true);
         }
 
         public virtual void PublishEntityUpdatedEventOnUowCompleted(object entity)
         {
-            PublishEventWithEntity(typeof(EntityUpdatedEventData<>), entity, false);
+            PublishEventWithEntity(typeof(EntityUpdatedEvent<>), entity, false);
         }
 
         public virtual void PublishEntityDeletingEvent(object entity)
         {
-            PublishEventWithEntity(typeof(EntityDeletingEventData<>), entity, true);
+            PublishEventWithEntity(typeof(EntityDeletingEvent<>), entity, true);
         }
 
         public virtual void PublishEntityDeletedEventOnUowCompleted(object entity)
         {
-            PublishEventWithEntity(typeof(EntityDeletedEventData<>), entity, false);
+            PublishEventWithEntity(typeof(EntityDeletedEvent<>), entity, false);
         }
 
         public virtual void PublishEventsInternal(EntityChangeReport changeReport)
@@ -105,7 +105,7 @@ namespace Stove.Events.Bus.Entities
         {
             foreach (DomainEventEntry domainEvent in domainEvents)
             {
-                EventBus.Publish(domainEvent.EventData.GetType(), domainEvent.EventData);
+                EventBus.Publish(domainEvent.Event.GetType(), domainEvent.Event);
             }
         }
 
@@ -116,11 +116,11 @@ namespace Stove.Events.Bus.Entities
 
             if (publishInCurrentUnitOfWork || _unitOfWorkManager.Current == null)
             {
-                EventBus.Publish(eventType, (IEventData)Activator.CreateInstance(eventType, entity));
+                EventBus.Publish(eventType, (IEvent)Activator.CreateInstance(eventType, entity));
                 return;
             }
 
-            _unitOfWorkManager.Current.Completed += (sender, args) => EventBus.Publish(eventType, (IEventData)Activator.CreateInstance(eventType, entity));
+            _unitOfWorkManager.Current.Completed += (sender, args) => EventBus.Publish(eventType, (IEvent)Activator.CreateInstance(eventType, entity));
         }
     }
 }

@@ -45,23 +45,23 @@ namespace Stove.Events.Bus
         public ILogger Logger { get; set; }
 
         /// <inheritdoc />
-        public IDisposable Register<TEventData>(Action<TEventData> action) where TEventData : IEventData
+        public IDisposable Register<TEvent>(Action<TEvent> action) where TEvent : IEvent
         {
-            return Register(typeof(TEventData), new ActionEventHandler<TEventData>(action));
+            return Register(typeof(TEvent), new ActionEventHandler<TEvent>(action));
         }
 
         /// <inheritdoc />
-        public IDisposable Register<TEventData>(IEventHandler<TEventData> handler) where TEventData : IEventData
+        public IDisposable Register<TEvent>(IEventHandler<TEvent> handler) where TEvent : IEvent
         {
-            return Register(typeof(TEventData), handler);
+            return Register(typeof(TEvent), handler);
         }
 
         /// <inheritdoc />
-        public IDisposable Register<TEventData, THandler>()
-            where TEventData : IEventData
-            where THandler : IEventHandler<TEventData>, new()
+        public IDisposable Register<TEvent, THandler>()
+            where TEvent : IEvent
+            where THandler : IEventHandler<TEvent>, new()
         {
-            return Register(typeof(TEventData), new TransientEventHandlerFactory<THandler>());
+            return Register(typeof(TEvent), new TransientEventHandlerFactory<THandler>());
         }
 
         /// <inheritdoc />
@@ -71,9 +71,9 @@ namespace Stove.Events.Bus
         }
 
         /// <inheritdoc />
-        public IDisposable Register<TEventData>(IEventHandlerFactory handlerFactory) where TEventData : IEventData
+        public IDisposable Register<TEvent>(IEventHandlerFactory handlerFactory) where TEvent : IEvent
         {
-            return Register(typeof(TEventData), handlerFactory);
+            return Register(typeof(TEvent), handlerFactory);
         }
 
         /// <inheritdoc />
@@ -86,11 +86,11 @@ namespace Stove.Events.Bus
         }
 
         /// <inheritdoc />
-        public void Unregister<TEventData>(Action<TEventData> action) where TEventData : IEventData
+        public void Unregister<TEvent>(Action<TEvent> action) where TEvent : IEvent
         {
             Check.NotNull(action, nameof(action));
 
-            GetOrCreateHandlerFactories(typeof(TEventData))
+            GetOrCreateHandlerFactories(typeof(TEvent))
                 .Locking(factories =>
                 {
                     factories.RemoveAll(
@@ -101,7 +101,7 @@ namespace Stove.Events.Bus
                                 return false;
                             }
 
-                            if (!(singleInstanceFactory.HandlerInstance is ActionEventHandler<TEventData> actionHandler))
+                            if (!(singleInstanceFactory.HandlerInstance is ActionEventHandler<TEvent> actionHandler))
                             {
                                 return false;
                             }
@@ -112,9 +112,9 @@ namespace Stove.Events.Bus
         }
 
         /// <inheritdoc />
-        public void Unregister<TEventData>(IEventHandler<TEventData> handler) where TEventData : IEventData
+        public void Unregister<TEvent>(IEventHandler<TEvent> handler) where TEvent : IEvent
         {
-            Unregister(typeof(TEventData), handler);
+            Unregister(typeof(TEvent), handler);
         }
 
         /// <inheritdoc />
@@ -132,9 +132,9 @@ namespace Stove.Events.Bus
         }
 
         /// <inheritdoc />
-        public void Unregister<TEventData>(IEventHandlerFactory factory) where TEventData : IEventData
+        public void Unregister<TEvent>(IEventHandlerFactory factory) where TEvent : IEvent
         {
-            Unregister(typeof(TEventData), factory);
+            Unregister(typeof(TEvent), factory);
         }
 
         /// <inheritdoc />
@@ -144,9 +144,9 @@ namespace Stove.Events.Bus
         }
 
         /// <inheritdoc />
-        public void UnregisterAll<TEventData>() where TEventData : IEventData
+        public void UnregisterAll<TEvent>() where TEvent : IEvent
         {
-            UnregisterAll(typeof(TEventData));
+            UnregisterAll(typeof(TEvent));
         }
 
         /// <inheritdoc />
@@ -156,13 +156,13 @@ namespace Stove.Events.Bus
         }
 
         /// <inheritdoc />
-        public void Publish<TEventData>(TEventData @event) where TEventData : IEventData
+        public void Publish<TEvent>(TEvent @event) where TEvent : IEvent
         {
-            Publish(typeof(TEventData), @event);
+            Publish(typeof(TEvent), @event);
         }
 
         /// <inheritdoc />
-        public void Publish(Type eventType, IEventData @event)
+        public void Publish(Type eventType, IEvent @event)
         {
             var exceptions = new List<Exception>();
 
@@ -179,7 +179,7 @@ namespace Stove.Events.Bus
             }
         }
 
-        public Task PublishAsync<TEventData>(TEventData @event) where TEventData : IEventData
+        public Task PublishAsync<TEvent>(TEvent @event) where TEvent : IEvent
         {
             ExecutionContext.SuppressFlow();
 
@@ -202,7 +202,7 @@ namespace Stove.Events.Bus
         }
 
         /// <inheritdoc />
-        public Task PublishAsync(Type eventType, IEventData @event)
+        public Task PublishAsync(Type eventType, IEvent @event)
         {
             ExecutionContext.SuppressFlow();
 
@@ -224,7 +224,7 @@ namespace Stove.Events.Bus
             return task;
         }
 
-        private void PublishHandlingException(Type eventType, IEventData eventData, List<Exception> exceptions)
+        private void PublishHandlingException(Type eventType, IEvent @event, List<Exception> exceptions)
         {
             //TODO: This method can be optimized by adding all possibilities to a dictionary.
 
@@ -248,7 +248,7 @@ namespace Stove.Events.Bus
                             new[] { handlerFactories.EventType }
                         );
 
-                        method.Invoke(eventHandler, new object[] { eventData });
+                        method.Invoke(eventHandler, new object[] { @event });
                     }
                     catch (TargetInvocationException ex)
                     {
@@ -265,19 +265,19 @@ namespace Stove.Events.Bus
                 }
             }
 
-            //Implements generic argument inheritance. See IEventDataWithInheritableGenericArgument
+            //Implements generic argument inheritance. See IEventWithInheritableGenericArgument
             if (eventType.GetTypeInfo().IsGenericType &&
                 eventType.GetGenericArguments().Length == 1 &&
-                typeof(IEventDataWithInheritableGenericArgument).IsAssignableFrom(eventType))
+                typeof(IEventWithInheritableGenericArgument).IsAssignableFrom(eventType))
             {
                 Type genericArg = eventType.GetGenericArguments()[0];
                 Type baseArg = genericArg.GetTypeInfo().BaseType;
                 if (baseArg != null)
                 {
                     Type baseEventType = eventType.GetGenericTypeDefinition().MakeGenericType(baseArg);
-                    object[] constructorArgs = ((IEventDataWithInheritableGenericArgument)eventData).GetConstructorArgs();
-                    var baseEventData = (IEventData)Activator.CreateInstance(baseEventType, constructorArgs);
-                    baseEventData.EventTime = eventData.EventTime;
+                    object[] constructorArgs = ((IEventWithInheritableGenericArgument)@event).GetConstructorArgs();
+                    var baseEventData = (IEvent)Activator.CreateInstance(baseEventType, constructorArgs);
+                    baseEventData.EventTime = @event.EventTime;
                     Publish(baseEventType, baseEventData);
                 }
             }

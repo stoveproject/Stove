@@ -10,45 +10,45 @@ namespace Stove.Tests.Experimental
         [Fact]
         public void Test_Method_BaseEvent_BaseArg()
         {
-            Method_BaseEvent_BaseArg(new EntityEventData<Person>(new Person())); //TODO: <Student>
-            Method_BaseEvent_BaseArg(new EntityEventData<Person>(new Student())); //TODO: <Student>
-            Method_BaseEvent_BaseArg(new EntityUpdatedEventData<Person>(new Person())); //TODO: <Student>
-            Method_BaseEvent_BaseArg(new EntityUpdatedEventData<Person>(new Student())); //TODO: <Student>
+            Method_BaseEvent_BaseArg(new EntityEvent<Person>(new Person())); //TODO: <Student>
+            Method_BaseEvent_BaseArg(new EntityEvent<Person>(new Student())); //TODO: <Student>
+            Method_BaseEvent_BaseArg(new EntityUpdatedEvent<Person>(new Person())); //TODO: <Student>
+            Method_BaseEvent_BaseArg(new EntityUpdatedEvent<Person>(new Student())); //TODO: <Student>
         }
 
-        public void Method_BaseEvent_BaseArg(EntityEventData<Person> data)
+        public void Method_BaseEvent_BaseArg(EntityEvent<Person> data)
         {
         }
 
         [Fact]
         public void Test_Method_BaseEvent_DerivedArg()
         {
-            Method_BaseEvent_DerivedArg(new EntityEventData<Student>(new Student()));
-            Method_BaseEvent_DerivedArg(new EntityUpdatedEventData<Student>(new Student()));
+            Method_BaseEvent_DerivedArg(new EntityEvent<Student>(new Student()));
+            Method_BaseEvent_DerivedArg(new EntityUpdatedEvent<Student>(new Student()));
         }
 
-        public void Method_BaseEvent_DerivedArg(EntityEventData<Student> data)
+        public void Method_BaseEvent_DerivedArg(EntityEvent<Student> data)
         {
         }
 
         [Fact]
         public void Test_Method_DerivedEvent_BaseArg()
         {
-            Method_DerivedEvent_BaseArg(new EntityUpdatedEventData<Person>(new Person()));
-            Method_DerivedEvent_BaseArg(new EntityUpdatedEventData<Person>(new Student()));
+            Method_DerivedEvent_BaseArg(new EntityUpdatedEvent<Person>(new Person()));
+            Method_DerivedEvent_BaseArg(new EntityUpdatedEvent<Person>(new Student()));
         }
 
-        public void Method_DerivedEvent_BaseArg(EntityUpdatedEventData<Person> data)
+        public void Method_DerivedEvent_BaseArg(EntityUpdatedEvent<Person> data)
         {
         }
 
         [Fact]
         public void Test_Method_DerivedEvent_DerivedArg()
         {
-            Method_DerivedEvent_DerivedArg(new EntityUpdatedEventData<Student>(new Student()));
+            Method_DerivedEvent_DerivedArg(new EntityUpdatedEvent<Student>(new Student()));
         }
 
-        public void Method_DerivedEvent_DerivedArg(EntityUpdatedEventData<Student> data)
+        public void Method_DerivedEvent_DerivedArg(EntityUpdatedEvent<Student> data)
         {
         }
 

@@ -4,13 +4,13 @@ using Stove.Events.Bus.Handlers;
 
 namespace Stove.Tests.Events.Bus
 {
-    public class MySimpleTransientEventHandler : IEventHandler<MySimpleEventData>, IDisposable
+    public class MySimpleTransientEventHandler : IEventHandler<MySimpleEvent>, IDisposable
     {
         public static int HandleCount { get; set; }
 
         public static int DisposeCount { get; set; }
 
-        public void Handle(MySimpleEventData eventData)
+        public void Handle(MySimpleEvent @event)
         {
             ++HandleCount;
         }

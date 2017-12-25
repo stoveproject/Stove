@@ -17,7 +17,7 @@ namespace Stove.Events.Bus
 
         public IEventBus EventBus { get; set; }
 
-        public void Publish<T>(T @event) where T : IEventData
+        public void Publish<T>(T @event) where T : IEvent
         {
             CheckCurrentUow();
 

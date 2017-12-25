@@ -120,7 +120,7 @@ namespace Stove.Tests.SampleApplication.Uow
 
             try
             {
-                The<IEventBus>().Register<EntityCreatingEventData<User>>(data =>
+                The<IEventBus>().Register<EntityCreatingEvent<User>>(data =>
                 {
                     ts.Cancel(true);
                 });
@@ -157,7 +157,7 @@ namespace Stove.Tests.SampleApplication.Uow
         }
     }
 
-    public class SomeUowEvent : EventData
+    public class SomeUowEvent : Event
     {
     }
 
@@ -170,7 +170,7 @@ namespace Stove.Tests.SampleApplication.Uow
             _provider = provider;
         }
 
-        public void Handle(SomeUowEvent eventData)
+        public void Handle(SomeUowEvent @event)
         {
             var a = 1;
             _provider.ShouldNotBeNull();

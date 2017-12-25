@@ -5,7 +5,7 @@ namespace Stove.Events.Bus
     /// <summary>
     /// Defines interface for all Event data classes.
     /// </summary>
-    public interface IEventData
+    public interface IEvent
     {
         /// <summary>
         /// The time when the event occured.

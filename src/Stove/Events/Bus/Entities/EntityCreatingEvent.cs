@@ -7,13 +7,13 @@ namespace Stove.Events.Bus.Entities
     /// </summary>
     /// <typeparam name="TEntity">Entity type</typeparam>
     [Serializable]
-    public class EntityCreatingEventData<TEntity> : EntityChangingEventData<TEntity>
+    public class EntityCreatingEvent<TEntity> : EntityChangingEvent<TEntity>
     {
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="entity">The entity which is being created</param>
-        public EntityCreatingEventData(TEntity entity)
+        public EntityCreatingEvent(TEntity entity)
             : base(entity)
         {
 

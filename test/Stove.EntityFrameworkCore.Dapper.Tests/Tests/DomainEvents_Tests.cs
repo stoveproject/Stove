@@ -34,7 +34,7 @@ namespace Stove.EntityFrameworkCore.Dapper.Tests.Tests
 			var isTriggered = false;
 			using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
 			{
-				_eventBus.Register<BlogUrlChangedEventData>(data =>
+				_eventBus.Register<BlogUrlChangedEvent>(data =>
 				{
 					data.Url.ShouldBe("http://testblog1-changed.myblogs.com");
 					isTriggered = true;
@@ -62,11 +62,11 @@ namespace Stove.EntityFrameworkCore.Dapper.Tests.Tests
 		{
 			var triggerCount = 0;
 
-			The<IEventBus>().Register<EntityCreatedEventData<Blog>>(
-				eventData =>
+			The<IEventBus>().Register<EntityCreatedEvent<Blog>>(
+				@event =>
 				{
-					eventData.Entity.Name.ShouldBe("OnSoftware");
-					eventData.Entity.IsTransient().ShouldBe(false);
+					@event.Entity.Name.ShouldBe("OnSoftware");
+					@event.Entity.IsTransient().ShouldBe(false);
 					triggerCount++;
 				});
 

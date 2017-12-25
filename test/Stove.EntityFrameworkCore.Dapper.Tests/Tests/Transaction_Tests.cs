@@ -61,10 +61,10 @@ namespace Stove.EntityFrameworkCore.Dapper.Tests.Tests
 		[Fact]
 		public void Dapper_and_EfCore_should_work_under_same_unitofwork_and_when_any_exception_appears_then_rollback_should_be_consistent_for_two_orm()
 		{
-			The<IEventBus>().Register<EntityCreatingEventData<Blog>>(
-				eventData =>
+			The<IEventBus>().Register<EntityCreatingEvent<Blog>>(
+				@event =>
 				{
-					eventData.Entity.Name.ShouldBe("Oguzhan_Same_Uow");
+					@event.Entity.Name.ShouldBe("Oguzhan_Same_Uow");
 
 					throw new Exception("Uow Rollback");
 				});
@@ -98,8 +98,8 @@ namespace Stove.EntityFrameworkCore.Dapper.Tests.Tests
 		[Fact]
 		public async Task inline_sql_with_dapper_should_rollback_when_uow_fails()
 		{
-			The<IEventBus>().Register<EntityCreatingEventData<Blog>>(
-				eventData => { eventData.Entity.Name.ShouldBe("Oguzhan_Same_Uow"); });
+			The<IEventBus>().Register<EntityCreatingEvent<Blog>>(
+				@event => { @event.Entity.Name.ShouldBe("Oguzhan_Same_Uow"); });
 
 			var blogId = 0;
 

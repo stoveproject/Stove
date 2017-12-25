@@ -55,7 +55,7 @@ namespace Stove.Couchbase.Tests
             // Act
             //-----------------------------------------------------------------------------------------------------------
 
-            The<IEventBus>().Register<EntityCreatingEventData<Product>>(data =>
+            The<IEventBus>().Register<EntityCreatingEvent<Product>>(data =>
             {
                 eventInvocationCount++;
             });

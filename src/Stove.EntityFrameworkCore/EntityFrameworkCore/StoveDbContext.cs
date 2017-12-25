@@ -214,7 +214,7 @@ namespace Stove.EntityFrameworkCore
                 return;
             }
 
-            domainEvents.AddRange(generatesDomainEventsEntity.GetChanges().Select(eventData => new DomainEventEntry(entityAsObj, eventData as IEventData)));
+            domainEvents.AddRange(generatesDomainEventsEntity.GetChanges().Select(@event => new DomainEventEntry(entityAsObj, @event as IEvent)));
             generatesDomainEventsEntity.ClearChanges();
         }
 

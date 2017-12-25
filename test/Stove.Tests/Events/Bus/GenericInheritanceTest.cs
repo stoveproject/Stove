@@ -14,14 +14,14 @@ namespace Stove.Tests.Events.Bus
         {
             var triggeredEvent = false;
 
-            EventBus.Register<EntityChangedEventData<Person>>(
-                eventData =>
+            EventBus.Register<EntityChangedEvent<Person>>(
+                @event =>
                 {
-                    eventData.Entity.Id.ShouldBe(42);
+                    @event.Entity.Id.ShouldBe(42);
                     triggeredEvent = true;
                 });
 
-            EventBus.Publish(new EntityUpdatedEventData<Person>(new Person { Id = 42 }));
+            EventBus.Publish(new EntityUpdatedEvent<Person>(new Person { Id = 42 }));
 
             triggeredEvent.ShouldBe(true);
         }
@@ -31,14 +31,14 @@ namespace Stove.Tests.Events.Bus
         {
             var triggeredEvent = false;
 
-            EventBus.Register<EntityChangedEventData<Person>>(
-                eventData =>
+            EventBus.Register<EntityChangedEvent<Person>>(
+                @event =>
                 {
-                    eventData.Entity.Id.ShouldBe(42);
+                    @event.Entity.Id.ShouldBe(42);
                     triggeredEvent = true;
                 });
 
-            EventBus.Publish(new EntityChangedEventData<Student>(new Student { Id = 42 }));
+            EventBus.Publish(new EntityChangedEvent<Student>(new Student { Id = 42 }));
 
             triggeredEvent.ShouldBe(true);
         }

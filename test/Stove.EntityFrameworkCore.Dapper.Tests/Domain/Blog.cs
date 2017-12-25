@@ -9,7 +9,7 @@ namespace Stove.EntityFrameworkCore.Dapper.Tests.Domain
     {
         public Blog()
         {
-            Register<BlogUrlChangedEventData>(@event => { Url = @event.Url; });
+            Register<BlogUrlChangedEvent>(@event => { Url = @event.Url; });
         }
 
         public Blog(string name, string url)
@@ -41,7 +41,7 @@ namespace Stove.EntityFrameworkCore.Dapper.Tests.Domain
                 throw new ArgumentNullException(nameof(url));
             }
 
-            ApplyChange(new BlogUrlChangedEventData(this, url));
+            ApplyChange(new BlogUrlChangedEvent(this, url));
         }
     }
 }

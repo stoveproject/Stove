@@ -41,7 +41,7 @@ namespace Stove.Tests.SampleApplication
             The<IEventBus>().Publish(new InheritedEvent(16));
         }
 
-        public class ProductCreatedEvent : EventData
+        public class ProductCreatedEvent : Event
         {
             public int ProductId;
 
@@ -80,26 +80,26 @@ namespace Stove.Tests.SampleApplication
             }
         }
 
-        public class SomeEvent : EventData
+        public class SomeEvent : Event
         {
             public int ExecutionCount { get; set; }
         }
 
-        public class SomeEvent2 : EventData
+        public class SomeEvent2 : Event
         {
             public int ExecutionCount { get; set; }
         }
 
         public class SomeEventHandler : IEventHandler<SomeEvent>, IEventHandler<SomeEvent2>, ITransientDependency
         {
-            public void Handle(SomeEvent eventData)
+            public void Handle(SomeEvent @event)
             {
-                eventData.ExecutionCount++;
+                @event.ExecutionCount++;
             }
 
-            public void Handle(SomeEvent2 eventData)
+            public void Handle(SomeEvent2 @event)
             {
-                eventData.ExecutionCount++;
+                @event.ExecutionCount++;
             }
         }
     }

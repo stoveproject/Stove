@@ -9,13 +9,13 @@ namespace Stove.Events.Bus.Entities
     /// </summary>
     /// <typeparam name="TEntity">Entity type</typeparam>
     [Serializable]
-    public class EntityEventData<TEntity> : EventData, IEventDataWithInheritableGenericArgument
+    public class EntityEvent<TEntity> : Event, IEventWithInheritableGenericArgument
     {
         /// <summary>
         ///     Constructor.
         /// </summary>
         /// <param name="entity">Related entity with this event</param>
-        public EntityEventData(TEntity entity)
+        public EntityEvent(TEntity entity)
         {
             Entity = entity;
         }

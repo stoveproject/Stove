@@ -35,7 +35,7 @@ namespace Stove.EntityFrameworkCore.Tests.Tests
             var updatedEventTriggered = false;
             var blogUrlChangedEventTriggered = false;
 
-            _eventBus.Register<EntityCreatingEventData<Blog>>(data =>
+            _eventBus.Register<EntityCreatingEvent<Blog>>(data =>
             {
                 creatingEventTriggered.ShouldBeFalse();
                 createdEventTriggered.ShouldBeFalse();
@@ -49,12 +49,12 @@ namespace Stove.EntityFrameworkCore.Tests.Tests
                 data.Entity.Name.ShouldBe(blogName);
 
                 /* Want to change url from http:// to https:// (ensure to save https url always)
-                 * Expect to trigger EntityUpdatingEventData, EntityUpdatedEventData and BlogUrlChangedEventData events */
+                 * Expect to trigger EntityUpdatingEvent, EntityUpdatedEvent and BlogUrlChangedEvent events */
                 data.Entity.Url.ShouldStartWith("http://");
                 data.Entity.ChangeUrl(data.Entity.Url.Replace("http://", "https://"));
             });
 
-            _eventBus.Register<EntityCreatedEventData<Blog>>(data =>
+            _eventBus.Register<EntityCreatedEvent<Blog>>(data =>
             {
                 creatingEventTriggered.ShouldBeTrue();
                 createdEventTriggered.ShouldBeFalse();
@@ -68,7 +68,7 @@ namespace Stove.EntityFrameworkCore.Tests.Tests
                 data.Entity.Name.ShouldBe(blogName);
             });
 
-            _eventBus.Register<EntityUpdatingEventData<Blog>>(data =>
+            _eventBus.Register<EntityUpdatingEvent<Blog>>(data =>
             {
                 creatingEventTriggered.ShouldBeTrue();
                 createdEventTriggered.ShouldBeFalse();
@@ -83,7 +83,7 @@ namespace Stove.EntityFrameworkCore.Tests.Tests
                 data.Entity.Url.ShouldStartWith("https://");
             });
 
-            _eventBus.Register<EntityUpdatedEventData<Blog>>(data =>
+            _eventBus.Register<EntityUpdatedEvent<Blog>>(data =>
             {
                 creatingEventTriggered.ShouldBeTrue();
                 createdEventTriggered.ShouldBeTrue();
@@ -98,7 +98,7 @@ namespace Stove.EntityFrameworkCore.Tests.Tests
                 data.Entity.Url.ShouldStartWith("https://");
             });
 
-            _eventBus.Register<BlogUrlChangedEventData>(data =>
+            _eventBus.Register<BlogUrlChangedEvent>(data =>
             {
                 creatingEventTriggered.ShouldBeTrue();
                 createdEventTriggered.ShouldBeFalse();

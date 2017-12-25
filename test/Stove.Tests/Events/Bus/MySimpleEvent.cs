@@ -2,11 +2,11 @@ using Stove.Events.Bus;
 
 namespace Stove.Tests.Events.Bus
 {
-    public class MySimpleEventData : EventData
+    public class MySimpleEvent : Event
     {
         public int Value { get; set; }
 
-        public MySimpleEventData(int value)
+        public MySimpleEvent(int value)
         {
             Value = value;
         }

@@ -5,15 +5,15 @@ using Stove.Timing;
 namespace Stove.Events.Bus
 {
     /// <summary>
-    ///     Implements <see cref="IEventData" /> and provides a base for event data classes.
+    ///     Implements <see cref="IEvent" /> and provides a base for event data classes.
     /// </summary>
     [Serializable]
-    public abstract class EventData : IEventData
+    public abstract class Event : IEvent
     {
         /// <summary>
         ///     Constructor.
         /// </summary>
-        protected EventData()
+        protected Event()
         {
             EventTime = Clock.Now;
         }

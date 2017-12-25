@@ -11,15 +11,15 @@ namespace Stove.Tests.Events.Bus
         [Fact]
         public void Should_Throw_Single_Exception_If_Only_One_Of_Handlers_Fails()
         {
-            EventBus.Register<MySimpleEventData>(
-                eventData =>
+            EventBus.Register<MySimpleEvent>(
+                @event =>
                 {
                     throw new Exception("This exception is intentionally thrown!");
                 });
 
             var appException = Assert.Throws<Exception>(() =>
             {
-                EventBus.Publish<MySimpleEventData>(new MySimpleEventData(1));
+                EventBus.Publish<MySimpleEvent>(new MySimpleEvent(1));
             });
 
             appException.Message.ShouldBe("This exception is intentionally thrown!");
@@ -28,21 +28,21 @@ namespace Stove.Tests.Events.Bus
         [Fact]
         public void Should_Throw_Aggregate_Exception_If_More_Than_One_Of_Handlers_Fail()
         {
-            EventBus.Register<MySimpleEventData>(
-                eventData =>
+            EventBus.Register<MySimpleEvent>(
+                @event =>
                 {
                     throw new Exception("This exception is intentionally thrown #1!");
                 });
 
-            EventBus.Register<MySimpleEventData>(
-                eventData =>
+            EventBus.Register<MySimpleEvent>(
+                @event =>
                 {
                     throw new Exception("This exception is intentionally thrown #2!");
                 });
 
             var aggrException = Assert.Throws<AggregateException>(() =>
             {
-                EventBus.Publish<MySimpleEventData>(new MySimpleEventData(1));
+                EventBus.Publish<MySimpleEvent>(new MySimpleEvent(1));
             });
 
             aggrException.InnerExceptions.Count.ShouldBe(2);

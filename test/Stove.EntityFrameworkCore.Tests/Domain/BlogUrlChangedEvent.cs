@@ -2,12 +2,12 @@
 
 namespace Stove.EntityFrameworkCore.Tests.Domain
 {
-    public class BlogUrlChangedEventData : EventData
+    public class BlogUrlChangedEvent : Event
     {
         public Blog Blog;
         public string Url;
 
-        public BlogUrlChangedEventData(Blog blog, string url)
+        public BlogUrlChangedEvent(Blog blog, string url)
         {
             Blog = blog;
             Url = url;

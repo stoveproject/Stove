@@ -16,7 +16,7 @@ namespace Stove.Tests.Events.Bus
             EventBus.Publish(new ProductCreatedEvent());
         }
 
-        public class ProductCreatedEvent : EventData
+        public class ProductCreatedEvent : Event
         {
         }
 

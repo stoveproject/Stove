@@ -8,11 +8,11 @@ using Stove.Events.Bus.Handlers;
 
 namespace Stove.Demo.ConsoleApp.Events
 {
-    public class PersonCreatedEventHandler : IEventHandler<EntityCreatedEventData<Person>>, ITransientDependency
+    public class PersonCreatedEventHandler : IEventHandler<EntityCreatedEvent<Person>>, ITransientDependency
     {
-        public void Handle(EntityCreatedEventData<Person> eventData)
+        public void Handle(EntityCreatedEvent<Person> @event)
         {
-            Person person = eventData.Entity;
+            Person person = @event.Entity;
             Console.WriteLine($"Person Entity Created Event, with Subject : {person.Name}");
         }
     }

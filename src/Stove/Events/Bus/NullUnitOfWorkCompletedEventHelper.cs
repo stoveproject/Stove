@@ -6,11 +6,11 @@ namespace Stove.Events.Bus
 	{
 		public static NullUnitOfWorkCompletedEventHelper Instance { get; } = new NullUnitOfWorkCompletedEventHelper();
 
-		public void Publish<T>(T @event) where T : IEventData
+		public void Publish<T>(T @event) where T : IEvent
 		{
 		}
 
-		public Task PublishAsync<T>(T @event) where T : IEventData
+		public Task PublishAsync<T>(T @event) where T : IEvent
 		{
 			return null;
 		}

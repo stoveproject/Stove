@@ -4,12 +4,12 @@ namespace Stove.Events.Bus.Entities
     {
         public object SourceEntity { get; }
 
-        public IEventData EventData { get; }
+        public IEvent Event { get; }
 
-        public DomainEventEntry(object sourceEntity, IEventData eventData)
+        public DomainEventEntry(object sourceEntity, IEvent @event)
         {
             SourceEntity = sourceEntity;
-            EventData = eventData;
+            Event = @event;
         }
     }
 }

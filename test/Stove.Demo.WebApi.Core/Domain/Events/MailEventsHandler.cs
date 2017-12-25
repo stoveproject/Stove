@@ -8,17 +8,17 @@ using Stove.Events.Bus.Handlers;
 
 namespace Stove.Demo.WebApi.Core.Domain.Events
 {
-    public class MailEventsHandler : IEventHandler<EntityCreatedEventData<Mail>>, IEventHandler<EntityUpdatedEventData<Mail>>, ITransientDependency
+    public class MailEventsHandler : IEventHandler<EntityCreatedEvent<Mail>>, IEventHandler<EntityUpdatedEvent<Mail>>, ITransientDependency
     {
-        public void Handle(EntityCreatedEventData<Mail> eventData)
+        public void Handle(EntityCreatedEvent<Mail> @event)
         {
-            Mail mail = eventData.Entity;
+            Mail mail = @event.Entity;
             Console.WriteLine($"Mail Entity Created Event, with Subject : {mail.Subject}");
         }
 
-        public void Handle(EntityUpdatedEventData<Mail> eventData)
+        public void Handle(EntityUpdatedEvent<Mail> @event)
         {
-            Mail mail = eventData.Entity;
+            Mail mail = @event.Entity;
             Console.WriteLine($"Mail Entity Updated Event, with Subject : {mail.Subject}");
         }
     }

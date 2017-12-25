@@ -74,17 +74,17 @@ namespace Stove.NHibernate.Tests
             var updatingTriggerCount = 0;
             var updatedTriggerCount = 0;
 
-            The<IEventBus>().Register<EntityUpdatingEventData<Product>>(
-                eventData =>
+            The<IEventBus>().Register<EntityUpdatingEvent<Product>>(
+                @event =>
                 {
-                    eventData.Entity.Name.ShouldBe("Bear");
+                    @event.Entity.Name.ShouldBe("Bear");
                     updatingTriggerCount++;
 
                     throw new ApplicationException("A sample exception to rollback the UOW.");
                 });
 
-            The<IEventBus>().Register<EntityUpdatedEventData<Product>>(
-                eventData =>
+            The<IEventBus>().Register<EntityUpdatedEvent<Product>>(
+                @event =>
                 {
                     //Should not come here, since UOW is failed
                     updatedTriggerCount++;
@@ -128,17 +128,17 @@ namespace Stove.NHibernate.Tests
             var updatingTriggerCount = 0;
             var updatedTriggerCount = 0;
 
-            The<IEventBus>().Register<EntityUpdatingEventData<Product>>(
-                eventData =>
+            The<IEventBus>().Register<EntityUpdatingEvent<Product>>(
+                @event =>
                 {
-                    eventData.Entity.Name.ShouldBe("Bear");
+                    @event.Entity.Name.ShouldBe("Bear");
                     updatingTriggerCount++;
 
                     throw new ApplicationException("A sample exception to rollback the UOW.");
                 });
 
-            The<IEventBus>().Register<EntityUpdatedEventData<Product>>(
-                eventData =>
+            The<IEventBus>().Register<EntityUpdatedEvent<Product>>(
+                @event =>
                 {
                     //Should not come here, since UOW is failed
                     updatedTriggerCount++;
