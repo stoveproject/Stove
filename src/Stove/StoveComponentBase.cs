@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Transactions;
 
 using Stove.Domain.Uow;
@@ -65,7 +67,7 @@ namespace Stove
         /// </summary>
         public IMessageBus MessageBus { get; set; }
 
-        public void UseUow(Action act)
+        protected void UseUow(Action act)
         {
             using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin())
             {
@@ -73,6 +75,19 @@ namespace Stove
 
                 uow.Complete();
             }
+        }
+
+        protected Task UseUow(Func<Task> func, CancellationToken cancellationToken = default)
+        {
+            Task task;
+            using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin())
+            {
+                task = func();
+
+                uow.CompleteAsync(cancellationToken);
+            }
+
+            return task;
         }
 
         protected void UseUow(Action act, IsolationLevel isolation)
@@ -85,6 +100,19 @@ namespace Stove
             }
         }
 
+        protected Task UseUow(Func<Task> func, IsolationLevel isolation, CancellationToken cancellationToken = default)
+        {
+            Task task;
+            using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(new UnitOfWorkOptions { IsolationLevel = isolation }))
+            {
+                task = func();
+
+                uow.CompleteAsync(cancellationToken);
+            }
+
+            return task;
+        }
+
         protected void UseUow(Action act, bool isTransactional)
         {
             using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(new UnitOfWorkOptions { IsTransactional = isTransactional }))
@@ -93,6 +121,19 @@ namespace Stove
 
                 uow.Complete();
             }
+        }
+
+        protected Task UseUow(Func<Task> func, bool isTransactional, CancellationToken cancellationToken = default)
+        {
+            Task task;
+            using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(new UnitOfWorkOptions { IsTransactional = isTransactional }))
+            {
+                task = func();
+
+                uow.CompleteAsync(cancellationToken);
+            }
+
+            return task;
         }
 
         protected void UseUow(Action act, TransactionScopeOption scope)
@@ -106,6 +147,22 @@ namespace Stove
 
                 uow.Complete();
             }
+        }
+
+        protected Task UseUow(Func<Task> func, TransactionScopeOption scope, CancellationToken cancellationToken = default)
+        {
+            Task task;
+            using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(new UnitOfWorkOptions
+            {
+                Scope = scope
+            }))
+            {
+                task = func();
+
+                uow.CompleteAsync(cancellationToken);
+            }
+
+            return task;
         }
 
         protected void UseUow(Action act, IsolationLevel isolation, TransactionScopeOption scope)
@@ -122,6 +179,23 @@ namespace Stove
             }
         }
 
+        protected Task UseUow(Func<Task> func, IsolationLevel isolation, TransactionScopeOption scope, CancellationToken cancellationToken = default)
+        {
+            Task task;
+            using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(new UnitOfWorkOptions
+            {
+                IsolationLevel = isolation,
+                Scope = scope
+            }))
+            {
+                task = func();
+
+                uow.CompleteAsync(cancellationToken);
+            }
+
+            return task;
+        }
+
         protected void UseUow(Action act, Action<UnitOfWorkOptions> optsAction)
         {
             var options = new UnitOfWorkOptions();
@@ -134,6 +208,23 @@ namespace Stove
 
                 uow.Complete();
             }
+        }
+
+        protected Task UseUow(Func<Task> func, Action<UnitOfWorkOptions> optsAction, CancellationToken cancellationToken = default)
+        {
+            var options = new UnitOfWorkOptions();
+
+            optsAction(options);
+
+            Task task;
+            using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(options))
+            {
+                task = func();
+
+                uow.CompleteAsync(cancellationToken);
+            }
+
+            return task;
         }
 
         protected void UseUowIfNot(Action act)
@@ -151,6 +242,26 @@ namespace Stove
             {
                 act();
             }
+        }
+
+        protected Task UseUowIfNot(Func<Task> func, CancellationToken cancellationToken = default)
+        {
+            Task task;
+            if (UnitOfWorkManager.Current == null)
+            {
+                using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin())
+                {
+                    task = func();
+
+                    uow.CompleteAsync(cancellationToken);
+                }
+            }
+            else
+            {
+                task = func();
+            }
+
+            return task;
         }
 
         protected void UseUowIfNot(Action act, bool isTransactional)
@@ -173,6 +284,29 @@ namespace Stove
             }
         }
 
+        protected Task UseUowIfNot(Func<Task> func, bool isTransactional, CancellationToken cancellationToken = default)
+        {
+            Task task;
+            if (UnitOfWorkManager.Current == null)
+            {
+                using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(new UnitOfWorkOptions
+                {
+                    IsTransactional = isTransactional
+                }))
+                {
+                    task = func();
+
+                    uow.CompleteAsync(cancellationToken);
+                }
+            }
+            else
+            {
+                task = func();
+            }
+
+            return task;
+        }
+
         protected void UseUowIfNot(Action act, IsolationLevel isolation)
         {
             if (UnitOfWorkManager.Current == null)
@@ -191,6 +325,29 @@ namespace Stove
             {
                 act();
             }
+        }
+
+        protected Task UseUowIfNot(Func<Task> func, IsolationLevel isolation, CancellationToken cancellationToken = default)
+        {
+            Task task;
+            if (UnitOfWorkManager.Current == null)
+            {
+                using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(new UnitOfWorkOptions
+                {
+                    IsolationLevel = isolation
+                }))
+                {
+                    task = func();
+
+                    uow.CompleteAsync(cancellationToken);
+                }
+            }
+            else
+            {
+                task = func();
+            }
+
+            return task;
         }
 
         protected void UseUowIfNot(Action act, IsolationLevel isolation, TransactionScopeOption scope)
@@ -214,6 +371,30 @@ namespace Stove
             }
         }
 
+        protected Task UseUowIfNot(Func<Task> func, IsolationLevel isolation, TransactionScopeOption scope, CancellationToken cancellationToken = default)
+        {
+            Task task;
+            if (UnitOfWorkManager.Current == null)
+            {
+                using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(new UnitOfWorkOptions
+                {
+                    IsolationLevel = isolation,
+                    Scope = scope
+                }))
+                {
+                    task = func();
+
+                    uow.CompleteAsync(cancellationToken);
+                }
+            }
+            else
+            {
+                task = func();
+            }
+
+            return task;
+        }
+
         protected void UseUowIfNot(Action act, Action<UnitOfWorkOptions> optsAction)
         {
             var options = new UnitOfWorkOptions();
@@ -232,6 +413,29 @@ namespace Stove
             {
                 act();
             }
+        }
+
+        protected Task UseUowIfNot(Func<Task> func, Action<UnitOfWorkOptions> optsAction, CancellationToken cancellationToken = default)
+        {
+            var options = new UnitOfWorkOptions();
+            optsAction(options);
+
+            Task task;
+            if (UnitOfWorkManager.Current == null)
+            {
+                using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(options))
+                {
+                    task = func();
+
+                    uow.CompleteAsync(cancellationToken);
+                }
+            }
+            else
+            {
+                task = func();
+            }
+
+            return task;
         }
 
         protected void OnUowCompleted(Action action)
