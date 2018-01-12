@@ -191,15 +191,12 @@ namespace Stove.Dapper.Repositories
 
         public override void Update(TEntity entity)
         {
-            EntityChangeEventHelper.PublishEntityUpdatingEvent(entity);
             DapperActionFilterExecuter.ExecuteModificationAuditFilter<TEntity, TPrimaryKey>(entity);
             Connection.Update(entity, ActiveTransaction);
-            EntityChangeEventHelper.PublishEntityUpdatedEventOnUowCompleted(entity);
         }
 
         public override void Delete(TEntity entity)
         {
-            EntityChangeEventHelper.PublishEntityDeletingEvent(entity);
             if (entity is ISoftDelete)
             {
                 DapperActionFilterExecuter.ExecuteDeletionAuditFilter<TEntity, TPrimaryKey>(entity);
@@ -209,7 +206,6 @@ namespace Stove.Dapper.Repositories
             {
                 Connection.Delete(entity, ActiveTransaction);
             }
-            EntityChangeEventHelper.PublishEntityDeletedEventOnUowCompleted(entity);
         }
 
         public override void Delete(Expression<Func<TEntity, bool>> predicate)
@@ -223,10 +219,8 @@ namespace Stove.Dapper.Repositories
 
         public override TPrimaryKey InsertAndGetId(TEntity entity)
         {
-            EntityChangeEventHelper.PublishEntityCreatingEvent(entity);
             DapperActionFilterExecuter.ExecuteCreationAuditFilter<TEntity, TPrimaryKey>(entity);
             TPrimaryKey primaryKey = Connection.Insert(entity, ActiveTransaction);
-            EntityChangeEventHelper.PublishEntityCreatedEventOnUowCompleted(entity);
             return primaryKey;
         }
     }

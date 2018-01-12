@@ -20,6 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="StackExchange.Redis.StrongName">
+      <HintPath>..\..\..\..\..\..\Users\oguzhan.soykan\.nuget\packages\stackexchange.redis.strongname\1.2.6\lib\net46\StackExchange.Redis.StrongName.dll</HintPath>
+    </Reference>
     <Reference Include="System.Transactions" />
   </ItemGroup>
 

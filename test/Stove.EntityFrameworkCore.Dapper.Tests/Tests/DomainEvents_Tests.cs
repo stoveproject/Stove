@@ -6,6 +6,7 @@ using Stove.Dapper.Repositories;
 using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
 using Stove.EntityFrameworkCore.Dapper.Tests.Domain;
+using Stove.EntityFrameworkCore.Dapper.Tests.Domain.Events;
 using Stove.Events.Bus;
 using Stove.Events.Bus.Entities;
 
@@ -58,21 +59,20 @@ namespace Stove.EntityFrameworkCore.Dapper.Tests.Tests
 		}
 
 		[Fact]
-		public async Task should_trigger_event_on_inserted_with_dapper()
+		public async Task should_trigger_event_on_inserted()
 		{
 			var triggerCount = 0;
 
-			The<IEventBus>().Register<EntityCreatedEvent<Blog>>(
-				@event =>
-				{
-					@event.Entity.Name.ShouldBe("OnSoftware");
-					@event.Entity.IsTransient().ShouldBe(false);
-					triggerCount++;
-				});
+            The<IEventBus>().Register<BlogCreatedEvent>(
+                @event =>
+                {
+                    @event.Name.ShouldBe("OnSoftware");
+                    triggerCount++;
+                });
 
-			using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
+            using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
 			{
-				_blogDapperRepository.Insert(new Blog("OnSoftware", "www.stove.com"));
+				_blogRepository.Insert(new Blog("OnSoftware", "www.stove.com"));
 				uow.Complete();
 			}
 

@@ -161,45 +161,38 @@ namespace Stove.EntityFrameworkCore
             switch (entry.State)
             {
                 case EntityState.Added:
-                    ApplyStoveConceptsForAddedEntity(entry, userId, changeReport);
+                    ApplyStoveConceptsForAddedEntity(entry, userId);
                     break;
                 case EntityState.Modified:
-                    ApplyStoveConceptsForModifiedEntity(entry, userId, changeReport);
+                    ApplyStoveConceptsForModifiedEntity(entry, userId);
                     break;
                 case EntityState.Deleted:
-                    ApplyStoveConceptsForDeletedEntity(entry, userId, changeReport);
+                    ApplyStoveConceptsForDeletedEntity(entry, userId);
                     break;
             }
 
             AddDomainEvents(changeReport.DomainEvents, entry.Entity);
         }
 
-        protected virtual void ApplyStoveConceptsForAddedEntity(EntityEntry entry, long? userId, EntityChangeReport changeReport)
+        protected virtual void ApplyStoveConceptsForAddedEntity(EntityEntry entry, long? userId)
         {
             CheckAndSetId(entry);
             SetCreationAuditProperties(entry.Entity, userId);
-            changeReport.ChangedEntities.Add(new EntityChangeEntry(entry.Entity, EntityChangeType.Created));
         }
 
-        protected virtual void ApplyStoveConceptsForModifiedEntity(EntityEntry entry, long? userId, EntityChangeReport changeReport)
+        protected virtual void ApplyStoveConceptsForModifiedEntity(EntityEntry entry, long? userId)
         {
             SetModificationAuditProperties(entry.Entity, userId);
             if (entry.Entity is ISoftDelete && entry.Entity.As<ISoftDelete>().IsDeleted)
             {
                 SetDeletionAuditProperties(entry.Entity, userId);
-                changeReport.ChangedEntities.Add(new EntityChangeEntry(entry.Entity, EntityChangeType.Deleted));
-            }
-            else
-            {
-                changeReport.ChangedEntities.Add(new EntityChangeEntry(entry.Entity, EntityChangeType.Updated));
             }
         }
 
-        protected virtual void ApplyStoveConceptsForDeletedEntity(EntityEntry entry, long? userId, EntityChangeReport changeReport)
+        protected virtual void ApplyStoveConceptsForDeletedEntity(EntityEntry entry, long? userId)
         {
             CancelDeletionForSoftDelete(entry);
             SetDeletionAuditProperties(entry.Entity, userId);
-            changeReport.ChangedEntities.Add(new EntityChangeEntry(entry.Entity, EntityChangeType.Deleted));
         }
 
         protected virtual void AddDomainEvents(List<DomainEventEntry> domainEvents, object entityAsObj)

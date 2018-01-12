@@ -120,10 +120,10 @@ namespace Stove.Tests.SampleApplication.Uow
 
             try
             {
-                The<IEventBus>().Register<EntityCreatingEvent<User>>(data =>
-                {
-                    ts.Cancel(true);
-                });
+                //The<IEventBus>().Register<EntityCreatingEvent<User>>(data =>
+                //{
+                //    ts.Cancel(true);
+                //});
 
                 using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
                 {

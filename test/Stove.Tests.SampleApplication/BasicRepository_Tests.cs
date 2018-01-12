@@ -171,27 +171,27 @@ namespace Stove.Tests.SampleApplication
             executionCount.ShouldBe(0);
         }
 
-        public class UserCreatedEventHandler : IEventHandler<EntityCreatedEvent<User>>,
-            IEventHandler<EntityUpdatedEvent<User>>,
-            ITransientDependency
-        {
-            private readonly IRepository<User> _userRepository;
+        //public class UserCreatedEventHandler : IEventHandler<EntityCreatedEvent<User>>,
+        //    IEventHandler<EntityUpdatedEvent<User>>,
+        //    ITransientDependency
+        //{
+        //    private readonly IRepository<User> _userRepository;
 
-            public UserCreatedEventHandler(IRepository<User> userRepository)
-            {
-                _userRepository = userRepository;
-            }
+        //    public UserCreatedEventHandler(IRepository<User> userRepository)
+        //    {
+        //        _userRepository = userRepository;
+        //    }
 
-            public void Handle(EntityCreatedEvent<User> @event)
-            {
-                User a = @event.Entity;
-            }
+        //    public void Handle(EntityCreatedEvent<User> @event)
+        //    {
+        //        User a = @event.Entity;
+        //    }
 
-            public void Handle(EntityUpdatedEvent<User> @event)
-            {
-                User a = @event.Entity;
-            }
-        }
+        //    public void Handle(EntityUpdatedEvent<User> @event)
+        //    {
+        //        User a = @event.Entity;
+        //    }
+        //}
 
         public class UserCretedEventAfterUowCompleted : Event
         {

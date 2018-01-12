@@ -18,10 +18,10 @@ using Shouldly;
 using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
 using Stove.Events.Bus;
-using Stove.Events.Bus.Entities;
 using Stove.Events.Bus.Handlers;
 using Stove.NHibernate.Repositories;
 using Stove.NHibernate.Tests.Entities;
+using Stove.NHibernate.Tests.Entities.Events;
 using Stove.NHibernate.Tests.Sessions;
 
 using Xunit;
@@ -104,6 +104,21 @@ namespace Stove.NHibernate.Tests
         }
 
         [Fact]
+        public void QueryOver_should_work_on_generic_repsitories()
+        {
+            using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
+            {
+                ISession session = The<IRepository<Product>>().GetSession();
+
+                IList<Product> products = session.QueryOver<Product>().List();
+
+                products.Count.ShouldBeGreaterThan(0);
+
+                uow.Complete();
+            }
+        }
+
+        [Fact]
         public async Task Should_rollback_when_CancellationToken_cancel_is_requested()
         {
             var ts = new CancellationTokenSource();
@@ -112,13 +127,13 @@ namespace Stove.NHibernate.Tests
             {
                 using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
                 {
-                    The<IEventBus>().Register<EntityUpdatingEvent<Product>>(
-                        @event =>
-                        {
-                            @event.Entity.Name.ShouldBe("Pants");
-                            ts.Cancel(true);
-                            updatingEventTriggerCount++;
-                        });
+                    //The<IEventBus>().Register<EntityUpdatingEvent<Product>>(
+                    //    @event =>
+                    //    {
+                    //        @event.Entity.Name.ShouldBe("Pants");
+                    //        ts.Cancel(true);
+                    //        updatingEventTriggerCount++;
+                    //    });
 
                     Product product = The<IRepository<Product>>().Single(p => p.Name == "TShirt");
 
@@ -149,15 +164,15 @@ namespace Stove.NHibernate.Tests
             {
                 var triggerCount = 0;
 
-                The<IEventBus>().Register<EntityDeletedEvent<Product>>(
+                The<IEventBus>().Register<ProductDeletedEvent>(
                     @event =>
                     {
-                        @event.Entity.Name.ShouldBe("TShirt");
+                        @event.Name.ShouldBe("TShirt");
                         triggerCount++;
                     });
 
                 Product product = The<IRepository<Product>>().Single(p => p.Name == "TShirt");
-                The<IRepository<Product>>().Delete(product.Id);
+                product.Delete();
 
                 The<IRepository<Product>>().FirstOrDefault(p => p.Name == "TShirt").ShouldBe(null);
 
@@ -174,13 +189,13 @@ namespace Stove.NHibernate.Tests
             {
                 var triggerCount = 0;
 
-                The<IEventBus>().Register<EntityCreatedEvent<Product>>(
-                    @event =>
-                    {
-                        @event.Entity.Name.ShouldBe("Kazak");
-                        @event.Entity.IsTransient().ShouldBe(false);
-                        triggerCount++;
-                    });
+                //The<IEventBus>().Register<EntityCreatedEvent<Product>>(
+                //    @event =>
+                //    {
+                //        @event.Entity.Name.ShouldBe("Kazak");
+                //        @event.Entity.IsTransient().ShouldBe(false);
+                //        triggerCount++;
+                //    });
 
                 The<IRepository<Product>>().Insert(new Product("Kazak"));
 
@@ -197,12 +212,12 @@ namespace Stove.NHibernate.Tests
             {
                 var triggerCount = 0;
 
-                The<IEventBus>().Register<EntityUpdatedEvent<Product>>(
-                    @event =>
-                    {
-                        @event.Entity.Name.ShouldBe("Kazak");
-                        triggerCount++;
-                    });
+                //The<IEventBus>().Register<EntityUpdatedEvent<Product>>(
+                //    @event =>
+                //    {
+                //        @event.Entity.Name.ShouldBe("Kazak");
+                //        triggerCount++;
+                //    });
 
                 Product product = The<IRepository<Product>>().Single(p => p.Name == "TShirt");
                 product.Name = "Kazak";
@@ -211,41 +226,6 @@ namespace Stove.NHibernate.Tests
                 uow.Complete();
 
                 triggerCount.ShouldBe(1);
-            }
-        }
-
-        [Fact]
-        public void Update_With_Action_Test()
-        {
-            using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
-            {
-                Product productBefore = UsingSession<PrimaryStoveSessionContext, Product>(session => session.Query<Product>().Single(p => p.Name == "TShirt"));
-
-                Product updatedUser = The<IRepository<Product>>().Update(productBefore.Id, user => user.Name = "Polo");
-                updatedUser.Id.ShouldBe(productBefore.Id);
-                updatedUser.Name.ShouldBe("Polo");
-
-                The<IUnitOfWorkManager>().Current.SaveChanges();
-
-                Product productAfter = UsingSession<PrimaryStoveSessionContext, Product>(session => session.Get<Product>(productBefore.Id));
-                productAfter.Name.ShouldBe("Polo");
-
-                uow.Complete();
-            }
-        }
-
-        [Fact]
-        public void QueryOver_should_work_on_generic_repsitories()
-        {
-            using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
-            {
-                ISession session = The<IRepository<Product>>().GetSession();
-
-                IList<Product> products = session.QueryOver<Product>().List();
-
-                products.Count.ShouldBeGreaterThan(0);
-
-                uow.Complete();
             }
         }
 
@@ -281,6 +261,26 @@ namespace Stove.NHibernate.Tests
                     The<IEventBus>().Publish(new SomeUowEvent());
                 }
             });
+        }
+
+        [Fact]
+        public void Update_With_Action_Test()
+        {
+            using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
+            {
+                Product productBefore = UsingSession<PrimaryStoveSessionContext, Product>(session => session.Query<Product>().Single(p => p.Name == "TShirt"));
+
+                Product updatedUser = The<IRepository<Product>>().Update(productBefore.Id, user => user.Name = "Polo");
+                updatedUser.Id.ShouldBe(productBefore.Id);
+                updatedUser.Name.ShouldBe("Polo");
+
+                The<IUnitOfWorkManager>().Current.SaveChanges();
+
+                Product productAfter = UsingSession<PrimaryStoveSessionContext, Product>(session => session.Get<Product>(productBefore.Id));
+                productAfter.Name.ShouldBe("Polo");
+
+                uow.Complete();
+            }
         }
     }
 

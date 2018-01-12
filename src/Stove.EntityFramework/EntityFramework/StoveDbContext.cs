@@ -237,25 +237,17 @@ namespace Stove.EntityFramework
                     case EntityState.Added:
                         CheckAndSetId(entry.Entity);
                         SetCreationAuditProperties(entry.Entity, userId);
-                        changeReport.ChangedEntities.Add(new EntityChangeEntry(entry.Entity, EntityChangeType.Created));
                         break;
                     case EntityState.Modified:
                         SetModificationAuditProperties(entry, userId);
                         if (entry.Entity is ISoftDelete && entry.Entity.As<ISoftDelete>().IsDeleted)
                         {
                             SetDeletionAuditProperties(entry.Entity, userId);
-                            changeReport.ChangedEntities.Add(new EntityChangeEntry(entry.Entity, EntityChangeType.Deleted));
                         }
-                        else
-                        {
-                            changeReport.ChangedEntities.Add(new EntityChangeEntry(entry.Entity, EntityChangeType.Updated));
-                        }
-
                         break;
                     case EntityState.Deleted:
                         CancelDeletionForSoftDelete(entry);
                         SetDeletionAuditProperties(entry.Entity, userId);
-                        changeReport.ChangedEntities.Add(new EntityChangeEntry(entry.Entity, EntityChangeType.Deleted));
                         break;
                 }
 

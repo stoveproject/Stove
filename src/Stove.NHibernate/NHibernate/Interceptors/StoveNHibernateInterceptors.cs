@@ -93,9 +93,6 @@ namespace Stove.NHibernate.Interceptors
                 }
             }
 
-            EntityChangeEventHelper.PublishEntityCreatingEvent(entity);
-            EntityChangeEventHelper.PublishEntityCreatedEventOnUowCompleted(entity);
-
             TriggerDomainEvents(entity);
 
             return base.OnSave(entity, id, state, propertyNames, types);
@@ -165,19 +162,8 @@ namespace Stove.NHibernate.Interceptors
                         }
                     }
 
-                    EntityChangeEventHelper.PublishEntityDeletingEvent(entity);
-                    EntityChangeEventHelper.PublishEntityDeletedEventOnUowCompleted(entity);
+                   
                 }
-                else
-                {
-                    EntityChangeEventHelper.PublishEntityUpdatingEvent(entity);
-                    EntityChangeEventHelper.PublishEntityUpdatedEventOnUowCompleted(entity);
-                }
-            }
-            else
-            {
-                EntityChangeEventHelper.PublishEntityUpdatingEvent(entity);
-                EntityChangeEventHelper.PublishEntityUpdatedEventOnUowCompleted(entity);
             }
 
             TriggerDomainEvents(entity);
@@ -187,9 +173,6 @@ namespace Stove.NHibernate.Interceptors
 
         public override void OnDelete(object entity, object id, object[] state, string[] propertyNames, IType[] types)
         {
-            EntityChangeEventHelper.PublishEntityDeletingEvent(entity);
-            EntityChangeEventHelper.PublishEntityDeletedEventOnUowCompleted(entity);
-
             TriggerDomainEvents(entity);
 
             base.OnDelete(entity, id, state, propertyNames, types);

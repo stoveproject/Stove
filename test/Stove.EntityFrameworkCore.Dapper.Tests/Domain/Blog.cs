@@ -2,6 +2,7 @@
 
 using Stove.Domain.Entities;
 using Stove.Domain.Entities.Auditing;
+using Stove.EntityFrameworkCore.Dapper.Tests.Domain.Events;
 
 namespace Stove.EntityFrameworkCore.Dapper.Tests.Domain
 {
@@ -26,6 +27,10 @@ namespace Stove.EntityFrameworkCore.Dapper.Tests.Domain
 
             Name = name;
             Url = url;
+
+            ApplyChange(
+                new BlogCreatedEvent(name)
+                );
         }
 
         public string Name { get; set; }
