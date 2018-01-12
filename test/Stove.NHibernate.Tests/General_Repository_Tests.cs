@@ -127,17 +127,17 @@ namespace Stove.NHibernate.Tests
             {
                 using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
                 {
-                    //The<IEventBus>().Register<EntityUpdatingEvent<Product>>(
-                    //    @event =>
-                    //    {
-                    //        @event.Entity.Name.ShouldBe("Pants");
-                    //        ts.Cancel(true);
-                    //        updatingEventTriggerCount++;
-                    //    });
+                    The<IEventBus>().Register<ProductNameFixed>(
+                        @event =>
+                        {
+                            @event.Name.ShouldBe("Pants");
+                            ts.Cancel(true);
+                            updatingEventTriggerCount++;
+                        });
 
                     Product product = The<IRepository<Product>>().Single(p => p.Name == "TShirt");
 
-                    product.Name = "Pants";
+                    product.FixName("Pants");
 
                     await uow.CompleteAsync(ts.Token);
                 }
@@ -189,13 +189,12 @@ namespace Stove.NHibernate.Tests
             {
                 var triggerCount = 0;
 
-                //The<IEventBus>().Register<EntityCreatedEvent<Product>>(
-                //    @event =>
-                //    {
-                //        @event.Entity.Name.ShouldBe("Kazak");
-                //        @event.Entity.IsTransient().ShouldBe(false);
-                //        triggerCount++;
-                //    });
+                The<IEventBus>().Register<ProductCreatedEvent>(
+                    @event =>
+                    {
+                        @event.Name.ShouldBe("Kazak");
+                        triggerCount++;
+                    });
 
                 The<IRepository<Product>>().Insert(new Product("Kazak"));
 
@@ -212,15 +211,15 @@ namespace Stove.NHibernate.Tests
             {
                 var triggerCount = 0;
 
-                //The<IEventBus>().Register<EntityUpdatedEvent<Product>>(
-                //    @event =>
-                //    {
-                //        @event.Entity.Name.ShouldBe("Kazak");
-                //        triggerCount++;
-                //    });
+                The<IEventBus>().Register<ProductNameFixed>(
+                    @event =>
+                    {
+                        @event.Name.ShouldBe("Kazak");
+                        triggerCount++;
+                    });
 
                 Product product = The<IRepository<Product>>().Single(p => p.Name == "TShirt");
-                product.Name = "Kazak";
+                product.FixName("Kazak");
                 The<IRepository<Product>>().Update(product);
 
                 uow.Complete();

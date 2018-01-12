@@ -15,7 +15,6 @@ using Shouldly;
 using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
 using Stove.Events.Bus;
-using Stove.Events.Bus.Entities;
 using Stove.Events.Bus.Handlers;
 using Stove.Tests.SampleApplication.Domain.Entities;
 
@@ -25,6 +24,9 @@ namespace Stove.Tests.SampleApplication.Uow
 {
     public class Uow_Events_Tests : SampleApplicationTestBase
     {
+        private readonly IUnitOfWorkManager _unitOfWorkManager;
+        private readonly IRepository<User> _userRepository;
+
         public Uow_Events_Tests()
         {
             Building(builder =>
@@ -45,9 +47,6 @@ namespace Stove.Tests.SampleApplication.Uow
             _unitOfWorkManager = The<IUnitOfWorkManager>();
             _userRepository = The<IRepository<User>>();
         }
-
-        private readonly IUnitOfWorkManager _unitOfWorkManager;
-        private readonly IRepository<User> _userRepository;
 
         [Fact]
         public void Should_Trigger_Completed_When_Uow_Succeed()
@@ -120,14 +119,14 @@ namespace Stove.Tests.SampleApplication.Uow
 
             try
             {
-                //The<IEventBus>().Register<EntityCreatingEvent<User>>(data =>
-                //{
-                //    ts.Cancel(true);
-                //});
+                The<IEventBus>().Register<UserCreatedEvent>(data =>
+                {
+                    ts.Cancel(true);
+                });
 
                 using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
                 {
-                    The<IRepository<User>>().Insert(new User { Name = "CancellationToken", Email = "cancel@gmail", Surname = "token" });
+                    The<IRepository<User>>().InsertAndGetId(User.Create("CancellationToken", "asd", "cancel@gmail"));
 
                     uowManager.Current.Completed += (sender, args) => { };
 
@@ -138,7 +137,7 @@ namespace Stove.Tests.SampleApplication.Uow
                         uowManager.Current.ShouldBe(null);
                     };
 
-                    The<IRepository<User>>().FirstOrDefault(x => x.Name == "CancellationToken").ShouldNotBeNull();
+                    The<IRepository<User>>().FirstOrDefault(x => x.Name == "CancellationToken").ShouldBeNull();
 
                     await uow.CompleteAsync(ts.Token);
                 }
@@ -152,7 +151,7 @@ namespace Stove.Tests.SampleApplication.Uow
             {
                 The<IRepository<User>>().FirstOrDefault(x => x.Name == "CancellationToken").ShouldBeNull();
 
-                await uow.CompleteAsync();
+                await uow.CompleteAsync(CancellationToken.None);
             }
         }
     }
@@ -189,8 +188,8 @@ namespace Stove.Tests.SampleApplication.Uow
 
     public class Provider
     {
-        private readonly IRepository<User> _userRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
+        private readonly IRepository<User> _userRepository;
 
         public Provider(IRepository<User> userRepository, IUnitOfWorkManager unitOfWorkManager)
         {
