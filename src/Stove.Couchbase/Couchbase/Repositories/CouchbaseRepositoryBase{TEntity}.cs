@@ -20,13 +20,13 @@ namespace Stove.Couchbase.Repositories
             _sessionProvider = sessionProvider;
 
             GuidGenerator = SequentialGuidGenerator.Instance;
-            EntityChangeEventHelper = NullEntityChangeEventHelper.Instance;
+            AggregateChangeEventHelper = NullAggregateChangeEventHelper.Instance;
             ActionFilterExecuter = NullCouchbaseActionFilterExecuter.Instance;
         }
 
         public ICouchbaseActionFilterExecuter ActionFilterExecuter { get; set; }
 
-        public IEntityChangeEventHelper EntityChangeEventHelper { get; set; }
+        public IAggregateChangeEventHelper AggregateChangeEventHelper { get; set; }
 
         public IGuidGenerator GuidGenerator { get; set; }
 

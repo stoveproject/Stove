@@ -12,7 +12,6 @@ using NHibernate.Type;
 using Stove.Domain.Entities;
 using Stove.Domain.Entities.Auditing;
 using Stove.Events.Bus;
-using Stove.Events.Bus.Entities;
 using Stove.Extensions;
 using Stove.Runtime.Session;
 using Stove.Timing;
@@ -54,8 +53,6 @@ namespace Stove.NHibernate.Interceptors
                     true
                 );
         }
-
-        public IEntityChangeEventHelper EntityChangeEventHelper { get; set; }
 
         public override bool OnSave(object entity, object id, object[] state, string[] propertyNames, IType[] types)
         {

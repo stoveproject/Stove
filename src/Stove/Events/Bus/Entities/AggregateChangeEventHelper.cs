@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -9,21 +8,20 @@ using Stove.Domain.Uow;
 namespace Stove.Events.Bus.Entities
 {
     /// <summary>
-    ///     Used to publish entity change events.
+    ///     Used to publish aggregate change events.
     /// </summary>
-    public class EntityChangeEventHelper : IEntityChangeEventHelper, ITransientDependency
+    public class AggregateChangeEventHelper : IAggregateChangeEventHelper, ITransientDependency
     {
+        private readonly IEventBus _eventBus;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
 
-        public EntityChangeEventHelper(IUnitOfWorkManager unitOfWorkManager)
+        public AggregateChangeEventHelper(IUnitOfWorkManager unitOfWorkManager, IEventBus eventBus)
         {
             _unitOfWorkManager = unitOfWorkManager;
-            EventBus = NullEventBus.Instance;
+            _eventBus = eventBus;
         }
 
-        public IEventBus EventBus { get; set; }
-
-        public virtual void PublishEvents(EntityChangeReport changeReport)
+        public virtual void PublishEvents(AggregateChangeReport changeReport)
         {
             PublishEventsInternal(changeReport);
 
@@ -35,7 +33,7 @@ namespace Stove.Events.Bus.Entities
             _unitOfWorkManager.Current.SaveChanges();
         }
 
-        public Task PublishEventsAsync(EntityChangeReport changeReport, CancellationToken cancellationToken = default)
+        public Task PublishEventsAsync(AggregateChangeReport changeReport, CancellationToken cancellationToken = default)
         {
             PublishEventsInternal(changeReport);
 
@@ -47,16 +45,11 @@ namespace Stove.Events.Bus.Entities
             return _unitOfWorkManager.Current.SaveChangesAsync(cancellationToken);
         }
 
-        public virtual void PublishEventsInternal(EntityChangeReport changeReport)
+        protected virtual void PublishEventsInternal(AggregateChangeReport changeReport)
         {
-            PublishDomainEvents(changeReport.DomainEvents);
-        }
-
-        protected virtual void PublishDomainEvents(List<DomainEventEntry> domainEvents)
-        {
-            foreach (DomainEventEntry domainEvent in domainEvents)
+            foreach (DomainEventEntry domainEvent in changeReport.DomainEvents)
             {
-                EventBus.Publish(domainEvent.Event.GetType(), domainEvent.Event);
+                _eventBus.Publish(domainEvent.Event.GetType(), domainEvent.Event);
             }
         }
     }

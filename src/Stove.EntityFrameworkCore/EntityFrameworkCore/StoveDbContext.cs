@@ -56,7 +56,7 @@ namespace Stove.EntityFrameworkCore
         /// <summary>
         ///     Used to trigger entity change events.
         /// </summary>
-        public IEntityChangeEventHelper EntityChangeEventHelper { get; set; }
+        public IAggregateChangeEventHelper AggregateChangeEventHelper { get; set; }
 
         /// <summary>
         ///     Reference to the logger.
@@ -95,7 +95,7 @@ namespace Stove.EntityFrameworkCore
         {
             Logger = NullLogger.Instance;
             StoveSession = NullStoveSession.Instance;
-            EntityChangeEventHelper = NullEntityChangeEventHelper.Instance;
+            AggregateChangeEventHelper = NullAggregateChangeEventHelper.Instance;
             GuidGenerator = SequentialGuidGenerator.Instance;
             EventBus = NullEventBus.Instance;
         }
@@ -116,9 +116,9 @@ namespace Stove.EntityFrameworkCore
         {
             try
             {
-                EntityChangeReport changeReport = ApplyStoveConcepts();
+                AggregateChangeReport changeReport = ApplyStoveConcepts();
                 int result = base.SaveChanges();
-                EntityChangeEventHelper.PublishEvents(changeReport);
+                AggregateChangeEventHelper.PublishEvents(changeReport);
                 return result;
             }
             catch (DbUpdateConcurrencyException ex)
@@ -131,9 +131,9 @@ namespace Stove.EntityFrameworkCore
         {
             try
             {
-                EntityChangeReport changeReport = ApplyStoveConcepts();
+                AggregateChangeReport changeReport = ApplyStoveConcepts();
                 int result = await base.SaveChangesAsync(cancellationToken);
-                await EntityChangeEventHelper.PublishEventsAsync(changeReport, cancellationToken);
+                await AggregateChangeEventHelper.PublishEventsAsync(changeReport, cancellationToken);
                 return result;
             }
             catch (DbUpdateConcurrencyException ex)
@@ -142,9 +142,9 @@ namespace Stove.EntityFrameworkCore
             }
         }
 
-        protected virtual EntityChangeReport ApplyStoveConcepts()
+        protected virtual AggregateChangeReport ApplyStoveConcepts()
         {
-            var changeReport = new EntityChangeReport();
+            var changeReport = new AggregateChangeReport();
 
             long? userId = GetAuditUserId();
 
@@ -156,7 +156,7 @@ namespace Stove.EntityFrameworkCore
             return changeReport;
         }
 
-        protected virtual void ApplyStoveConcepts(EntityEntry entry, long? userId, EntityChangeReport changeReport)
+        protected virtual void ApplyStoveConcepts(EntityEntry entry, long? userId, AggregateChangeReport changeReport)
         {
             switch (entry.State)
             {

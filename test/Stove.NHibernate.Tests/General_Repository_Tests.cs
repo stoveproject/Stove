@@ -122,7 +122,7 @@ namespace Stove.NHibernate.Tests
         public async Task Should_rollback_when_CancellationToken_cancel_is_requested()
         {
             var ts = new CancellationTokenSource();
-            var updatingEventTriggerCount = 0;
+            var eventTriggerCount = 0;
             try
             {
                 using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
@@ -132,7 +132,7 @@ namespace Stove.NHibernate.Tests
                         {
                             @event.Name.ShouldBe("Pants");
                             ts.Cancel(true);
-                            updatingEventTriggerCount++;
+                            eventTriggerCount++;
                         });
 
                     Product product = The<IRepository<Product>>().Single(p => p.Name == "TShirt");
@@ -154,7 +154,7 @@ namespace Stove.NHibernate.Tests
                 await uow.CompleteAsync();
             }
 
-            updatingEventTriggerCount.ShouldBe(1);
+            eventTriggerCount.ShouldBe(1);
         }
 
         [Fact]

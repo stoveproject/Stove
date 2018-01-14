@@ -2,9 +2,9 @@ using System.Collections.Generic;
 
 namespace Stove.Events.Bus.Entities
 {
-    public class EntityChangeReport
+    public class AggregateChangeReport
     {
-        public EntityChangeReport()
+        public AggregateChangeReport()
         {
             DomainEvents = new List<DomainEventEntry>();
         }
@@ -18,7 +18,7 @@ namespace Stove.Events.Bus.Entities
 
         public override string ToString()
         {
-            return $"[EntityChangeReport] DomainEvents: {DomainEvents.Count}";
+            return $"[AggregateChangeReport] DomainEvents: {DomainEvents.Count}";
         }
     }
 }

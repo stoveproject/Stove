@@ -28,14 +28,14 @@ namespace Stove.Dapper.Repositories
         public DapperRepositoryBase(IActiveTransactionProvider activeTransactionProvider)
         {
             _activeTransactionProvider = activeTransactionProvider;
-            EntityChangeEventHelper = NullEntityChangeEventHelper.Instance;
+            AggregateChangeEventHelper = NullAggregateChangeEventHelper.Instance;
             DapperQueryFilterExecuter = NullDapperQueryFilterExecuter.Instance;
             DapperActionFilterExecuter = NullDapperActionFilterExecuter.Instance;
         }
 
         public IDapperQueryFilterExecuter DapperQueryFilterExecuter { get; set; }
 
-        public IEntityChangeEventHelper EntityChangeEventHelper { get; set; }
+        public IAggregateChangeEventHelper AggregateChangeEventHelper { get; set; }
 
         public IDapperActionFilterExecuter DapperActionFilterExecuter { get; set; }
 

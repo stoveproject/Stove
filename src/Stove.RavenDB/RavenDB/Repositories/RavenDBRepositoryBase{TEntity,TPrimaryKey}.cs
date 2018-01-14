@@ -19,14 +19,14 @@ namespace Stove.RavenDB.Repositories
 		{
 			_sessionProvider = sessionProvider;
 
-			EntityChangeEventHelper = NullEntityChangeEventHelper.Instance;
+			AggregateChangeEventHelper = NullAggregateChangeEventHelper.Instance;
 			RavenQueryFilterExecuter = NullRavenQueryFilterExecuter.Instance;
 			RavenActionFilterExecuter = NullRavenActionFilterExecuter.Instance;
 		}
 
 		public IDocumentSession Session => _sessionProvider.Session;
 
-		public IEntityChangeEventHelper EntityChangeEventHelper { get; set; }
+		public IAggregateChangeEventHelper AggregateChangeEventHelper { get; set; }
 
 		public IRavenQueryFilterExecuter RavenQueryFilterExecuter { get; set; }
 
