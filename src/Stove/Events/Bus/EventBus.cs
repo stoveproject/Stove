@@ -6,8 +6,6 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-
 using Stove.Events.Bus.Factories;
 using Stove.Events.Bus.Factories.Internals;
 using Stove.Events.Bus.Handlers;
