@@ -148,9 +148,12 @@ namespace Stove.EntityFrameworkCore
 
             long? userId = GetAuditUserId();
 
-            foreach (EntityEntry entry in ChangeTracker.Entries().ToList())
+            if (ChangeTracker.HasChanges())
             {
-                ApplyStoveConcepts(entry, userId, changeReport);
+                foreach (EntityEntry entry in ChangeTracker.Entries().ToList())
+                {
+                    ApplyStoveConcepts(entry, userId, changeReport);
+                }
             }
 
             return changeReport;

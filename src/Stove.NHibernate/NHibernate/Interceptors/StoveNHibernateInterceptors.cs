@@ -195,14 +195,12 @@ namespace Stove.NHibernate.Interceptors
                     continue;
                 }
 
-                var dateTime = state[i] as DateTime?;
-
-                if (!dateTime.HasValue)
+                if (!(state[i] is DateTime dateTime))
                 {
                     continue;
                 }
 
-                state[i] = Clock.Normalize(dateTime.Value);
+                state[i] = Clock.Normalize(dateTime);
             }
         }
 
@@ -216,7 +214,7 @@ namespace Stove.NHibernate.Interceptors
                     string propertyName = componentType.PropertyNames[i];
                     if (componentType.Subtypes[i].IsComponentType)
                     {
-                        object value = componentObject.GetType().GetProperty(propertyName).GetValue(componentObject, null);
+                        object value = componentObject.GetType().GetProperty(propertyName)?.GetValue(componentObject, null);
                         NormalizeDateTimePropertiesForComponentType(value, componentType.Subtypes[i]);
                     }
 
@@ -225,14 +223,14 @@ namespace Stove.NHibernate.Interceptors
                         continue;
                     }
 
-                    var dateTime = componentObject.GetType().GetProperty(propertyName).GetValue(componentObject) as DateTime?;
+                    var dateTime = componentObject.GetType().GetProperty(propertyName)?.GetValue(componentObject) as DateTime?;
 
                     if (!dateTime.HasValue)
                     {
                         continue;
                     }
 
-                    componentObject.GetType().GetProperty(propertyName).SetValue(componentObject, Clock.Normalize(dateTime.Value));
+                    componentObject.GetType().GetProperty(propertyName)?.SetValue(componentObject, Clock.Normalize(dateTime.Value));
                 }
             }
         }

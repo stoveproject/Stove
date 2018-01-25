@@ -230,28 +230,31 @@ namespace Stove.EntityFramework
             long? userId = GetAuditUserId();
 
             List<DbEntityEntry> entries = ChangeTracker.Entries().ToList();
-            foreach (DbEntityEntry entry in entries)
+            if (ChangeTracker.HasChanges())
             {
-                switch (entry.State)
+                foreach (DbEntityEntry entry in entries)
                 {
-                    case EntityState.Added:
-                        CheckAndSetId(entry.Entity);
-                        SetCreationAuditProperties(entry.Entity, userId);
-                        break;
-                    case EntityState.Modified:
-                        SetModificationAuditProperties(entry, userId);
-                        if (entry.Entity is ISoftDelete && entry.Entity.As<ISoftDelete>().IsDeleted)
-                        {
+                    switch (entry.State)
+                    {
+                        case EntityState.Added:
+                            CheckAndSetId(entry.Entity);
+                            SetCreationAuditProperties(entry.Entity, userId);
+                            break;
+                        case EntityState.Modified:
+                            SetModificationAuditProperties(entry, userId);
+                            if (entry.Entity is ISoftDelete && entry.Entity.As<ISoftDelete>().IsDeleted)
+                            {
+                                SetDeletionAuditProperties(entry.Entity, userId);
+                            }
+                            break;
+                        case EntityState.Deleted:
+                            CancelDeletionForSoftDelete(entry);
                             SetDeletionAuditProperties(entry.Entity, userId);
-                        }
-                        break;
-                    case EntityState.Deleted:
-                        CancelDeletionForSoftDelete(entry);
-                        SetDeletionAuditProperties(entry.Entity, userId);
-                        break;
-                }
+                            break;
+                    }
 
-                AddDomainEvents(changeReport.DomainEvents, entry.Entity);
+                    AddDomainEvents(changeReport.DomainEvents, entry.Entity);
+                }
             }
 
             return changeReport;
