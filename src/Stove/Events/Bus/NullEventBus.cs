@@ -22,21 +22,21 @@ namespace Stove.Events.Bus
         public static NullEventBus Instance { get; } = new NullEventBus();
 
         /// <inheritdoc />
-        public IDisposable Register<TEventData>(Action<TEventData> action) where TEventData : IEventData
+        public IDisposable Register<TEvent>(Action<TEvent> action) where TEvent : IEvent
         {
             return NullDisposable.Instance;
         }
 
         /// <inheritdoc />
-        public IDisposable Register<TEventData>(IEventHandler<TEventData> handler) where TEventData : IEventData
+        public IDisposable Register<TEvent>(IEventHandler<TEvent> handler) where TEvent : IEvent
         {
             return NullDisposable.Instance;
         }
 
         /// <inheritdoc />
-        public IDisposable Register<TEventData, THandler>()
-            where TEventData : IEventData
-            where THandler : IEventHandler<TEventData>, new()
+        public IDisposable Register<TEvent, THandler>()
+            where TEvent : IEvent
+            where THandler : IEventHandler<TEvent>, new()
         {
             return NullDisposable.Instance;
         }
@@ -48,7 +48,7 @@ namespace Stove.Events.Bus
         }
 
         /// <inheritdoc />
-        public IDisposable Register<TEventData>(IEventHandlerFactory handlerFactory) where TEventData : IEventData
+        public IDisposable Register<TEvent>(IEventHandlerFactory handlerFactory) where TEvent : IEvent
         {
             return NullDisposable.Instance;
         }
@@ -60,12 +60,12 @@ namespace Stove.Events.Bus
         }
 
         /// <inheritdoc />
-        public void Unregister<TEventData>(Action<TEventData> action) where TEventData : IEventData
+        public void Unregister<TEvent>(Action<TEvent> action) where TEvent : IEvent
         {
         }
 
         /// <inheritdoc />
-        public void Unregister<TEventData>(IEventHandler<TEventData> handler) where TEventData : IEventData
+        public void Unregister<TEvent>(IEventHandler<TEvent> handler) where TEvent : IEvent
         {
         }
 
@@ -75,7 +75,7 @@ namespace Stove.Events.Bus
         }
 
         /// <inheritdoc />
-        public void Unregister<TEventData>(IEventHandlerFactory factory) where TEventData : IEventData
+        public void Unregister<TEvent>(IEventHandlerFactory factory) where TEvent : IEvent
         {
         }
 
@@ -85,7 +85,7 @@ namespace Stove.Events.Bus
         }
 
         /// <inheritdoc />
-        public void UnregisterAll<TEventData>() where TEventData : IEventData
+        public void UnregisterAll<TEvent>() where TEvent : IEvent
         {
         }
 
@@ -95,23 +95,23 @@ namespace Stove.Events.Bus
         }
 
         /// <inheritdoc />
-        public void Publish<TEventData>(TEventData @event) where TEventData : IEventData
+        public void Publish<TEvent>(TEvent @event) where TEvent : IEvent
         {
         }
 
         /// <inheritdoc />
-        public void Publish(Type eventType, IEventData @event)
+        public void Publish(Type eventType, IEvent @event)
         {
         }
 
         /// <inheritdoc />
-        public Task PublishAsync<TEventData>(TEventData @event) where TEventData : IEventData
+        public Task PublishAsync<TEvent>(TEvent @event) where TEvent : IEvent
         {
             return new Task(() => { });
         }
 
         /// <inheritdoc />
-        public Task PublishAsync(Type eventType, IEventData @event)
+        public Task PublishAsync(Type eventType, IEvent @event)
         {
             return new Task(() => { });
         }

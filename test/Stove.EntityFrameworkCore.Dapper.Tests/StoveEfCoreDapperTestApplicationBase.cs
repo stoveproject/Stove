@@ -28,7 +28,7 @@ namespace Stove.EntityFrameworkCore.Dapper.Tests
 					.UseStoveEntityFrameworkCore()
 					.UseStoveDapper()
 					.UseStoveEventBus()
-					.RegisterServices(r => r.Register<IEntityChangeEventHelper, EntityChangeEventHelper>());
+					.RegisterServices(r => r.Register<IAggregateChangeEventHelper, AggregateChangeEventHelper>());
 
 				var bloggingDbContextBuilder = new DbContextOptionsBuilder<BloggingDbContext>();
 

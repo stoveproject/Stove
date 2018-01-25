@@ -29,7 +29,7 @@ namespace Stove.Domain.Entities
         /// <returns>
         ///     <c>true</c> if this instance has state changes; otherwise, <c>false</c>.
         /// </returns>
-        public bool HasChanges()
+        public virtual bool HasChanges()
         {
             return _recorder.Any();
         }
@@ -39,7 +39,7 @@ namespace Stove.Domain.Entities
         ///     Gets the state changes applied to this instance.
         /// </summary>
         /// <returns>A list of recorded state changes.</returns>
-        public IEnumerable<object> GetChanges()
+        public virtual IEnumerable<object> GetChanges()
         {
             return _recorder.ToArray();
         }
@@ -48,7 +48,7 @@ namespace Stove.Domain.Entities
         /// <summary>
         ///     Clears the state changes.
         /// </summary>
-        public void ClearChanges()
+        public virtual void ClearChanges()
         {
             _recorder.Reset();
         }

@@ -28,7 +28,7 @@ namespace Stove.EntityFrameworkCore.Tests.Tests
 
 			var isTriggered = false;
 
-			_eventBus.Register<BlogUrlChangedEventData>(data =>
+			_eventBus.Register<BlogUrlChangedEvent>(data =>
 			{
 				data.Url.ShouldBe("http://testblog1-changed.myblogs.com");
 				isTriggered = true;

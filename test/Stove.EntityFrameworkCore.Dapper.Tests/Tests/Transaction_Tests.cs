@@ -7,6 +7,7 @@ using Stove.Dapper.Repositories;
 using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
 using Stove.EntityFrameworkCore.Dapper.Tests.Domain;
+using Stove.EntityFrameworkCore.Dapper.Tests.Domain.Events;
 using Stove.Events.Bus;
 using Stove.Events.Bus.Entities;
 
@@ -61,21 +62,21 @@ namespace Stove.EntityFrameworkCore.Dapper.Tests.Tests
 		[Fact]
 		public void Dapper_and_EfCore_should_work_under_same_unitofwork_and_when_any_exception_appears_then_rollback_should_be_consistent_for_two_orm()
 		{
-			The<IEventBus>().Register<EntityCreatingEventData<Blog>>(
-				eventData =>
-				{
-					eventData.Entity.Name.ShouldBe("Oguzhan_Same_Uow");
+            The<IEventBus>().Register<BlogCreatedEvent>(
+                @event =>
+                {
+                    @event.Name.ShouldBe("Oguzhan_Same_Uow");
 
-					throw new Exception("Uow Rollback");
-				});
+                    throw new Exception("Uow Rollback");
+                });
 
-			try
+            try
 			{
 				using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
 				{
-					int blogId = _blogDapperRepository.InsertAndGetId(new Blog("Oguzhan_Same_Uow", "www.oguzhansoykan.com"));
+					int blogId = _blogRepository.InsertAndGetId(new Blog("Oguzhan_Same_Uow", "www.oguzhansoykan.com"));
 
-					Blog person = _blogRepository.Get(blogId);
+					Blog person = _blogDapperRepository.Get(blogId);
 
 					person.ShouldNotBeNull();
 
@@ -98,8 +99,8 @@ namespace Stove.EntityFrameworkCore.Dapper.Tests.Tests
 		[Fact]
 		public async Task inline_sql_with_dapper_should_rollback_when_uow_fails()
 		{
-			The<IEventBus>().Register<EntityCreatingEventData<Blog>>(
-				eventData => { eventData.Entity.Name.ShouldBe("Oguzhan_Same_Uow"); });
+			//The<IEventBus>().Register<EntityCreatingEvent<Blog>>(
+			//	@event => { @event.Entity.Name.ShouldBe("Oguzhan_Same_Uow"); });
 
 			var blogId = 0;
 

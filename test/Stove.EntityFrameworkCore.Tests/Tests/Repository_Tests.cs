@@ -10,6 +10,7 @@ using Shouldly;
 using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
 using Stove.EntityFrameworkCore.Tests.Domain;
+using Stove.EntityFrameworkCore.Tests.Domain.Events;
 using Stove.Events.Bus;
 using Stove.Events.Bus.Entities;
 
@@ -131,7 +132,7 @@ namespace Stove.EntityFrameworkCore.Tests.Tests
         {
             var ts = new CancellationTokenSource();
 
-            The<IEventBus>().Register<EntityCreatingEventData<Blog>>(data =>
+            The<IEventBus>().Register<BlogCreatedEvent>(@event =>
             {
                 ts.Cancel(true);
             });
@@ -142,7 +143,7 @@ namespace Stove.EntityFrameworkCore.Tests.Tests
                 {
                     await _blogRepository.InsertAsync(new Blog("cancellationtoken", "cancellationtoken.com"));
 
-                    _blogRepository.FirstOrDefaultAsync(x=>x.Name == "cancellationtoken").ShouldNotBeNull();
+                    _blogRepository.FirstOrDefaultAsync(x => x.Name == "cancellationtoken").ShouldNotBeNull();
 
                     await uow.CompleteAsync(ts.Token);
                 }

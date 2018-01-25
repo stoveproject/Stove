@@ -2,7 +2,7 @@
 
 namespace Stove.Tests.SampleApplication.Domain.Events
 {
-    public class CampaignCreatedEvent : EventData
+    public class CampaignCreatedEvent : Event
     {
         public string Name { get; set; }
     }

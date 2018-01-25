@@ -117,7 +117,7 @@ namespace Stove.EntityFramework
         /// <summary>
         ///     Used to pbulish entity change events.
         /// </summary>
-        public IEntityChangeEventHelper EntityChangeEventHelper { get; set; }
+        public IAggregateChangeEventHelper AggregateChangeEventHelper { get; set; }
 
         /// <summary>
         ///     Reference to the logger.
@@ -180,7 +180,7 @@ namespace Stove.EntityFramework
         {
             Logger = NullLogger.Instance;
             StoveSession = NullStoveSession.Instance;
-            EntityChangeEventHelper = NullEntityChangeEventHelper.Instance;
+            AggregateChangeEventHelper = NullAggregateChangeEventHelper.Instance;
             GuidGenerator = SequentialGuidGenerator.Instance;
             EventBus = NullEventBus.Instance;
         }
@@ -195,9 +195,9 @@ namespace Stove.EntityFramework
         {
             try
             {
-                EntityChangeReport changedEntities = ApplyStoveConcepts();
+                AggregateChangeReport changedAggregates = ApplyStoveConcepts();
                 int result = base.SaveChanges();
-                EntityChangeEventHelper.PublishEvents(changedEntities);
+                AggregateChangeEventHelper.PublishEvents(changedAggregates);
                 return result;
             }
             catch (DbEntityValidationException ex)
@@ -211,9 +211,9 @@ namespace Stove.EntityFramework
         {
             try
             {
-                EntityChangeReport changeReport = ApplyStoveConcepts();
+                AggregateChangeReport changeReport = ApplyStoveConcepts();
                 int result = await base.SaveChangesAsync(cancellationToken);
-                await EntityChangeEventHelper.PublishEventsAsync(changeReport, cancellationToken);
+                await AggregateChangeEventHelper.PublishEventsAsync(changeReport, cancellationToken);
                 return result;
             }
             catch (DbEntityValidationException ex)
@@ -223,9 +223,9 @@ namespace Stove.EntityFramework
             }
         }
 
-        protected virtual EntityChangeReport ApplyStoveConcepts()
+        protected virtual AggregateChangeReport ApplyStoveConcepts()
         {
-            var changeReport = new EntityChangeReport();
+            var changeReport = new AggregateChangeReport();
 
             long? userId = GetAuditUserId();
 
@@ -237,25 +237,17 @@ namespace Stove.EntityFramework
                     case EntityState.Added:
                         CheckAndSetId(entry.Entity);
                         SetCreationAuditProperties(entry.Entity, userId);
-                        changeReport.ChangedEntities.Add(new EntityChangeEntry(entry.Entity, EntityChangeType.Created));
                         break;
                     case EntityState.Modified:
                         SetModificationAuditProperties(entry, userId);
                         if (entry.Entity is ISoftDelete && entry.Entity.As<ISoftDelete>().IsDeleted)
                         {
                             SetDeletionAuditProperties(entry.Entity, userId);
-                            changeReport.ChangedEntities.Add(new EntityChangeEntry(entry.Entity, EntityChangeType.Deleted));
                         }
-                        else
-                        {
-                            changeReport.ChangedEntities.Add(new EntityChangeEntry(entry.Entity, EntityChangeType.Updated));
-                        }
-
                         break;
                     case EntityState.Deleted:
                         CancelDeletionForSoftDelete(entry);
                         SetDeletionAuditProperties(entry.Entity, userId);
-                        changeReport.ChangedEntities.Add(new EntityChangeEntry(entry.Entity, EntityChangeType.Deleted));
                         break;
                 }
 
@@ -267,18 +259,18 @@ namespace Stove.EntityFramework
 
         protected virtual void AddDomainEvents(List<DomainEventEntry> domainEvents, object entityAsObj)
         {
-            if (!(entityAsObj is IAggregateChangeTracker generatesDomainEventsEntity))
+            if (!(entityAsObj is IAggregateChangeTracker aggregateChangeTracker))
             {
                 return;
             }
 
-            if (generatesDomainEventsEntity.GetChanges().IsNullOrEmpty())
+            if (aggregateChangeTracker.GetChanges().IsNullOrEmpty())
             {
                 return;
             }
 
-            domainEvents.AddRange(generatesDomainEventsEntity.GetChanges().Select(eventData => new DomainEventEntry(entityAsObj, (IEventData)eventData)));
-            generatesDomainEventsEntity.ClearChanges();
+            domainEvents.AddRange(aggregateChangeTracker.GetChanges().Select(@event => new DomainEventEntry(entityAsObj, (IEvent)@event)));
+            aggregateChangeTracker.ClearChanges();
         }
 
         protected virtual void CheckAndSetId(object entityAsObj)

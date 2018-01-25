@@ -55,10 +55,10 @@ namespace Stove.Couchbase.Tests
             // Act
             //-----------------------------------------------------------------------------------------------------------
 
-            The<IEventBus>().Register<EntityCreatingEventData<Product>>(data =>
-            {
-                eventInvocationCount++;
-            });
+            //The<IEventBus>().Register<EntityCreatingEvent<Product>>(data =>
+            //{
+            //    eventInvocationCount++;
+            //});
 
             Product inserted = The<IRepository<Product, string>>().Insert(product);
 

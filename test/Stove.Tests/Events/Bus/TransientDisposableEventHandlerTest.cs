@@ -7,11 +7,11 @@ namespace Stove.Tests.Events.Bus
         [Fact]
         public void Should_Call_Handler_AndDispose()
         {
-            EventBus.Register<MySimpleEventData, MySimpleTransientEventHandler>();
+            EventBus.Register<MySimpleEvent, MySimpleTransientEventHandler>();
 
-            EventBus.Publish(new MySimpleEventData(1));
-            EventBus.Publish(new MySimpleEventData(2));
-            EventBus.Publish(new MySimpleEventData(3));
+            EventBus.Publish(new MySimpleEvent(1));
+            EventBus.Publish(new MySimpleEvent(2));
+            EventBus.Publish(new MySimpleEvent(3));
 
             Assert.Equal(MySimpleTransientEventHandler.HandleCount, 3);
             Assert.Equal(MySimpleTransientEventHandler.DisposeCount, 3);

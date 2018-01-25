@@ -15,7 +15,6 @@ using Shouldly;
 using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
 using Stove.Events.Bus;
-using Stove.Events.Bus.Entities;
 using Stove.Events.Bus.Handlers;
 using Stove.Tests.SampleApplication.Domain.Entities;
 
@@ -25,6 +24,9 @@ namespace Stove.Tests.SampleApplication.Uow
 {
     public class Uow_Events_Tests : SampleApplicationTestBase
     {
+        private readonly IUnitOfWorkManager _unitOfWorkManager;
+        private readonly IRepository<User> _userRepository;
+
         public Uow_Events_Tests()
         {
             Building(builder =>
@@ -45,9 +47,6 @@ namespace Stove.Tests.SampleApplication.Uow
             _unitOfWorkManager = The<IUnitOfWorkManager>();
             _userRepository = The<IRepository<User>>();
         }
-
-        private readonly IUnitOfWorkManager _unitOfWorkManager;
-        private readonly IRepository<User> _userRepository;
 
         [Fact]
         public void Should_Trigger_Completed_When_Uow_Succeed()
@@ -83,7 +82,7 @@ namespace Stove.Tests.SampleApplication.Uow
             var completeCount = 0;
             var disposeCount = 0;
 
-            Parallel.For(0, 178, i =>
+            Parallel.For(0, 20, i =>
             {
                 var uowManager = The<IUnitOfWorkManager>();
                 using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
@@ -110,6 +109,9 @@ namespace Stove.Tests.SampleApplication.Uow
                     The<IEventBus>().Publish(new SomeUowEvent());
                 }
             });
+
+            disposeCount.ShouldBeGreaterThanOrEqualTo(1);
+            completeCount.ShouldBeGreaterThanOrEqualTo(1);
         }
 
         [Fact]
@@ -120,14 +122,14 @@ namespace Stove.Tests.SampleApplication.Uow
 
             try
             {
-                The<IEventBus>().Register<EntityCreatingEventData<User>>(data =>
+                The<IEventBus>().Register<UserCreatedEvent>(data =>
                 {
                     ts.Cancel(true);
                 });
 
                 using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
                 {
-                    The<IRepository<User>>().Insert(new User { Name = "CancellationToken", Email = "cancel@gmail", Surname = "token" });
+                    The<IRepository<User>>().InsertAndGetId(User.Create("CancellationToken", "asd", "cancel@gmail"));
 
                     uowManager.Current.Completed += (sender, args) => { };
 
@@ -138,7 +140,7 @@ namespace Stove.Tests.SampleApplication.Uow
                         uowManager.Current.ShouldBe(null);
                     };
 
-                    The<IRepository<User>>().FirstOrDefault(x => x.Name == "CancellationToken").ShouldNotBeNull();
+                    The<IRepository<User>>().FirstOrDefault(x => x.Name == "CancellationToken").ShouldBeNull();
 
                     await uow.CompleteAsync(ts.Token);
                 }
@@ -152,12 +154,12 @@ namespace Stove.Tests.SampleApplication.Uow
             {
                 The<IRepository<User>>().FirstOrDefault(x => x.Name == "CancellationToken").ShouldBeNull();
 
-                await uow.CompleteAsync();
+                await uow.CompleteAsync(CancellationToken.None);
             }
         }
     }
 
-    public class SomeUowEvent : EventData
+    public class SomeUowEvent : Event
     {
     }
 
@@ -170,7 +172,7 @@ namespace Stove.Tests.SampleApplication.Uow
             _provider = provider;
         }
 
-        public void Handle(SomeUowEvent eventData)
+        public void Handle(SomeUowEvent @event)
         {
             var a = 1;
             _provider.ShouldNotBeNull();
@@ -189,8 +191,8 @@ namespace Stove.Tests.SampleApplication.Uow
 
     public class Provider
     {
-        private readonly IRepository<User> _userRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
+        private readonly IRepository<User> _userRepository;
 
         public Provider(IRepository<User> userRepository, IUnitOfWorkManager unitOfWorkManager)
         {

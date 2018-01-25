@@ -161,7 +161,7 @@ namespace Stove
         [NotNull]
         public static IIocBuilder UseStoveNullEntityChangedEventHelper([NotNull] this IIocBuilder builder)
         {
-            return builder.RegisterServices(r => r.Register<IEntityChangeEventHelper, NullEntityChangeEventHelper>(keepDefault: true));
+            return builder.RegisterServices(r => r.Register<IAggregateChangeEventHelper, NullAggregateChangeEventHelper>(keepDefault: true));
         }
 
         /// <summary>

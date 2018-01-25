@@ -9,17 +9,17 @@ namespace Stove.Tests.Events.Bus
         {
             var totalData = 0;
 
-            EventBus.Register<MySimpleEventData>(
-                eventData =>
+            EventBus.Register<MySimpleEvent>(
+                @event =>
                 {
-                    totalData += eventData.Value;
-                    //Assert.Equal(this, eventData.EventSource);
+                    totalData += @event.Value;
+                    //Assert.Equal(this, @event.EventSource);
                 });
 
-            EventBus.Publish(new MySimpleEventData(1)); //Should handle directly registered class
-            EventBus.Publish(new MySimpleEventData(2)); //Should handle directly registered class
-            EventBus.Publish(new MyDerivedEventData(3)); //Should handle derived class too
-            EventBus.Publish(new MyDerivedEventData(4)); //Should handle derived class too
+            EventBus.Publish(new MySimpleEvent(1)); //Should handle directly registered class
+            EventBus.Publish(new MySimpleEvent(2)); //Should handle directly registered class
+            EventBus.Publish(new MyDerivedEvent(3)); //Should handle derived class too
+            EventBus.Publish(new MyDerivedEvent(4)); //Should handle derived class too
 
             Assert.Equal(10, totalData);
         }
@@ -29,17 +29,17 @@ namespace Stove.Tests.Events.Bus
         {
             var totalData = 0;
 
-            EventBus.Register<MyDerivedEventData>(
-                eventData =>
+            EventBus.Register<MyDerivedEvent>(
+                @event =>
                 {
-                    totalData += eventData.Value;
-                    //Assert.Equal(this, eventData.EventSource);
+                    totalData += @event.Value;
+                    //Assert.Equal(this, @event.EventSource);
                 });
 
-            EventBus.Publish(new MySimpleEventData(1)); //Should not handle
-            EventBus.Publish(new MySimpleEventData(2)); //Should not handle
-            EventBus.Publish(new MyDerivedEventData(3)); //Should handle
-            EventBus.Publish(new MyDerivedEventData(4)); //Should handle
+            EventBus.Publish(new MySimpleEvent(1)); //Should not handle
+            EventBus.Publish(new MySimpleEvent(2)); //Should not handle
+            EventBus.Publish(new MyDerivedEvent(3)); //Should handle
+            EventBus.Publish(new MyDerivedEvent(4)); //Should handle
 
             Assert.Equal(7, totalData);
         }   

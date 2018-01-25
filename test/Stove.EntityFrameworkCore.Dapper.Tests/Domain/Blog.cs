@@ -2,6 +2,7 @@
 
 using Stove.Domain.Entities;
 using Stove.Domain.Entities.Auditing;
+using Stove.EntityFrameworkCore.Dapper.Tests.Domain.Events;
 
 namespace Stove.EntityFrameworkCore.Dapper.Tests.Domain
 {
@@ -9,7 +10,7 @@ namespace Stove.EntityFrameworkCore.Dapper.Tests.Domain
     {
         public Blog()
         {
-            Register<BlogUrlChangedEventData>(@event => { Url = @event.Url; });
+            Register<BlogUrlChangedEvent>(@event => { Url = @event.Url; });
         }
 
         public Blog(string name, string url)
@@ -26,6 +27,10 @@ namespace Stove.EntityFrameworkCore.Dapper.Tests.Domain
 
             Name = name;
             Url = url;
+
+            ApplyChange(
+                new BlogCreatedEvent(name)
+                );
         }
 
         public string Name { get; set; }
@@ -41,7 +46,7 @@ namespace Stove.EntityFrameworkCore.Dapper.Tests.Domain
                 throw new ArgumentNullException(nameof(url));
             }
 
-            ApplyChange(new BlogUrlChangedEventData(this, url));
+            ApplyChange(new BlogUrlChangedEvent(this, url));
         }
     }
 }
