@@ -82,7 +82,7 @@ namespace Stove.Tests.SampleApplication.Uow
             var completeCount = 0;
             var disposeCount = 0;
 
-            Parallel.For(0, 178, i =>
+            Parallel.For(0, 20, i =>
             {
                 var uowManager = The<IUnitOfWorkManager>();
                 using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
@@ -109,6 +109,9 @@ namespace Stove.Tests.SampleApplication.Uow
                     The<IEventBus>().Publish(new SomeUowEvent());
                 }
             });
+
+            disposeCount.ShouldBeGreaterThanOrEqualTo(1);
+            completeCount.ShouldBeGreaterThanOrEqualTo(1);
         }
 
         [Fact]
