@@ -44,10 +44,8 @@ namespace Stove.Events.Bus.Factories
 
             _rw.EnterWriteLock();
 
-            _childScope = _resolver.Resolve<ILifetimeScope>().BeginLifetimeScope(cb =>
-            {
-                cb.RegisterType(HandlerType).AsSelf().WithPropertyInjection().AsImplementedInterfaces();
-            });
+            _childScope = _resolver.Resolve<ILifetimeScope>().BeginLifetimeScope();
+
             var handler = (IEventHandler)_childScope.Resolve(HandlerType);
 
             _rw.ExitWriteLock();

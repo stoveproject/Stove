@@ -11,10 +11,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Chill" Version="3.2.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.6.0-preview-20171211-02" />
     <PackageReference Include="xunit" Version="2.3.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
-    <PackageReference Include="Shouldly" Version="3.0.0-beta0003" />
+    <PackageReference Include="Shouldly" Version="3.0.0" />
     <PackageReference Include="NSubstitute" Version="3.1.0" />
     <PackageReference Include="System.Runtime" Version="4.3.0" />
   </ItemGroup>

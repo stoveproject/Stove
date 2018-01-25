@@ -5,7 +5,6 @@ using JetBrains.Annotations;
 
 using Stove.Collections.Extensions;
 using Stove.Domain.Uow;
-using Stove.Log;
 
 namespace Stove.Runtime.Remoting
 {
@@ -16,7 +15,7 @@ namespace Stove.Runtime.Remoting
     public class DataContextAmbientScopeProvider<T> : IAmbientScopeProvider<T>
         where T : class
     {
-        private static readonly ConcurrentDictionary<string, ScopeItem> ScopeDictionary = new ConcurrentDictionary<string, ScopeItem>();
+        private static readonly ConcurrentDictionary<string, ScopeItem> scopeDictionary = new ConcurrentDictionary<string, ScopeItem>();
 
         private readonly IAmbientDataContext _dataContext;
 
@@ -25,11 +24,7 @@ namespace Stove.Runtime.Remoting
             Check.NotNull(dataContext, nameof(dataContext));
 
             _dataContext = dataContext;
-
-            Logger = NullLogger.Instance;
         }
-
-        public ILogger Logger { get; set; }
 
         public T GetValue(string contextKey)
         {
@@ -40,7 +35,7 @@ namespace Stove.Runtime.Remoting
         {
             var item = new ScopeItem(value, GetCurrentItem(contextKey));
 
-            if (!ScopeDictionary.TryAdd(item.Id, item))
+            if (!scopeDictionary.TryAdd(item.Id, item))
             {
                 throw new StoveException("Can not set unit of work! ScopeDictionary.TryAdd returns false!");
             }
@@ -49,7 +44,7 @@ namespace Stove.Runtime.Remoting
 
             return new DisposeAction(() =>
             {
-                ScopeDictionary.TryRemove(item.Id, out item);
+                scopeDictionary.TryRemove(item.Id, out item);
 
                 if (item.Outer == null)
                 {
@@ -63,8 +58,7 @@ namespace Stove.Runtime.Remoting
 
         private ScopeItem GetCurrentItem(string contextKey)
         {
-            var objKey = _dataContext.GetData(contextKey) as string;
-            return objKey != null ? ScopeDictionary.GetOrDefault(objKey) : null;
+            return _dataContext.GetData(contextKey) is string objKey ? scopeDictionary.GetOrDefault(objKey) : null;
         }
 
         private class ScopeItem

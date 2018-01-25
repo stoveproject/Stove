@@ -206,7 +206,7 @@ namespace Stove.Events.Bus
         {
             ExecutionContext.SuppressFlow();
 
-            Task task = Task.Factory.StartNew(
+            Task task = Task.Run(
                 () =>
                 {
                     try
@@ -226,61 +226,32 @@ namespace Stove.Events.Bus
 
         private void PublishHandlingException(Type eventType, IEvent @event, List<Exception> exceptions)
         {
-            //TODO: This method can be optimized by adding all possibilities to a dictionary.
+            GetHandlerFactories(eventType).SelectMany(x => x.EventHandlerFactories)
+                                          .ForEach(f =>
+                                          {
+                                              IEventHandler handler = f.GetHandler();
+                                              try
+                                              {
+                                                  Type handlerType = typeof(IEventHandler<>).MakeGenericType(eventType);
+                                                  MethodInfo method = handlerType.GetMethod(
+                                                      "Handle",
+                                                      new[] { eventType });
 
-            foreach (EventTypeWithEventHandlerFactories handlerFactories in GetHandlerFactories(eventType))
-            {
-                foreach (IEventHandlerFactory handlerFactory in handlerFactories.EventHandlerFactories)
-                {
-                    IEventHandler eventHandler = handlerFactory.GetHandler();
-
-                    try
-                    {
-                        if (eventHandler == null)
-                        {
-                            throw new Exception($"Registered event handler for event type {handlerFactories.EventType.Name} does not implement IEventHandler<{handlerFactories.EventType.Name}> interface!");
-                        }
-
-                        Type handlerType = typeof(IEventHandler<>).MakeGenericType(handlerFactories.EventType);
-
-                        MethodInfo method = handlerType.GetMethod(
-                            "Handle",
-                            new[] { handlerFactories.EventType }
-                        );
-
-                        method.Invoke(eventHandler, new object[] { @event });
-                    }
-                    catch (TargetInvocationException ex)
-                    {
-                        exceptions.Add(ex.InnerException);
-                    }
-                    catch (Exception ex)
-                    {
-                        exceptions.Add(ex);
-                    }
-                    finally
-                    {
-                        handlerFactory.ReleaseHandler(eventHandler);
-                    }
-                }
-            }
-
-            //Implements generic argument inheritance. See IEventWithInheritableGenericArgument
-            if (eventType.GetTypeInfo().IsGenericType &&
-                eventType.GetGenericArguments().Length == 1 &&
-                typeof(IEventWithInheritableGenericArgument).IsAssignableFrom(eventType))
-            {
-                Type genericArg = eventType.GetGenericArguments()[0];
-                Type baseArg = genericArg.GetTypeInfo().BaseType;
-                if (baseArg != null)
-                {
-                    Type baseEventType = eventType.GetGenericTypeDefinition().MakeGenericType(baseArg);
-                    object[] constructorArgs = ((IEventWithInheritableGenericArgument)@event).GetConstructorArgs();
-                    var baseEventData = (IEvent)Activator.CreateInstance(baseEventType, constructorArgs);
-                    baseEventData.EventTime = @event.EventTime;
-                    Publish(baseEventType, baseEventData);
-                }
-            }
+                                                  method.Invoke(handler, new object[] { @event });
+                                              }
+                                              catch (TargetInvocationException ex)
+                                              {
+                                                  exceptions.Add(ex.InnerException);
+                                              }
+                                              catch (Exception ex)
+                                              {
+                                                  exceptions.Add(ex);
+                                              }
+                                              finally
+                                              {
+                                                  f.ReleaseHandler(handler);
+                                              }
+                                          });
         }
 
         private IEnumerable<EventTypeWithEventHandlerFactories> GetHandlerFactories(Type eventType)

@@ -8,8 +8,8 @@ using Stove.Dapper.Repositories;
 using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
 using Stove.Events.Bus;
-using Stove.Events.Bus.Entities;
 using Stove.NHibernate.Tests.Entities;
+using Stove.NHibernate.Tests.Entities.Events;
 using Stove.NHibernate.Tests.Sessions;
 
 using Xunit;
@@ -71,23 +71,15 @@ namespace Stove.NHibernate.Tests
         public void Should_Rollback_UOW_In_Updating_Event_NhRepository()
         {
             //Arrange
-            var updatingTriggerCount = 0;
-            var updatedTriggerCount = 0;
+            var triggerCount = 0;
 
-            The<IEventBus>().Register<EntityUpdatingEvent<Product>>(
+            The<IEventBus>().Register<ProductNameFixed>(
                 @event =>
                 {
-                    @event.Entity.Name.ShouldBe("Bear");
-                    updatingTriggerCount++;
+                    @event.Name.ShouldBe("Bear");
+                    triggerCount++;
 
                     throw new ApplicationException("A sample exception to rollback the UOW.");
-                });
-
-            The<IEventBus>().Register<EntityUpdatedEvent<Product>>(
-                @event =>
-                {
-                    //Should not come here, since UOW is failed
-                    updatedTriggerCount++;
                 });
 
             //Act
@@ -96,7 +88,7 @@ namespace Stove.NHibernate.Tests
                 using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
                 {
                     Product product = The<IRepository<Product>>().Single(p => p.Name == "TShirt");
-                    product.Name = "Bear";
+                    product.FixName("Bear");
                     The<IRepository<Product>>().Update(product);
 
                     uow.Complete();
@@ -110,66 +102,11 @@ namespace Stove.NHibernate.Tests
             }
 
             //Assert
-            updatingTriggerCount.ShouldBe(1);
-            updatedTriggerCount.ShouldBe(0);
+            triggerCount.ShouldBe(1);
 
             using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
             {
                 The<IRepository<Product>>()
-                    .FirstOrDefault(p => p.Name == "TShirt")
-                    .ShouldNotBeNull(); //should not be changed since we throw exception to rollback the transaction
-            }
-        }
-
-        [Fact]
-        public void Should_Rollback_UOW_In_Updating_Event_DapperRepository()
-        {
-            //Arrange
-            var updatingTriggerCount = 0;
-            var updatedTriggerCount = 0;
-
-            The<IEventBus>().Register<EntityUpdatingEvent<Product>>(
-                @event =>
-                {
-                    @event.Entity.Name.ShouldBe("Bear");
-                    updatingTriggerCount++;
-
-                    throw new ApplicationException("A sample exception to rollback the UOW.");
-                });
-
-            The<IEventBus>().Register<EntityUpdatedEvent<Product>>(
-                @event =>
-                {
-                    //Should not come here, since UOW is failed
-                    updatedTriggerCount++;
-                });
-
-            //Act
-            try
-            {
-                using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
-                {
-                    Product product = The<IRepository<Product>>().Single(p => p.Name == "TShirt");
-                    product.Name = "Bear";
-                    The<IDapperRepository<Product>>().Update(product);
-
-                    uow.Complete();
-                }
-
-                Assert.True(false, "Should not come here since ApplicationException is thrown!");
-            }
-            catch (ApplicationException)
-            {
-                //hiding exception
-            }
-
-            //Assert
-            updatingTriggerCount.ShouldBe(1);
-            updatedTriggerCount.ShouldBe(0);
-
-            using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
-            {
-                The<IDapperRepository<Product>>()
                     .FirstOrDefault(p => p.Name == "TShirt")
                     .ShouldNotBeNull(); //should not be changed since we throw exception to rollback the transaction
             }

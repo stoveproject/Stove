@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using Stove.Domain.Entities;
 using Stove.Domain.Entities.Auditing;
+using Stove.EntityFrameworkCore.Tests.Domain.Events;
 
 namespace Stove.EntityFrameworkCore.Tests.Domain
 {
@@ -27,6 +28,10 @@ namespace Stove.EntityFrameworkCore.Tests.Domain
 
             Name = name;
             Url = url;
+
+            ApplyChange(
+                new BlogCreatedEvent(name)
+                );
         }
 
         public string Name { get; set; }

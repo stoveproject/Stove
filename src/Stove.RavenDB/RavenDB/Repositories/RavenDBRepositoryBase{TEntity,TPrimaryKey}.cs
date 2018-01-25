@@ -19,14 +19,14 @@ namespace Stove.RavenDB.Repositories
 		{
 			_sessionProvider = sessionProvider;
 
-			EntityChangeEventHelper = NullEntityChangeEventHelper.Instance;
+			AggregateChangeEventHelper = NullAggregateChangeEventHelper.Instance;
 			RavenQueryFilterExecuter = NullRavenQueryFilterExecuter.Instance;
 			RavenActionFilterExecuter = NullRavenActionFilterExecuter.Instance;
 		}
 
 		public IDocumentSession Session => _sessionProvider.Session;
 
-		public IEntityChangeEventHelper EntityChangeEventHelper { get; set; }
+		public IAggregateChangeEventHelper AggregateChangeEventHelper { get; set; }
 
 		public IRavenQueryFilterExecuter RavenQueryFilterExecuter { get; set; }
 
@@ -49,10 +49,8 @@ namespace Stove.RavenDB.Repositories
 		/// <returns></returns>
 		public override TEntity Insert(TEntity entity)
 		{
-			EntityChangeEventHelper.PublishEntityCreatingEvent(entity);
 			RavenActionFilterExecuter.ExecuteCreationAuditFilter<TEntity, TPrimaryKey>(entity);
 			Session.Store(entity);
-			EntityChangeEventHelper.PublishEntityCreatedEventOnUowCompleted(entity);
 			return entity;
 		}
 
@@ -63,10 +61,8 @@ namespace Stove.RavenDB.Repositories
 		/// <returns></returns>
 		public override TEntity Update(TEntity entity)
 		{
-			EntityChangeEventHelper.PublishEntityUpdatingEvent(entity);
 			RavenActionFilterExecuter.ExecuteModificationAuditFilter<TEntity, TPrimaryKey>(entity);
 			Session.Store(entity);
-			EntityChangeEventHelper.PublishEntityUpdatedEventOnUowCompleted(entity);
 			return entity;
 		}
 
@@ -76,7 +72,6 @@ namespace Stove.RavenDB.Repositories
 		/// <param name="entity">The entity.</param>
 		public override void Delete(TEntity entity)
 		{
-			EntityChangeEventHelper.PublishEntityDeletingEvent(entity);
 			if (entity is ISoftDelete)
 			{
 				RavenActionFilterExecuter.ExecuteDeletionAuditFilter<TEntity, TPrimaryKey>(entity);
@@ -86,7 +81,6 @@ namespace Stove.RavenDB.Repositories
 			{
 				Session.Delete(entity);
 			}
-			EntityChangeEventHelper.PublishEntityDeletedEventOnUowCompleted(entity);
 		}
 
 		/// <summary>
