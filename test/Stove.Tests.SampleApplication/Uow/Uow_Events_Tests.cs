@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,9 +25,6 @@ namespace Stove.Tests.SampleApplication.Uow
 {
     public class Uow_Events_Tests : SampleApplicationTestBase
     {
-        private readonly IUnitOfWorkManager _unitOfWorkManager;
-        private readonly IRepository<User> _userRepository;
-
         public Uow_Events_Tests()
         {
             Building(builder =>
@@ -46,6 +44,50 @@ namespace Stove.Tests.SampleApplication.Uow
 
             _unitOfWorkManager = The<IUnitOfWorkManager>();
             _userRepository = The<IRepository<User>>();
+        }
+
+        private readonly IUnitOfWorkManager _unitOfWorkManager;
+        private readonly IRepository<User> _userRepository;
+
+        [Fact]
+        public async Task should_rollback_when_CancellationToken_Cancel_is_requested()
+        {
+            var ts = new CancellationTokenSource();
+            var uowManager = The<IUnitOfWorkManager>();
+
+            try
+            {
+                The<IEventBus>().Register<UserCreatedEvent>(data => { ts.Cancel(true); });
+
+                using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
+                {
+                    The<IRepository<User>>().InsertAndGetId(User.Create("CancellationToken", "asd", "cancel@gmail"));
+
+                    uowManager.Current.Completed += (sender, args) => { };
+
+                    uowManager.Current.Disposed += (sender, args) =>
+                    {
+                        var provider = The<Provider>();
+                        provider.ShouldNotBeNull();
+                        uowManager.Current.ShouldBe(null);
+                    };
+
+                    The<IRepository<User>>().FirstOrDefault(x => x.Name == "CancellationToken").ShouldBeNull();
+
+                    await uow.CompleteAsync(ts.Token);
+                }
+            }
+            catch (Exception exception)
+            {
+                //Handled uow Rolled back!
+            }
+
+            using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
+            {
+                The<IRepository<User>>().FirstOrDefault(x => x.Name == "CancellationToken").ShouldBeNull();
+
+                await uow.CompleteAsync(CancellationToken.None);
+            }
         }
 
         [Fact]
@@ -82,80 +124,39 @@ namespace Stove.Tests.SampleApplication.Uow
             var completeCount = 0;
             var disposeCount = 0;
 
+            var tasks = new List<Task>();
             Parallel.For(0, 20, i =>
             {
-                var uowManager = The<IUnitOfWorkManager>();
-                using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
+                tasks.Add(Task.Run(() =>
                 {
-                    The<IRepository<User>>().Insert(new User { Name = "Oğuzhan", Email = "osoykan@gmail", Surname = "Soykan" });
-
-                    uowManager.Current.Completed += (sender, args) =>
+                    var uowManager = The<IUnitOfWorkManager>();
+                    using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
                     {
-                        completeCount++;
-                    };
+                        The<IRepository<User>>().Insert(new User { Name = "Oğuzhan", Email = "osoykan@gmail", Surname = "Soykan" });
 
-                    uowManager.Current.Disposed += (sender, args) =>
-                    {
-                        var provider = The<Provider>();
-                        provider.ShouldNotBeNull();
-                        uowManager.Current.ShouldBe(null);
-                        disposeCount++;
-                    };
+                        uowManager.Current.Completed += (sender, args) => { completeCount++; };
 
-                    The<IRepository<User>>().FirstOrDefault(x => x.Name == "Oğuzhan").ShouldNotBeNull();
+                        uowManager.Current.Disposed += (sender, args) =>
+                        {
+                            var provider = The<Provider>();
+                            provider.ShouldNotBeNull();
+                            uowManager.Current.ShouldBe(null);
+                            disposeCount++;
+                        };
 
-                    uow.Complete();
+                        The<IRepository<User>>().FirstOrDefault(x => x.Name == "Oğuzhan").ShouldNotBeNull();
 
-                    The<IEventBus>().Publish(new SomeUowEvent());
-                }
+                        uow.Complete();
+
+                        The<IEventBus>().Publish(new SomeUowEvent());
+                    }
+                }));
             });
+
+            Task.WaitAll(tasks.ToArray());
 
             disposeCount.ShouldBeGreaterThanOrEqualTo(1);
             completeCount.ShouldBeGreaterThanOrEqualTo(1);
-        }
-
-        [Fact]
-        public async Task should_rollback_when_CancellationToken_Cancel_is_requested()
-        {
-            var ts = new CancellationTokenSource();
-            var uowManager = The<IUnitOfWorkManager>();
-
-            try
-            {
-                The<IEventBus>().Register<UserCreatedEvent>(data =>
-                {
-                    ts.Cancel(true);
-                });
-
-                using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
-                {
-                    The<IRepository<User>>().InsertAndGetId(User.Create("CancellationToken", "asd", "cancel@gmail"));
-
-                    uowManager.Current.Completed += (sender, args) => { };
-
-                    uowManager.Current.Disposed += (sender, args) =>
-                    {
-                        var provider = The<Provider>();
-                        provider.ShouldNotBeNull();
-                        uowManager.Current.ShouldBe(null);
-                    };
-
-                    The<IRepository<User>>().FirstOrDefault(x => x.Name == "CancellationToken").ShouldBeNull();
-
-                    await uow.CompleteAsync(ts.Token);
-                }
-            }
-            catch (Exception exception)
-            {
-                //Handled uow Rolled back!
-            }
-
-            using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
-            {
-                The<IRepository<User>>().FirstOrDefault(x => x.Name == "CancellationToken").ShouldBeNull();
-
-                await uow.CompleteAsync(CancellationToken.None);
-            }
         }
     }
 
