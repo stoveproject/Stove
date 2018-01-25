@@ -234,32 +234,41 @@ namespace Stove.NHibernate.Tests
             var completeCount = 0;
             var disposeCount = 0;
 
-            Parallel.For(0, 100, i =>
+            var tasks = new List<Task>();
+            Parallel.For(0, 20, i =>
             {
-                var uowManager = The<IUnitOfWorkManager>();
-                using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
+                tasks.Add(Task.Run(() =>
                 {
-                    The<IRepository<Product>>().Insert(new Product("Oguzhan"));
-                    The<IRepository<Category>>().Insert(new Category("Selam"));
-
-                    uowManager.Current.Completed += (sender, args) => { completeCount++; };
-
-                    uowManager.Current.Disposed += (sender, args) =>
+                    var uowManager = The<IUnitOfWorkManager>();
+                    using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
                     {
-                        var provider = The<Provider>();
-                        provider.ShouldNotBeNull();
-                        uowManager.Current.ShouldBe(null);
-                        disposeCount++;
-                    };
+                        The<IRepository<Product>>().Insert(new Product("Oguzhan"));
+                        The<IRepository<Category>>().Insert(new Category("Selam"));
 
-                    The<IRepository<Product>>().FirstOrDefault(x => x.Name == "Oguzhan").ShouldNotBeNull();
-                    The<IRepository<Category>>().FirstOrDefault(x => x.Name == "Selam").ShouldNotBeNull();
+                        uowManager.Current.Completed += (sender, args) => { completeCount++; };
 
-                    uow.Complete();
+                        uowManager.Current.Disposed += (sender, args) =>
+                        {
+                            var provider = The<Provider>();
+                            provider.ShouldNotBeNull();
+                            uowManager.Current.ShouldBe(null);
+                            disposeCount++;
+                        };
 
-                    The<IEventBus>().Publish(new SomeUowEvent());
-                }
+                        The<IRepository<Product>>().FirstOrDefault(x => x.Name == "Oguzhan").ShouldNotBeNull();
+                        The<IRepository<Category>>().FirstOrDefault(x => x.Name == "Selam").ShouldNotBeNull();
+
+                        uow.Complete();
+
+                        The<IEventBus>().Publish(new SomeUowEvent());
+                    }
+                }));
             });
+
+            Task.WaitAll(tasks.ToArray());
+
+            disposeCount.ShouldBeGreaterThanOrEqualTo(1);
+            completeCount.ShouldBeGreaterThanOrEqualTo(1);
         }
 
         [Fact]
