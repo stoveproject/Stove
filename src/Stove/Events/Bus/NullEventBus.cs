@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,9 +23,13 @@ namespace Stove.Events.Bus
         /// </summary>
         public static NullEventBus Instance { get; } = new NullEventBus();
 
-        public IDisposable Register<TEvent>(Action<TEvent> action) where TEvent : IEvent
+        public IDisposable Register<TEvent>(Action<TEvent, Dictionary<string, object>> action) where TEvent : IEvent
         {
-            return NullDisposable.Instance;
+            return null;
+        }
+
+        public void RegisterPublishingBehaviour(EventPublishingBehaviour eventPublishingBehaviour)
+        {
         }
 
         public IDisposable Register<TEvent>(IEventHandler<TEvent> handler) where TEvent : IEvent
@@ -54,7 +59,7 @@ namespace Stove.Events.Bus
             return NullDisposable.Instance;
         }
 
-        public void Unregister<TEvent>(Action<TEvent> action) where TEvent : IEvent
+        public void Unregister<TEvent>(Action<TEvent, Dictionary<string, object>> action) where TEvent : IEvent
         {
         }
 
@@ -82,27 +87,31 @@ namespace Stove.Events.Bus
         {
         }
 
-        public void Publish<TEvent>(TEvent @event) where TEvent : IEvent
+        public void Publish<TEvent>(TEvent @event, Dictionary<string, object> headers) where TEvent : IEvent
         {
         }
 
-        public void Publish(Type eventType, IEvent @event)
+        public void Publish(Type eventType, IEvent @event, Dictionary<string, object> headers)
         {
         }
 
-        public Task PublishAsync<TEvent>(TEvent @event) where TEvent : IEvent
+        public Task PublishAsync<TEvent>(TEvent @event, Dictionary<string, object> headers, CancellationToken cancellationToken = default) where TEvent : IEvent
         {
-            return new Task(() => { });
+            return null;
         }
 
-        public Task PublishAsync(Type eventType, IEvent @event, CancellationToken cancellationToken = default)
+        public Task PublishAsync(Type eventType, IEvent @event, Dictionary<string, object> headers, CancellationToken cancellationToken = default)
         {
-            return new Task(() => { }, cancellationToken);
+            return null;
         }
 
-        public Task PublishAsync(Type eventType, IEvent @event)
+        public IDisposable Register<TEvent>(Action<TEvent> action) where TEvent : IEvent
         {
-            return new Task(() => { });
+            return NullDisposable.Instance;
+        }
+
+        public void Unregister<TEvent>(Action<TEvent> action) where TEvent : IEvent
+        {
         }
     }
 }

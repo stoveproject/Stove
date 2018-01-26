@@ -20,38 +20,43 @@ namespace Stove.NHibernate.Interceptors
 {
     internal class StoveNHibernateInterceptor : EmptyInterceptor, ITransientDependency
     {
+        private readonly Lazy<IStoveCommandContextAccessor> _commandContextAccessor;
         private readonly Lazy<IEventBus> _eventBus;
         private readonly Lazy<IGuidGenerator> _guidGenerator;
-
-        private readonly IScopeResolver _scopeResolver;
         private readonly Lazy<IStoveSession> _stoveSession;
 
         public StoveNHibernateInterceptor(IScopeResolver scopeResolver)
         {
-            _scopeResolver = scopeResolver;
+            IScopeResolver innerResolver = scopeResolver;
 
             _stoveSession =
                 new Lazy<IStoveSession>(
-                    () => _scopeResolver.IsRegistered(typeof(IStoveSession))
-                        ? _scopeResolver.Resolve<IStoveSession>()
+                    () => innerResolver.IsRegistered(typeof(IStoveSession))
+                        ? innerResolver.Resolve<IStoveSession>()
                         : NullStoveSession.Instance,
                     true
                 );
+
             _guidGenerator =
                 new Lazy<IGuidGenerator>(
-                    () => _scopeResolver.IsRegistered(typeof(IGuidGenerator))
-                        ? _scopeResolver.Resolve<IGuidGenerator>()
+                    () => innerResolver.IsRegistered(typeof(IGuidGenerator))
+                        ? innerResolver.Resolve<IGuidGenerator>()
                         : SequentialGuidGenerator.Instance,
                     true
                 );
 
             _eventBus =
                 new Lazy<IEventBus>(
-                    () => _scopeResolver.IsRegistered(typeof(IEventBus))
-                        ? _scopeResolver.Resolve<IEventBus>()
+                    () => innerResolver.IsRegistered(typeof(IEventBus))
+                        ? innerResolver.Resolve<IEventBus>()
                         : NullEventBus.Instance,
                     true
                 );
+
+            _commandContextAccessor =
+                new Lazy<IStoveCommandContextAccessor>(
+                    () => innerResolver.Resolve<IStoveCommandContextAccessor>(),
+                    true);
         }
 
         public override bool OnSave(object entity, object id, object[] state, string[] propertyNames, IType[] types)
@@ -158,8 +163,6 @@ namespace Stove.NHibernate.Interceptors
                             }
                         }
                     }
-
-                   
                 }
             }
 
@@ -234,9 +237,9 @@ namespace Stove.NHibernate.Interceptors
             }
         }
 
-        protected virtual void TriggerDomainEvents(object entityAsObj)
+        protected virtual void TriggerDomainEvents(object entity)
         {
-            if (!(entityAsObj is IAggregateChangeTracker aggregateChangeTracker))
+            if (!(entity is IAggregateChangeTracker aggregateChangeTracker))
             {
                 return;
             }
@@ -249,9 +252,18 @@ namespace Stove.NHibernate.Interceptors
             List<object> domainEvents = aggregateChangeTracker.GetChanges().ToList();
             aggregateChangeTracker.ClearChanges();
 
-            foreach (object domainEvent in domainEvents)
+            foreach (object @event in domainEvents)
             {
-                _eventBus.Value.Publish(domainEvent.GetType(), (IEvent)domainEvent);
+                _eventBus.Value.Publish(
+                    @event.GetType(),
+                    (IEvent)@event,
+                    new Dictionary<string, object>
+                    {
+                        [StoveConsts.Events.CausationId] = _commandContextAccessor.Value.GetCorrelationIdOrEmpty(),
+                        [StoveConsts.Events.UserId] = _stoveSession.Value.UserId,
+                        [StoveConsts.Events.SourceType] = entity.GetType().FullName,
+                        [StoveConsts.Events.QualifiedName] = @event.GetType().AssemblyQualifiedName
+                    });
             }
         }
     }

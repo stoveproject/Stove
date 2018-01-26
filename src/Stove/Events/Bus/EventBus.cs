@@ -26,19 +26,24 @@ namespace Stove.Events.Bus
         ///     Value: List of handler factories
         /// </summary>
         private readonly ConcurrentDictionary<Type, List<IEventHandlerFactory>> _handlerFactories;
+        private EventPublishingBehaviour _behaviour;
 
         /// <summary>
         ///     Creates a new <see cref="EventBus" /> instance.
-        ///     Instead of creating a new instace, you can use <see cref="Default" /> to use Global <see cref="EventBus" />.
         /// </summary>
         public EventBus()
         {
             _handlerFactories = new ConcurrentDictionary<Type, List<IEventHandlerFactory>>();
         }
 
-        public IDisposable Register<TEvent>(Action<TEvent> action) where TEvent : IEvent
+        public IDisposable Register<TEvent>(Action<TEvent, Dictionary<string, object>> action) where TEvent : IEvent
         {
             return Register(typeof(TEvent), new ActionEventHandler<TEvent>(action));
+        }
+
+        public void RegisterPublishingBehaviour(EventPublishingBehaviour eventPublishingBehaviour)
+        {
+            _behaviour += eventPublishingBehaviour;
         }
 
         public IDisposable Register<TEvent>(IEventHandler<TEvent> handler) where TEvent : IEvent
@@ -71,7 +76,7 @@ namespace Stove.Events.Bus
             return new FactoryUnregistrar(this, eventType, handlerFactory);
         }
 
-        public void Unregister<TEvent>(Action<TEvent> action) where TEvent : IEvent
+        public void Unregister<TEvent>(Action<TEvent, Dictionary<string, object>> action) where TEvent : IEvent
         {
             Check.NotNull(action, nameof(action));
 
@@ -134,16 +139,18 @@ namespace Stove.Events.Bus
             GetOrCreateHandlerFactories(@event).Locking(factories => factories.Clear());
         }
 
-        public void Publish<TEvent>(TEvent @event) where TEvent : IEvent
+        public void Publish<TEvent>(TEvent @event, Dictionary<string, object> headers) where TEvent : IEvent
         {
-            Publish(typeof(TEvent), @event);
+            Publish(typeof(TEvent), @event, headers);
         }
 
-        public void Publish(Type eventType, IEvent @event)
+        public void Publish(Type eventType, IEvent @event, Dictionary<string, object> headers)
         {
             var exceptions = new List<Exception>();
 
-            PublishHandlingException(eventType, @event, exceptions);
+            _behaviour?.Invoke(@event, headers);
+
+            PublishHandlingException(eventType, @event, headers, exceptions);
 
             if (exceptions.Any())
             {
@@ -156,17 +163,17 @@ namespace Stove.Events.Bus
             }
         }
 
-        public Task PublishAsync<TEvent>(TEvent @event) where TEvent : IEvent
+        public Task PublishAsync<TEvent>(TEvent @event, Dictionary<string, object> headers, CancellationToken cancellationToken = default) where TEvent : IEvent
         {
-            return Task.Run(() => { Publish(@event); });
+            return Task.Run(() => { Publish(@event, headers); }, cancellationToken);
         }
 
-        public Task PublishAsync(Type eventType, IEvent @event, CancellationToken cancellationToken = default)
+        public Task PublishAsync(Type eventType, IEvent @event, Dictionary<string, object> headers, CancellationToken cancellationToken = default)
         {
-            return Task.Run(() => { Publish(eventType, @event); }, cancellationToken);
+            return Task.Run(() => { Publish(eventType, @event, headers); }, cancellationToken);
         }
 
-        private void PublishHandlingException(Type eventType, IEvent @event, List<Exception> exceptions)
+        private void PublishHandlingException(Type eventType, IEvent @event, Dictionary<string, object> headers, List<Exception> exceptions)
         {
             GetHandlerFactories(eventType).SelectMany(x => x.EventHandlerFactories)
                                           .ForEach(f =>
@@ -177,9 +184,9 @@ namespace Stove.Events.Bus
                                                   Type handlerType = typeof(IEventHandler<>).MakeGenericType(eventType);
                                                   MethodInfo method = handlerType.GetMethod(
                                                       "Handle",
-                                                      new[] { eventType });
+                                                      new[] { eventType, typeof(Dictionary<string, object>) });
 
-                                                  method.Invoke(handler, new object[] { @event });
+                                                  method.Invoke(handler, new object[] { @event, headers });
                                               }
                                               catch (TargetInvocationException ex)
                                               {

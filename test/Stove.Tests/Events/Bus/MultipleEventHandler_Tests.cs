@@ -1,4 +1,6 @@
-﻿using Stove.Events.Bus;
+﻿using System.Collections.Generic;
+
+using Stove.Events.Bus;
 using Stove.Events.Bus.Handlers;
 
 using Xunit;
@@ -13,7 +15,7 @@ namespace Stove.Tests.Events.Bus
             EventBus.Register(new FirstHandler());
             EventBus.Register(new SecondHandler());
 
-            EventBus.Publish(new ProductCreatedEvent());
+            EventBus.Publish(new ProductCreatedEvent(), new Dictionary<string, object>());
         }
 
         public class ProductCreatedEvent : Event
@@ -22,14 +24,14 @@ namespace Stove.Tests.Events.Bus
 
         public class FirstHandler : IEventHandler<ProductCreatedEvent>
         {
-            public void Handle(ProductCreatedEvent @event)
+            public void Handle(ProductCreatedEvent @event, Dictionary<string, object> headers)
             {
             }
         }
 
         public class SecondHandler : IEventHandler<ProductCreatedEvent>
         {
-            public void Handle(ProductCreatedEvent @event)
+            public void Handle(ProductCreatedEvent @event, Dictionary<string, object> headers)
             {
             }
         }

@@ -6,10 +6,10 @@ namespace Stove.Events.Bus.Entities
     {
         public AggregateChangeReport()
         {
-            DomainEvents = new List<DomainEvent>();
+            DomainEvents = new List<Envelope>();
         }
 
-        public List<DomainEvent> DomainEvents { get; }
+        public List<Envelope> DomainEvents { get; }
 
         public bool IsEmpty()
         {

@@ -2,9 +2,9 @@ using System.Collections.Generic;
 
 namespace Stove.Events.Bus.Entities
 {
-    public class DomainEvent
+    public class Envelope
     {
-        public DomainEvent(IEvent @event, Dictionary<string, object> headers)
+        public Envelope(IEvent @event, Dictionary<string, object> headers)
         {
             Event = @event;
             Headers = headers;

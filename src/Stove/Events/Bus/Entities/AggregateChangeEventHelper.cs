@@ -19,17 +19,17 @@ namespace Stove.Events.Bus.Entities
 
         public virtual void PublishEvents(AggregateChangeReport aggregateChangeReport)
         {
-            foreach (DomainEvent domainEvent in aggregateChangeReport.DomainEvents)
+            foreach (Envelope domainEvent in aggregateChangeReport.DomainEvents)
             {
-                _eventBus.Publish(domainEvent.Event.GetType(), domainEvent.Event);
+                _eventBus.Publish(domainEvent.Event.GetType(), domainEvent.Event, domainEvent.Headers);
             }
         }
 
         public async Task PublishEventsAsync(AggregateChangeReport aggregateChangeReport, CancellationToken cancellationToken = default)
         {
-            foreach (DomainEvent domainEvent in aggregateChangeReport.DomainEvents)
+            foreach (Envelope domainEvent in aggregateChangeReport.DomainEvents)
             {
-                await _eventBus.PublishAsync(domainEvent.Event.GetType(), domainEvent.Event, cancellationToken);
+                await _eventBus.PublishAsync(domainEvent.Event.GetType(), domainEvent.Event, domainEvent.Headers, cancellationToken);
             }
         }
     }

@@ -25,6 +25,9 @@ namespace Stove.Tests.SampleApplication.Uow
 {
     public class Uow_Events_Tests : SampleApplicationTestBase
     {
+        private readonly IUnitOfWorkManager _unitOfWorkManager;
+        private readonly IRepository<User> _userRepository;
+
         public Uow_Events_Tests()
         {
             Building(builder =>
@@ -46,9 +49,6 @@ namespace Stove.Tests.SampleApplication.Uow
             _userRepository = The<IRepository<User>>();
         }
 
-        private readonly IUnitOfWorkManager _unitOfWorkManager;
-        private readonly IRepository<User> _userRepository;
-
         [Fact]
         public async Task should_rollback_when_CancellationToken_Cancel_is_requested()
         {
@@ -57,7 +57,7 @@ namespace Stove.Tests.SampleApplication.Uow
 
             try
             {
-                The<IEventBus>().Register<UserCreatedEvent>(data => { ts.Cancel(true); });
+                The<IEventBus>().Register<UserCreatedEvent>((@event, headers) => { ts.Cancel(true); });
 
                 using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
                 {
@@ -148,7 +148,7 @@ namespace Stove.Tests.SampleApplication.Uow
 
                         uow.Complete();
 
-                        The<IEventBus>().Publish(new SomeUowEvent());
+                        The<IEventBus>().Publish(new SomeUowEvent(), new Dictionary<string, object>());
                     }
                 }));
             });
@@ -173,7 +173,7 @@ namespace Stove.Tests.SampleApplication.Uow
             _provider = provider;
         }
 
-        public void Handle(SomeUowEvent @event)
+        public void Handle(SomeUowEvent @event, Dictionary<string, object> headers)
         {
             var a = 1;
             _provider.ShouldNotBeNull();
