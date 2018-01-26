@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Stove.Events.Bus.Factories;
@@ -132,7 +133,8 @@ namespace Stove.Events.Bus
         /// </summary>
         /// <param name="eventType">Event type</param>
         /// <param name="event">Related data for the event</param>
+        /// <param name="cancellationToken"></param>
         /// <returns>The task to handle async operation</returns>
-        Task PublishAsync(Type eventType, IEvent @event);
+        Task PublishAsync(Type eventType, IEvent @event, CancellationToken cancellationToken = default);
     }
 }

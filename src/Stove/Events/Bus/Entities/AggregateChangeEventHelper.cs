@@ -3,8 +3,6 @@ using System.Threading.Tasks;
 
 using Autofac.Extras.IocManager;
 
-using Stove.Domain.Uow;
-
 namespace Stove.Events.Bus.Entities
 {
     /// <summary>
@@ -13,43 +11,25 @@ namespace Stove.Events.Bus.Entities
     public class AggregateChangeEventHelper : IAggregateChangeEventHelper, ITransientDependency
     {
         private readonly IEventBus _eventBus;
-        private readonly IUnitOfWorkManager _unitOfWorkManager;
 
-        public AggregateChangeEventHelper(IUnitOfWorkManager unitOfWorkManager, IEventBus eventBus)
+        public AggregateChangeEventHelper(IEventBus eventBus)
         {
-            _unitOfWorkManager = unitOfWorkManager;
             _eventBus = eventBus;
         }
 
-        public virtual void PublishEvents(AggregateChangeReport changeReport)
+        public virtual void PublishEvents(AggregateChangeReport aggregateChangeReport)
         {
-            PublishEventsInternal(changeReport);
-
-            if (changeReport.IsEmpty() || _unitOfWorkManager.Current == null)
-            {
-                return;
-            }
-
-            _unitOfWorkManager.Current.SaveChanges();
-        }
-
-        public Task PublishEventsAsync(AggregateChangeReport changeReport, CancellationToken cancellationToken = default)
-        {
-            PublishEventsInternal(changeReport);
-
-            if (changeReport.IsEmpty() || _unitOfWorkManager.Current == null)
-            {
-                return Task.FromResult(0);
-            }
-
-            return _unitOfWorkManager.Current.SaveChangesAsync(cancellationToken);
-        }
-
-        protected virtual void PublishEventsInternal(AggregateChangeReport changeReport)
-        {
-            foreach (DomainEventEntry domainEvent in changeReport.DomainEvents)
+            foreach (DomainEvent domainEvent in aggregateChangeReport.DomainEvents)
             {
                 _eventBus.Publish(domainEvent.Event.GetType(), domainEvent.Event);
+            }
+        }
+
+        public async Task PublishEventsAsync(AggregateChangeReport aggregateChangeReport, CancellationToken cancellationToken = default)
+        {
+            foreach (DomainEvent domainEvent in aggregateChangeReport.DomainEvents)
+            {
+                await _eventBus.PublishAsync(domainEvent.Event.GetType(), domainEvent.Event, cancellationToken);
             }
         }
     }

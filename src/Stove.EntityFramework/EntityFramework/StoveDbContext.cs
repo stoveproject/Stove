@@ -139,6 +139,11 @@ namespace Stove.EntityFramework
         /// </summary>
         public ICurrentUnitOfWorkProvider CurrentUnitOfWorkProvider { get; set; }
 
+        /// <summary>
+        ///     Reference to command context.
+        /// </summary>
+        public IStoveCommandContextAccessor CommandContextAccessor { get; set; }
+
         public virtual void Start()
         {
             Database.Initialize(false);
@@ -195,9 +200,9 @@ namespace Stove.EntityFramework
         {
             try
             {
-                AggregateChangeReport changedAggregates = ApplyStoveConcepts();
+                AggregateChangeReport aggregateChangeReport = ApplyStoveConcepts();
                 int result = base.SaveChanges();
-                AggregateChangeEventHelper.PublishEvents(changedAggregates);
+                AggregateChangeEventHelper.PublishEvents(aggregateChangeReport);
                 return result;
             }
             catch (DbEntityValidationException ex)
@@ -211,9 +216,9 @@ namespace Stove.EntityFramework
         {
             try
             {
-                AggregateChangeReport changeReport = ApplyStoveConcepts();
+                AggregateChangeReport aggregateChangeReport = ApplyStoveConcepts();
                 int result = await base.SaveChangesAsync(cancellationToken);
-                await AggregateChangeEventHelper.PublishEventsAsync(changeReport, cancellationToken);
+                await AggregateChangeEventHelper.PublishEventsAsync(aggregateChangeReport, cancellationToken);
                 return result;
             }
             catch (DbEntityValidationException ex)
@@ -260,7 +265,7 @@ namespace Stove.EntityFramework
             return changeReport;
         }
 
-        protected virtual void AddDomainEvents(List<DomainEventEntry> domainEvents, object entityAsObj)
+        protected virtual void AddDomainEvents(List<DomainEvent> domainEvents, object entityAsObj)
         {
             if (!(entityAsObj is IAggregateChangeTracker aggregateChangeTracker))
             {
@@ -272,7 +277,16 @@ namespace Stove.EntityFramework
                 return;
             }
 
-            domainEvents.AddRange(aggregateChangeTracker.GetChanges().Select(@event => new DomainEventEntry(entityAsObj, (IEvent)@event)));
+            domainEvents.AddRange(
+                aggregateChangeTracker.GetChanges()
+                                      .Select(@event => new DomainEvent(
+                                          (IEvent)@event,
+                                          new Dictionary<string, object>()
+                                          {
+                                              ["CausationId"] = CommandContextAccessor.GetCorrelationIdOrEmpty(),
+                                              ["UserId"] = StoveSession.UserId
+                                          })));
+
             aggregateChangeTracker.ClearChanges();
         }
 

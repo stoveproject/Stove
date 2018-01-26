@@ -206,8 +206,7 @@ namespace Stove.NHibernate.Interceptors
 
         private static void NormalizeDateTimePropertiesForComponentType(object componentObject, IType type)
         {
-            var componentType = type as ComponentType;
-            if (componentType != null)
+            if (type is ComponentType componentType)
             {
                 for (var i = 0; i < componentType.PropertyNames.Length; i++)
                 {
@@ -237,18 +236,18 @@ namespace Stove.NHibernate.Interceptors
 
         protected virtual void TriggerDomainEvents(object entityAsObj)
         {
-            if (!(entityAsObj is IAggregateChangeTracker generatesDomainEventsEntity))
+            if (!(entityAsObj is IAggregateChangeTracker aggregateChangeTracker))
             {
                 return;
             }
 
-            if (generatesDomainEventsEntity.GetChanges().IsNullOrEmpty())
+            if (aggregateChangeTracker.GetChanges().IsNullOrEmpty())
             {
                 return;
             }
 
-            List<object> domainEvents = generatesDomainEventsEntity.GetChanges().ToList();
-            generatesDomainEventsEntity.ClearChanges();
+            List<object> domainEvents = aggregateChangeTracker.GetChanges().ToList();
+            aggregateChangeTracker.ClearChanges();
 
             foreach (object domainEvent in domainEvents)
             {

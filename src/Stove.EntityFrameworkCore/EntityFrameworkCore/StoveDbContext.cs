@@ -79,10 +79,9 @@ namespace Stove.EntityFrameworkCore
         public ICurrentUnitOfWorkProvider CurrentUnitOfWorkProvider { get; set; }
 
         /// <summary>
-        ///     Can be used to suppress automatically setting TenantId on SaveChanges.
-        ///     Default: false.
+        ///     Reference to command context.
         /// </summary>
-        public bool SuppressAutoSetTenantId { get; set; }
+        public IStoveCommandContextAccessor CommandContextAccessor { get; set; }
 
         protected virtual bool IsSoftDeleteFilterEnabled => CurrentUnitOfWorkProvider?.Current?.IsFilterEnabled(StoveDataFilters.SoftDelete) == true;
 
@@ -198,20 +197,29 @@ namespace Stove.EntityFrameworkCore
             SetDeletionAuditProperties(entry.Entity, userId);
         }
 
-        protected virtual void AddDomainEvents(List<DomainEventEntry> domainEvents, object entityAsObj)
+        protected virtual void AddDomainEvents(List<DomainEvent> domainEvents, object entityAsObj)
         {
-            if (!(entityAsObj is IAggregateChangeTracker generatesDomainEventsEntity))
+            if (!(entityAsObj is IAggregateChangeTracker aggregateChangeTracker))
             {
                 return;
             }
 
-            if (generatesDomainEventsEntity.GetChanges().IsNullOrEmpty())
+            if (aggregateChangeTracker.GetChanges().IsNullOrEmpty())
             {
                 return;
             }
 
-            domainEvents.AddRange(generatesDomainEventsEntity.GetChanges().Select(@event => new DomainEventEntry(entityAsObj, @event as IEvent)));
-            generatesDomainEventsEntity.ClearChanges();
+            domainEvents.AddRange(
+                aggregateChangeTracker.GetChanges()
+                                      .Select(@event => new DomainEvent(
+                                          (IEvent)@event,
+                                          new Dictionary<string, object>()
+                                          {
+                                              ["CausationId"] = CommandContextAccessor.GetCorrelationIdOrEmpty(),
+                                              ["UserId"] = StoveSession.UserId
+                                          })));
+
+            aggregateChangeTracker.ClearChanges();
         }
 
         protected virtual void CheckAndSetId(EntityEntry entry)
