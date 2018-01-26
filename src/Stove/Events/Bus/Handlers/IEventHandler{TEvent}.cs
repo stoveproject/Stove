@@ -1,4 +1,6 @@
-﻿namespace Stove.Events.Bus.Handlers
+﻿using System.Collections.Generic;
+
+namespace Stove.Events.Bus.Handlers
 {
     /// <inheritdoc />
     /// <summary>
@@ -11,6 +13,7 @@
         ///     Handler handles the event by implementing this method.
         /// </summary>
         /// <param name="event"></param>
-        void Handle(TEvent @event);
+        /// <param name="headers"></param>
+        void Handle(TEvent @event, Dictionary<string, object> headers);
     }
 }

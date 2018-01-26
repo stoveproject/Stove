@@ -265,9 +265,9 @@ namespace Stove.EntityFramework
             return changeReport;
         }
 
-        protected virtual void AddDomainEvents(List<DomainEvent> domainEvents, object entityAsObj)
+        protected virtual void AddDomainEvents(List<Envelope> domainEvents, object entity)
         {
-            if (!(entityAsObj is IAggregateChangeTracker aggregateChangeTracker))
+            if (!(entity is IAggregateChangeTracker aggregateChangeTracker))
             {
                 return;
             }
@@ -279,12 +279,14 @@ namespace Stove.EntityFramework
 
             domainEvents.AddRange(
                 aggregateChangeTracker.GetChanges()
-                                      .Select(@event => new DomainEvent(
+                                      .Select(@event => new Envelope(
                                           (IEvent)@event,
                                           new Dictionary<string, object>()
                                           {
-                                              ["CausationId"] = CommandContextAccessor.GetCorrelationIdOrEmpty(),
-                                              ["UserId"] = StoveSession.UserId
+                                              [StoveConsts.Events.CausationId] = CommandContextAccessor.GetCorrelationIdOrEmpty(),
+                                              [StoveConsts.Events.UserId] = StoveSession.UserId,
+                                              [StoveConsts.Events.SourceType] = entity.GetType().FullName,
+                                              [StoveConsts.Events.QualifiedName] = @event.GetType().AssemblyQualifiedName
                                           })));
 
             aggregateChangeTracker.ClearChanges();

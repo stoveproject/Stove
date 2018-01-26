@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 using Xunit;
 
 namespace Stove.Tests.Events.Bus
@@ -10,16 +12,16 @@ namespace Stove.Tests.Events.Bus
             var totalData = 0;
 
             EventBus.Register<MySimpleEvent>(
-                @event =>
+                (@event, headers) => 
                 {
                     totalData += @event.Value;
                     //Assert.Equal(this, @event.EventSource);
                 });
 
-            EventBus.Publish(new MySimpleEvent(1)); //Should handle directly registered class
-            EventBus.Publish(new MySimpleEvent(2)); //Should handle directly registered class
-            EventBus.Publish(new MyDerivedEvent(3)); //Should handle derived class too
-            EventBus.Publish(new MyDerivedEvent(4)); //Should handle derived class too
+            EventBus.Publish(new MySimpleEvent(1), new Dictionary<string, object>()); //Should handle directly registered class
+            EventBus.Publish(new MySimpleEvent(2), new Dictionary<string, object>()); //Should handle directly registered class
+            EventBus.Publish(new MyDerivedEvent(3), new Dictionary<string, object>()); //Should handle derived class too
+            EventBus.Publish(new MyDerivedEvent(4), new Dictionary<string, object>()); //Should handle derived class too
 
             Assert.Equal(10, totalData);
         }
@@ -30,16 +32,16 @@ namespace Stove.Tests.Events.Bus
             var totalData = 0;
 
             EventBus.Register<MyDerivedEvent>(
-                @event =>
+                (@event, headers) => 
                 {
                     totalData += @event.Value;
                     //Assert.Equal(this, @event.EventSource);
                 });
 
-            EventBus.Publish(new MySimpleEvent(1)); //Should not handle
-            EventBus.Publish(new MySimpleEvent(2)); //Should not handle
-            EventBus.Publish(new MyDerivedEvent(3)); //Should handle
-            EventBus.Publish(new MyDerivedEvent(4)); //Should handle
+            EventBus.Publish(new MySimpleEvent(1), new Dictionary<string, object>()); //Should not handle
+            EventBus.Publish(new MySimpleEvent(2), new Dictionary<string, object>()); //Should not handle
+            EventBus.Publish(new MyDerivedEvent(3), new Dictionary<string, object>()); //Should handle
+            EventBus.Publish(new MyDerivedEvent(4), new Dictionary<string, object>()); //Should handle
 
             Assert.Equal(7, totalData);
         }   

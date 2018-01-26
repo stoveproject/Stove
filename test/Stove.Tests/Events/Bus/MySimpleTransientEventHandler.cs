@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 using Stove.Events.Bus.Handlers;
 
@@ -10,14 +11,14 @@ namespace Stove.Tests.Events.Bus
 
         public static int DisposeCount { get; set; }
 
-        public void Handle(MySimpleEvent @event)
-        {
-            ++HandleCount;
-        }
-
         public void Dispose()
         {
             ++DisposeCount;
+        }
+
+        public void Handle(MySimpleEvent @event, Dictionary<string, object> headers)
+        {
+            ++HandleCount;
         }
     }
 }

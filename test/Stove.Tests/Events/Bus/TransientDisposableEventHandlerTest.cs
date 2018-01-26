@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 using Xunit;
 
 namespace Stove.Tests.Events.Bus
@@ -9,9 +11,9 @@ namespace Stove.Tests.Events.Bus
         {
             EventBus.Register<MySimpleEvent, MySimpleTransientEventHandler>();
 
-            EventBus.Publish(new MySimpleEvent(1));
-            EventBus.Publish(new MySimpleEvent(2));
-            EventBus.Publish(new MySimpleEvent(3));
+            EventBus.Publish(new MySimpleEvent(1), new Dictionary<string, object>());
+            EventBus.Publish(new MySimpleEvent(2), new Dictionary<string, object>());
+            EventBus.Publish(new MySimpleEvent(3), new Dictionary<string, object>());
 
             Assert.Equal(MySimpleTransientEventHandler.HandleCount, 3);
             Assert.Equal(MySimpleTransientEventHandler.DisposeCount, 3);
