@@ -24,8 +24,8 @@ namespace Stove.Events.Bus
         /// <summary>
         ///     Registers a behaviour to execute just before event publishing.
         /// </summary>
-        /// <param name="eventPublishingBehaviour"></param>
-        void RegisterPublishingBehaviour(EventPublishingBehaviour eventPublishingBehaviour);
+        /// <param name="behaviour"></param>
+        void RegisterPublishingBehaviour(EventPublishingBehaviour behaviour);
 
         /// <summary>
         ///     Registers to an event.

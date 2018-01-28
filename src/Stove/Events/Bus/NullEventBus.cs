@@ -28,7 +28,7 @@ namespace Stove.Events.Bus
             return null;
         }
 
-        public void RegisterPublishingBehaviour(EventPublishingBehaviour eventPublishingBehaviour)
+        public void RegisterPublishingBehaviour(EventPublishingBehaviour behaviour)
         {
         }
 

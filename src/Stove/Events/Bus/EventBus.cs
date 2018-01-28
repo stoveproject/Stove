@@ -41,9 +41,9 @@ namespace Stove.Events.Bus
             return Register(typeof(TEvent), new ActionEventHandler<TEvent>(action));
         }
 
-        public void RegisterPublishingBehaviour(EventPublishingBehaviour eventPublishingBehaviour)
+        public void RegisterPublishingBehaviour(EventPublishingBehaviour behaviour)
         {
-            _behaviour += eventPublishingBehaviour;
+            _behaviour += behaviour;
         }
 
         public IDisposable Register<TEvent>(IEventHandler<TEvent> handler) where TEvent : IEvent
