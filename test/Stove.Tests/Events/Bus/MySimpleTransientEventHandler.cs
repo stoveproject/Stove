@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 
+using Stove.Events;
 using Stove.Events.Bus.Handlers;
 
 namespace Stove.Tests.Events.Bus
@@ -16,7 +17,7 @@ namespace Stove.Tests.Events.Bus
             ++DisposeCount;
         }
 
-        public void Handle(MySimpleEvent @event, Dictionary<string, object> headers)
+        public void Handle(MySimpleEvent @event, EventHeaders headers)
         {
             ++HandleCount;
         }

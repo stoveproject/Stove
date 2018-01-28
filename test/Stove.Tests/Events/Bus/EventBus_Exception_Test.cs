@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 using Shouldly;
 
+using Stove.Events;
+
 using Xunit;
 
 namespace Stove.Tests.Events.Bus
@@ -20,7 +22,7 @@ namespace Stove.Tests.Events.Bus
 
             var appException = Assert.Throws<Exception>(() =>
             {
-                EventBus.Publish(new MySimpleEvent(1), new Dictionary<string, object>());
+                EventBus.Publish(new MySimpleEvent(1), new EventHeaders());
             });
 
             appException.Message.ShouldBe("This exception is intentionally thrown!");
@@ -43,7 +45,7 @@ namespace Stove.Tests.Events.Bus
 
             var aggrException = Assert.Throws<AggregateException>(() =>
             {
-                EventBus.Publish(new MySimpleEvent(1), new Dictionary<string, object>());
+                EventBus.Publish(new MySimpleEvent(1), new EventHeaders());
             });
 
             aggrException.InnerExceptions.Count.ShouldBe(2);

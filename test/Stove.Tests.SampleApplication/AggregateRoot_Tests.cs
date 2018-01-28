@@ -1,14 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 
 using Autofac.Extras.IocManager;
+
+using Newtonsoft.Json.Linq;
 
 using Shouldly;
 
 using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
+using Stove.Events;
 using Stove.Events.Bus;
 using Stove.Events.Bus.Handlers;
+using Stove.Json;
 using Stove.Tests.SampleApplication.Domain.Entities;
 using Stove.Tests.SampleApplication.Domain.Events;
 
@@ -31,6 +34,38 @@ namespace Stove.Tests.SampleApplication
                 The<IRepository<Campaign>>().Insert(new Campaign("selam"));
                 uow.Complete();
             }
+        }
+
+        [Fact]
+        public void AggregateRoot_repository_with_TPrimaryKey()
+        {
+            Guid aggregateId = Guid.NewGuid();
+            const string bundleName = "SampleBundle";
+
+            string eventLog = string.Empty;
+            string headerLog = string.Empty;
+
+            The<IEventBus>().RegisterPublishingBehaviour((@event, headers) =>
+            {
+                eventLog = @event.ToJsonString(true, true);
+                headerLog = headers.ToString();
+            });
+
+            The<IEventBus>().Register<ProductBundleCreated>((@event, headers) =>
+            {
+                @event.Name.ShouldBe(bundleName);
+                @event.Id.ShouldBe(aggregateId);
+                headers.GetAggregateId().ShouldBe(aggregateId.ToString());
+            });
+
+            using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
+            {
+                The<IRepository<ProductBundle, Guid>>().Insert(ProductBundle.Create(aggregateId, bundleName));
+                uow.Complete();
+            }
+
+            eventLog.ShouldNotBeEmpty();
+            headerLog.ShouldNotBeEmpty();
         }
 
         [Fact]
@@ -141,9 +176,11 @@ namespace Stove.Tests.SampleApplication
 
     public class CampaignCreatedEventHandler : EventHandlerBase, IEventHandler<CampaignCreatedEvent>, ITransientDependency
     {
-        public void Handle(CampaignCreatedEvent @event, Dictionary<string, object> headers)
+        public void Handle(CampaignCreatedEvent @event, EventHeaders headers)
         {
             string name = @event.Name;
+
+            string aggId = headers.GetAggregateId();
         }
     }
 }

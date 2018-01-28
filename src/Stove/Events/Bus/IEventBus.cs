@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,7 +18,7 @@ namespace Stove.Events.Bus
         /// </summary>
         /// <param name="action">Action to handle events</param>
         /// <typeparam name="TEvent">Event type</typeparam>
-        IDisposable Register<TEvent>(Action<TEvent, Dictionary<string, object>> action) where TEvent : IEvent;
+        IDisposable Register<TEvent>(Action<TEvent, EventHeaders> action) where TEvent : IEvent;
 
         /// <summary>
         ///     Registers a behaviour to execute just before event publishing.
@@ -71,7 +70,7 @@ namespace Stove.Events.Bus
         /// </summary>
         /// <typeparam name="TEvent">Event type</typeparam>
         /// <param name="action"></param>
-        void Unregister<TEvent>(Action<TEvent, Dictionary<string, object>> action) where TEvent : IEvent;
+        void Unregister<TEvent>(Action<TEvent, EventHeaders> action) where TEvent : IEvent;
 
         /// <summary>
         ///     Unregisters from an event.
@@ -119,7 +118,7 @@ namespace Stove.Events.Bus
         /// <typeparam name="TEvent">Event type</typeparam>
         /// <param name="event">Related data for the event</param>
         /// <param name="headers"></param>
-        void Publish<TEvent>(TEvent @event, Dictionary<string, object> headers) where TEvent : IEvent;
+        void Publish<TEvent>(TEvent @event, EventHeaders headers) where TEvent : IEvent;
 
         /// <summary>
         ///     Publishes an event.
@@ -127,7 +126,7 @@ namespace Stove.Events.Bus
         /// <param name="eventType">Event type</param>
         /// <param name="event">Related data for the event</param>
         /// <param name="headers"></param>
-        void Publish(Type eventType, IEvent @event, Dictionary<string, object> headers);
+        void Publish(Type eventType, IEvent @event, EventHeaders headers);
 
         /// <summary>
         ///     Publishes an event asynchronously.
@@ -137,7 +136,7 @@ namespace Stove.Events.Bus
         /// <param name="headers"></param>
         /// <param name="cancellationToken"></param>
         /// <returns>The task to handle async operation</returns>
-        Task PublishAsync<TEvent>(TEvent @event, Dictionary<string, object> headers, CancellationToken cancellationToken = default) where TEvent : IEvent;
+        Task PublishAsync<TEvent>(TEvent @event, EventHeaders headers, CancellationToken cancellationToken = default) where TEvent : IEvent;
 
         /// <summary>
         ///     Publishes an event asynchronously.
@@ -147,6 +146,6 @@ namespace Stove.Events.Bus
         /// <param name="headers"></param>
         /// <param name="cancellationToken"></param>
         /// <returns>The task to handle async operation</returns>
-        Task PublishAsync(Type eventType, IEvent @event, Dictionary<string, object> headers, CancellationToken cancellationToken = default);
+        Task PublishAsync(Type eventType, IEvent @event, EventHeaders headers, CancellationToken cancellationToken = default);
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Stove.Events;
+
 using Xunit;
 
 namespace Stove.Tests.Events.Bus
@@ -20,10 +22,10 @@ namespace Stove.Tests.Events.Bus
                     //Assert.Equal(this, this);
                 });
 
-            EventBus.Publish(new MySimpleEvent(1), new Dictionary<string, object>());
-            EventBus.Publish(new MySimpleEvent(2), new Dictionary<string, object>());
-            EventBus.Publish(new MySimpleEvent(3), new Dictionary<string, object>());
-            EventBus.Publish(new MySimpleEvent(4), new Dictionary<string, object>());
+            EventBus.Publish(new MySimpleEvent(1), new EventHeaders());
+            EventBus.Publish(new MySimpleEvent(2), new EventHeaders());
+            EventBus.Publish(new MySimpleEvent(3), new EventHeaders());
+            EventBus.Publish(new MySimpleEvent(4), new EventHeaders());
 
             Assert.Equal(10, totalData);
         }
@@ -41,10 +43,10 @@ namespace Stove.Tests.Events.Bus
                     //Assert.Equal(this, this);
                 });
 
-            EventBus.Publish(typeof(MySimpleEvent), new MySimpleEvent(1), new Dictionary<string, object>());
-            EventBus.Publish(typeof(MySimpleEvent), new MySimpleEvent(2), new Dictionary<string, object>());
-            EventBus.Publish(typeof(MySimpleEvent), new MySimpleEvent(3), new Dictionary<string, object>());
-            EventBus.Publish(typeof(MySimpleEvent), new MySimpleEvent(4), new Dictionary<string, object>());
+            EventBus.Publish(typeof(MySimpleEvent), new MySimpleEvent(1), new EventHeaders());
+            EventBus.Publish(typeof(MySimpleEvent), new MySimpleEvent(2), new EventHeaders());
+            EventBus.Publish(typeof(MySimpleEvent), new MySimpleEvent(3), new EventHeaders());
+            EventBus.Publish(typeof(MySimpleEvent), new MySimpleEvent(4), new EventHeaders());
 
             Assert.Equal(10, totalData);
         }
@@ -60,13 +62,13 @@ namespace Stove.Tests.Events.Bus
                     totalData += @event.Value;
                 });
 
-            EventBus.Publish(new MySimpleEvent(1), new Dictionary<string, object>());
-            EventBus.Publish(new MySimpleEvent(2), new Dictionary<string, object>());
-            EventBus.Publish(new MySimpleEvent(3), new Dictionary<string, object>());
+            EventBus.Publish(new MySimpleEvent(1), new EventHeaders());
+            EventBus.Publish(new MySimpleEvent(2), new EventHeaders());
+            EventBus.Publish(new MySimpleEvent(3), new EventHeaders());
 
             registerDisposer.Dispose();
 
-            EventBus.Publish(new MySimpleEvent(4), new Dictionary<string, object>());
+            EventBus.Publish(new MySimpleEvent(4), new EventHeaders());
 
             Assert.Equal(6, totalData);
         }
@@ -76,7 +78,7 @@ namespace Stove.Tests.Events.Bus
         {
             var totalData = 0;
 
-            var action = new Action<MySimpleEvent, Dictionary<string, object>>(
+            var action = new Action<MySimpleEvent, EventHeaders>(
                 (@event, headers) =>
                 {
                     totalData += @event.Value;
@@ -84,13 +86,13 @@ namespace Stove.Tests.Events.Bus
 
             EventBus.Register(action);
 
-            EventBus.Publish(new MySimpleEvent(1), new Dictionary<string, object>());
-            EventBus.Publish(new MySimpleEvent(2), new Dictionary<string, object>());
-            EventBus.Publish(new MySimpleEvent(3), new Dictionary<string, object>());
+            EventBus.Publish(new MySimpleEvent(1), new EventHeaders());
+            EventBus.Publish(new MySimpleEvent(2), new EventHeaders());
+            EventBus.Publish(new MySimpleEvent(3), new EventHeaders());
 
             EventBus.Unregister(action);
 
-            EventBus.Publish(new MySimpleEvent(4), new Dictionary<string, object>());
+            EventBus.Publish(new MySimpleEvent(4), new EventHeaders());
 
             Assert.Equal(6, totalData);
         }

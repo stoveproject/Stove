@@ -1,16 +1,14 @@
-using System.Collections.Generic;
-
 namespace Stove.Events.Bus.Entities
 {
     public class Envelope
     {
-        public Envelope(IEvent @event, Dictionary<string, object> headers)
+        public Envelope(IEvent @event, EventHeaders headers)
         {
             Event = @event;
             Headers = headers;
         }
 
-        public Dictionary<string, object> Headers { get; }
+        public EventHeaders Headers { get; }
 
         public IEvent Event { get; }
     }

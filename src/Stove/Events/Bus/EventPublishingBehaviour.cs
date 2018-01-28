@@ -1,6 +1,4 @@
-using System.Collections.Generic;
-
 namespace Stove.Events.Bus
 {
-    public delegate void EventPublishingBehaviour(IEvent @event, Dictionary<string, object> headers);
+    public delegate void EventPublishingBehaviour(IEvent @event, EventHeaders headers);
 }

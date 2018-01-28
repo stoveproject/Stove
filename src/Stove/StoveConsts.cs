@@ -19,6 +19,7 @@
             public const string CorrelationId = "CorrelationId";
             public const string SourceType = "SourceType";
             public const string QualifiedName = "QualifiedName";
+            public const string AggregateId = "AggregateId";
         }
     }
 }

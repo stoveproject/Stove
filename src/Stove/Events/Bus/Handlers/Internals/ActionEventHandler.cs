@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 using Autofac.Extras.IocManager;
 
@@ -16,7 +15,7 @@ namespace Stove.Events.Bus.Handlers.Internals
         ///     Creates a new instance of <see cref="ActionEventHandler{TEvent}" />.
         /// </summary>
         /// <param name="handler">Action to handle the event</param>
-        public ActionEventHandler(Action<TEvent, Dictionary<string, object>> handler)
+        public ActionEventHandler(Action<TEvent, EventHeaders> handler)
         {
             Action = handler;
         }
@@ -24,9 +23,9 @@ namespace Stove.Events.Bus.Handlers.Internals
         /// <summary>
         ///     Action to handle the event.
         /// </summary>
-        public Action<TEvent, Dictionary<string, object>> Action { get; }
+        public Action<TEvent, EventHeaders> Action { get; }
 
-        public void Handle(TEvent @event, Dictionary<string, object> headers)
+        public void Handle(TEvent @event, EventHeaders headers)
         {
             Action(@event, headers);
         }

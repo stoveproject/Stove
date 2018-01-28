@@ -11,6 +11,7 @@ using NHibernate.Type;
 
 using Stove.Domain.Entities;
 using Stove.Domain.Entities.Auditing;
+using Stove.Events;
 using Stove.Events.Bus;
 using Stove.Extensions;
 using Stove.Runtime.Session;
@@ -257,12 +258,13 @@ namespace Stove.NHibernate.Interceptors
                 _eventBus.Value.Publish(
                     @event.GetType(),
                     (IEvent)@event,
-                    new Dictionary<string, object>
+                    new EventHeaders()
                     {
                         [StoveConsts.Events.CausationId] = _commandContextAccessor.Value.GetCorrelationIdOrEmpty(),
                         [StoveConsts.Events.UserId] = _stoveSession.Value.UserId,
                         [StoveConsts.Events.SourceType] = entity.GetType().FullName,
-                        [StoveConsts.Events.QualifiedName] = @event.GetType().AssemblyQualifiedName
+                        [StoveConsts.Events.QualifiedName] = @event.GetType().AssemblyQualifiedName,
+                        [StoveConsts.Events.AggregateId] = ((dynamic)entity).Id
                     });
             }
         }

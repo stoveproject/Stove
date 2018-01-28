@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Stove.Events.Bus.Handlers
+﻿namespace Stove.Events.Bus.Handlers
 {
     /// <inheritdoc />
     /// <summary>
@@ -14,6 +12,6 @@ namespace Stove.Events.Bus.Handlers
         /// </summary>
         /// <param name="event"></param>
         /// <param name="headers"></param>
-        void Handle(TEvent @event, Dictionary<string, object> headers);
+        void Handle(TEvent @event, EventHeaders headers);
     }
 }
