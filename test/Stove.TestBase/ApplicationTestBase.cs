@@ -1,6 +1,7 @@
 ﻿using Autofac.Extras.IocManager;
 
 using Stove.Bootstrapping;
+using Stove.Commands;
 using Stove.Reflection.Extensions;
 using Stove.Runtime.Session;
 
@@ -22,6 +23,8 @@ namespace Stove.TestBase
 		}
 
 		protected TestStoveSession StoveSession => The<TestStoveSession>();
+
+	    protected IStoveCommandContextAccessor CommandContextAccessor => The<IStoveCommandContextAccessor>();
 
 		protected override void PreBuild()
 		{

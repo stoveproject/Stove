@@ -10,7 +10,6 @@ using EntityFramework.DynamicFilters;
 
 using Stove.EntityFramework;
 using Stove.Mapster;
-using Stove.Runtime.Session;
 using Stove.TestBase;
 using Stove.Tests.SampleApplication.Domain;
 using Stove.Tests.SampleApplication.Domain.Entities;

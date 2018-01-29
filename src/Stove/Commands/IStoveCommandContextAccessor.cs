@@ -23,6 +23,10 @@ namespace Stove.Commands
         /// <returns></returns>
         IDisposable Use(Action<CommandContext> contextCallback);
 
+        /// <summary>
+        ///     Changes the current <see cref="CommandContext" />
+        /// </summary>
+        /// <param name="contextCallback"></param>
         void Manipulate(Action<CommandContext> contextCallback);
     }
 }

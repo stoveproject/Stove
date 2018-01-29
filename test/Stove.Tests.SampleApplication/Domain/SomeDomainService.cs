@@ -36,7 +36,7 @@ namespace Stove.Tests.SampleApplication.Domain
             await UseUow(async () =>
             {
                 user = await _repository.FirstOrDefaultAsync(x => x.Name == name);
-            }, CancellationToken.None);
+            }, options => { }, CancellationToken.None);
 
             return user;
         }
@@ -48,7 +48,7 @@ namespace Stove.Tests.SampleApplication.Domain
             await UseUow(async () =>
             {
                 user = await _repository.FirstOrDefaultAsync(x => x.Name == name);
-            }, IsolationLevel.ReadCommitted);
+            }, options => { options.IsolationLevel = IsolationLevel.ReadCommitted; });
 
             return user;
         }
@@ -60,7 +60,7 @@ namespace Stove.Tests.SampleApplication.Domain
             UseUow(() =>
             {
                 user = _repository.FirstOrDefault(x => x.Name == name);
-            }, IsolationLevel.Chaos);
+            }, options => { options.IsolationLevel = IsolationLevel.Chaos; });
 
             return user;
         }
@@ -72,7 +72,7 @@ namespace Stove.Tests.SampleApplication.Domain
             UseUow(() =>
             {
                 user = _repository.FirstOrDefault(x => x.Name == name);
-            }, true);
+            });
 
             return user;
         }
@@ -84,7 +84,7 @@ namespace Stove.Tests.SampleApplication.Domain
             await UseUow(async () =>
             {
                 user = await _repository.FirstOrDefaultAsync(x => x.Name == name);
-            }, true);
+            });
 
             return user;
         }
@@ -98,6 +98,17 @@ namespace Stove.Tests.SampleApplication.Domain
             });
 
             return msg;
+        }
+
+        public Task CreateUserByCorrelating(string name, string surname, string email, string correlationId)
+        {
+            return CorrelatingBy(() =>
+            {
+                return UseUow(() =>
+                {
+                    return _repository.InsertAsync(User.Create(name, surname, email));
+                });
+            }, correlationId);
         }
     }
 }
