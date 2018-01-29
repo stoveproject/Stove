@@ -21,7 +21,7 @@ namespace Stove.Events.Bus.Entities
         {
             foreach (Envelope domainEvent in aggregateChangeReport.DomainEvents)
             {
-                _eventBus.Publish(domainEvent.Event.GetType(), domainEvent.Event, domainEvent.Headers);
+                _eventBus.Publish(domainEvent.Message.GetType(), (IEvent)domainEvent.Message, domainEvent.Headers);
             }
         }
 
@@ -29,7 +29,7 @@ namespace Stove.Events.Bus.Entities
         {
             foreach (Envelope domainEvent in aggregateChangeReport.DomainEvents)
             {
-                await _eventBus.PublishAsync(domainEvent.Event.GetType(), domainEvent.Event, domainEvent.Headers, cancellationToken);
+                await _eventBus.PublishAsync(domainEvent.Message.GetType(), (IEvent)domainEvent.Message, domainEvent.Headers, cancellationToken);
             }
         }
     }

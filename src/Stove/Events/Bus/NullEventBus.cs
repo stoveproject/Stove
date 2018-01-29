@@ -22,7 +22,7 @@ namespace Stove.Events.Bus
         /// </summary>
         public static NullEventBus Instance { get; } = new NullEventBus();
 
-        public IDisposable Register<TEvent>(Action<TEvent, EventHeaders> action) where TEvent : IEvent
+        public IDisposable Register<TEvent>(Action<TEvent, Headers> action) where TEvent : IEvent
         {
             return null;
         }
@@ -58,7 +58,7 @@ namespace Stove.Events.Bus
             return NullDisposable.Instance;
         }
 
-        public void Unregister<TEvent>(Action<TEvent, EventHeaders> action) where TEvent : IEvent
+        public void Unregister<TEvent>(Action<TEvent, Headers> action) where TEvent : IEvent
         {
         }
 
@@ -86,20 +86,20 @@ namespace Stove.Events.Bus
         {
         }
 
-        public void Publish<TEvent>(TEvent @event, EventHeaders headers) where TEvent : IEvent
+        public void Publish<TEvent>(TEvent @event, Headers headers) where TEvent : IEvent
         {
         }
 
-        public void Publish(Type eventType, IEvent @event, EventHeaders headers)
+        public void Publish(Type eventType, IEvent @event, Headers headers)
         {
         }
 
-        public Task PublishAsync<TEvent>(TEvent @event, EventHeaders headers, CancellationToken cancellationToken = default) where TEvent : IEvent
+        public Task PublishAsync<TEvent>(TEvent @event, Headers headers, CancellationToken cancellationToken = default) where TEvent : IEvent
         {
             return null;
         }
 
-        public Task PublishAsync(Type eventType, IEvent @event, EventHeaders headers, CancellationToken cancellationToken = default)
+        public Task PublishAsync(Type eventType, IEvent @event, Headers headers, CancellationToken cancellationToken = default)
         {
             return null;
         }

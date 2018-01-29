@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Stove
+namespace Stove.Commands
 {
     public static class CommandContextAccessorExtensions
     {

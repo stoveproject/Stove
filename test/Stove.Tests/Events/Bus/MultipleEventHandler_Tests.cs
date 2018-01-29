@@ -16,7 +16,7 @@ namespace Stove.Tests.Events.Bus
             EventBus.Register(new FirstHandler());
             EventBus.Register(new SecondHandler());
 
-            EventBus.Publish(new ProductCreatedEvent(), new EventHeaders());
+            EventBus.Publish(new ProductCreatedEvent(), new Headers());
         }
 
         public class ProductCreatedEvent : Event
@@ -25,14 +25,14 @@ namespace Stove.Tests.Events.Bus
 
         public class FirstHandler : IEventHandler<ProductCreatedEvent>
         {
-            public void Handle(ProductCreatedEvent @event, EventHeaders headers)
+            public void Handle(ProductCreatedEvent @event, Headers headers)
             {
             }
         }
 
         public class SecondHandler : IEventHandler<ProductCreatedEvent>
         {
-            public void Handle(ProductCreatedEvent @event, EventHeaders headers)
+            public void Handle(ProductCreatedEvent @event, Headers headers)
             {
             }
         }

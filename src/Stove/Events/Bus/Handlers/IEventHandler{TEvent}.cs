@@ -12,6 +12,6 @@
         /// </summary>
         /// <param name="event"></param>
         /// <param name="headers"></param>
-        void Handle(TEvent @event, EventHeaders headers);
+        void Handle(TEvent @event, Headers headers);
     }
 }

@@ -9,6 +9,7 @@ using Castle.Core.Internal;
 using NHibernate;
 using NHibernate.Type;
 
+using Stove.Commands;
 using Stove.Domain.Entities;
 using Stove.Domain.Entities.Auditing;
 using Stove.Events;
@@ -258,7 +259,7 @@ namespace Stove.NHibernate.Interceptors
                 _eventBus.Value.Publish(
                     @event.GetType(),
                     (IEvent)@event,
-                    new EventHeaders()
+                    new Headers()
                     {
                         [StoveConsts.Events.CausationId] = _commandContextAccessor.Value.GetCorrelationIdOrEmpty(),
                         [StoveConsts.Events.UserId] = _stoveSession.Value.UserId,

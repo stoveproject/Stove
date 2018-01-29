@@ -17,7 +17,7 @@ namespace Stove.Tests.Events.Bus
             ++DisposeCount;
         }
 
-        public void Handle(MySimpleEvent @event, EventHeaders headers)
+        public void Handle(MySimpleEvent @event, Headers headers)
         {
             ++HandleCount;
         }

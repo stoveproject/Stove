@@ -2,9 +2,9 @@
 
 using Stove.Json;
 
-namespace Stove.Events
+namespace Stove
 {
-    public class EventHeaders : Dictionary<string, object>
+    public class Headers : Dictionary<string, object>
     {
         public string GetCorrelationId()
         {
@@ -45,6 +45,13 @@ namespace Stove.Events
         {
             return ContainsKey(StoveConsts.Events.AggregateId)
                 ? this[StoveConsts.Events.AggregateId].ToString()
+                : string.Empty;
+        }
+
+        public string Get(string key)
+        {
+            return ContainsKey(key)
+                ? this[key].ToString()
                 : string.Empty;
         }
 

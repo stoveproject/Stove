@@ -149,7 +149,7 @@ namespace Stove.Tests.SampleApplication.Uow
 
                         uow.Complete();
 
-                        The<IEventBus>().Publish(new SomeUowEvent(), new EventHeaders());
+                        The<IEventBus>().Publish(new SomeUowEvent(), new Headers());
                     }
                 }));
             });
@@ -174,7 +174,7 @@ namespace Stove.Tests.SampleApplication.Uow
             _provider = provider;
         }
 
-        public void Handle(SomeUowEvent @event, EventHeaders headers)
+        public void Handle(SomeUowEvent @event, Headers headers)
         {
             var a = 1;
             _provider.ShouldNotBeNull();

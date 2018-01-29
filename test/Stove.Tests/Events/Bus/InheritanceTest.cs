@@ -20,10 +20,10 @@ namespace Stove.Tests.Events.Bus
                     //Assert.Equal(this, @event.EventSource);
                 });
 
-            EventBus.Publish(new MySimpleEvent(1), new EventHeaders()); //Should handle directly registered class
-            EventBus.Publish(new MySimpleEvent(2), new EventHeaders()); //Should handle directly registered class
-            EventBus.Publish(new MyDerivedEvent(3), new EventHeaders()); //Should handle derived class too
-            EventBus.Publish(new MyDerivedEvent(4), new EventHeaders()); //Should handle derived class too
+            EventBus.Publish(new MySimpleEvent(1), new Headers()); //Should handle directly registered class
+            EventBus.Publish(new MySimpleEvent(2), new Headers()); //Should handle directly registered class
+            EventBus.Publish(new MyDerivedEvent(3), new Headers()); //Should handle derived class too
+            EventBus.Publish(new MyDerivedEvent(4), new Headers()); //Should handle derived class too
 
             Assert.Equal(10, totalData);
         }
@@ -40,10 +40,10 @@ namespace Stove.Tests.Events.Bus
                     //Assert.Equal(this, @event.EventSource);
                 });
 
-            EventBus.Publish(new MySimpleEvent(1), new EventHeaders()); //Should not handle
-            EventBus.Publish(new MySimpleEvent(2), new EventHeaders()); //Should not handle
-            EventBus.Publish(new MyDerivedEvent(3), new EventHeaders()); //Should handle
-            EventBus.Publish(new MyDerivedEvent(4), new EventHeaders()); //Should handle
+            EventBus.Publish(new MySimpleEvent(1), new Headers()); //Should not handle
+            EventBus.Publish(new MySimpleEvent(2), new Headers()); //Should not handle
+            EventBus.Publish(new MyDerivedEvent(3), new Headers()); //Should handle
+            EventBus.Publish(new MyDerivedEvent(4), new Headers()); //Should handle
 
             Assert.Equal(7, totalData);
         }   

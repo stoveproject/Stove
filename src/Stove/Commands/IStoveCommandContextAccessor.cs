@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Stove
+namespace Stove.Commands
 {
     public interface IStoveCommandContextAccessor
     {
@@ -15,5 +15,14 @@ namespace Stove
         /// <param name="correlationId"></param>
         /// <returns></returns>
         IDisposable Use(string correlationId);
+
+        /// <summary>
+        ///     Defines a scope and sets the <see cref="CommandContext" />
+        /// </summary>
+        /// <param name="contextCallback"></param>
+        /// <returns></returns>
+        IDisposable Use(Action<CommandContext> contextCallback);
+
+        void Manipulate(Action<CommandContext> contextCallback);
     }
 }

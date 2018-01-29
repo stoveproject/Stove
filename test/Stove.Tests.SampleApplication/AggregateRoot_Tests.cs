@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 
 using Shouldly;
 
+using Stove.Commands;
 using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
 using Stove.Events;
@@ -176,7 +177,7 @@ namespace Stove.Tests.SampleApplication
 
     public class CampaignCreatedEventHandler : EventHandlerBase, IEventHandler<CampaignCreatedEvent>, ITransientDependency
     {
-        public void Handle(CampaignCreatedEvent @event, EventHeaders headers)
+        public void Handle(CampaignCreatedEvent @event, Headers headers)
         {
             string name = @event.Name;
 

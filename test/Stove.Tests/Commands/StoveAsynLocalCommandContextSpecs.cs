@@ -4,6 +4,7 @@ using Chill;
 
 using Shouldly;
 
+using Stove.Commands;
 using Stove.Runtime.Remoting;
 
 using Xunit;

@@ -2,6 +2,8 @@
 
 using Microsoft.AspNetCore.Mvc;
 
+using Stove.Commands;
+
 namespace Stove.Demo.WebApiCore.Controllers
 {
     [Route("api/[controller]")]

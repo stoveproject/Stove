@@ -22,7 +22,7 @@ namespace Stove.Tests.Events.Bus
 
             var appException = Assert.Throws<Exception>(() =>
             {
-                EventBus.Publish(new MySimpleEvent(1), new EventHeaders());
+                EventBus.Publish(new MySimpleEvent(1), new Headers());
             });
 
             appException.Message.ShouldBe("This exception is intentionally thrown!");
@@ -45,7 +45,7 @@ namespace Stove.Tests.Events.Bus
 
             var aggrException = Assert.Throws<AggregateException>(() =>
             {
-                EventBus.Publish(new MySimpleEvent(1), new EventHeaders());
+                EventBus.Publish(new MySimpleEvent(1), new Headers());
             });
 
             aggrException.InnerExceptions.Count.ShouldBe(2);

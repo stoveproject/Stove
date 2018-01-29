@@ -1,12 +1,17 @@
-﻿namespace Stove
+﻿namespace Stove.Commands
 {
     public class CommandContext
     {
-        public readonly string CorrelationId;
+        public string CorrelationId { get; set; }
 
-        public CommandContext(string correlationId)
-        {
-            CorrelationId = correlationId;
-        }
+        public string UserId { get; set; }
+
+        public string BrowserInfo { get; set; }
+
+        public string IpAddress { get; set; }
+
+        public string HostName { get; set; }
+
+        public int Duration { get; set; }
     }
 }

@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 
+using Stove.Commands;
+
 namespace Stove.WebApi.Commands
 {
     public class CorrelationIdMiddleware
@@ -39,8 +41,13 @@ namespace Stove.WebApi.Commands
             {
                 context.TraceIdentifier = correlationId;
             }
+            else
+            {
+                correlationId = Guid.NewGuid().ToString();
+                context.TraceIdentifier = correlationId;
+            }
 
-            using (commandContextAccessor.Use(context.TraceIdentifier))
+            using (commandContextAccessor.Use(correlationId))
             {
                 if (_options.Value.IncludeInResponse)
                 {

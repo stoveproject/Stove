@@ -19,6 +19,7 @@ using Castle.Core.Internal;
 
 using EntityFramework.DynamicFilters;
 
+using Stove.Commands;
 using Stove.Domain.Entities;
 using Stove.Domain.Entities.Auditing;
 using Stove.Domain.Uow;
@@ -281,8 +282,8 @@ namespace Stove.EntityFramework
             domainEvents.AddRange(
                 aggregateChangeTracker.GetChanges()
                                       .Select(@event => new Envelope(
-                                          (IEvent)@event,
-                                          new EventHeaders()
+                                          (IMessage)@event,
+                                          new Headers()
                                           {
                                               [StoveConsts.Events.CausationId] = CommandContextAccessor.GetCorrelationIdOrEmpty(),
                                               [StoveConsts.Events.UserId] = StoveSession.UserId,

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 using Shouldly;
 
+using Stove.Commands;
 using Stove.Dapper.Repositories;
 using Stove.Domain.Repositories;
 using Stove.Domain.Uow;

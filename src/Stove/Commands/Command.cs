@@ -1,4 +1,4 @@
-﻿namespace Stove
+﻿namespace Stove.Commands
 {
     public abstract class Command : IMessage
     {

@@ -16,6 +16,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 using Stove.Collections.Extensions;
+using Stove.Commands;
 using Stove.Domain.Entities;
 using Stove.Domain.Entities.Auditing;
 using Stove.Domain.Uow;
@@ -213,8 +214,8 @@ namespace Stove.EntityFrameworkCore
             domainEvents.AddRange(
                 aggregateChangeTracker.GetChanges()
                                       .Select(@event => new Envelope(
-                                          (IEvent)@event,
-                                          new EventHeaders()
+                                          (IMessage)@event,
+                                          new Headers()
                                           {
                                               [StoveConsts.Events.CausationId] = CommandContextAccessor.GetCorrelationIdOrEmpty(),
                                               [StoveConsts.Events.UserId] = StoveSession.UserId,

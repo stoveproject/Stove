@@ -2,14 +2,14 @@ namespace Stove.Events.Bus.Entities
 {
     public class Envelope
     {
-        public Envelope(IEvent @event, EventHeaders headers)
+        public Envelope(IMessage message, Headers headers)
         {
-            Event = @event;
+            Message = message;
             Headers = headers;
         }
 
-        public EventHeaders Headers { get; }
+        public Headers Headers { get; }
 
-        public IEvent Event { get; }
+        public IMessage Message { get; }
     }
 }
