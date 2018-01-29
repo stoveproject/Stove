@@ -17,6 +17,7 @@ using Shouldly;
 
 using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
+using Stove.Events;
 using Stove.Events.Bus;
 using Stove.Events.Bus.Handlers;
 using Stove.NHibernate.Repositories;
@@ -128,7 +129,7 @@ namespace Stove.NHibernate.Tests
                 using (IUnitOfWorkCompleteHandle uow = The<IUnitOfWorkManager>().Begin())
                 {
                     The<IEventBus>().Register<ProductNameFixed>(
-                        @event =>
+                        (@event, headers) =>
                         {
                             @event.Name.ShouldBe("Pants");
                             ts.Cancel(true);
@@ -165,7 +166,7 @@ namespace Stove.NHibernate.Tests
                 var triggerCount = 0;
 
                 The<IEventBus>().Register<ProductDeletedEvent>(
-                    @event =>
+                    (@event, headers) =>
                     {
                         @event.Name.ShouldBe("TShirt");
                         triggerCount++;
@@ -190,7 +191,7 @@ namespace Stove.NHibernate.Tests
                 var triggerCount = 0;
 
                 The<IEventBus>().Register<ProductCreatedEvent>(
-                    @event =>
+                    (@event, headers) =>
                     {
                         @event.Name.ShouldBe("Kazak");
                         triggerCount++;
@@ -212,7 +213,7 @@ namespace Stove.NHibernate.Tests
                 var triggerCount = 0;
 
                 The<IEventBus>().Register<ProductNameFixed>(
-                    @event =>
+                    (@event, headers) =>
                     {
                         @event.Name.ShouldBe("Kazak");
                         triggerCount++;
@@ -260,7 +261,7 @@ namespace Stove.NHibernate.Tests
 
                         uow.Complete();
 
-                        The<IEventBus>().Publish(new SomeUowEvent());
+                        The<IEventBus>().Publish(new SomeUowEvent(), new Headers());
                     }
                 }));
             });
@@ -305,7 +306,7 @@ namespace Stove.NHibernate.Tests
             _provider = provider;
         }
 
-        public void Handle(SomeUowEvent @event)
+        public void Handle(SomeUowEvent @event, Headers headers)
         {
             var a = 1;
             _provider.ShouldNotBeNull();

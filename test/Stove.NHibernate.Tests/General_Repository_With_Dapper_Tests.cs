@@ -74,7 +74,7 @@ namespace Stove.NHibernate.Tests
             var triggerCount = 0;
 
             The<IEventBus>().Register<ProductNameFixed>(
-                @event =>
+                (@event, headers) =>
                 {
                     @event.Name.ShouldBe("Bear");
                     triggerCount++;

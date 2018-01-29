@@ -15,7 +15,7 @@ namespace Stove.Events.Bus.Handlers.Internals
         ///     Creates a new instance of <see cref="ActionEventHandler{TEvent}" />.
         /// </summary>
         /// <param name="handler">Action to handle the event</param>
-        public ActionEventHandler(Action<TEvent> handler)
+        public ActionEventHandler(Action<TEvent, Headers> handler)
         {
             Action = handler;
         }
@@ -23,15 +23,11 @@ namespace Stove.Events.Bus.Handlers.Internals
         /// <summary>
         ///     Action to handle the event.
         /// </summary>
-        public Action<TEvent> Action { get; }
+        public Action<TEvent, Headers> Action { get; }
 
-        /// <summary>
-        ///     Handles the event.
-        /// </summary>
-        /// <param name="@event"></param>
-        public void Handle(TEvent @event)
+        public void Handle(TEvent @event, Headers headers)
         {
-            Action(@event);
+            Action(@event, headers);
         }
     }
 }

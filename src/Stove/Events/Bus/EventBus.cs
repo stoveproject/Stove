@@ -11,7 +11,6 @@ using Stove.Events.Bus.Factories.Internals;
 using Stove.Events.Bus.Handlers;
 using Stove.Events.Bus.Handlers.Internals;
 using Stove.Extensions;
-using Stove.Log;
 using Stove.Threading.Extensions;
 
 namespace Stove.Events.Bus
@@ -27,36 +26,31 @@ namespace Stove.Events.Bus
         ///     Value: List of handler factories
         /// </summary>
         private readonly ConcurrentDictionary<Type, List<IEventHandlerFactory>> _handlerFactories;
+        private EventPublishingBehaviour _behaviour;
 
         /// <summary>
         ///     Creates a new <see cref="EventBus" /> instance.
-        ///     Instead of creating a new instace, you can use <see cref="Default" /> to use Global <see cref="EventBus" />.
         /// </summary>
         public EventBus()
         {
             _handlerFactories = new ConcurrentDictionary<Type, List<IEventHandlerFactory>>();
-
-            Logger = NullLogger.Instance;
         }
 
-        /// <summary>
-        ///     Reference to the Logger.
-        /// </summary>
-        public ILogger Logger { get; set; }
-
-        /// <inheritdoc />
-        public IDisposable Register<TEvent>(Action<TEvent> action) where TEvent : IEvent
+        public IDisposable Register<TEvent>(Action<TEvent, Headers> action) where TEvent : IEvent
         {
             return Register(typeof(TEvent), new ActionEventHandler<TEvent>(action));
         }
 
-        /// <inheritdoc />
+        public void RegisterPublishingBehaviour(EventPublishingBehaviour behaviour)
+        {
+            _behaviour += behaviour;
+        }
+
         public IDisposable Register<TEvent>(IEventHandler<TEvent> handler) where TEvent : IEvent
         {
             return Register(typeof(TEvent), handler);
         }
 
-        /// <inheritdoc />
         public IDisposable Register<TEvent, THandler>()
             where TEvent : IEvent
             where THandler : IEventHandler<TEvent>, new()
@@ -64,19 +58,16 @@ namespace Stove.Events.Bus
             return Register(typeof(TEvent), new TransientEventHandlerFactory<THandler>());
         }
 
-        /// <inheritdoc />
         public IDisposable Register(Type eventType, IEventHandler handler)
         {
             return Register(eventType, new SingleInstanceHandlerFactory(handler));
         }
 
-        /// <inheritdoc />
         public IDisposable Register<TEvent>(IEventHandlerFactory handlerFactory) where TEvent : IEvent
         {
             return Register(typeof(TEvent), handlerFactory);
         }
 
-        /// <inheritdoc />
         public IDisposable Register(Type eventType, IEventHandlerFactory handlerFactory)
         {
             GetOrCreateHandlerFactories(eventType)
@@ -85,8 +76,7 @@ namespace Stove.Events.Bus
             return new FactoryUnregistrar(this, eventType, handlerFactory);
         }
 
-        /// <inheritdoc />
-        public void Unregister<TEvent>(Action<TEvent> action) where TEvent : IEvent
+        public void Unregister<TEvent>(Action<TEvent, Headers> action) where TEvent : IEvent
         {
             Check.NotNull(action, nameof(action));
 
@@ -111,13 +101,11 @@ namespace Stove.Events.Bus
                 });
         }
 
-        /// <inheritdoc />
         public void Unregister<TEvent>(IEventHandler<TEvent> handler) where TEvent : IEvent
         {
             Unregister(typeof(TEvent), handler);
         }
 
-        /// <inheritdoc />
         public void Unregister(Type eventType, IEventHandler handler)
         {
             GetOrCreateHandlerFactories(eventType)
@@ -127,46 +115,42 @@ namespace Stove.Events.Bus
                         factory =>
                             factory is SingleInstanceHandlerFactory &&
                             (factory as SingleInstanceHandlerFactory).HandlerInstance == handler
-                    );
+                        );
                 });
         }
 
-        /// <inheritdoc />
         public void Unregister<TEvent>(IEventHandlerFactory factory) where TEvent : IEvent
         {
             Unregister(typeof(TEvent), factory);
         }
 
-        /// <inheritdoc />
         public void Unregister(Type eventType, IEventHandlerFactory factory)
         {
             GetOrCreateHandlerFactories(eventType).Locking(factories => factories.Remove(factory));
         }
 
-        /// <inheritdoc />
         public void UnregisterAll<TEvent>() where TEvent : IEvent
         {
             UnregisterAll(typeof(TEvent));
         }
 
-        /// <inheritdoc />
         public void UnregisterAll(Type @event)
         {
             GetOrCreateHandlerFactories(@event).Locking(factories => factories.Clear());
         }
 
-        /// <inheritdoc />
-        public void Publish<TEvent>(TEvent @event) where TEvent : IEvent
+        public void Publish<TEvent>(TEvent @event, Headers headers) where TEvent : IEvent
         {
-            Publish(typeof(TEvent), @event);
+            Publish(typeof(TEvent), @event, headers);
         }
 
-        /// <inheritdoc />
-        public void Publish(Type eventType, IEvent @event)
+        public void Publish(Type eventType, IEvent @event, Headers headers)
         {
             var exceptions = new List<Exception>();
 
-            PublishHandlingException(eventType, @event, exceptions);
+            _behaviour?.Invoke(@event, headers);
+
+            PublishHandlingException(eventType, @event, headers, exceptions);
 
             if (exceptions.Any())
             {
@@ -179,52 +163,17 @@ namespace Stove.Events.Bus
             }
         }
 
-        public Task PublishAsync<TEvent>(TEvent @event) where TEvent : IEvent
+        public Task PublishAsync<TEvent>(TEvent @event, Headers headers, CancellationToken cancellationToken = default) where TEvent : IEvent
         {
-            ExecutionContext.SuppressFlow();
-
-            Task task = Task.Run(
-                () =>
-                {
-                    try
-                    {
-                        Publish(@event);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Warn(ex.ToString(), ex);
-                    }
-                });
-
-            ExecutionContext.RestoreFlow();
-
-            return task;
+            return Task.Run(() => { Publish(@event, headers); }, cancellationToken);
         }
 
-        /// <inheritdoc />
-        public Task PublishAsync(Type eventType, IEvent @event)
+        public Task PublishAsync(Type eventType, IEvent @event, Headers headers, CancellationToken cancellationToken = default)
         {
-            ExecutionContext.SuppressFlow();
-
-            Task task = Task.Run(
-                () =>
-                {
-                    try
-                    {
-                        Publish(eventType, @event);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Warn(ex.ToString(), ex);
-                    }
-                });
-
-            ExecutionContext.RestoreFlow();
-
-            return task;
+            return Task.Run(() => { Publish(eventType, @event, headers); }, cancellationToken);
         }
 
-        private void PublishHandlingException(Type eventType, IEvent @event, List<Exception> exceptions)
+        private void PublishHandlingException(Type eventType, IEvent @event, Headers headers, List<Exception> exceptions)
         {
             GetHandlerFactories(eventType).SelectMany(x => x.EventHandlerFactories)
                                           .ForEach(f =>
@@ -235,9 +184,9 @@ namespace Stove.Events.Bus
                                                   Type handlerType = typeof(IEventHandler<>).MakeGenericType(eventType);
                                                   MethodInfo method = handlerType.GetMethod(
                                                       "Handle",
-                                                      new[] { eventType });
+                                                      new[] { eventType, typeof(Headers) });
 
-                                                  method.Invoke(handler, new object[] { @event });
+                                                  method.Invoke(handler, new object[] { @event, headers });
                                               }
                                               catch (TargetInvocationException ex)
                                               {

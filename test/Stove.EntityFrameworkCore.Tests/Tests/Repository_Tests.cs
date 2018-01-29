@@ -132,7 +132,7 @@ namespace Stove.EntityFrameworkCore.Tests.Tests
         {
             var ts = new CancellationTokenSource();
 
-            The<IEventBus>().Register<BlogCreatedEvent>(@event =>
+            The<IEventBus>().Register<BlogCreatedEvent>((@event, headers) => 
             {
                 ts.Cancel(true);
             });

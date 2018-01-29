@@ -63,7 +63,7 @@ namespace Stove.EntityFrameworkCore.Dapper.Tests.Tests
 		public void Dapper_and_EfCore_should_work_under_same_unitofwork_and_when_any_exception_appears_then_rollback_should_be_consistent_for_two_orm()
 		{
             The<IEventBus>().Register<BlogCreatedEvent>(
-                @event =>
+                (@event, headers) => 
                 {
                     @event.Name.ShouldBe("Oguzhan_Same_Uow");
 

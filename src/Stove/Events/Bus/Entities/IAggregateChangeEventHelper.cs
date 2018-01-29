@@ -8,8 +8,8 @@ namespace Stove.Events.Bus.Entities
     /// </summary>
     public interface IAggregateChangeEventHelper
     {
-        void PublishEvents(AggregateChangeReport changeReport);
+        void PublishEvents(AggregateChangeReport aggregateChangeReport);
 
-        Task PublishEventsAsync(AggregateChangeReport changeReport, CancellationToken cancellationToken = default);
+        Task PublishEventsAsync(AggregateChangeReport aggregateChangeReport, CancellationToken cancellationToken = default);
     }
 }

@@ -16,9 +16,11 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 using Stove.Collections.Extensions;
+using Stove.Commands;
 using Stove.Domain.Entities;
 using Stove.Domain.Entities.Auditing;
 using Stove.Domain.Uow;
+using Stove.Events;
 using Stove.Events.Bus;
 using Stove.Events.Bus.Entities;
 using Stove.Extensions;
@@ -79,10 +81,9 @@ namespace Stove.EntityFrameworkCore
         public ICurrentUnitOfWorkProvider CurrentUnitOfWorkProvider { get; set; }
 
         /// <summary>
-        ///     Can be used to suppress automatically setting TenantId on SaveChanges.
-        ///     Default: false.
+        ///     Reference to command context.
         /// </summary>
-        public bool SuppressAutoSetTenantId { get; set; }
+        public IStoveCommandContextAccessor CommandContextAccessor { get; set; }
 
         protected virtual bool IsSoftDeleteFilterEnabled => CurrentUnitOfWorkProvider?.Current?.IsFilterEnabled(StoveDataFilters.SoftDelete) == true;
 
@@ -198,20 +199,32 @@ namespace Stove.EntityFrameworkCore
             SetDeletionAuditProperties(entry.Entity, userId);
         }
 
-        protected virtual void AddDomainEvents(List<DomainEventEntry> domainEvents, object entityAsObj)
+        protected virtual void AddDomainEvents(List<Envelope> domainEvents, object entity)
         {
-            if (!(entityAsObj is IAggregateChangeTracker generatesDomainEventsEntity))
+            if (!(entity is IAggregateChangeTracker aggregateChangeTracker))
             {
                 return;
             }
 
-            if (generatesDomainEventsEntity.GetChanges().IsNullOrEmpty())
+            if (aggregateChangeTracker.GetChanges().IsNullOrEmpty())
             {
                 return;
             }
 
-            domainEvents.AddRange(generatesDomainEventsEntity.GetChanges().Select(@event => new DomainEventEntry(entityAsObj, @event as IEvent)));
-            generatesDomainEventsEntity.ClearChanges();
+            domainEvents.AddRange(
+                aggregateChangeTracker.GetChanges()
+                                      .Select(@event => new Envelope(
+                                          (IMessage)@event,
+                                          new Headers()
+                                          {
+                                              [StoveConsts.Events.CausationId] = CommandContextAccessor.GetCorrelationIdOrEmpty(),
+                                              [StoveConsts.Events.UserId] = StoveSession.UserId,
+                                              [StoveConsts.Events.SourceType] = entity.GetType().FullName,
+                                              [StoveConsts.Events.QualifiedName] = @event.GetType().AssemblyQualifiedName,
+                                              [StoveConsts.Events.AggregateId] = ((dynamic)entity).Id
+                                          })));
+
+            aggregateChangeTracker.ClearChanges();
         }
 
         protected virtual void CheckAndSetId(EntityEntry entry)

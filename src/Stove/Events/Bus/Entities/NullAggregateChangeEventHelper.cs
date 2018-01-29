@@ -17,11 +17,11 @@ namespace Stove.Events.Bus.Entities
         /// </summary>
         public static NullAggregateChangeEventHelper Instance { get; } = new NullAggregateChangeEventHelper();
 
-        public void PublishEvents(AggregateChangeReport changeReport)
+        public void PublishEvents(AggregateChangeReport aggregateChangeReport)
         {
         }
 
-        public Task PublishEventsAsync(AggregateChangeReport changeReport, CancellationToken cancellationToken = default)
+        public Task PublishEventsAsync(AggregateChangeReport aggregateChangeReport, CancellationToken cancellationToken = default)
         {
             return Task.FromResult(0);
         }
