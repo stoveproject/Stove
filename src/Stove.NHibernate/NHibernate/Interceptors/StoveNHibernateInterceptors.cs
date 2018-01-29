@@ -9,8 +9,10 @@ using Castle.Core.Internal;
 using NHibernate;
 using NHibernate.Type;
 
+using Stove.Commands;
 using Stove.Domain.Entities;
 using Stove.Domain.Entities.Auditing;
+using Stove.Events;
 using Stove.Events.Bus;
 using Stove.Extensions;
 using Stove.Runtime.Session;
@@ -20,38 +22,43 @@ namespace Stove.NHibernate.Interceptors
 {
     internal class StoveNHibernateInterceptor : EmptyInterceptor, ITransientDependency
     {
+        private readonly Lazy<IStoveCommandContextAccessor> _commandContextAccessor;
         private readonly Lazy<IEventBus> _eventBus;
         private readonly Lazy<IGuidGenerator> _guidGenerator;
-
-        private readonly IScopeResolver _scopeResolver;
         private readonly Lazy<IStoveSession> _stoveSession;
 
         public StoveNHibernateInterceptor(IScopeResolver scopeResolver)
         {
-            _scopeResolver = scopeResolver;
+            IScopeResolver innerResolver = scopeResolver;
 
             _stoveSession =
                 new Lazy<IStoveSession>(
-                    () => _scopeResolver.IsRegistered(typeof(IStoveSession))
-                        ? _scopeResolver.Resolve<IStoveSession>()
+                    () => innerResolver.IsRegistered(typeof(IStoveSession))
+                        ? innerResolver.Resolve<IStoveSession>()
                         : NullStoveSession.Instance,
                     true
                 );
+
             _guidGenerator =
                 new Lazy<IGuidGenerator>(
-                    () => _scopeResolver.IsRegistered(typeof(IGuidGenerator))
-                        ? _scopeResolver.Resolve<IGuidGenerator>()
+                    () => innerResolver.IsRegistered(typeof(IGuidGenerator))
+                        ? innerResolver.Resolve<IGuidGenerator>()
                         : SequentialGuidGenerator.Instance,
                     true
                 );
 
             _eventBus =
                 new Lazy<IEventBus>(
-                    () => _scopeResolver.IsRegistered(typeof(IEventBus))
-                        ? _scopeResolver.Resolve<IEventBus>()
+                    () => innerResolver.IsRegistered(typeof(IEventBus))
+                        ? innerResolver.Resolve<IEventBus>()
                         : NullEventBus.Instance,
                     true
                 );
+
+            _commandContextAccessor =
+                new Lazy<IStoveCommandContextAccessor>(
+                    () => innerResolver.Resolve<IStoveCommandContextAccessor>(),
+                    true);
         }
 
         public override bool OnSave(object entity, object id, object[] state, string[] propertyNames, IType[] types)
@@ -158,8 +165,6 @@ namespace Stove.NHibernate.Interceptors
                             }
                         }
                     }
-
-                   
                 }
             }
 
@@ -195,28 +200,25 @@ namespace Stove.NHibernate.Interceptors
                     continue;
                 }
 
-                var dateTime = state[i] as DateTime?;
-
-                if (!dateTime.HasValue)
+                if (!(state[i] is DateTime dateTime))
                 {
                     continue;
                 }
 
-                state[i] = Clock.Normalize(dateTime.Value);
+                state[i] = Clock.Normalize(dateTime);
             }
         }
 
         private static void NormalizeDateTimePropertiesForComponentType(object componentObject, IType type)
         {
-            var componentType = type as ComponentType;
-            if (componentType != null)
+            if (type is ComponentType componentType)
             {
                 for (var i = 0; i < componentType.PropertyNames.Length; i++)
                 {
                     string propertyName = componentType.PropertyNames[i];
                     if (componentType.Subtypes[i].IsComponentType)
                     {
-                        object value = componentObject.GetType().GetProperty(propertyName).GetValue(componentObject, null);
+                        object value = componentObject.GetType().GetProperty(propertyName)?.GetValue(componentObject, null);
                         NormalizeDateTimePropertiesForComponentType(value, componentType.Subtypes[i]);
                     }
 
@@ -225,36 +227,46 @@ namespace Stove.NHibernate.Interceptors
                         continue;
                     }
 
-                    var dateTime = componentObject.GetType().GetProperty(propertyName).GetValue(componentObject) as DateTime?;
+                    var dateTime = componentObject.GetType().GetProperty(propertyName)?.GetValue(componentObject) as DateTime?;
 
                     if (!dateTime.HasValue)
                     {
                         continue;
                     }
 
-                    componentObject.GetType().GetProperty(propertyName).SetValue(componentObject, Clock.Normalize(dateTime.Value));
+                    componentObject.GetType().GetProperty(propertyName)?.SetValue(componentObject, Clock.Normalize(dateTime.Value));
                 }
             }
         }
 
-        protected virtual void TriggerDomainEvents(object entityAsObj)
+        protected virtual void TriggerDomainEvents(object entity)
         {
-            if (!(entityAsObj is IAggregateChangeTracker generatesDomainEventsEntity))
+            if (!(entity is IAggregateChangeTracker aggregateChangeTracker))
             {
                 return;
             }
 
-            if (generatesDomainEventsEntity.GetChanges().IsNullOrEmpty())
+            if (aggregateChangeTracker.GetChanges().IsNullOrEmpty())
             {
                 return;
             }
 
-            List<object> domainEvents = generatesDomainEventsEntity.GetChanges().ToList();
-            generatesDomainEventsEntity.ClearChanges();
+            List<object> domainEvents = aggregateChangeTracker.GetChanges().ToList();
+            aggregateChangeTracker.ClearChanges();
 
-            foreach (object domainEvent in domainEvents)
+            foreach (object @event in domainEvents)
             {
-                _eventBus.Value.Publish(domainEvent.GetType(), (IEvent)domainEvent);
+                _eventBus.Value.Publish(
+                    @event.GetType(),
+                    (IEvent)@event,
+                    new Headers()
+                    {
+                        [StoveConsts.Events.CausationId] = _commandContextAccessor.Value.GetCorrelationIdOrEmpty(),
+                        [StoveConsts.Events.UserId] = _stoveSession.Value.UserId,
+                        [StoveConsts.Events.SourceType] = entity.GetType().FullName,
+                        [StoveConsts.Events.QualifiedName] = @event.GetType().AssemblyQualifiedName,
+                        [StoveConsts.Events.AggregateId] = ((dynamic)entity).Id
+                    });
             }
         }
     }

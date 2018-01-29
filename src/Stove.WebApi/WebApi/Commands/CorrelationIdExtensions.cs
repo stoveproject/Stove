@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Options;
 
+using Stove.Commands;
+
 namespace Stove.WebApi.Commands
 {
     public static class CorrelationIdExtensions

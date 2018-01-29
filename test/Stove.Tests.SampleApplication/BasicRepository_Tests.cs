@@ -1,12 +1,7 @@
-﻿using Autofac.Extras.IocManager;
-
-using Shouldly;
+﻿using Shouldly;
 
 using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
-using Stove.Events.Bus;
-using Stove.Events.Bus.Entities;
-using Stove.Events.Bus.Handlers;
 using Stove.Extensions;
 using Stove.Tests.SampleApplication.Domain.Entities;
 
@@ -120,82 +115,6 @@ namespace Stove.Tests.SampleApplication
 
                 uow.Complete();
             }
-        }
-
-        [Fact]
-        public void uow_completed_event_should_fire_when_uow_is_completed()
-        {
-            var executionCount = 0;
-            The<IEventBus>().Register<UserCretedEventAfterUowCompleted>(completed => { executionCount++; });
-
-            var uowManager = The<IUnitOfWorkManager>();
-            var userRepository = The<IRepository<User>>();
-
-            using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
-            {
-                userRepository.Insert(new User
-                {
-                    Email = "ouzsykn@hotmail.com",
-                    Surname = "Sykn",
-                    Name = "Oğuz"
-                });
-
-                The<IUnitOfWorkCompletedEventHelper>().Publish(new UserCretedEventAfterUowCompleted { Name = "Oğuz" });
-
-                uow.Complete();
-            }
-
-            executionCount.ShouldBe(1);
-        }
-
-        [Fact]
-        public void uow_completed_event_should_not_fire_when_uow_is_not_completed()
-        {
-            var executionCount = 0;
-            The<IEventBus>().Register<UserCretedEventAfterUowCompleted>(completed => { executionCount++; });
-            var uowManager = The<IUnitOfWorkManager>();
-            var userRepository = The<IRepository<User>>();
-
-            using (IUnitOfWorkCompleteHandle uow = uowManager.Begin())
-            {
-                userRepository.Insert(new User
-                {
-                    Email = "ouzsykn@hotmail.com",
-                    Surname = "Sykn",
-                    Name = "Oğuz"
-                });
-
-                The<IUnitOfWorkCompletedEventHelper>().Publish(new UserCretedEventAfterUowCompleted { Name = "Oğuz" });
-            }
-
-            executionCount.ShouldBe(0);
-        }
-
-        //public class UserCreatedEventHandler : IEventHandler<EntityCreatedEvent<User>>,
-        //    IEventHandler<EntityUpdatedEvent<User>>,
-        //    ITransientDependency
-        //{
-        //    private readonly IRepository<User> _userRepository;
-
-        //    public UserCreatedEventHandler(IRepository<User> userRepository)
-        //    {
-        //        _userRepository = userRepository;
-        //    }
-
-        //    public void Handle(EntityCreatedEvent<User> @event)
-        //    {
-        //        User a = @event.Entity;
-        //    }
-
-        //    public void Handle(EntityUpdatedEvent<User> @event)
-        //    {
-        //        User a = @event.Entity;
-        //    }
-        //}
-
-        public class UserCretedEventAfterUowCompleted : Event
-        {
-            public string Name { get; set; }
         }
     }
 }

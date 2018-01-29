@@ -9,13 +9,12 @@ namespace Stove.Domain.Entities.Auditing
 	{
 		public static void SetCreationAuditProperties(object entityAsObj, long? userId)
 		{
-			var entityWithCreationTime = entityAsObj as IHasCreationTime;
-			if (entityWithCreationTime == null)
+		    if (!(entityAsObj is IHasCreationTime entityWithCreationTime))
 			{
 				return;
 			}
 
-			if (entityWithCreationTime.CreationTime == default(DateTime))
+			if (entityWithCreationTime.CreationTime == default)
 			{
 				entityWithCreationTime.CreationTime = Clock.Now;
 			}

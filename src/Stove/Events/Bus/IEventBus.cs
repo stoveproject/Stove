@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Stove.Events.Bus.Factories;
@@ -17,7 +18,13 @@ namespace Stove.Events.Bus
         /// </summary>
         /// <param name="action">Action to handle events</param>
         /// <typeparam name="TEvent">Event type</typeparam>
-        IDisposable Register<TEvent>(Action<TEvent> action) where TEvent : IEvent;
+        IDisposable Register<TEvent>(Action<TEvent, Headers> action) where TEvent : IEvent;
+
+        /// <summary>
+        ///     Registers a behaviour to execute just before event publishing.
+        /// </summary>
+        /// <param name="behaviour"></param>
+        void RegisterPublishingBehaviour(EventPublishingBehaviour behaviour);
 
         /// <summary>
         ///     Registers to an event.
@@ -63,7 +70,7 @@ namespace Stove.Events.Bus
         /// </summary>
         /// <typeparam name="TEvent">Event type</typeparam>
         /// <param name="action"></param>
-        void Unregister<TEvent>(Action<TEvent> action) where TEvent : IEvent;
+        void Unregister<TEvent>(Action<TEvent, Headers> action) where TEvent : IEvent;
 
         /// <summary>
         ///     Unregisters from an event.
@@ -110,29 +117,35 @@ namespace Stove.Events.Bus
         /// </summary>
         /// <typeparam name="TEvent">Event type</typeparam>
         /// <param name="event">Related data for the event</param>
-        void Publish<TEvent>(TEvent @event) where TEvent : IEvent;
+        /// <param name="headers"></param>
+        void Publish<TEvent>(TEvent @event, Headers headers) where TEvent : IEvent;
 
         /// <summary>
         ///     Publishes an event.
         /// </summary>
         /// <param name="eventType">Event type</param>
         /// <param name="event">Related data for the event</param>
-        void Publish(Type eventType, IEvent @event);
+        /// <param name="headers"></param>
+        void Publish(Type eventType, IEvent @event, Headers headers);
 
         /// <summary>
         ///     Publishes an event asynchronously.
         /// </summary>
         /// <typeparam name="TEvent">Event type</typeparam>
         /// <param name="event">Related data for the event</param>
+        /// <param name="headers"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns>The task to handle async operation</returns>
-        Task PublishAsync<TEvent>(TEvent @event) where TEvent : IEvent;
+        Task PublishAsync<TEvent>(TEvent @event, Headers headers, CancellationToken cancellationToken = default) where TEvent : IEvent;
 
         /// <summary>
         ///     Publishes an event asynchronously.
         /// </summary>
         /// <param name="eventType">Event type</param>
         /// <param name="event">Related data for the event</param>
+        /// <param name="headers"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns>The task to handle async operation</returns>
-        Task PublishAsync(Type eventType, IEvent @event);
+        Task PublishAsync(Type eventType, IEvent @event, Headers headers, CancellationToken cancellationToken = default);
     }
 }

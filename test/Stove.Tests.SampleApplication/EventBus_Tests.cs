@@ -1,5 +1,6 @@
 ﻿using Autofac.Extras.IocManager;
 
+using Stove.Events;
 using Stove.Events.Bus;
 using Stove.Events.Bus.Handlers;
 
@@ -20,25 +21,24 @@ namespace Stove.Tests.SampleApplication
             The<IEventBus>().Publish(new SomeEvent
             {
                 ExecutionCount = 0
-            });
+            }, new Headers());
 
             The<IEventBus>().Publish(new SomeEvent2
             {
                 ExecutionCount = 0
-            });
+            }, new Headers());
         }
 
         [Fact]
         public void multiple_same_event_multiple_event_handler()
         {
-            The<IEventBus>().Publish(new ProductCreatedEvent(12));
+            The<IEventBus>().Publish(new ProductCreatedEvent(12), new Headers());
         }
-
 
         [Fact]
         public void inherited_event_should_work()
         {
-            The<IEventBus>().Publish(new InheritedEvent(16));
+            The<IEventBus>().Publish(new InheritedEvent(16), new Headers());
         }
 
         public class ProductCreatedEvent : Event
@@ -49,7 +49,6 @@ namespace Stove.Tests.SampleApplication
             {
                 ProductId = productId;
             }
-
         }
 
         public class InheritedEvent : ProductCreatedEvent
@@ -61,21 +60,21 @@ namespace Stove.Tests.SampleApplication
 
         public class FirstEventHandler : IEventHandler<ProductCreatedEvent>, ITransientDependency
         {
-            public void Handle(ProductCreatedEvent @event)
+            public void Handle(ProductCreatedEvent @event, Headers headers)
             {
             }
         }
 
         public class SecondEventHandler : IEventHandler<ProductCreatedEvent>, ITransientDependency
         {
-            public void Handle(ProductCreatedEvent @event)
+            public void Handle(ProductCreatedEvent @event, Headers headers)
             {
             }
         }
 
         public class InheritedEventHandler : IEventHandler<InheritedEvent>, ITransientDependency
         {
-            public void Handle(InheritedEvent @event)
+            public void Handle(InheritedEvent @event, Headers headers)
             {
             }
         }
@@ -92,12 +91,12 @@ namespace Stove.Tests.SampleApplication
 
         public class SomeEventHandler : IEventHandler<SomeEvent>, IEventHandler<SomeEvent2>, ITransientDependency
         {
-            public void Handle(SomeEvent @event)
+            public void Handle(SomeEvent @event, Headers headers)
             {
                 @event.ExecutionCount++;
             }
 
-            public void Handle(SomeEvent2 @event)
+            public void Handle(SomeEvent2 @event, Headers headers)
             {
                 @event.ExecutionCount++;
             }
