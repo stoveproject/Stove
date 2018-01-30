@@ -235,33 +235,29 @@ namespace Stove.EntityFramework
             var changeReport = new AggregateChangeReport();
 
             long? userId = GetAuditUserId();
-
             List<DbEntityEntry> entries = ChangeTracker.Entries().ToList();
-            if (ChangeTracker.HasChanges())
+            foreach (DbEntityEntry entry in entries)
             {
-                foreach (DbEntityEntry entry in entries)
+                switch (entry.State)
                 {
-                    switch (entry.State)
-                    {
-                        case EntityState.Added:
-                            CheckAndSetId(entry.Entity);
-                            SetCreationAuditProperties(entry.Entity, userId);
-                            break;
-                        case EntityState.Modified:
-                            SetModificationAuditProperties(entry, userId);
-                            if (entry.Entity is ISoftDelete && entry.Entity.As<ISoftDelete>().IsDeleted)
-                            {
-                                SetDeletionAuditProperties(entry.Entity, userId);
-                            }
-                            break;
-                        case EntityState.Deleted:
-                            CancelDeletionForSoftDelete(entry);
+                    case EntityState.Added:
+                        CheckAndSetId(entry.Entity);
+                        SetCreationAuditProperties(entry.Entity, userId);
+                        break;
+                    case EntityState.Modified:
+                        SetModificationAuditProperties(entry, userId);
+                        if (entry.Entity is ISoftDelete && entry.Entity.As<ISoftDelete>().IsDeleted)
+                        {
                             SetDeletionAuditProperties(entry.Entity, userId);
-                            break;
-                    }
-
-                    AddDomainEvents(changeReport.DomainEvents, entry.Entity);
+                        }
+                        break;
+                    case EntityState.Deleted:
+                        CancelDeletionForSoftDelete(entry);
+                        SetDeletionAuditProperties(entry.Entity, userId);
+                        break;
                 }
+
+                AddDomainEvents(changeReport.DomainEvents, entry.Entity);
             }
 
             return changeReport;

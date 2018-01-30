@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <VersionPrefix>2.3.2</VersionPrefix>
+    <VersionPrefix>2.3.3</VersionPrefix>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
     <PackageIconUrl>https://raw.githubusercontent.com/osoykan/Stove/master/stove.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/osoykan/Stove</PackageProjectUrl>
