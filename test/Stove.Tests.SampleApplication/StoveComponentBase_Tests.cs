@@ -78,7 +78,7 @@ namespace Stove.Tests
             string correlationId = Guid.NewGuid().ToString();
             The<IEventBus>().Register<UserCreatedEvent>((@event, headers) =>
             {
-                headers[StoveConsts.Events.CorrelationId].ShouldBe(correlationId);
+                headers[StoveConsts.Events.CausationId].ShouldBe(correlationId);
             });
 
             await The<SomeDomainService>().CreateUserByCorrelating("oguzhan", "soykan", "oguzhansoykan@gmail.com", correlationId);
