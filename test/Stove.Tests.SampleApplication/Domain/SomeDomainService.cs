@@ -22,10 +22,7 @@ namespace Stove.Tests.SampleApplication.Domain
         public User GetUserByName(string name)
         {
             User user = null;
-            UseUow(() =>
-            {
-                user = _repository.FirstOrDefault(x => x.Name == name);
-            });
+            UseUow(() => { user = _repository.FirstOrDefault(x => x.Name == name); });
 
             return user;
         }
@@ -33,10 +30,7 @@ namespace Stove.Tests.SampleApplication.Domain
         public async Task<User> GetUserByName_async(string name)
         {
             User user = null;
-            await UseUow(async () =>
-            {
-                user = await _repository.FirstOrDefaultAsync(x => x.Name == name);
-            }, CancellationToken.None);
+            await UseUow(async () => { user = await _repository.FirstOrDefaultAsync(x => x.Name == name); }, options => { }, CancellationToken.None);
 
             return user;
         }
@@ -45,10 +39,7 @@ namespace Stove.Tests.SampleApplication.Domain
         {
             User user = null;
 
-            await UseUow(async () =>
-            {
-                user = await _repository.FirstOrDefaultAsync(x => x.Name == name);
-            }, IsolationLevel.ReadCommitted);
+            await UseUow(async () => { user = await _repository.FirstOrDefaultAsync(x => x.Name == name); }, options => { options.IsolationLevel = IsolationLevel.ReadCommitted; });
 
             return user;
         }
@@ -57,10 +48,7 @@ namespace Stove.Tests.SampleApplication.Domain
         {
             User user = null;
 
-            UseUow(() =>
-            {
-                user = _repository.FirstOrDefault(x => x.Name == name);
-            }, IsolationLevel.Chaos);
+            UseUow(() => { user = _repository.FirstOrDefault(x => x.Name == name); }, options => { options.IsolationLevel = IsolationLevel.Chaos; });
 
             return user;
         }
@@ -69,35 +57,27 @@ namespace Stove.Tests.SampleApplication.Domain
         {
             User user = null;
 
-            UseUow(() =>
-            {
-                user = _repository.FirstOrDefault(x => x.Name == name);
-            }, true);
+            UseUow(() => { user = _repository.FirstOrDefault(x => x.Name == name); });
 
             return user;
         }
 
-        public async Task<User> GetUserByName_async_isTransactional(string name)
+        public Task<User> GetUserByName_async_isTransactional(string name)
         {
-            User user = null;
-
-            await UseUow(async () =>
-            {
-                user = await _repository.FirstOrDefaultAsync(x => x.Name == name);
-            }, true);
-
-            return user;
+            return UseUow<User>(() => { return _repository.FirstOrDefaultAsync(x => x.Name == name); });
         }
 
         public async Task<Message> CreateMessageAndGet(string message)
         {
-            Message msg = null;
-            await UseUowIfNot(async () =>
-            {
-                msg = await _messageRepository.InsertAsync(new Message(message));
-            });
+            return await UseUowIfNot<Message>(async () => await _messageRepository.InsertAsync(new Message(message)));
+        }
 
-            return msg;
+        public Task<User> CreateUserByCorrelating(string name, string surname, string email, string correlationId)
+        {
+            return CorrelatingBy(() =>
+            {
+                return UseUow<User>(() => _repository.InsertAsync(User.Create(name, surname, email)));
+            }, correlationId);
         }
     }
 }

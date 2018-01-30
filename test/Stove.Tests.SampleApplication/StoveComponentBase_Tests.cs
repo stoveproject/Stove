@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 using Shouldly;
 
+using Stove.Events.Bus;
 using Stove.Tests.SampleApplication;
 using Stove.Tests.SampleApplication.Domain;
 using Stove.Tests.SampleApplication.Domain.Entities;
@@ -68,6 +70,18 @@ namespace Stove.Tests
                 message.Subject.ShouldBe("message");
                 message.CreatorUserId.ShouldBe(266);
             }
+        }
+
+        [Fact]
+        public async Task UseUow_and_correlatingBy_should_work()
+        {
+            string correlationId = Guid.NewGuid().ToString();
+            The<IEventBus>().Register<UserCreatedEvent>((@event, headers) =>
+            {
+                headers[StoveConsts.Events.CausationId].ShouldBe(correlationId);
+            });
+
+            await The<SomeDomainService>().CreateUserByCorrelating("oguzhan", "soykan", "oguzhansoykan@gmail.com", correlationId);
         }
     }
 }

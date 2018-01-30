@@ -2,12 +2,13 @@
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Transactions;
 
+using Stove.Commands;
 using Stove.Domain.Uow;
 using Stove.Log;
 using Stove.MQ;
 using Stove.ObjectMapping;
+using Stove.Threading.Extensions;
 
 namespace Stove
 {
@@ -67,140 +68,48 @@ namespace Stove
         /// </summary>
         public IMessageBus MessageBus { get; set; }
 
-        protected void UseUow(Action act)
+        /// <summary>
+        ///     The <see cref="CommandContext" /> accessor
+        /// </summary>
+        public IStoveCommandContextAccessor CommandContextAccessor { get; set; }
+
+        protected void CorrelatingBy(Action act, string correlationId)
         {
-            using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin())
+            using (CommandContextAccessor.Use(correlationId))
             {
                 act();
-
-                uow.Complete();
             }
         }
 
-        protected Task UseUow(Func<Task> func, CancellationToken cancellationToken = default)
+        protected TResponse CorrelatingBy<TResponse>(Func<TResponse> func, string correlationId)
         {
-            Task task;
-            using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin())
+            using (CommandContextAccessor.Use(correlationId))
             {
-                task = func();
-
-                uow.CompleteAsync(cancellationToken);
+                return func();
             }
-
-            return task;
         }
 
-        protected void UseUow(Action act, IsolationLevel isolation)
+        protected Task CorrelatingBy(Func<Task> func, string correlationId)
         {
-            using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(new UnitOfWorkOptions { IsolationLevel = isolation }))
+            using (CommandContextAccessor.Use(correlationId))
             {
-                act();
-
-                uow.Complete();
+                return func();
             }
         }
 
-        protected Task UseUow(Func<Task> func, IsolationLevel isolation, CancellationToken cancellationToken = default)
+        protected Task<TResponse> CorrelatingBy<TResponse>(Func<Task<TResponse>> func, string correlationId)
         {
-            Task task;
-            using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(new UnitOfWorkOptions { IsolationLevel = isolation }))
+            using (CommandContextAccessor.Use(correlationId))
             {
-                task = func();
-
-                uow.CompleteAsync(cancellationToken);
-            }
-
-            return task;
-        }
-
-        protected void UseUow(Action act, bool isTransactional)
-        {
-            using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(new UnitOfWorkOptions { IsTransactional = isTransactional }))
-            {
-                act();
-
-                uow.Complete();
+                return func();
             }
         }
 
-        protected Task UseUow(Func<Task> func, bool isTransactional, CancellationToken cancellationToken = default)
-        {
-            Task task;
-            using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(new UnitOfWorkOptions { IsTransactional = isTransactional }))
-            {
-                task = func();
-
-                uow.CompleteAsync(cancellationToken);
-            }
-
-            return task;
-        }
-
-        protected void UseUow(Action act, TransactionScopeOption scope)
-        {
-            using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(new UnitOfWorkOptions
-            {
-                Scope = scope
-            }))
-            {
-                act();
-
-                uow.Complete();
-            }
-        }
-
-        protected Task UseUow(Func<Task> func, TransactionScopeOption scope, CancellationToken cancellationToken = default)
-        {
-            Task task;
-            using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(new UnitOfWorkOptions
-            {
-                Scope = scope
-            }))
-            {
-                task = func();
-
-                uow.CompleteAsync(cancellationToken);
-            }
-
-            return task;
-        }
-
-        protected void UseUow(Action act, IsolationLevel isolation, TransactionScopeOption scope)
-        {
-            using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(new UnitOfWorkOptions
-            {
-                IsolationLevel = isolation,
-                Scope = scope
-            }))
-            {
-                act();
-
-                uow.Complete();
-            }
-        }
-
-        protected Task UseUow(Func<Task> func, IsolationLevel isolation, TransactionScopeOption scope, CancellationToken cancellationToken = default)
-        {
-            Task task;
-            using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(new UnitOfWorkOptions
-            {
-                IsolationLevel = isolation,
-                Scope = scope
-            }))
-            {
-                task = func();
-
-                uow.CompleteAsync(cancellationToken);
-            }
-
-            return task;
-        }
-
-        protected void UseUow(Action act, Action<UnitOfWorkOptions> optsAction)
+        protected void UseUow(Action act, Action<UnitOfWorkOptions> optsCallback = null)
         {
             var options = new UnitOfWorkOptions();
 
-            optsAction(options);
+            optsCallback?.Invoke(options);
 
             using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(options))
             {
@@ -210,195 +119,57 @@ namespace Stove
             }
         }
 
-        protected Task UseUow(Func<Task> func, Action<UnitOfWorkOptions> optsAction, CancellationToken cancellationToken = default)
+        protected TResponse UseUow<TResponse>(Func<TResponse> func, Action<UnitOfWorkOptions> optsCallback = null)
         {
             var options = new UnitOfWorkOptions();
 
-            optsAction(options);
+            optsCallback?.Invoke(options);
 
-            Task task;
+            TResponse response;
             using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(options))
             {
-                task = func();
+                response = func();
 
-                uow.CompleteAsync(cancellationToken);
+                uow.Complete();
             }
 
-            return task;
+            return response;
         }
 
-        protected void UseUowIfNot(Action act)
-        {
-            if (UnitOfWorkManager.Current == null)
-            {
-                using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin())
-                {
-                    act();
-
-                    uow.Complete();
-                }
-            }
-            else
-            {
-                act();
-            }
-        }
-
-        protected Task UseUowIfNot(Func<Task> func, CancellationToken cancellationToken = default)
-        {
-            Task task;
-            if (UnitOfWorkManager.Current == null)
-            {
-                using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin())
-                {
-                    task = func();
-
-                    uow.CompleteAsync(cancellationToken);
-                }
-            }
-            else
-            {
-                task = func();
-            }
-
-            return task;
-        }
-
-        protected void UseUowIfNot(Action act, bool isTransactional)
-        {
-            if (UnitOfWorkManager.Current == null)
-            {
-                using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(new UnitOfWorkOptions
-                {
-                    IsTransactional = isTransactional
-                }))
-                {
-                    act();
-
-                    uow.Complete();
-                }
-            }
-            else
-            {
-                act();
-            }
-        }
-
-        protected Task UseUowIfNot(Func<Task> func, bool isTransactional, CancellationToken cancellationToken = default)
-        {
-            Task task;
-            if (UnitOfWorkManager.Current == null)
-            {
-                using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(new UnitOfWorkOptions
-                {
-                    IsTransactional = isTransactional
-                }))
-                {
-                    task = func();
-
-                    uow.CompleteAsync(cancellationToken);
-                }
-            }
-            else
-            {
-                task = func();
-            }
-
-            return task;
-        }
-
-        protected void UseUowIfNot(Action act, IsolationLevel isolation)
-        {
-            if (UnitOfWorkManager.Current == null)
-            {
-                using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(new UnitOfWorkOptions
-                {
-                    IsolationLevel = isolation
-                }))
-                {
-                    act();
-
-                    uow.Complete();
-                }
-            }
-            else
-            {
-                act();
-            }
-        }
-
-        protected Task UseUowIfNot(Func<Task> func, IsolationLevel isolation, CancellationToken cancellationToken = default)
-        {
-            Task task;
-            if (UnitOfWorkManager.Current == null)
-            {
-                using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(new UnitOfWorkOptions
-                {
-                    IsolationLevel = isolation
-                }))
-                {
-                    task = func();
-
-                    uow.CompleteAsync(cancellationToken);
-                }
-            }
-            else
-            {
-                task = func();
-            }
-
-            return task;
-        }
-
-        protected void UseUowIfNot(Action act, IsolationLevel isolation, TransactionScopeOption scope)
-        {
-            if (UnitOfWorkManager.Current == null)
-            {
-                using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(new UnitOfWorkOptions
-                {
-                    IsolationLevel = isolation,
-                    Scope = scope
-                }))
-                {
-                    act();
-
-                    uow.Complete();
-                }
-            }
-            else
-            {
-                act();
-            }
-        }
-
-        protected Task UseUowIfNot(Func<Task> func, IsolationLevel isolation, TransactionScopeOption scope, CancellationToken cancellationToken = default)
-        {
-            Task task;
-            if (UnitOfWorkManager.Current == null)
-            {
-                using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(new UnitOfWorkOptions
-                {
-                    IsolationLevel = isolation,
-                    Scope = scope
-                }))
-                {
-                    task = func();
-
-                    uow.CompleteAsync(cancellationToken);
-                }
-            }
-            else
-            {
-                task = func();
-            }
-
-            return task;
-        }
-
-        protected void UseUowIfNot(Action act, Action<UnitOfWorkOptions> optsAction)
+        protected async Task UseUow(Func<Task> func, Action<UnitOfWorkOptions> optsAction = null, CancellationToken cancellationToken = default)
         {
             var options = new UnitOfWorkOptions();
-            optsAction(options);
+
+            optsAction?.Invoke(options);
+
+            using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(options))
+            {
+                await func().NotOnCapturedContext();
+
+                await uow.CompleteAsync(cancellationToken).NotOnCapturedContext();
+            }
+        }
+
+        protected async Task<TResponse> UseUow<TResponse>(Func<Task<TResponse>> func, Action<UnitOfWorkOptions> optsAction = null, CancellationToken cancellationToken = default)
+        {
+            var options = new UnitOfWorkOptions();
+            optsAction?.Invoke(options);
+
+            TResponse response;
+            using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(options))
+            {
+                response = await func().NotOnCapturedContext();
+
+                await uow.CompleteAsync(cancellationToken).NotOnCapturedContext();
+            }
+
+            return response;
+        }
+
+        protected void UseUowIfNot(Action act, Action<UnitOfWorkOptions> optsAction = null)
+        {
+            var options = new UnitOfWorkOptions();
+            optsAction?.Invoke(options);
 
             if (UnitOfWorkManager.Current == null)
             {
@@ -415,27 +186,70 @@ namespace Stove
             }
         }
 
-        protected Task UseUowIfNot(Func<Task> func, Action<UnitOfWorkOptions> optsAction, CancellationToken cancellationToken = default)
+        protected TResponse UseUowIfNot<TResponse>(Func<TResponse> func, Action<UnitOfWorkOptions> optsAction = null)
         {
             var options = new UnitOfWorkOptions();
-            optsAction(options);
+            optsAction?.Invoke(options);
 
-            Task task;
+            TResponse response;
             if (UnitOfWorkManager.Current == null)
             {
                 using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(options))
                 {
-                    task = func();
+                    response = func();
 
-                    uow.CompleteAsync(cancellationToken);
+                    uow.Complete();
                 }
             }
             else
             {
-                task = func();
+                response = func();
             }
 
-            return task;
+            return response;
+        }
+
+        protected async Task UseUowIfNot(Func<Task> func, Action<UnitOfWorkOptions> optsAction = null, CancellationToken cancellationToken = default)
+        {
+            var options = new UnitOfWorkOptions();
+            optsAction?.Invoke(options);
+
+            if (UnitOfWorkManager.Current == null)
+            {
+                using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(options))
+                {
+                    await func().NotOnCapturedContext();
+
+                    await uow.CompleteAsync(cancellationToken).NotOnCapturedContext();
+                }
+            }
+            else
+            {
+                await func().NotOnCapturedContext();
+            }
+        }
+
+        protected async Task<TResponse> UseUowIfNot<TResponse>(Func<Task<TResponse>> func, Action<UnitOfWorkOptions> optsAction = null, CancellationToken cancellationToken = default)
+        {
+            var options = new UnitOfWorkOptions();
+            optsAction?.Invoke(options);
+
+            TResponse response;
+            if (UnitOfWorkManager.Current == null)
+            {
+                using (IUnitOfWorkCompleteHandle uow = UnitOfWorkManager.Begin(options))
+                {
+                    response = await func().NotOnCapturedContext();
+
+                    await uow.CompleteAsync(cancellationToken).NotOnCapturedContext();
+                }
+            }
+            else
+            {
+                response = await func().NotOnCapturedContext();
+            }
+
+            return response;
         }
 
         protected void OnUowCompleted(Action action)
