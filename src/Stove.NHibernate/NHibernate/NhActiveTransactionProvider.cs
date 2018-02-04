@@ -15,6 +15,7 @@ namespace Stove.NHibernate
 {
     public class NhActiveTransactionProvider : IActiveTransactionProvider, ITransientDependency
     {
+        private static readonly MethodInfo getSessionMethod = typeof(ISessionProvider).GetMethod(nameof(ISessionProvider.GetSession));
         private readonly IScopeResolver _scope;
 
         public NhActiveTransactionProvider(IScopeResolver scope)
@@ -44,10 +45,7 @@ namespace Stove.NHibernate
         {
             var sessionContextType = (Type)args["SessionContextType"];
             var sessionContextProvider = _scope.Resolve<ISessionProvider>();
-            MethodInfo method = sessionContextProvider.GetType()
-                                                      .GetMethod(nameof(ISessionProvider.GetSession))
-                                                      ?.MakeGenericMethod(sessionContextType);
-          
+            MethodInfo method = getSessionMethod.MakeGenericMethod(sessionContextType);
             var session = method.Invoke(sessionContextProvider, null).As<ISession>();
             return session;
         }

@@ -23,12 +23,7 @@ namespace Stove.Timing
             get { return _provider; }
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Can not set Clock.Provider to null!");
-                }
-
-                _provider = value;
+                _provider = value ?? throw new ArgumentNullException(nameof(value), "Can not set Clock.Provider to null!");
             }
         }
 

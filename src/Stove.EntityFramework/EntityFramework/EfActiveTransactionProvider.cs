@@ -5,13 +5,16 @@ using System.Reflection;
 
 using Autofac.Extras.IocManager;
 
-using Stove.Extensions;
 using Stove.Data;
+using Stove.Extensions;
 
 namespace Stove.EntityFramework
 {
     public class EfActiveTransactionProvider : IActiveTransactionProvider, ITransientDependency
     {
+        private static readonly MethodInfo getDbContextMethod = typeof(IDbContextProvider<StoveDbContext>)
+            .GetMethod(nameof(IDbContextProvider<StoveDbContext>.GetDbContext));
+
         private readonly IScopeResolver _scopeResolver;
 
         public EfActiveTransactionProvider(IScopeResolver scopeResolver)
@@ -21,7 +24,7 @@ namespace Stove.EntityFramework
 
         public IDbTransaction GetActiveTransaction(ActiveTransactionProviderArgs args)
         {
-            return GetDbContext(args).Database.CurrentTransaction.UnderlyingTransaction;
+            return GetDbContext(args).Database.CurrentTransaction?.UnderlyingTransaction;
         }
 
         public IDbConnection GetActiveConnection(ActiveTransactionProviderArgs args)
@@ -34,8 +37,7 @@ namespace Stove.EntityFramework
             var dbContextType = (Type)args["ContextType"];
             Type dbContextProviderType = typeof(IDbContextProvider<>).MakeGenericType(dbContextType);
             object dbContextProvider = _scopeResolver.Resolve(dbContextProviderType);
-            MethodInfo method = dbContextProvider.GetType().GetMethod(nameof(IDbContextProvider<StoveDbContext>.GetDbContext));
-            var dbContext = method.Invoke(dbContextProvider, null).As<DbContext>();
+            var dbContext = getDbContextMethod.Invoke(dbContextProvider, null).As<DbContext>();
             return dbContext;
         }
     }

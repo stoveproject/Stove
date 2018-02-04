@@ -12,33 +12,35 @@ using Stove.Extensions;
 
 namespace Stove.EntityFrameworkCore
 {
-	public class EfCoreActiveTransactionProvider : IActiveTransactionProvider, ITransientDependency
-	{
-		private readonly IScopeResolver _scopeResolver;
+    public class EfCoreActiveTransactionProvider : IActiveTransactionProvider, ITransientDependency
+    {
+        private static readonly MethodInfo getDbContextMethod = typeof(IDbContextProvider<StoveDbContext>)
+            .GetMethod(nameof(IDbContextProvider<StoveDbContext>.GetDbContext));
 
-		public EfCoreActiveTransactionProvider(IScopeResolver scopeResolver)
-		{
-			_scopeResolver = scopeResolver;
-		}
+        private readonly IScopeResolver _scopeResolver;
 
-		public IDbTransaction GetActiveTransaction(ActiveTransactionProviderArgs args)
-		{
-			return GetDbContext(args).Database.CurrentTransaction?.GetDbTransaction();
-		}
+        public EfCoreActiveTransactionProvider(IScopeResolver scopeResolver)
+        {
+            _scopeResolver = scopeResolver;
+        }
 
-		public IDbConnection GetActiveConnection(ActiveTransactionProviderArgs args)
-		{
-			return GetDbContext(args).Database.GetDbConnection();
-		}
+        public IDbTransaction GetActiveTransaction(ActiveTransactionProviderArgs args)
+        {
+            return GetDbContext(args).Database.CurrentTransaction?.GetDbTransaction();
+        }
 
-		private DbContext GetDbContext(ActiveTransactionProviderArgs args)
-		{
-			var dbContextType = (Type)args["ContextType"];
-			Type dbContextProviderType = typeof(IDbContextProvider<>).MakeGenericType(dbContextType);
-			object dbContextProvider = _scopeResolver.Resolve(dbContextProviderType);
-			MethodInfo method = dbContextProvider.GetType().GetMethod(nameof(IDbContextProvider<StoveDbContext>.GetDbContext));
-			var dbContext = method.Invoke(dbContextProvider, null).As<DbContext>();
-			return dbContext;
-		}
-	}
+        public IDbConnection GetActiveConnection(ActiveTransactionProviderArgs args)
+        {
+            return GetDbContext(args).Database.GetDbConnection();
+        }
+
+        private DbContext GetDbContext(ActiveTransactionProviderArgs args)
+        {
+            var dbContextType = (Type)args["ContextType"];
+            Type dbContextProviderType = typeof(IDbContextProvider<>).MakeGenericType(dbContextType);
+            object dbContextProvider = _scopeResolver.Resolve(dbContextProviderType);
+            var dbContext = getDbContextMethod.Invoke(dbContextProvider, null).As<DbContext>();
+            return dbContext;
+        }
+    }
 }

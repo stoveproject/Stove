@@ -14,10 +14,9 @@ using Stove.Dapper.Extensions;
 using Stove.Dapper.Filters.Action;
 using Stove.Dapper.Filters.Query;
 using Stove.Dapper.TableValueParameters;
+using Stove.Data;
 using Stove.Domain.Entities;
 using Stove.Domain.Uow;
-using Stove.Events.Bus.Entities;
-using Stove.Data;
 
 namespace Stove.Dapper.Repositories
 {
@@ -28,20 +27,18 @@ namespace Stove.Dapper.Repositories
         public DapperRepositoryBase(IActiveTransactionProvider activeTransactionProvider)
         {
             _activeTransactionProvider = activeTransactionProvider;
-            AggregateChangeEventHelper = NullAggregateChangeEventHelper.Instance;
+
             DapperQueryFilterExecuter = NullDapperQueryFilterExecuter.Instance;
             DapperActionFilterExecuter = NullDapperActionFilterExecuter.Instance;
         }
 
         public IDapperQueryFilterExecuter DapperQueryFilterExecuter { get; set; }
 
-        public IAggregateChangeEventHelper AggregateChangeEventHelper { get; set; }
-
         public IDapperActionFilterExecuter DapperActionFilterExecuter { get; set; }
 
         public virtual DbConnection Connection => (DbConnection)_activeTransactionProvider.GetActiveConnection(ActiveTransactionProviderArgs.Empty);
 
-	    /// <summary>
+        /// <summary>
         ///     Gets the active transaction. If Dapper is active then <see cref="IUnitOfWork" /> should be started before
         ///     and there must be an active transaction.
         /// </summary>
@@ -50,7 +47,7 @@ namespace Stove.Dapper.Repositories
         /// </value>
         public virtual DbTransaction ActiveTransaction => (DbTransaction)_activeTransactionProvider.GetActiveTransaction(ActiveTransactionProviderArgs.Empty);
 
-	    public override TEntity Single(TPrimaryKey id)
+        public override TEntity Single(TPrimaryKey id)
         {
             return Single(CreateEqualityExpressionForId(id));
         }
