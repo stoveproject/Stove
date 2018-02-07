@@ -33,7 +33,7 @@ namespace Stove.EntityFramework.Utils
 
         public static void NormalizeDatePropertyKinds(object entity, Type entityType)
         {
-            var dateTimePropertyInfos = GetDatePropertyInfos(entityType);
+            EntityDateTimePropertiesInfo dateTimePropertyInfos = GetDatePropertyInfos(entityType);
 
             dateTimePropertyInfos.DateTimePropertyInfos.ForEach(property =>
             {
@@ -56,19 +56,19 @@ namespace Stove.EntityFramework.Utils
 
         private static EntityDateTimePropertiesInfo FindDatePropertyInfosForType(Type entityType)
         {
-            var datetimeProperties = entityType.GetProperties()
+            List<PropertyInfo> datetimeProperties = entityType.GetProperties()
                                      .Where(property =>
                                          (property.PropertyType == typeof(DateTime) ||
                                          property.PropertyType == typeof(DateTime?)) &&
                                          property.CanWrite
                                      ).ToList();
 
-            var complexTypeProperties = entityType.GetProperties()
+            List<PropertyInfo> complexTypeProperties = entityType.GetProperties()
                                                    .Where(p => p.PropertyType.IsDefined(typeof(ComplexTypeAttribute), true))
                                                    .ToList();
 
             var complexTypeDateTimePropertyPaths = new List<string>();
-            foreach (var complexTypeProperty in complexTypeProperties)
+            foreach (PropertyInfo complexTypeProperty in complexTypeProperties)
             {
                 AddComplexTypeDateTimePropertyPaths(entityType.FullName + "." + complexTypeProperty.Name, complexTypeProperty, complexTypeDateTimePropertyPaths);
             }
@@ -87,7 +87,7 @@ namespace Stove.EntityFramework.Utils
                 return;
             }
 
-            var complexTypeDateProperties = complexProperty.PropertyType
+            List<string> complexTypeDateProperties = complexProperty.PropertyType
                                                             .GetProperties()
                                                             .Where(property =>
                                                                 property.PropertyType == typeof(DateTime) ||
@@ -96,7 +96,7 @@ namespace Stove.EntityFramework.Utils
 
             complexTypeDateTimePropertyPaths.AddRange(complexTypeDateProperties);
 
-            var complexTypeProperties = complexProperty.PropertyType.GetProperties()
+            List<PropertyInfo> complexTypeProperties = complexProperty.PropertyType.GetProperties()
                                                   .Where(p => p.PropertyType.IsDefined(typeof(ComplexTypeAttribute), true))
                                                   .ToList();
 
@@ -105,7 +105,7 @@ namespace Stove.EntityFramework.Utils
                 return;
             }
 
-            foreach (var complexTypeProperty in complexTypeProperties)
+            foreach (PropertyInfo complexTypeProperty in complexTypeProperties)
             {
                 AddComplexTypeDateTimePropertyPaths(pathPrefix + "." + complexTypeProperty.Name, complexTypeProperty, complexTypeDateTimePropertyPaths);
             }

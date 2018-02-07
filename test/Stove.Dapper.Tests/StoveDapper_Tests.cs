@@ -128,12 +128,12 @@ namespace Stove.Dapper.Tests
                 }
 
                 _productDapperRepository.Insert(new Product("InsertedProductAfterSpecifiedUserId"));
-                Product InsertedProductAfterSpecifiedUserId = _productDapperRepository.GetAll(x => x.Name == "InsertedProductAfterSpecifiedUserId").FirstOrDefault();
+                Product insertedProductAfterSpecifiedUserId = _productDapperRepository.GetAll(x => x.Name == "InsertedProductAfterSpecifiedUserId").FirstOrDefault();
 
-                InsertedProductAfterSpecifiedUserId.ShouldNotBeNull();
-                InsertedProductAfterSpecifiedUserId.CreationTime.ShouldNotBeNull();
-                InsertedProductAfterSpecifiedUserId.CreatorUserId.ShouldNotBeNull();
-                InsertedProductAfterSpecifiedUserId.CreatorUserId.ShouldBe(StoveSession.UserId);
+                insertedProductAfterSpecifiedUserId.ShouldNotBeNull();
+                insertedProductAfterSpecifiedUserId.CreationTime.ShouldNotBeNull();
+                insertedProductAfterSpecifiedUserId.CreatorUserId.ShouldNotBeNull();
+                insertedProductAfterSpecifiedUserId.CreatorUserId.ShouldBe(StoveSession.UserId);
 
                 uow.Complete();
             }
