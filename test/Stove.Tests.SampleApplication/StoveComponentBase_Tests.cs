@@ -20,9 +20,9 @@ namespace Stove.Tests
         }
 
         [Fact]
-        public void UseUow_should_work()
+        public async Task UseUow_should_work()
         {
-            User user = The<SomeDomainService>().GetUserByName("Oğuzhan");
+            User user = await The<SomeDomainService>().GetUserByName("Oğuzhan");
             user.ShouldNotBeNull();
         }
 
@@ -41,16 +41,16 @@ namespace Stove.Tests
         }
 
         [Fact]
-        public void UseUow_isTransactional_should_work()
+        public async Task UseUow_isTransactional_should_work()
         {
-            User user = The<SomeDomainService>().GetUserByName_isTransactional("Oğuzhan");
+            User user = await The<SomeDomainService>().GetUserByName_isTransactional("Oğuzhan");
             user.ShouldNotBeNull();
         }
 
         [Fact]
-        public void UseUow_isolationLevel_should_work()
+        public async Task UseUow_isolationLevel_should_work()
         {
-            User user = The<SomeDomainService>().GetUserByName_with_isolationlevel("Oğuzhan");
+            User user = await The<SomeDomainService>().GetUserByName_with_isolationlevel("Oğuzhan");
             user.ShouldNotBeNull();
         }
 
