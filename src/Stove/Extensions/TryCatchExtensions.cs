@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Stove.Extensions
 {
@@ -17,6 +19,25 @@ namespace Stove.Extensions
             finally
             {
                 finallyCallback?.Invoke();
+            }
+        }
+
+        public static async Task SilentlyAsync(Func<Task> callback, Func<Exception, Task> onException, Func<Task> finallyCallback = null, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                await callback();
+            }
+            catch (Exception ex)
+            {
+                await onException(ex);
+            }
+            finally
+            {
+                if (finallyCallback != null)
+                {
+                    await finallyCallback();
+                }
             }
         }
     }
