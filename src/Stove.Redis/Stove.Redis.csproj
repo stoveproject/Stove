@@ -4,10 +4,10 @@
   
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Stove</RootNamespace>
     <AssemblyName>Stove.Redis</AssemblyName>
     <PackageId>Stove.Redis</PackageId>
     <PackageTags>.net;framework;boilerplate;caching;redis</PackageTags>
-    <RootNamespace>Stove</RootNamespace>
     <Description>Redis integration for Stove.</Description>
   </PropertyGroup>
 
@@ -28,6 +28,5 @@
 
   <ItemGroup>
     <PackageReference Include="StackExchange.Redis.StrongName" Version="1.2.6" />
-  </ItemGroup>
-  
+  </ItemGroup>    
  </Project>

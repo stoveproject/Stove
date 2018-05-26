@@ -4,10 +4,10 @@
   
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Stove</RootNamespace>
     <AssemblyName>Stove.Mapster</AssemblyName>
     <PackageId>Stove.Mapster</PackageId>
     <PackageTags>.net;framework;boilerplate;mapster</PackageTags>
-    <RootNamespace>Stove</RootNamespace>
     <Description>Mapster automapping integration for Stove.</Description>
   </PropertyGroup>
 
@@ -28,6 +28,5 @@
 
   <ItemGroup>
     <PackageReference Include="Mapster" Version="3.1.8" />
-  </ItemGroup>
- 
+  </ItemGroup>  
 </Project>

@@ -8,6 +8,9 @@
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/osoykan/Stove</RepositoryUrl>
     <Authors>Oguzhan Soykan</Authors>
+    <Company>Stove Project</Company>
+    <ProductName>Stove</ProductName>
+    <Copyright>Copyright ©  2016</Copyright>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <GenerateAssemblyTitleAttribute>true</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyDescriptionAttribute>true</GenerateAssemblyDescriptionAttribute>

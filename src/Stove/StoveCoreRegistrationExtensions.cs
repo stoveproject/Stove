@@ -245,7 +245,6 @@ namespace Stove
         ///     Uses the Stove with nullables, prefer when you writing unit tests.
         /// </summary>
         /// <param name="builder">The builder.</param>
-        /// <param name="starterBootstrapperType">Type of the starter bootstrapper.</param>
         /// <param name="autoUnitOfWorkInterceptionEnabled">if set to <c>true</c> [automatic unit of work interception enabled].</param>
         /// <returns></returns>
         [NotNull]
