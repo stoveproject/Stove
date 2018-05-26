@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 using JetBrains.Annotations;
-
+                                  
+[assembly: InternalsVisibleTo("Stove.EntityFramework"),
+           InternalsVisibleTo("Stove.EntityFrameworkCore"),
+           InternalsVisibleTo("Stove.NHibernate")] 
 namespace Stove.Reflection
 {
     internal static class ReflectionHelper

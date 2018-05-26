@@ -17,8 +17,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentNHibernate" Version="2.0.3" />
-    <PackageReference Include="NHibernate" Version="5.0.3" />
+    <PackageReference Include="FluentNHibernate" Version="2.1.2" />
+    <PackageReference Include="NHibernate" Version="5.1.2" />
   </ItemGroup>
 
   <ItemGroup>

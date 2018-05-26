@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("Stove.Tests")]
 namespace Stove.Reflection
-{
+{ 
     internal static class TypeHelper
     {
         public static bool IsFunc(object obj)

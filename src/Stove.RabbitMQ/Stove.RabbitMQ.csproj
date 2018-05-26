@@ -4,10 +4,10 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Stove</RootNamespace>
     <AssemblyName>Stove.RabbitMQ</AssemblyName>
     <PackageId>Stove.RabbitMQ</PackageId>
     <PackageTags>.net;framework;boilerplate;Queue;RabbitMQ</PackageTags>
-    <RootNamespace>Stove</RootNamespace>
     <Description>RabbitMQ integration for Stove.</Description>
   </PropertyGroup>
 
@@ -27,9 +27,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MassTransit" Version="5.0.2" />
-    <PackageReference Include="MassTransit.Autofac" Version="5.0.2" />
-    <PackageReference Include="MassTransit.RabbitMQ" Version="5.0.2" />
-  </ItemGroup>
-
+    <PackageReference Include="MassTransit" Version="5.1.2" />
+    <PackageReference Include="MassTransit.Autofac" Version="5.1.2" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="5.1.2" />
+  </ItemGroup>   
 </Project>

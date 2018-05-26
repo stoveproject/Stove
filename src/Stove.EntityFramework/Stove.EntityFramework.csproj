@@ -4,10 +4,10 @@
   
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
+    <RootNamespace>Stove</RootNamespace>
     <AssemblyName>Stove.EntityFramework</AssemblyName>
     <PackageId>Stove.EntityFramework</PackageId>
     <PackageTags>.net;framework;boilerplate;entityframework</PackageTags>
-    <RootNamespace>Stove</RootNamespace>
     <Description>EntityFramework integration for Stove.</Description>
   </PropertyGroup>
 
@@ -36,6 +36,5 @@
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Transactions" />
-  </ItemGroup>
-  
+  </ItemGroup>   
 </Project>
