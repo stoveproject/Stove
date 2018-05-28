@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Stove.Events.Bus.Entities
 {
@@ -13,7 +14,7 @@ namespace Stove.Events.Bus.Entities
 
         public bool IsEmpty()
         {
-            return DomainEvents.Count <= 0;
+            return !DomainEvents.Any();
         }
 
         public override string ToString()

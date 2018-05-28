@@ -4,6 +4,7 @@
     <TargetFramework>net462</TargetFramework>
     <AssemblyName>Stove.Demo.WebApi</AssemblyName>
     <OutputType>exe</OutputType>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>

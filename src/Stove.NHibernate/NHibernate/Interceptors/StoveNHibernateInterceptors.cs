@@ -12,7 +12,6 @@ using NHibernate.Type;
 using Stove.Commands;
 using Stove.Domain.Entities;
 using Stove.Domain.Entities.Auditing;
-using Stove.Events;
 using Stove.Events.Bus;
 using Stove.Extensions;
 using Stove.Runtime.Session;
