@@ -1,6 +1,5 @@
 ﻿using Autofac.Extras.IocManager;
 
-using Stove.Events;
 using Stove.Events.Bus;
 using Stove.Events.Bus.Handlers;
 

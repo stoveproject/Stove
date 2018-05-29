@@ -31,7 +31,7 @@ var testProjects = new List<Tuple<string, string[]>>
                     new Tuple<string, string[]>("Stove.Tests.SampleApplication", new[] { "net461" }),
                     new Tuple<string, string[]>("Stove.Dapper.Tests", new[] { "net461" }),
                     new Tuple<string, string[]>("Stove.Hangfire.Tests", new[] { "netcoreapp2.0" }),
-                    new Tuple<string, string[]>("Stove.NHibernate.Tests", new[] { "net461" }),
+                    new Tuple<string, string[]>("Stove.NHibernate.Tests", new[] { "netcoreapp2.0" }),
                     new Tuple<string, string[]>("Stove.EntityFrameworkCore.Tests", new[] { "netcoreapp2.0" }),
                     new Tuple<string, string[]>("Stove.Serilog.Tests", new[] { "netcoreapp2.0" })
                 };

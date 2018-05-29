@@ -3,35 +3,32 @@
   <Import Project="..\..\common.props"></Import>
 
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Stove</RootNamespace>
     <AssemblyName>Stove.NHibernate</AssemblyName>
     <PackageId>Stove.NHibernate</PackageId>
-    <PackageTags>.net;framework;boilerplate;nhibernate</PackageTags>
+    <PackageTags>.net;core;framework;boilerplate;nhibernate</PackageTags>
     <RootNamespace>Stove</RootNamespace>
     <Description>NHibernate Orm integration for Stove.</Description>
   </PropertyGroup>
 
   <PropertyGroup>
-    <DocumentationFile>bin\Release\net461\Stove.NHibernate.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netstandard2.0\Stove.NHibernate.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentNHibernate" Version="2.0.3" />
-    <PackageReference Include="NHibernate" Version="5.0.3" />
+    <PackageReference Include="FluentNHibernate" Version="2.1.2" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.4.1" />
+    <PackageReference Include="NHibernate" Version="5.1.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Stove\Stove.csproj" />
-  </ItemGroup>
+  </ItemGroup>   
 
   <ItemGroup>
-    <Reference Include="System.Transactions" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="bin\Release\net461\Stove.NHibernate.pdb">
-      <PackagePath>lib/net461/</PackagePath>
+    <None Include="bin\Release\netstandard2.0\Stove.NHibernate.pdb">
+      <PackagePath>lib/netstandard2.0/</PackagePath>
       <Pack>true</Pack>
     </None>
   </ItemGroup>

@@ -4,9 +4,9 @@
   
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Stove</RootNamespace>
     <AssemblyName>Stove.HangFire</AssemblyName>
     <PackageId>Stove.HangFire</PackageId>
-    <RootNamespace>Stove</RootNamespace>
     <Description>Hangfire integration for Stove.</Description>
     <PackageTags>.net;framework;boilerplate;hangfire</PackageTags>
   </PropertyGroup>
@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hangfire.Core" Version="1.6.17" />
+    <PackageReference Include="Hangfire.Core" Version="1.6.19" />
   </ItemGroup>
- 
+
 </Project>

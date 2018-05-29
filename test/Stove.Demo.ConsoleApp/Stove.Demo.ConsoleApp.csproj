@@ -42,9 +42,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="EntityFrameworkProfiler.Appender" Version="5.0.5005-alpha" />
-    <PackageReference Include="Hangfire.SqlServer" Version="1.6.17" />
-    <PackageReference Include="LinqKit" Version="1.1.12" />
+    <PackageReference Include="EntityFrameworkProfiler.Appender" Version="5.0.5023" />
+    <PackageReference Include="Hangfire.SqlServer" Version="1.6.19" />
+    <PackageReference Include="LinqKit" Version="1.1.15" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">

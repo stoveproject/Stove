@@ -1,10 +1,8 @@
 using System;
 using System.Linq;
-
-using NHibernate.Util;
-
+                     
 using Stove.Bootstrapping;
-using Stove.Domain.Uow;
+using Stove.Extensions;
 using Stove.NHibernate.Configuration;
 using Stove.NHibernate.Interceptors;
 
