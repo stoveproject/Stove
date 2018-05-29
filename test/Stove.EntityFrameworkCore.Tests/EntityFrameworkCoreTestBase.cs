@@ -27,6 +27,7 @@ namespace Stove.EntityFrameworkCore.Tests
 				.UseStoveEventBus();
 
 				var bloggingDbContextBuilder = new DbContextOptionsBuilder<BloggingDbContext>();
+			    bloggingDbContextBuilder.UseLazyLoadingProxies();
 
 				bloggingDbContextBuilder.ReplaceService<IEntityMaterializerSource, StoveEntityMaterializerSource>();
 
@@ -42,6 +43,7 @@ namespace Stove.EntityFrameworkCore.Tests
 
 
 				var supportDbContextBuilder = new DbContextOptionsBuilder<SupportDbContext>();
+			    supportDbContextBuilder.UseLazyLoadingProxies();
 
 				supportDbContextBuilder.ReplaceService<IEntityMaterializerSource, StoveEntityMaterializerSource>();
 

@@ -8,11 +8,11 @@ namespace Stove.EntityFrameworkCore.Tests.Domain
     public class Post : AuditedEntity<Guid>
     {
         [Required]
-        public Blog Blog { get; set; }
+        public virtual Blog Blog { get; set; }
 
-        public string Title { get; set; }
+        public virtual string Title { get; set; }
 
-        public string Body { get; set; }
+        public virtual string Body { get; set; }
 
         public Post()
         {
