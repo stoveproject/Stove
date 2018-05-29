@@ -15,12 +15,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-using Stove.Collections.Extensions;
 using Stove.Commands;
 using Stove.Domain.Entities;
 using Stove.Domain.Entities.Auditing;
 using Stove.Domain.Uow;
-using Stove.Events;
 using Stove.Events.Bus;
 using Stove.Events.Bus.Entities;
 using Stove.Extensions;

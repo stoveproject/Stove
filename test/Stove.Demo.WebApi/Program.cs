@@ -1,6 +1,6 @@
 ﻿using System;
 
-using HibernatingRhinos.Profiler.Appender.EntityFramework;
+// using HibernatingRhinos.Profiler.Appender.EntityFramework;
 
 using Microsoft.Owin.Hosting;
 

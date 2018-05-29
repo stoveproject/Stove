@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-
-using Stove.Events;
-using Stove.Events.Bus;
+﻿using Stove.Events.Bus;
 using Stove.Events.Bus.Handlers;
 
 using Xunit;

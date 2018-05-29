@@ -2,14 +2,11 @@
 
 using Autofac.Extras.IocManager;
 
-using Newtonsoft.Json.Linq;
-
 using Shouldly;
 
 using Stove.Commands;
 using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
-using Stove.Events;
 using Stove.Events.Bus;
 using Stove.Events.Bus.Handlers;
 using Stove.Json;
@@ -181,7 +178,7 @@ namespace Stove.Tests.SampleApplication
         {
             string name = @event.Name;
 
-            string aggId = headers.GetAggregateId();
+            string aggId = headers.GetAggregateId();   
         }
     }
 }

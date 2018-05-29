@@ -1,10 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
 using JetBrains.Annotations;
-
-using Stove.Domain.Uow;
 
 namespace Stove.Reflection.Extensions
 {
@@ -26,13 +25,13 @@ namespace Stove.Reflection.Extensions
 		        throw new ArgumentNullException(nameof(memberInfo));
 	        }
 
-	        var attrs = memberInfo.GetCustomAttributes(typeof(TAttribute), inherit).ToList();
-	        if (attrs.Count > 0)
+	        List<object> attrs = memberInfo.GetCustomAttributes(typeof(TAttribute), inherit).ToList();
+	        if (attrs.Any())
 	        {
 		        return (TAttribute)attrs[0];
 	        }
 
-	        return default(TAttribute);
+	        return default;
 		}
 
         [CanBeNull]

@@ -1,7 +1,6 @@
 using System;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 
-using Stove.Events;
 using Stove.Events.Bus.Handlers;
 
 namespace Stove.Tests.Events.Bus
@@ -19,7 +18,7 @@ namespace Stove.Tests.Events.Bus
 
         public void Handle(MySimpleEvent @event, Headers headers)
         {
-            ++HandleCount;
+            ++HandleCount;  
         }
     }
 }

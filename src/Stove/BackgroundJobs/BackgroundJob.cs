@@ -30,7 +30,7 @@ namespace Stove.BackgroundJobs
             {
                 if (_unitOfWorkManager == null)
                 {
-                    throw new StoveException("Must set UnitOfWorkManager before use it.");
+                    throw new StoveException($"Must set {nameof(UnitOfWorkManager)} before use it.");
                 }
 
                 return _unitOfWorkManager;

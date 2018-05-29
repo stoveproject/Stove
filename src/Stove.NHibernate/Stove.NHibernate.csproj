@@ -7,7 +7,7 @@
     <RootNamespace>Stove</RootNamespace>
     <AssemblyName>Stove.NHibernate</AssemblyName>
     <PackageId>Stove.NHibernate</PackageId>
-    <PackageTags>.net;framework;boilerplate;nhibernate</PackageTags>
+    <PackageTags>.net;core;framework;boilerplate;nhibernate</PackageTags>
     <RootNamespace>Stove</RootNamespace>
     <Description>NHibernate Orm integration for Stove.</Description>
   </PropertyGroup>
@@ -24,11 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Stove\Stove.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="System.Transactions" />
-  </ItemGroup>
+  </ItemGroup>   
 
   <ItemGroup>
     <None Include="bin\Release\netstandard2.0\Stove.NHibernate.pdb">
