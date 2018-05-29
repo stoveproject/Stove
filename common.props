@@ -24,7 +24,6 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <LangVersion>7.1</LangVersion>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.1" PrivateAssets="All" />
   </ItemGroup>
