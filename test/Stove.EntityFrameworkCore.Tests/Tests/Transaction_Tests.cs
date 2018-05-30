@@ -8,7 +8,7 @@ using Shouldly;
 using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
 using Stove.EntityFrameworkCore.Tests.Domain;
-
+using Stove.EntityFrameworkCore.Tests.Ef;
 using Xunit;
 
 namespace Stove.EntityFrameworkCore.Tests.Tests
@@ -50,7 +50,7 @@ namespace Stove.EntityFrameworkCore.Tests.Tests
 
             }
             
-            await UsingDbContextAsync(async context =>
+            await UsingDbContextAsync<BloggingDbContext>(async context =>
             {
                 var blog = await context.Blogs.FirstOrDefaultAsync(b => b.Name == blogName);
                 blog.ShouldNotBeNull();
