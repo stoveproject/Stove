@@ -11,8 +11,8 @@ using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
 using Stove.EntityFrameworkCore.Tests.Domain;
 using Stove.EntityFrameworkCore.Tests.Domain.Events;
-using Stove.Events.Bus;
-using Stove.Events.Bus.Entities;
+using Stove.EntityFrameworkCore.Tests.Ef;
+using Stove.Events.Bus; 
 
 using Xunit;
 
@@ -64,7 +64,7 @@ namespace Stove.EntityFrameworkCore.Tests.Tests
 
             //Assert
 
-            await UsingDbContextAsync(async context =>
+            await UsingDbContextAsync<BloggingDbContext>(async context =>
             {
                 Blog blog1 = await context.Blogs.SingleAsync(b => b.Id == blog1Id);
                 blog1.Name.ShouldBe("test-blog-1-updated");

@@ -7,7 +7,7 @@ using Stove.EntityFrameworkCore.Tests.Domain.Events;
 
 namespace Stove.EntityFrameworkCore.Tests.Domain
 {
-    public class Blog : AggregateRoot, IHasCreationTime
+    public class Blog : AggregateRoot, IHasCreationTime, ISoftDelete
     {
         public Blog()
         {
@@ -41,6 +41,8 @@ namespace Stove.EntityFrameworkCore.Tests.Domain
         public virtual ICollection<Post> Posts { get; set; }
 
         public virtual DateTime CreationTime { get; set; }
+        
+        public bool IsDeleted { get; set; }
 
         private void When(BlogUrlChangedEvent @event)
         {
