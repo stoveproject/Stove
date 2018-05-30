@@ -72,15 +72,13 @@ namespace Stove.EntityFrameworkCore.Tests.Tests
         }
 
         [Fact]
-        public async Task Should_Not_Include_Navigation_Properties_If_Not_Requested()
+        public async Task Should_Include_Navigation_Properties_Because_It_Is_Lazy_Loaded()
         {
-            //EF Core does not support lazy loading yet, so navigation properties will not be loaded if not included
-
             using (IUnitOfWorkCompleteHandle uow = _uowManager.Begin())
             {
                 Post post = await _postRepository.GetAll().FirstAsync();
 
-                post.Blog.ShouldBeNull();
+                post.Blog.ShouldNotBeNull();
 
                 await uow.CompleteAsync();
             }

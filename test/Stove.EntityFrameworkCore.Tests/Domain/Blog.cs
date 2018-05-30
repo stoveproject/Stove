@@ -34,20 +34,20 @@ namespace Stove.EntityFrameworkCore.Tests.Domain
                 );
         }
 
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
 
-        public string Url { get; protected set; }
+        public virtual string Url { get; protected set; }
 
-        public ICollection<Post> Posts { get; set; }
+        public virtual ICollection<Post> Posts { get; set; }
 
-        public DateTime CreationTime { get; set; }
+        public virtual DateTime CreationTime { get; set; }
 
         private void When(BlogUrlChangedEvent @event)
         {
             Url = @event.Url;
         }
 
-        public void ChangeUrl(string url)
+        public virtual void ChangeUrl(string url)
         {
             if (string.IsNullOrWhiteSpace(url))
             {
