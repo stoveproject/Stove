@@ -8,7 +8,7 @@ using Shouldly;
 using Stove.Domain.Repositories;
 using Stove.Domain.Uow;
 using Stove.EntityFrameworkCore.Tests.Domain;
-
+using Stove.EntityFrameworkCore.Tests.Ef;
 using Xunit;
 
 namespace Stove.EntityFrameworkCore.Tests.Tests
@@ -27,7 +27,7 @@ namespace Stove.EntityFrameworkCore.Tests.Tests
             _blogRepository = The<IRepository<Blog>>();
         }
 
-        //[Fact] 
+        [Fact] 
         public async Task Should_Rollback_Transaction_On_Failure()
         {
             const string exceptionMessage = "This is a test exception!";
@@ -50,10 +50,10 @@ namespace Stove.EntityFrameworkCore.Tests.Tests
 
             }
             
-            await UsingDbContextAsync(async context =>
+            await UsingDbContextAsync<BloggingDbContext>(async context =>
             {
                 var blog = await context.Blogs.FirstOrDefaultAsync(b => b.Name == blogName);
-                blog.ShouldNotBeNull();
+                blog.ShouldBeNull();
             });
         }
     }

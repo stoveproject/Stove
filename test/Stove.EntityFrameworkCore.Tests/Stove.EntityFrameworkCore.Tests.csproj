@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Stove.Dapper\Stove.Dapper.csproj" />
     <ProjectReference Include="..\..\src\Stove.EntityFrameworkCore\Stove.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\..\src\Stove\Stove.csproj" />
     <ProjectReference Include="..\Stove.TestBase\Stove.TestBase.csproj" />
