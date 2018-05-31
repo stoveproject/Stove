@@ -25,7 +25,6 @@ namespace Stove.EntityFrameworkCore.Repositories
 	/// <typeparam name="TPrimaryKey">Primary key of the entity</typeparam>
 	public class EfCoreRepositoryBase<TDbContext, TEntity, TPrimaryKey> :
 		StoveRepositoryBase<TEntity, TPrimaryKey>,
-		ISupportsExplicitLoading<TEntity, TPrimaryKey>,
 		IRepositoryWithDbContext
 		where TEntity : class, IEntity<TPrimaryKey>
 		where TDbContext : DbContext

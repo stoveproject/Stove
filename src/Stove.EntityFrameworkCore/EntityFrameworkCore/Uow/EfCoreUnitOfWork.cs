@@ -167,18 +167,5 @@ namespace Stove.EntityFrameworkCore.Uow
         {
             dbContext.Dispose();
         }
-
-        //private static void ObjectContext_ObjectMaterialized(DbContext dbContext, ObjectMaterializedEventArgs e)
-        //{
-        //    dbContext.Configuration.AutoDetectChangesEnabled = true;
-
-        //    dbContext.Entry(e.Entity).State = previousState;
-
-        //    DateTimePropertyInfoHelper.NormalizeDatePropertyKinds(e.Entity, entityType);
-        //    var previousState = dbContext.Entry(e.Entity).State;
-
-        //    dbContext.Configuration.AutoDetectChangesEnabled = false;
-        //    var entityType = ObjectContext.GetObjectType(e.Entity.GetType());
-        //}
-    }
+	}
 }
