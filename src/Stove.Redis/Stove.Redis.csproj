@@ -28,5 +28,6 @@
 
   <ItemGroup>
     <PackageReference Include="StackExchange.Redis.StrongName" Version="1.2.6" />
+    <PackageReference Update="SourceLink.Create.CommandLine" Version="2.8.3" />
   </ItemGroup>    
  </Project>

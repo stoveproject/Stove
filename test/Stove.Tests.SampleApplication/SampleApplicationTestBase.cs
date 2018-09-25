@@ -30,7 +30,7 @@ namespace Stove.Tests.SampleApplication
 					.UseStoveDbContextEfTransactionStrategy()
 					.UseStoveMapster();
 
-				builder.RegisterServices(r => r.Register(context => DbConnectionFactory.CreateTransient(), Lifetime.Singleton));
+				builder.RegisterServices(r => r.Register(context => DbConnectionFactory.CreatePersistent(Guid.NewGuid().ToString()), Lifetime.Singleton));
 				builder.RegisterServices(r => r.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly()));
 			});
 		}

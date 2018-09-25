@@ -42,8 +42,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="EntityFrameworkProfiler.Appender" Version="5.0.5023" />
-    <PackageReference Include="Hangfire.SqlServer" Version="1.6.19" />
+    <PackageReference Include="EntityFrameworkProfiler.Appender" Version="5.0.5028" />
+    <PackageReference Include="Hangfire.SqlServer" Version="1.6.20" />
     <PackageReference Include="LinqKit" Version="1.1.15" />
   </ItemGroup>
 

@@ -1,6 +1,8 @@
-﻿using Autofac.Extras.IocManager;
+﻿using System;
+using Autofac.Extras.IocManager;
 
 using Raven.Client.Documents;
+using Raven.Embedded;
 using Raven.TestDriver;
 
 using Stove.Reflection.Extensions;
@@ -21,17 +23,12 @@ namespace Stove.RavenDB.Tests
 						r.RegisterAssemblyByConvention(typeof(RavenDBTestBase).GetAssembly());
 						r.Register(ctx =>
 						{
-							IDocumentStore store = new RavenTestDriver<TestRavenServerLocator>().GetDocumentStore();
+							IDocumentStore store = EmbeddedServer.Instance.GetDocumentStore(Guid.NewGuid().ToString());
 
 							return store;
 						}, Lifetime.Singleton);
 					});
 			});
 		}
-	}
-
-	public class TestRavenServerLocator : RavenServerLocator
-	{
-		public override string ServerPath { get; } = "local";
 	}
 }
