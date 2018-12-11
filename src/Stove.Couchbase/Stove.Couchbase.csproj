@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CouchbaseNetClient" Version="2.6.2" />
+    <PackageReference Include="CouchbaseNetClient" Version="2.7.2" />
     <PackageReference Include="Linq2Couchbase" Version="1.4.0" />
     <PackageReference Update="SourceLink.Create.CommandLine" Version="2.8.3" />
   </ItemGroup>

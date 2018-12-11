@@ -5,14 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Couchbase.Lite" Version="2.1.0" />
+    <PackageReference Include="Couchbase.Lite" Version="2.1.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Stove.Couchbase\Stove.Couchbase.csproj" />
     <ProjectReference Include="..\Stove.TestBase\Stove.TestBase.csproj" />
-    <PackageReference Include="Shouldly" Version="3.0.1" />
-    <PackageReference Include="xunit" Version="2.4.0" />
+    <PackageReference Include="Shouldly" Version="3.0.2" />
+    <PackageReference Include="xunit" Version="2.4.1" />
   </ItemGroup>
 
 </Project>

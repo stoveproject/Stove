@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NLog" Version="4.5.10" />
+    <PackageReference Include="NLog" Version="4.5.11" />
     <PackageReference Update="SourceLink.Create.CommandLine" Version="2.8.3" />
   </ItemGroup>    
 </Project>
